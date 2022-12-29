@@ -65,6 +65,8 @@
 
 
 <script>
+import { getToken } from '@/utils/auth';
+import { getUserInfo } from '@/api/login';
 import { statisticalHome } from '@/api/businessManagement/marketingPortrait';
 import XEUtils from 'xe-utils'
 import { commafyFn } from '@/utils'
@@ -85,6 +87,13 @@ export default {
       return commafyFn(v)
     }
   },
+  computed: {
+    headers() {
+      return {
+        'X-Dts-Admin-Token': getToken()
+      };
+    }
+  },
   data() {
     return {
       statisticalDetail: {
@@ -95,9 +104,16 @@ export default {
     }
   },
   mounted() {
-    this.initData()
+    this.getRoles()
   },
   methods: {
+    getRoles() {
+      getUserInfo(getToken())
+        .then(response => {
+          this.initData();
+        })
+        .catch();
+    },
     async initData() {
       const res = await statisticalHome()
       this.statisticalDetail = res.data

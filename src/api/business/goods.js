@@ -1,5 +1,7 @@
 import request from '@/utils/request'
 
+const
+
 export function listGoods (query) {
   return request({
     url: '/goods/list',

@@ -27,7 +27,7 @@
         />
       </el-select>
       <el-button
-        v-permission="['POST /messagesentry/queryMsgSentryList']"
+        v-permission="[`GET ${api.msgsayMsgSayList}`]"
         size="mini"
         class="filter-item"
         type="primary"
@@ -35,7 +35,7 @@
         @click="handleFilter"
       >查找</el-button>
       <el-button
-        v-permission="['POST /admin/salesman/create']"
+        v-permission="[`POST ${api.msgsaySaveMsgSay}`]"
         size="mini"
         class="filter-item"
         type="primary"
@@ -71,13 +71,13 @@
         >
           <template slot-scope="{row}">
             <el-button
-              v-permission="['POST /admin/prices/update']"
+              v-permission="[`PUT ${api.msgsayUpdateSay}`]"
               type="primary"
               size="mini"
               @click="handleUpdate(row)"
             >编辑</el-button>
             <el-button
-              v-permission="['POST /admin/prices/update']"
+              v-permission="[`DELETE ${api.msgsayDeleteById}`]"
               type="danger"
               size="mini"
               @click="handleDelete(row)"
@@ -102,6 +102,7 @@
 
 <script>
 import {
+  api,
   msgsayMsgSayTypeList,
   msgsayMsgSayList,
   msgsayDeleteById,
@@ -125,6 +126,7 @@ export default {
   },
   data() {
     return {
+      api,
       list: undefined,
       total: 0,
       listLoading: true,

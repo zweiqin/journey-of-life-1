@@ -29,7 +29,7 @@
         />
       </el-select>
       <el-button
-        v-permission="['POST /messagesentry/queryMsgSentryList']"
+        v-permission="[`POST ${api.messagesentryQueryMsgSentryList}`]"
         size="mini"
         class="filter-item"
         type="primary"
@@ -37,7 +37,7 @@
         @click="handleFilter"
       >查找</el-button>
       <el-button
-        v-permission="['POST /admin/salesman/create']"
+        v-permission="[`POST ${api.messagesentrySaveMsgSentry}`]"
         size="mini"
         class="filter-item"
         type="primary"
@@ -114,31 +114,25 @@
           <template slot-scope="{row}">
             <el-button
               v-if="row.status==1"
-              v-permission="['POST /admin/prices/update']"
+              v-permission="[`POST ${api.messagesentryConversion}`]"
               type="success"
               size="mini"
               @click="handleUpdateStatus(row)"
             >转化</el-button>
             <el-button
               v-if="row.status && row.status!=1"
-              v-permission="['POST /admin/prices/update']"
+              v-permission="[`POST ${api.messagesentryIsConversion}`]"
               type="warning"
               size="mini"
               @click="handleUpdateStatus(row)"
             >回访</el-button>
-            <!-- <el-button
-              v-permission="['POST /admin/prices/update']"
-              type="primary"
-              size="mini"
-              @click="handleUpdate(row)"
-            >编辑</el-button> -->
             <el-button
-              v-permission="['POST /admin/prices/delete']"
+              v-permission="[`POST ${api.messagesentrySalesmanBinding}`]"
               size="mini"
               @click="handleBind(row)"
             >绑定业务员</el-button>
             <el-button
-              v-permission="['POST /admin/prices/delete']"
+              v-permission="[`POST ${api.messagesentrySetOverdueTime}`]"
               type="danger"
               size="mini"
               @click="hanldeSetTime(row)"
@@ -166,7 +160,12 @@
 </template>
 
 <script>
-import { messagesentryQueryMsgSentryList, messagesentryConversion, messagesentryIsConversion } from '@/api/businessManagement/informationSentry';
+import {
+  api,
+  messagesentryQueryMsgSentryList,
+  messagesentryConversion,
+  messagesentryIsConversion
+} from '@/api/businessManagement/informationSentry';
 import { getToken } from '@/utils/auth';
 import { getUserInfo } from '@/api/login';
 import Pagination from '@/components/Pagination'; // Secondary package based on el-pagination
@@ -197,6 +196,7 @@ export default {
   },
   data() {
     return {
+      api,
       list: undefined,
       total: 0,
       listLoading: true,
