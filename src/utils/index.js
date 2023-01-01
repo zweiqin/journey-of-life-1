@@ -334,3 +334,19 @@ export function keepTwoDecimal (num) {
   result = Math.round(result * 100) / 100
   return result
 }
+
+// 下载文件和导出excel的方法
+export function exportExcel(data, name) {
+  if (!data) {
+    return
+  }
+  const url = window.URL.createObjectURL(new Blob([data]))
+  const link = document.createElement('a')
+  link.style.display = 'none'
+  link.href = url
+  link.setAttribute('download', name)
+
+  document.body.appendChild(link)
+  link.click()
+  window.URL.revokeObjectURL(url)
+}

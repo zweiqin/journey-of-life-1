@@ -274,7 +274,7 @@
 </style>
 
 <script>
-import { listGoods, deleteGoods } from '@/api/business/goods'
+import { goodsList, goodsDelete } from '@/api/business/goods'
 import BackToTop from '@/components/BackToTop'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
 
@@ -320,7 +320,7 @@ export default {
       }
       this.listQuery.brandId = this.$route.query.id
       this.listLoading = true
-      listGoods(this.listQuery).then(response => {
+      goodsList(this.listQuery).then(response => {
         this.list = response.data.items
         this.total = response.data.total
         this.listLoading = false
@@ -347,7 +347,7 @@ export default {
       this.detailDialogVisible = true
     },
     handleDelete (row) {
-      deleteGoods(row).then(response => {
+      goodsDelete(row).then(response => {
         this.$notify.success({
           title: '成功',
           message: '删除成功'

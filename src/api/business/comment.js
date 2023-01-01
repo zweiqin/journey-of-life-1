@@ -1,17 +1,34 @@
 import request from '@/utils/request'
 
-export function listComment(query) {
+export const api = {
+  commentList: '/comment/list',
+  commentDelete: '/comment/delete',
+  commentBrandReply: '/comment/brandReply',
+}
+
+// 查询商品评论列表
+export function commentList(params) {
   return request({
-    url: '/comment/list',
-    method: 'get',
-    params: query
+    url: api.commentList,
+    method: 'GET',
+    params
   })
 }
 
-export function deleteComment(data) {
+// 删除评论
+export function commentDelete(data) {
   return request({
-    url: '/comment/delete',
-    method: 'post',
+    url: api.commentDelete,
+    method: 'POST',
+    data
+  })
+}
+
+// 添加门店回复评论
+export function commentBrandReply(data) {
+  return request({
+    url: api.commentBrandReply,
+    method: 'POST',
     data
   })
 }

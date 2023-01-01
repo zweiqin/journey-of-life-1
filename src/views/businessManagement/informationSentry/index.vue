@@ -56,24 +56,22 @@
       >
 
         <el-table-column align="center" label="ID" prop="id" width="50" fixed="left" />
-
         <el-table-column align="center" min-width="150" label="会员名称" prop="userName" fixed="left" show-overflow-tooltip />
-
         <el-table-column align="center" min-width="150" label="会员头像" prop="userAvatar">
           <template slot-scope="{row}">
             <img :src="row.userAvatar">
           </template>
         </el-table-column>
 
-        <el-table-column align="center" min-width="150" label="会员性别" prop="userGender">
+        <el-table-column align="center" width="80" label="会员性别" prop="userGender">
           <template slot-scope="{row}">
             <span>{{ row.userGender | genderFilter }}</span>
           </template>
         </el-table-column>
 
         <el-table-column align="center" min-width="150" label="会员电话" prop="userTel" />
-        <el-table-column align="center" width="100" label="购买次数" prop="buyCount" />
-        <el-table-column align="center" width="100" label="报警天数" prop="setTime" />
+        <el-table-column align="center" width="80" label="购买次数" prop="buyCount" />
+        <el-table-column align="center" width="80" label="报警天数" prop="setTime" />
         <el-table-column
           align="center"
           min-width="150"
@@ -89,7 +87,7 @@
 
         <el-table-column
           align="center"
-          min-width="150"
+          width="100"
           label="是否转化"
           prop="isConversion"
         >
@@ -100,32 +98,19 @@
 
         <el-table-column align="center" min-width="100" label="职业" prop="professional" show-overflow-tooltip />
         <el-table-column align="center" min-width="100" label="爱好" prop="hobby" show-overflow-tooltip />
-        <el-table-column align="center" min-width="150" label="工作地点" prop="workingPlace" show-overflow-tooltip />
-        <el-table-column align="center" min-width="150" label="家庭住址" prop="homeAddress" show-overflow-tooltip />
+        <el-table-column align="center" min-width="200" label="工作地点" prop="workingPlace" show-overflow-tooltip />
+        <el-table-column align="center" min-width="200" label="家庭住址" prop="homeAddress" show-overflow-tooltip />
         <el-table-column align="center" min-width="150" label="生日" prop="birthday" />
+        <el-table-column align="center" min-width="150" label="业务员名称" prop="belongsSalesman" />
+        <el-table-column align="center" min-width="150" label="业务员所属部门" prop="belongsDepartment" />
 
         <el-table-column
-          align="center"
           label="操作"
           width="250"
           fixed="right"
           class-name="small-padding fixed-width"
         >
           <template slot-scope="{row}">
-            <el-button
-              v-if="row.status==1"
-              v-permission="[`POST ${api.messagesentryConversion}`]"
-              type="success"
-              size="mini"
-              @click="handleUpdateStatus(row)"
-            >转化</el-button>
-            <el-button
-              v-if="row.status && row.status!=1"
-              v-permission="[`POST ${api.messagesentryIsConversion}`]"
-              type="warning"
-              size="mini"
-              @click="handleUpdateStatus(row)"
-            >回访</el-button>
             <el-button
               v-permission="[`POST ${api.messagesentrySalesmanBinding}`]"
               size="mini"
@@ -137,6 +122,27 @@
               size="mini"
               @click="hanldeSetTime(row)"
             >报警时间</el-button>
+            <el-button
+              v-if="row.status==1"
+              v-permission="[`POST ${api.messagesentryConversion}`]"
+              type="success"
+              size="mini"
+              @click="handleUpdateStatus(row, 1)"
+            >转化</el-button>
+            <el-button
+              v-if="row.status == 2"
+              v-permission="[`POST ${api.messagesentryIsConversion}`]"
+              type="warning"
+              size="mini"
+              @click="handleUpdateStatus(row, 3)"
+            >回访</el-button>
+            <el-button
+              v-if="row.status == 3"
+              v-permission="[`POST ${api.messagesentryIsConversion}`]"
+              type="warning"
+              size="mini"
+              @click="handleUpdateStatus(row, 4)"
+            >回访</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -250,15 +256,16 @@ export default {
       this.listQuery.page = 1;
       this.getList();
     },
-    async handleUpdateStatus({ status, id }) {
-      const res = status == 1 ?  await messagesentryConversion({ id }) : await messagesentryIsConversion({ id })
+    async handleUpdateStatus({ id }, status) {
+      const res = status == 1 ?  await messagesentryConversion({ id }) : await messagesentryIsConversion({ id, status })
       this.$message.success(`${status == 1 ? '转化' : '回访'}成功!`)
+      this.getList();
     },
-    handleBind({ id }) {
-      this.$refs.AddSalesmanModal && this.$refs.AddSalesmanModal.handleOpen({ id })
+    handleBind({ id, belongsSalesman, belongsDepartment }) {
+      this.$refs.AddSalesmanModal && this.$refs.AddSalesmanModal.handleOpen({ id, belongsSalesman, belongsDepartment })
     },
-    hanldeSetTime({ id }) {
-      this.$refs.SetTimeModal && this.$refs.SetTimeModal.handleOpen({ id })
+    hanldeSetTime({ id, setTime }) {
+      this.$refs.SetTimeModal && this.$refs.SetTimeModal.handleOpen({ id, setTime })
     }
   }
 };

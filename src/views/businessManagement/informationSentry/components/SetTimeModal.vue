@@ -5,7 +5,9 @@
   >
     <el-form ref="formData" :model="formData" :rules="formRules" size="mini" label-width="100px">
       <el-form-item label="报警时间" prop="setTime">
-        <el-input v-model.trim="formData.setTime" clearable placeholder="请输入报警时间" />
+        <el-input v-model.trim="formData.setTime" clearable placeholder="请输入报警时间" style="width:200px">
+          <template slot="append">天</template>
+        </el-input>
       </el-form-item>
     </el-form>
     <span slot="footer" class="dialog-footer">
@@ -16,7 +18,7 @@
 </template>
 
 <script>
-import { messagesentrySalesmanBinding } from '@/api/businessManagement/informationSentry';
+import { messagesentrySetOverdueTime } from '@/api/businessManagement/informationSentry';
 import { regZero } from '@/utils/reg'
 
 export default {
@@ -30,6 +32,7 @@ export default {
       },
       visible: false,
       formData: {
+        id: '',
         setTime: '',
       },
       formRules: {
@@ -37,8 +40,7 @@ export default {
           { required: true, message: '请输入报警时间' },
           { pattern: regZero,  message: '请输入正整数' }
         ],
-      },
-      parentParams: {}
+      }
     }
   },
   methods: {
@@ -46,18 +48,15 @@ export default {
       this.visible = false
     },
     handleOpen(params = {}) {
-      this.parentParams = { ...params }
+      this.formData = Object.assign(this.$options.data().formData, params)
       this.visible = true
       this.$refs.formData && this.$refs.formData.resetFields()
     },
     handleSubmit() {
       this.$refs.formData.validate(async (valid) => {
         if (valid) {
-          const res = await messagesentrySalesmanBinding({
-            ...this.parentParams,
-            ...this.formData
-          })
-          this.$message.success('绑定成功!')
+          const res = await messagesentrySetOverdueTime(this.formData)
+          this.$elMessage()
           this.$emit('success')
           this.visible = false
         } else {

@@ -4,38 +4,24 @@
     <!-- 查询和其他操作 -->
     <div class="filter-container">
       <el-input
-        v-model="listQuery.msgSay"
+        v-model="listQuery.value"
         clearable
         class="filter-item"
         style="width: 200px;"
-        placeholder="请输入话术"
+        placeholder="请输入标签值"
         @clear="getList"
       />
-      <el-select
-        v-model="listQuery.msgSayType"
-        clearable
-        class="filter-item"
-        style="width: 200px;"
-        placeholder="请选择话术类型"
-        @clear="getList"
-      >
-        <el-option
-          v-for="item in msgSayTypeList"
-          :key="item.code"
-          :label="item.name"
-          :value="item.code"
-        />
-      </el-select>
       <el-button
-        v-permission="[`GET ${api.msgsayMsgSayList}`]"
+        v-permission="[`GET ${api.goodsTagList}`]"
         size="mini"
         class="filter-item"
         type="primary"
         icon="el-icon-search"
+        style="margin-left:10px;"
         @click="handleFilter"
       >查找</el-button>
       <el-button
-        v-permission="[`POST ${api.msgsaySaveMsgSay}`]"
+        v-permission="[`POST ${api.goodsTagCreate}`]"
         size="mini"
         class="filter-item"
         type="primary"
@@ -54,14 +40,10 @@
       >
 
         <el-table-column align="center" width="50" label="ID" prop="id" fixed="left" />
-        <el-table-column align="center" min-width="150" label="话术内容" prop="say" show-overflow-tooltip />
-        <el-table-column align="center" width="150" label="话术类型" prop="userGender">
-          <template slot-scope="{row}">
-            <span>{{ row.type | typeFilter(msgSayTypeList) }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column align="center" width="150" label="创建时间" prop="createTime" />
-        <el-table-column align="center" width="150" label="更新时间" prop="updateTime" />
+        <el-table-column align="center" min-width="200" label="标签值" prop="value" show-overflow-tooltip />
+        <el-table-column align="center" min-width="100" label="排序" prop="sortOrder" />
+        <el-table-column align="center" min-width="150" label="创建时间" prop="addTime" />
+        <el-table-column align="center" min-width="150" label="更新时间" prop="updateTime" />
         <el-table-column
           label="操作"
           width="150"
@@ -70,13 +52,13 @@
         >
           <template slot-scope="{row}">
             <el-button
-              v-permission="[`PUT ${api.msgsayUpdateSay}`]"
+              v-permission="[`POST ${api.goodsTagUpdate}`]"
               type="primary"
               size="mini"
               @click="handleUpdate(row)"
             >编辑</el-button>
             <el-button
-              v-permission="[`DELETE ${api.msgsayDeleteById}`]"
+              v-permission="[`POST ${api.goodsTagDelete}`]"
               type="danger"
               size="mini"
               @click="handleDelete(row)"
@@ -95,33 +77,26 @@
     />
 
     <!-- 新增编辑 -->
-    <EditModal ref="EditModal" :list="msgSayTypeList" @success="getList" />
+    <EditModal ref="EditModal" @success="getList" />
   </div>
 </template>
 
 <script>
 import {
   api,
-  msgsayMsgSayTypeList,
-  msgsayMsgSayList,
-  msgsayDeleteById,
-} from '@/api/businessManagement/scriptSetting';
+  goodsTagList,
+  goodsTagDelete
+} from '@/api/business/goodsTag'
 import { getToken } from '@/utils/auth';
 import { getUserInfo } from '@/api/login';
-import Pagination from '@/components/Pagination'; // Secondary package based on el-pagination
+import Pagination from '@/components/Pagination';
 import EditModal from './components/EditModal'
 
 export default {
-  name: 'scriptSetting',
+  name: 'GoodsTag',
   components: {
     Pagination,
     EditModal,
-  },
-  filters: {
-    typeFilter(val, list = []) {
-      const obj = list.find(item => item.code === +val)
-      return obj ? obj.name : '--'
-    }
   },
   data() {
     return {
@@ -132,10 +107,8 @@ export default {
       listQuery: {
         page: 1,
         size: 20,
-        msgSay: '',
-        msgSayType: undefined
+        value: '',
       },
-      msgSayTypeList: []
     };
   },
   computed: {
@@ -146,14 +119,9 @@ export default {
     }
   },
   created() {
-    this.getMsgSayTypeList();
     this.getRoles();
   },
   methods: {
-    async getMsgSayTypeList() {
-      const res = await msgsayMsgSayTypeList()
-      this.msgSayTypeList = res.data
-    },
     getRoles() {
       getUserInfo(getToken())
         .then(response => {
@@ -163,7 +131,7 @@ export default {
     },
     getList() {
       this.listLoading = true;
-      msgsayMsgSayList(this.listQuery)
+      goodsTagList(this.listQuery)
         .then(response => {
           this.list = response.data.items;
           this.total = response.data.total;
@@ -179,12 +147,12 @@ export default {
       this.listQuery.page = 1;
       this.getList();
     },
-    async handleUpdate({ id, say, type }) {
-      this.$refs.EditModal && this.$refs.EditModal.handleOpen({ id, say, type })
+    async handleUpdate({ id, value, sortOrder }) {
+      this.$refs.EditModal && this.$refs.EditModal.handleOpen({ id, value, sortOrder })
     },
     async handleDelete({ id }) {
       await this.$elConfirm('确认删除?')
-      await msgsayDeleteById({ id })
+      await goodsTagDelete({ id })
       this.$elMessage('删除成功!')
       this.handleFilter()
     }

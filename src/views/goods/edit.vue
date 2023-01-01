@@ -1,6 +1,5 @@
 <template>
   <div class="app-container">
-
     <el-card class="box-card">
       <h3>商品介绍</h3>
       <el-form ref="goods" :rules="rules" :model="goods" label-width="150px">
@@ -288,7 +287,7 @@
 </style>
 
 <script>
-import { detailGoods, editGoods, listCatAndBrand } from '@/api/business/goods'
+import { goodsDetail, goodsUpdate, goodsCatAndBrand } from '@/api/business/goods'
 import { createStorage, uploadPath } from '@/api/business/storage'
 import Editor from '@tinymce/tinymce-vue'
 import { MessageBox } from 'element-ui'
@@ -372,7 +371,7 @@ export default {
       }
 
       const goodsId = this.$route.query.id
-      detailGoods(goodsId).then(response => {
+      goodsDetail(goodsId).then(response => {
         this.goods = response.data.goods
         this.specifications = response.data.specifications
         this.products = response.data.products
@@ -392,12 +391,12 @@ export default {
       })
 
       if (this.$route.query.lastRouter === 'brandListShow') {
-        listCatAndBrand(this.$route.query.brandId).then(response => {
+        goodsCatAndBrand(this.$route.query.brandId).then(response => {
           this.categoryList = response.data.categoryList
           this.brandList = response.data.brandList
         })
       } else {
-        listCatAndBrand().then(response => {
+        goodsCatAndBrand().then(response => {
           this.categoryList = response.data.categoryList
           this.brandList = response.data.brandList
         })
@@ -420,7 +419,7 @@ export default {
         products: this.products,
         attributes: this.attributes
       }
-      editGoods(finalGoods)
+      goodsUpdate(finalGoods)
         .then(response => {
           this.$notify.success({
             title: '成功',

@@ -4,44 +4,22 @@
     <!-- 查询和其他操作 -->
     <div class="filter-container">
       <el-input
-        v-model="listQuery.msgSay"
+        v-model="listQuery.value"
         clearable
         class="filter-item"
         style="width: 200px;"
-        placeholder="请输入话术"
+        placeholder="请输入标签值"
         @clear="getList"
       />
-      <el-select
-        v-model="listQuery.msgSayType"
-        clearable
-        class="filter-item"
-        style="width: 200px;"
-        placeholder="请选择话术类型"
-        @clear="getList"
-      >
-        <el-option
-          v-for="item in msgSayTypeList"
-          :key="item.code"
-          :label="item.name"
-          :value="item.code"
-        />
-      </el-select>
       <el-button
-        v-permission="[`GET ${api.msgsayMsgSayList}`]"
+        v-permission="[`GET ${api.commentList}`]"
         size="mini"
         class="filter-item"
         type="primary"
         icon="el-icon-search"
+        style="margin-left:10px;"
         @click="handleFilter"
       >查找</el-button>
-      <el-button
-        v-permission="[`POST ${api.msgsaySaveMsgSay}`]"
-        size="mini"
-        class="filter-item"
-        type="primary"
-        icon="el-icon-edit"
-        @click="$refs.EditModal && $refs.EditModal.handleOpen({ id: '' })"
-      >添加</el-button>
     </div>
 
     <!-- 查询结果 -->
@@ -54,29 +32,56 @@
       >
 
         <el-table-column align="center" width="50" label="ID" prop="id" fixed="left" />
-        <el-table-column align="center" min-width="150" label="话术内容" prop="say" show-overflow-tooltip />
-        <el-table-column align="center" width="150" label="话术类型" prop="userGender">
+        <el-table-column align="center" min-width="150" label="评论内容" prop="content" show-overflow-tooltip />
+        
+        <el-table-column align="center" width="100" label="用户头像" prop="userImg">
           <template slot-scope="{row}">
-            <span>{{ row.type | typeFilter(msgSayTypeList) }}</span>
+            <img v-if="row.userImg" :src="row.userImg" width="40" />
           </template>
         </el-table-column>
-        <el-table-column align="center" width="150" label="创建时间" prop="createTime" />
+        <el-table-column align="center" width="100" label="用户编号" prop="userId" show-overflow-tooltip />
+        <el-table-column align="center" min-width="100" label="用户名称" prop="userName" show-overflow-tooltip />
+        <el-table-column align="center" width="100" label="图片" prop="hasPicture">
+          <template slot-scope="{row}">
+            <template v-if="row.hasPicture">
+              <img v-for="(item,index) in row.picUrls" :key="index" :src="item" width="40" style="margin-right:4px;" />
+            </template>
+          </template>
+        </el-table-column>
+        <el-table-column align="center" width="140" label="商品评分" prop="goodsStar">
+          <template slot-scope="{row}">
+            <el-rate v-model="row.goodsStar" disabled />
+          </template>
+        </el-table-column>
+        <el-table-column align="center" width="140" label="物流评价" prop="logisticsStar">
+          <template slot-scope="{row}">
+            <el-rate v-model="row.logisticsStar" disabled />
+          </template>
+        </el-table-column>
+        <el-table-column align="center" width="140" label="服务态度" prop="serverStar">
+          <template slot-scope="{row}">
+            <el-rate v-model="row.serverStar" disabled />
+          </template>
+        </el-table-column>
+
+        <el-table-column align="center" width="150" label="创建时间" prop="addTime" />
         <el-table-column align="center" width="150" label="更新时间" prop="updateTime" />
         <el-table-column
           label="操作"
-          width="150"
+          width="200"
           fixed="right"
           class-name="small-padding fixed-width"
         >
           <template slot-scope="{row}">
             <el-button
-              v-permission="[`PUT ${api.msgsayUpdateSay}`]"
+              v-if="typeFilterFn(row.type)"
+              v-permission="[`POST ${api.commentBrandReply}`]"
               type="primary"
               size="mini"
-              @click="handleUpdate(row)"
-            >编辑</el-button>
+              @click="handleAddComment(row)"
+            >添加{{ typeFilterFn(row.type) }}</el-button>
             <el-button
-              v-permission="[`DELETE ${api.msgsayDeleteById}`]"
+              v-permission="[`POST ${api.commentDelete}`]"
               type="danger"
               size="mini"
               @click="handleDelete(row)"
@@ -95,33 +100,26 @@
     />
 
     <!-- 新增编辑 -->
-    <EditModal ref="EditModal" :list="msgSayTypeList" @success="getList" />
+    <EditModal ref="EditModal" @success="getList" />
   </div>
 </template>
 
 <script>
 import {
   api,
-  msgsayMsgSayTypeList,
-  msgsayMsgSayList,
-  msgsayDeleteById,
-} from '@/api/businessManagement/scriptSetting';
+  commentList,
+  commentDelete
+} from '@/api/business/comment'
 import { getToken } from '@/utils/auth';
 import { getUserInfo } from '@/api/login';
-import Pagination from '@/components/Pagination'; // Secondary package based on el-pagination
+import Pagination from '@/components/Pagination';
 import EditModal from './components/EditModal'
 
 export default {
-  name: 'scriptSetting',
+  name: 'CommentList',
   components: {
     Pagination,
     EditModal,
-  },
-  filters: {
-    typeFilter(val, list = []) {
-      const obj = list.find(item => item.code === +val)
-      return obj ? obj.name : '--'
-    }
   },
   data() {
     return {
@@ -132,10 +130,8 @@ export default {
       listQuery: {
         page: 1,
         size: 20,
-        msgSay: '',
-        msgSayType: undefined
+        value: '',
       },
-      msgSayTypeList: []
     };
   },
   computed: {
@@ -146,14 +142,9 @@ export default {
     }
   },
   created() {
-    this.getMsgSayTypeList();
     this.getRoles();
   },
   methods: {
-    async getMsgSayTypeList() {
-      const res = await msgsayMsgSayTypeList()
-      this.msgSayTypeList = res.data
-    },
     getRoles() {
       getUserInfo(getToken())
         .then(response => {
@@ -163,7 +154,7 @@ export default {
     },
     getList() {
       this.listLoading = true;
-      msgsayMsgSayList(this.listQuery)
+      commentList(this.listQuery)
         .then(response => {
           this.list = response.data.items;
           this.total = response.data.total;
@@ -179,15 +170,29 @@ export default {
       this.listQuery.page = 1;
       this.getList();
     },
-    async handleUpdate({ id, say, type }) {
-      this.$refs.EditModal && this.$refs.EditModal.handleOpen({ id, say, type })
+    typeFilterFn(val) {
+      return {
+        0: '商品评论',
+        1: '专题评论',
+        3: '订单商品评论',
+      }[val] || ''
+    },
+    // 添加评论
+    async handleAddComment({ type, valueId, pid }) {
+      this.$refs.EditModal && this.$refs.EditModal.handleOpen({ type, valueId, pid }, this.typeFilterFn(type))
     },
     async handleDelete({ id }) {
       await this.$elConfirm('确认删除?')
-      await msgsayDeleteById({ id })
+      await commentDelete({ id })
       this.$elMessage('删除成功!')
       this.handleFilter()
     }
   }
 };
 </script>
+
+<style lang="scss" scoped>
+/deep/ .el-rate__icon {
+  margin-right: 2px;
+}
+</style>

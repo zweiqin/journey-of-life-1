@@ -1,50 +1,67 @@
 import request from '@/utils/request'
 
-const
+export const api = {
+  goodsList: '/goods/list',
+  goodsDelete: '/goods/delete',
+  goodsCreate: '/goods/create',
+  goodsDetail: '/goods/detail',
+  goodsUpdate: '/goods/update',
+  goodsCatAndBrand: '/goods/catAndBrand',
+  goodsProductPlaceList: '/goods/productPlaceList',
+}
 
-export function listGoods (query) {
+export function goodsList (params) {
   return request({
-    url: '/goods/list',
-    method: 'get',
-    params: query
+    url: api.goodsList,
+    method: 'GET',
+    params
   })
 }
 
-export function deleteGoods (data) {
+export function goodsDelete (data) {
   return request({
-    url: '/goods/delete',
-    method: 'post',
+    url: api.goodsDelete,
+    method: 'POST',
     data
   })
 }
 
-export function publishGoods (data) {
+export function goodsCreate (data) {
   return request({
-    url: '/goods/create',
-    method: 'post',
+    url: api.goodsCreate,
+    method: 'POST',
     data
   })
 }
 
-export function detailGoods (id) {
+export function goodsDetail (id) {
   return request({
-    url: '/goods/detail',
-    method: 'get',
+    url: api.goodsDetail,
+    method: 'GET',
     params: { id }
   })
 }
 
-export function editGoods (data) {
+export function goodsUpdate (data) {
   return request({
-    url: '/goods/update',
+    url: api.goodsUpdate,
     method: 'post',
     data
   })
 }
 
-export function listCatAndBrand () {
+export function goodsCatAndBrand (params) {
   return request({
     url: '/goods/catAndBrand',
-    method: 'get'
+    method: 'GET',
+    params
+  })
+}
+
+export function goodsProductPlaceList (params) {
+  return request({
+    url: api.goodsProductPlaceList,
+    method: 'GET',
+    params
   })
 }

@@ -32,6 +32,7 @@ export default {
       },
       visible: false,
       formData: {
+        id: '',
         belongsSalesman: '',
         belongsDepartment: '',
       },
@@ -43,7 +44,6 @@ export default {
           { required: true, message: '请输入业务员所属部门' }
         ]
       },
-      parentParams: {}
     }
   },
   methods: {
@@ -51,17 +51,14 @@ export default {
       this.visible = false
     },
     handleOpen(params = {}) {
-      this.parentParams = { ...params }
+      this.formData = Object.assign(this.$options.data().formData, params)
       this.visible = true
       this.$refs.formData && this.$refs.formData.resetFields()
     },
     handleSubmit() {
       this.$refs.formData.validate(async (valid) => {
         if (valid) {
-          const res = await messagesentrySalesmanBinding({
-            ...this.parentParams,
-            ...this.formData
-          })
+          const res = await messagesentrySalesmanBinding(this.formData)
           this.$message.success('绑定成功!')
           this.$emit('success')
           this.visible = false

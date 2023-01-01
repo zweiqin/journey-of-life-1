@@ -231,18 +231,16 @@ export const asyncRouterMap = [
         meta: {
           // perms: [],
           title: '商品列表',
-          icon: 'list',
           noCache: true
         }
       },
       {
         path: 'create',
-        component: () => import('@/views/goods/create'),
+        component: () => import('@/views/goods/create/index'),
         name: 'goodsCreate',
         meta: {
           // perms: [],
           title: '商品上架',
-          icon: 'link',
           noCache: true
         },
         hidden: true
@@ -254,21 +252,9 @@ export const asyncRouterMap = [
         meta: {
           // perms: [],
           title: '商品编辑',
-          icon: 'form',
           noCache: true
         },
         hidden: true
-      },
-      {
-        path: 'comment',
-        component: () => import('@/views/goods/comment'),
-        name: 'goodsComment',
-        meta: {
-          perms: ['POST /admin/comment/delete', 'GET /admin/comment/list'],
-          title: '商品评论',
-          icon: 'message',
-          noCache: true
-        }
       },
       {
         path: 'brandList',
@@ -277,7 +263,6 @@ export const asyncRouterMap = [
         meta: {
           // perms: [],
           title: '门店-商品',
-          icon: 'list',
           noCache: true
         },
         hidden: true
@@ -289,7 +274,6 @@ export const asyncRouterMap = [
         meta: {
           // perms: [],
           title: '门店-商品展示',
-          icon: 'list',
           noCache: true
         },
         hidden: true
@@ -301,7 +285,6 @@ export const asyncRouterMap = [
         meta: {
           perms: ['POST /admin/category/update', 'POST /admin/category/delete', 'GET /admin/category/read', 'POST /admin/category/create', 'GET /admin/category/list'],
           title: '商品类目',
-          icon: 'list',
           noCache: true
         }
       },
@@ -312,7 +295,6 @@ export const asyncRouterMap = [
         meta: {
           perms: ['POST /admin/issue/update', 'POST /admin/issue/delete', 'POST /admin/issue/create', 'GET /admin/issue/list'],
           title: '通用问题',
-          icon: 'qq',
           noCache: true
         }
       },
@@ -323,7 +305,6 @@ export const asyncRouterMap = [
         meta: {
           perms: ['POST /admin/keyword/update', 'POST /admin/keyword/delete', 'GET /admin/keyword/read', 'POST /admin/keyword/create', 'GET /admin/keyword/list'],
           title: '关键词',
-          icon: 'bug',
           noCache: true
         }
       },
@@ -334,10 +315,39 @@ export const asyncRouterMap = [
         meta: {
           // perms: [],
           title: '智能画册',
-          icon: 'picture',
           noCache: true
         }
-      }
+      },
+      {
+        path: 'goodsTag',
+        component: () => import('@/views/goods/goodsTag/index'),
+        name: 'GoodsTag',
+        meta: {
+          // perms: [],
+          title: '大类标签',
+          noCache: true
+        }
+      },
+      {
+        path: 'goodsStyle',
+        component: () => import('@/views/goods/goodsStyle/index'),
+        name: 'GoodsStyle',
+        meta: {
+          // perms: [],
+          title: '商品风格',
+          noCache: true
+        }
+      },
+      {
+        path: 'comment',
+        component: () => import('@/views/goods/comment/index'),
+        name: 'CommentList',
+        meta: {
+          perms: ['POST /admin/comment/delete', 'GET /admin/comment/list'],
+          title: '商品评论',
+          noCache: true
+        }
+      },
     ]
   },
   {

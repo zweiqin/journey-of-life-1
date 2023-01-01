@@ -55,7 +55,7 @@
 </template>
 
 <script>
-import { listComment, deleteComment } from '@/api/business/comment'
+import { commentList, commentDelete } from '@/api/business/comment'
 import { replyComment } from '@/api/business/order'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
 
@@ -89,7 +89,7 @@ export default {
   methods: {
     getList() {
       this.listLoading = true
-      listComment(this.listQuery).then(response => {
+      commentList(this.listQuery).then(response => {
         this.list = response.data.items
         this.total = response.data.total
         this.listLoading = false
@@ -122,7 +122,7 @@ export default {
       })
     },
     handleDelete(row) {
-      deleteComment(row).then(response => {
+      commentDelete(row).then(response => {
         this.$notify({
           title: '成功',
           message: '删除成功',
