@@ -12,7 +12,7 @@
         @clear="getList"
       />
       <el-button
-        v-permission="[`GET ${api.commentList}`]"
+        v-permission="[`GET /admin${api.commentList}`]"
         size="mini"
         class="filter-item"
         type="primary"
@@ -27,12 +27,18 @@
       <el-table
         height="100%"
         v-loading="listLoading"
+        element-loading-text="正在查询中。。。"
         :data="list"
         v-bind="$tableCommonOptions"
       >
 
         <el-table-column align="center" width="50" label="ID" prop="id" fixed="left" />
-        <el-table-column align="center" min-width="150" label="评论内容" prop="content" show-overflow-tooltip />
+        <el-table-column align="center" width="150" label="评论类型" prop="type">
+          <template slot-scope="{row}">
+            {{ typeFilterFn(row.type) }}
+          </template>
+        </el-table-column>
+        <el-table-column align="center" min-width="200" label="评论内容" prop="content" show-overflow-tooltip />
         
         <el-table-column align="center" width="100" label="用户头像" prop="userImg">
           <template slot-scope="{row}">
@@ -75,13 +81,13 @@
           <template slot-scope="{row}">
             <el-button
               v-if="typeFilterFn(row.type)"
-              v-permission="[`POST ${api.commentBrandReply}`]"
+              v-permission="[`POST /admin${api.commentBrandReply}`]"
               type="primary"
               size="mini"
               @click="handleAddComment(row)"
             >添加{{ typeFilterFn(row.type) }}</el-button>
             <el-button
-              v-permission="[`POST ${api.commentDelete}`]"
+              v-permission="[`POST /admin${api.commentDelete}`]"
               type="danger"
               size="mini"
               @click="handleDelete(row)"
@@ -92,7 +98,6 @@
     </div>
 
     <pagination
-      v-show="total>0"
       :total="total"
       :page.sync="listQuery.page"
       :limit.sync="listQuery.size"

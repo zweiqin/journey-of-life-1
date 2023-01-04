@@ -85,7 +85,6 @@ export default {
     async saveRequest() {
       const res = await commentBrandReply({
         ...this.formData,
-        type: undefined,
         picUrls: Array.isArray(this.formData.picUrls) ? this.formData.picUrls.map(v => v.resData) : [],
       })
       this.$elMessage('添加成功!')

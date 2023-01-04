@@ -424,7 +424,12 @@
 import dayjs from 'dayjs'
 import MyUpload from '@/components/MyUpload'
 import Editor from '@tinymce/tinymce-vue'
-import { goodsCreate, goodsCatAndBrand, goodsProductPlaceList } from '@/api/business/goods'
+import {
+  goodsUpdate,
+  goodsCatAndBrand,
+  goodsProductPlaceList,
+  goodsDetail
+} from '@/api/business/goods'
 import { createStorage } from '@/api/business/storage'
 import { MessageBox } from 'element-ui'
 import { getToken } from '@/utils/auth'
@@ -435,7 +440,7 @@ import { regZero, regFloat } from '@/utils/reg'
 import XeUtils from 'xe-utils'
 
 export default {
-  name: 'GoodsCreate',
+  name: 'GoodsEdit',
   components: {
     MyUpload,
     Editor
@@ -443,13 +448,8 @@ export default {
   data () {
     return {
       goodTypeList: [
-        {
-          value: 1,
-          label: '家具'
-        }, {
-          value: 2,
-          label: '材料'
-        }
+        { value: 1, label: '家具' }, 
+        { value: 2, label: '材料' }
       ],
       goodsStyleList: [],
       goodsTagList: [],
@@ -657,6 +657,9 @@ export default {
       this.getGoodsTagList()
       this.getGoodsProductPlaceList()
       this.getcategoryList()
+      const { id } = this.$route.query
+      this.formData.id = id
+      this.getInfo()
     },
     // 品类列表
     async getcategoryList() {
@@ -684,7 +687,24 @@ export default {
     async getGoodsProductPlaceList() {
       const res = await goodsProductPlaceList()
       this.goodsProductPlaceList = res.data.data
-      console.log('goodsProductPlaceList', res)
+    },
+    async getInfo() {
+      const res = await goodsDetail({ id: this.formData.id })
+      console.log('r', res)
+      const { goods, categoryIds, specifications, products, attributes } = res.data
+      this.formData = {
+        ...goods,
+        keywords: goods.keywords.split(','),
+        gallery: goods.gallery,
+        is_deliveryDay: +goods.deliveryDay === 0 ? true : false,
+        deliveryDay: +goods.deliveryDay === 0 ? '' : goods.deliveryDay,
+        timeType: goods.endTime ? 1 : 0,
+        category_arr: categoryIds
+      }
+      console.log('formData', this.formData)
+      this.specifications = specifications
+      this.products = products
+      this.attributes = attributes
     },
     handleCancel: function () {
       if (this.$route.query.lastRouter === 'brandListShow') {
@@ -723,7 +743,7 @@ export default {
         products: this.products,
         attributes: this.attributes
       }
-      goodsCreate(finalGoods).then(response => {
+      goodsUpdate(finalGoods).then(response => {
         this.$elMessage('保存成功！')
         if (this.$route.query.lastRouter === 'brandListShow') {
           this.$router.push({ name: 'brandGoodsListShow', query: { id: this.$route.query.brandId } })
@@ -852,6 +872,9 @@ export default {
     handleProductShow (row) {
       this.productForm = Object.assign({}, row)
       this.productVisiable = true
+    },
+    uploadProductUrl: function (response) {
+      this.productForm.url = response.data.url
     },
     async handleProductEdit () {
       await this.$validatorForm('productForm')

@@ -1,41 +1,54 @@
 import request from '@/utils/request'
 
-export function listKeyword(query) {
+export const api = {
+  keywordList: '/keyword/list',
+  keywordRead: '/keyword/read',
+  keywordCreate: '/keyword/create',
+  keywordUpdate: '/keyword/update',
+  keywordDelete: '/keyword/delete',
+}
+
+// 关键词列表
+export function keywordList(params) {
   return request({
-    url: '/keyword/list',
-    method: 'get',
-    params: query
+    url: api.keywordList,
+    method: 'GET',
+    params
   })
 }
 
-export function createKeyword(data) {
+// 关键词详情
+export function keywordRead(params) {
   return request({
-    url: '/keyword/create',
-    method: 'post',
+    url: api.keywordRead,
+    method: 'GET',
+    params
+  })
+}
+
+// 添加关键词
+export function keywordCreate(data) {
+  return request({
+    url: api.keywordCreate,
+    method: 'POST',
     data
   })
 }
 
-export function readKeyword(data) {
+// 编辑关键词
+export function keywordUpdate(data) {
   return request({
-    url: '/keyword/read',
-    method: 'get',
+    url: api.keywordUpdate,
+    method: 'POST',
     data
   })
 }
 
-export function updateKeyword(data) {
+// 删除关键词
+export function keywordDelete(data) {
   return request({
-    url: '/keyword/update',
-    method: 'post',
-    data
-  })
-}
-
-export function deleteKeyword(data) {
-  return request({
-    url: '/keyword/delete',
-    method: 'post',
+    url: api.keywordDelete,
+    method: 'POST',
     data
   })
 }

@@ -12,7 +12,7 @@
         @clear="getList"
       />
       <el-button
-        v-permission="[`GET ${api.goodsStyleList}`]"
+        v-permission="[`GET /admin${api.goodsStyleList}`]"
         size="mini"
         class="filter-item"
         type="primary"
@@ -21,7 +21,7 @@
         @click="handleFilter"
       >查找</el-button>
       <el-button
-        v-permission="[`POST ${api.goodsTagCreate}`]"
+        v-permission="[`POST /admin${api.goodsTagCreate}`]"
         size="mini"
         class="filter-item"
         type="primary"
@@ -35,6 +35,7 @@
       <el-table
         height="100%"
         v-loading="listLoading"
+        element-loading-text="正在查询中。。。"
         :data="list"
         v-bind="$tableCommonOptions"
       >
@@ -52,13 +53,13 @@
         >
           <template slot-scope="{row}">
             <el-button
-              v-permission="[`POST ${api.msgsayUpdateSay}`]"
+              v-permission="[`POST /admin${api.msgsayUpdateSay}`]"
               type="primary"
               size="mini"
               @click="handleUpdate(row)"
             >编辑</el-button>
             <el-button
-              v-permission="[`POST ${api.goodsStyleUpdate}`]"
+              v-permission="[`POST /admin${api.goodsStyleUpdate}`]"
               type="danger"
               size="mini"
               @click="handleDelete(row)"
@@ -69,7 +70,6 @@
     </div>
 
     <pagination
-      v-show="total>0"
       :total="total"
       :page.sync="listQuery.page"
       :limit.sync="listQuery.size"

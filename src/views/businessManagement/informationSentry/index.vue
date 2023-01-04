@@ -51,6 +51,7 @@
       <el-table
         height="100%"
         v-loading="listLoading"
+        element-loading-text="正在查询中。。。"
         :data="list"
         v-bind="$tableCommonOptions"
       >
@@ -149,7 +150,6 @@
     </div>
 
     <pagination
-      v-show="total>0"
       :total="total"
       :page.sync="listQuery.page"
       :limit.sync="listQuery.size"

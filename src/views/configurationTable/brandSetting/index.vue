@@ -313,7 +313,7 @@
 </style>
 
 <script>
-import { listBrand, listCatAndAdmin, updateBrand } from '@/api/business/brand'
+import { brandList, brandCatAndAdmin, brandUpdate } from '@/api/business/brand'
 import { listGet } from '@/api/configurationTable/storeStyle'
 import { listStoreType } from '@/api/configurationTable/storeType'
 import { uploadPath } from '@/api/business/storage'
@@ -411,7 +411,7 @@ export default {
         .catch()
     },
     init () {
-      listCatAndAdmin().then(response => {
+      brandCatAndAdmin().then(response => {
         this.categoryList = response.data.categoryList
         this.adminList = response.data.adminList
         // 获取门店类型
@@ -424,7 +424,7 @@ export default {
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
       })
-      listBrand(this.listQuery)
+      brandList(this.listQuery)
         .then(response => {
           this.dataForm = response.data.items[0]
         })
@@ -453,7 +453,7 @@ export default {
     handleEdit () {
       this.$refs['dataForm'].validate(valid => {
         if (valid) {
-          updateBrand(this.dataForm)
+          brandUpdate(this.dataForm)
             .then(() => {
               this.getList()
               this.$notify.success({

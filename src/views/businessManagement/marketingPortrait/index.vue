@@ -68,7 +68,7 @@
 import { getToken } from '@/utils/auth';
 import { getUserInfo } from '@/api/login';
 import { statisticalHome } from '@/api/businessManagement/marketingPortrait';
-import XEUtils from 'xe-utils'
+import XeUtils from 'xe-utils'
 import { commafyFn } from '@/utils'
 import LineBarChart from '@/components/LineBarChart'
 import { initChartOption, defaultPieSeries } from './utils'
@@ -81,7 +81,7 @@ export default {
   },
   filters: {
     radioFilter(v) {
-      return v ? XEUtils.round(v * 100, 2) + '%' : '0%'
+      return v ? XeUtils.round(v * 100, 2) + '%' : '0%'
     },
     numberFilter(v) {
       return commafyFn(v)
@@ -131,12 +131,12 @@ export default {
       this.chartOption1 = this.initChart('性别比例', Object.keys(genderObj).map(key => ({
         key,
         name: genderObj[key],
-        value: res.data[key] ? XEUtils.round(res.data[key] * 100, 2) : 0
+        value: res.data[key] ? XeUtils.round(res.data[key] * 100, 2) : 0
       })))
       this.chartOption2 = this.initChart('用户分析', Object.keys(consumeObj).map(key => ({
         key,
         name: consumeObj[key],
-        value: res.data.statusCount[key] ? XEUtils.round(res.data.statusCount[key] * 100, 2) : 0
+        value: res.data.statusCount[key] ? XeUtils.round(res.data.statusCount[key] * 100, 2) : 0
       })))
     },
     initChart(name, data) {

@@ -4,30 +4,23 @@
     <!-- 查询和其他操作 -->
     <div class="filter-container">
       <el-input
-        v-model="listQuery.msgSay"
+        v-model="listQuery.keyword"
         clearable
         class="filter-item"
         style="width: 200px;"
-        placeholder="请输入话术"
+        placeholder="输入关键字"
         @clear="getList"
       />
-      <el-select
-        v-model="listQuery.msgSayType"
+      <el-input
+        v-model="listQuery.url"
         clearable
         class="filter-item"
         style="width: 200px;"
-        placeholder="请选择话术类型"
+        placeholder="输入链接"
         @clear="getList"
-      >
-        <el-option
-          v-for="item in msgSayTypeList"
-          :key="item.code"
-          :label="item.name"
-          :value="item.code"
-        />
-      </el-select>
+      />
       <el-button
-        v-permission="[`GET ${api.msgsayMsgSayList}`]"
+        v-permission="[`GET /admin${api.keywordList}`]"
         size="mini"
         class="filter-item"
         type="primary"
@@ -35,7 +28,7 @@
         @click="handleFilter"
       >查找</el-button>
       <el-button
-        v-permission="[`POST ${api.msgsaySaveMsgSay}`]"
+        v-permission="[`POST /admin${api.keywordCreate}`]"
         size="mini"
         class="filter-item"
         type="primary"
@@ -55,29 +48,43 @@
       >
 
         <el-table-column align="center" width="50" label="ID" prop="id" fixed="left" />
-        <el-table-column align="center" min-width="150" label="话术内容" prop="say" show-overflow-tooltip />
-        <el-table-column align="center" width="150" label="话术类型" prop="userGender">
+        <el-table-column align="center" min-width="100" label="关键字" prop="keyword" fixed="left" />
+        <el-table-column align="center" min-width="150" label="跳转链接" prop="url">
           <template slot-scope="{row}">
-            <span>{{ row.type | typeFilter(msgSayTypeList) }}</span>
+            <a :href="row.url" target="_blank">{{ row.url }}</a>
           </template>
         </el-table-column>
-        <el-table-column align="center" width="150" label="创建时间" prop="createTime" />
+        <el-table-column align="center" width="100" label="是否推荐" prop="isHot">
+          <template slot-scope="{row}">
+            <el-tag v-if="row.isHot" type="success" effect="plain">是</el-tag>
+            <el-tag v-else type="danger" effect="plain">否</el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column align="center" width="100" label="是否默认" prop="isDefault">
+          <template slot-scope="{row}">
+            <el-tag v-if="row.isDefault" type="success" effect="plain">是</el-tag>
+            <el-tag v-else type="danger" effect="plain">否</el-tag>
+          </template>
+        </el-table-column>
+      
+        <el-table-column align="center" width="150" label="创建时间" prop="addTime" />
         <el-table-column align="center" width="150" label="更新时间" prop="updateTime" />
         <el-table-column
+          align="center"
           label="操作"
-          width="150"
+          width="120"
           fixed="right"
           class-name="small-padding fixed-width"
         >
           <template slot-scope="{row}">
             <el-button
-              v-permission="[`PUT ${api.msgsayUpdateSay}`]"
+              v-permission="[`POST /admin${api.issueUpdate}`]"
               type="primary"
               size="mini"
               @click="handleUpdate(row)"
             >编辑</el-button>
             <el-button
-              v-permission="[`DELETE ${api.msgsayDeleteById}`]"
+              v-permission="[`POST /admin${api.keywordDelete}`]"
               type="danger"
               size="mini"
               @click="handleDelete(row)"
@@ -95,32 +102,33 @@
     />
 
     <!-- 新增编辑 -->
-    <EditModal ref="EditModal" :list="msgSayTypeList" @success="getList" />
+    <EditModal ref="EditModal" @success="getList" />
   </div>
 </template>
 
 <script>
 import {
   api,
-  msgsayMsgSayTypeList,
-  msgsayMsgSayList,
-  msgsayDeleteById,
-} from '@/api/businessManagement/scriptSetting';
+  keywordList,
+  keywordDelete,
+  issueChangeEnable,
+} from '@/api/business/keyword';
 import { getToken } from '@/utils/auth';
 import { getUserInfo } from '@/api/login';
 import Pagination from '@/components/Pagination'; // Secondary package based on el-pagination
 import EditModal from './components/EditModal'
+import { goodsCatAndBrand } from '@/api/business/goods'
 
 export default {
-  name: 'scriptSetting',
+  name: 'Issue',
   components: {
     Pagination,
     EditModal,
   },
   filters: {
     typeFilter(val, list = []) {
-      const obj = list.find(item => item.code === +val)
-      return obj ? obj.name : '--'
+      const obj = list.find(item => +item.code === +val)
+      return obj ? obj.value : '--'
     }
   },
   data() {
@@ -132,10 +140,9 @@ export default {
       listQuery: {
         page: 1,
         size: 20,
-        msgSay: '',
-        msgSayType: undefined
+        keyword: '',
+        url: '',
       },
-      msgSayTypeList: []
     };
   },
   computed: {
@@ -146,14 +153,9 @@ export default {
     }
   },
   created() {
-    this.getMsgSayTypeList();
     this.getRoles();
   },
   methods: {
-    async getMsgSayTypeList() {
-      const res = await msgsayMsgSayTypeList()
-      this.msgSayTypeList = res.data
-    },
     getRoles() {
       getUserInfo(getToken())
         .then(response => {
@@ -163,7 +165,7 @@ export default {
     },
     getList() {
       this.listLoading = true;
-      msgsayMsgSayList(this.listQuery)
+      keywordList(this.listQuery)
         .then(response => {
           this.list = response.data.items;
           this.total = response.data.total;
@@ -179,15 +181,22 @@ export default {
       this.listQuery.page = 1;
       this.getList();
     },
-    async handleUpdate({ id, say, type }) {
-      this.$refs.EditModal && this.$refs.EditModal.handleOpen({ id, say, type })
+    async handleUpdate({ id, keyword, url, isHot, isDefault }) {
+      this.$refs.EditModal && this.$refs.EditModal.handleOpen({ id, keyword, url, isHot, isDefault })
     },
     async handleDelete({ id }) {
       await this.$elConfirm('确认删除?')
-      await msgsayDeleteById({ id })
+      await keywordDelete({ id })
       this.$elMessage('删除成功!')
       this.handleFilter()
     }
   }
 };
 </script>
+
+<style lang="scss" scoped>
+a {
+  color: #1890ff;
+  text-decoration: underline;
+}
+</style>

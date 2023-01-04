@@ -1,7 +1,7 @@
 /**
  * Created by jiachenpan on 16/11/18.
  */
-import XEUtils from 'xe-utils'
+import XeUtils from 'xe-utils'
 
 
 export function parseTime(time, cFormat) {
@@ -321,7 +321,7 @@ export const objDeepMerge = (...objs) => {
 export function commafyFn (val, options = {}) {
   let num = parseFloat(val)
   num = isNaN(num) ? 0 : num
-  return XEUtils.commafy(num, {
+  return XeUtils.commafy(num, {
     digits: String.prototype.includes.call(num, '.') ? 2 : 0,
     ...options
   })

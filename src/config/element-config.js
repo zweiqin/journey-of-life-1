@@ -8,7 +8,6 @@ Vue.prototype.$tableCommonOptions = {
   border: true,
   fit: true,
   highlightCurrentRow: true,
-  elementLoadingText: '正在查询中。。。',
 }
 
 Object.keys(tipTools).forEach(key => {

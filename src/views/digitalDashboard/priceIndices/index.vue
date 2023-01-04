@@ -326,7 +326,7 @@ export default {
         .catch()
     },
     init () {
-      // listCatAndAdmin().then(response => {
+      // brandCatAndAdmin().then(response => {
       //   this.categoryList = response.data.categoryList
       //   this.adminList = response.data.adminList
       //   // 获取门店类型

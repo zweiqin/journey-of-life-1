@@ -1,56 +1,75 @@
 import request from '@/utils/request'
 
-export function listBrand (query) {
+
+export const api = {
+  brandList: '/brand/list',
+  brandRead: '/brand/read',
+  brandCreate: '/brand/create',
+  brandUpdate: '/brand/update',
+  brandDelete: '/brand/delete',
+  brandCatAndAdmin: '/brand/catAndAdmin',
+}
+
+// 门店列表
+export function brandList (params) {
   return request({
-    url: '/brand/list',
-    method: 'get',
-    params: query
+    url: api.brandList,
+    method: 'GET',
+    params
   })
 }
 
-export function createBrand (data) {
+// 门店详情
+export function readBrand (params) {
   return request({
-    url: '/brand/create',
-    method: 'post',
+    url: api.brandRead,
+    method: 'GET',
+    params
+  })
+}
+
+// 添加门店
+export function brandCreate (data) {
+  return request({
+    url: api.brandCreate,
+    method: 'POST',
     data
   })
 }
 
-export function readBrand (data) {
+
+// 编辑门店
+export function brandUpdate (data) {
   return request({
-    url: '/brand/read',
-    method: 'get',
+    url: api.brandUpdate,
+    method: 'POST',
     data
   })
 }
 
-export function updateBrand (data) {
+// 删除门店
+export function brandDelete (data) {
   return request({
-    url: '/brand/update',
-    method: 'post',
+    url: api.brandDelete,
+    method: 'POST',
     data
   })
 }
 
-export function deleteBrand (data) {
+// 门店类型+风格
+export function brandCatAndAdmin (params) {
   return request({
-    url: '/brand/delete',
-    method: 'post',
-    data
-  })
-}
-
-export function listCatAndAdmin () {
-  return request({
-    url: '/brand/catAndAdmin',
-    method: 'get'
+    url: api.brandCatAndAdmin,
+    method: 'GET',
+    params
   })
 }
 
 // 获取门店类型
-export function listStoreType () {
+export function listStoreType (params) {
   return request({
     url: '/storeType/list',
-    method: 'get'
+    method: 'GET',
+    params
   })
 }

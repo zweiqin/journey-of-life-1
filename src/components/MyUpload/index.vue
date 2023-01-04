@@ -187,12 +187,22 @@ export default {
           }
         } else {
           if (value.length > 0) {
-            this.fileList = value.map((item, i) => ({
-              uid: item.uid || item.url + i || '',
-              url: item.url || '',
-              name: item.name || item.url || '',
-              resData: item.resData || null
-            }))
+            this.fileList = value.map((item, i) => {
+              if (typeof item === 'string') {
+                return {
+                  uid: item,
+                  url: item,
+                  name: item,
+                  resData: item
+                }
+              }
+              return {
+                uid: item.uid || item.url + i || '',
+                url: item.url || '',
+                name: item.name || item.url || '',
+                resData: item.resData || null
+              }
+            })
           } else {
             this.fileList = []
           }

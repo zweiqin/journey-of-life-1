@@ -336,11 +336,11 @@ export default {
       this.getList()
     },
     handleCreate () {
-      this.$router.push({ name: 'goodsCreate', query: { lastRouter: 'brandListShow', brandId: this.listQuery.brandId } })
+      this.$router.push({ name: 'GoodsCreate', query: { lastRouter: 'brandListShow', brandId: this.listQuery.brandId } })
     },
 
     handleUpdate (row) {
-      this.$router.push({ name: 'goodsEdit', query: { id: row.id, lastRouter: 'brandListShow', brandId: this.listQuery.brandId } })
+      this.$router.push({ name: 'GoodsEdit', query: { id: row.id, lastRouter: 'brandListShow', brandId: this.listQuery.brandId } })
     },
     showDetail (detail) {
       this.goodsDetail = detail

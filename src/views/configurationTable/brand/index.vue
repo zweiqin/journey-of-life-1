@@ -498,7 +498,7 @@
 </style>
 
 <script>
-import { listBrand, createBrand, updateBrand, deleteBrand, listCatAndAdmin } from '@/api/business/brand'
+import { brandList, brandCreate, brandUpdate, brandDelete, brandCatAndAdmin } from '@/api/business/brand'
 import { listGet } from '@/api/configurationTable/storeStyle'
 import { listStoreType } from '@/api/configurationTable/storeType'
 import { uploadPath } from '@/api/business/storage'
@@ -611,7 +611,7 @@ export default {
         .catch()
     },
     init () {
-      listCatAndAdmin().then(response => {
+      brandCatAndAdmin().then(response => {
         this.categoryList = response.data.categoryList
         this.adminList = response.data.adminList
         // 获取门店类型
@@ -638,7 +638,7 @@ export default {
     },
     getList () {
       this.listLoading = true
-      listBrand(this.listQuery)
+      brandList(this.listQuery)
         .then(response => {
           this.list = response.data.items
           this.total = response.data.total
@@ -698,7 +698,7 @@ export default {
     createData () {
       this.$refs['dataForm'].validate(valid => {
         if (valid) {
-          createBrand(this.dataForm)
+          brandCreate(this.dataForm)
             .then(response => {
               // this.list.unshift(response.data)
               this.getList()
@@ -738,7 +738,7 @@ export default {
     updateData () {
       this.$refs['dataForm'].validate(valid => {
         if (valid) {
-          updateBrand(this.dataForm)
+          brandUpdate(this.dataForm)
             .then(() => {
               // for (const v of this.list) {
               //   if (v.id === this.dataForm.id) {
@@ -764,7 +764,7 @@ export default {
       })
     },
     handleDelete (row) {
-      deleteBrand(row)
+      brandDelete(row)
         .then(response => {
           this.$notify.success({
             title: '成功',

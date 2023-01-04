@@ -462,7 +462,7 @@
 </style>
 
 <script>
-import { listBrand, createBrand, updateBrand, deleteBrand, listCatAndAdmin, listStoreType } from '@/api/business/brand'
+import { brandList, brandCreate, brandUpdate, brandDelete, brandCatAndAdmin, listStoreType } from '@/api/business/brand'
 import { uploadPath } from '@/api/business/storage'
 import { getToken } from '@/utils/auth'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
@@ -552,7 +552,7 @@ export default {
   },
   methods: {
     init: function () {
-      listCatAndAdmin().then(response => {
+      brandCatAndAdmin().then(response => {
         this.categoryList = response.data.categoryList
         this.adminList = response.data.adminList
         // 获取门店类型
@@ -570,7 +570,7 @@ export default {
     },
     getList () {
       this.listLoading = true
-      listBrand(this.listQuery)
+      brandList(this.listQuery)
         .then(response => {
           this.list = response.data.items
           this.total = response.data.total
@@ -629,7 +629,7 @@ export default {
     createData () {
       this.$refs['dataForm'].validate(valid => {
         if (valid) {
-          createBrand(this.dataForm)
+          brandCreate(this.dataForm)
             .then(response => {
               this.list.unshift(response.data)
               this.dialogFormVisible = false
@@ -668,7 +668,7 @@ export default {
     updateData () {
       this.$refs['dataForm'].validate(valid => {
         if (valid) {
-          updateBrand(this.dataForm)
+          brandUpdate(this.dataForm)
             .then(() => {
               for (const v of this.list) {
                 if (v.id === this.dataForm.id) {
@@ -693,7 +693,7 @@ export default {
       })
     },
     handleDelete (row) {
-      deleteBrand(row)
+      brandDelete(row)
         .then(response => {
           this.$notify.success({
             title: '成功',

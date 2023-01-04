@@ -151,7 +151,6 @@
     </el-table>
 
     <pagination
-      v-show="total>0"
       :total="total"
       :page.sync="listQuery.page"
       :limit.sync="listQuery.limit"
@@ -352,7 +351,7 @@
 </style>
 
 <script>
-import { listCategory, listCatL1, listCatL2, createCategory, updateCategory, deleteCategory } from '@/api/business/category'
+import { categoryList, categoryL1, categoryL2, categoryCreate, categoryUpdate, categoryDelete } from '@/api/business/category'
 import { uploadPath } from '@/api/business/storage'
 import { getToken } from '@/utils/auth'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
@@ -413,7 +412,7 @@ export default {
   methods: {
     getList () {
       this.listLoading = true
-      listCategory(this.listQuery)
+      categoryList(this.listQuery)
         .then(response => {
           this.list = response.data.items
           this.total = response.data.total
@@ -426,12 +425,12 @@ export default {
         })
     },
     getCatL1 () {
-      listCatL1().then(response => {
+      categoryL1().then(response => {
         this.catL1 = response.data
       })
     },
     getCatL2 (id) {
-      listCatL2({
+      categoryL2({
         parentId: id
       }).then(response => {
         this.catL2 = response.data
@@ -481,7 +480,7 @@ export default {
       this.$refs['dataForm'].validate(valid => {
         if (valid) {
           console.log(this.dataForm)
-          createCategory(this.dataForm)
+          categoryCreate(this.dataForm)
             .then(response => {
               this.list.unshift(response.data)
               // 更新L1L2目录
@@ -513,7 +512,7 @@ export default {
     updateData () {
       this.$refs['dataForm'].validate(valid => {
         if (valid) {
-          updateCategory(this.dataForm)
+          categoryUpdate(this.dataForm)
             .then(() => {
               for (const v of this.list) {
                 if (v.id === this.dataForm.id) {
@@ -540,7 +539,7 @@ export default {
       })
     },
     handleDelete (row) {
-      deleteCategory(row)
+      categoryDelete(row)
         .then(response => {
           // 更新L1目录
           this.getCatL1()
