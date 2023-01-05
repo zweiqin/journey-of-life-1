@@ -8,6 +8,7 @@
           :rules="formRules"
           :model="formData"
           size="mini"
+          label-suffix=":"
           label-width="150px"
         >
           <el-form-item label="商品编号" prop="goodsSn">
@@ -67,6 +68,9 @@
               :options="categoryList"
               expand-trigger="hover"
             />
+          </el-form-item>
+          <el-form-item label="类目名">
+            <span v-if="!!formData.category_arr.length">{{ getCategoryItem() && getCategoryItem().label }}</span>
           </el-form-item>
 
           <el-form-item label="零售价格" prop="counterPrice">
@@ -692,11 +696,14 @@ export default {
         this.$router.push({ name: 'GoodsList' })
       }
     },
-    async handleSubmit() {
-      await this.$validatorForm('formData')
-      this.handlePublish()
+    getCategoryItem() {
+      const { category_arr } = this.formData
+      const select_categoryId = category_arr[category_arr.length - 1]
+      const categoryItem = XeUtils.findTree(this.categoryList, item => item.value === select_categoryId)
+      return categoryItem ? categoryItem.item : {}
     },
-    handlePublish () {
+    async handleSubmit () {
+      await this.$validatorForm('formData')
       const {
         keywords,
         gallery,
@@ -712,9 +719,8 @@ export default {
         category_arr,
         ...opts
       } = this.formData
-      const select_categoryId = category_arr[category_arr.length - 1]
-      const categoryItem = XeUtils.findTree(this.categoryList, item => item.value === select_categoryId)
-      if (!categoryItem) {
+      const categoryItem = this.getCategoryItem()
+      if (!categoryItem.value) {
         this.formData.category_arr = []
         this.$elMessage('品类有误，请重新选择!', 'warning')
         return
@@ -735,8 +741,8 @@ export default {
           endTime: '',
           limitDays: '',
         }), {
-          categoryId: categoryItem.item.value,
-          categoryName: categoryItem.item.label,
+          categoryId: categoryItem.value,
+          categoryName: categoryItem.label,
         }),
         specifications: this.specifications,
         products: this.products,
