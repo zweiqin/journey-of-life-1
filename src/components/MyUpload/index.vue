@@ -83,7 +83,7 @@ export default {
     // 限制文件类型（上传窗口）
     accept: {
       type: String,
-      default: '*'
+      default: 'image/*'
     },
     // 上传数量
     limit: {

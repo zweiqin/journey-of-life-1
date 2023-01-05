@@ -51,6 +51,15 @@
   left: 0;
   position: relative;
   margin: 0 auto;
+  margin-top: 5vh !important;
+  // 下面为增加dialog滚动条
+  max-height: calc(100% - 180px);
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+  >.el-dialog__body {
+    overflow-y: auto;
+  }
 }
 
 // refine element ui upload

@@ -38,6 +38,15 @@
   left: 0;
   position: relative;
   margin: 0 auto;
+  margin-top: 5vh !important;
+  max-height: calc(100% - 180px);
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+}
+
+.el-dialog > .el-dialog__body {
+  overflow-y: auto;
 }
 
 .upload-container .el-upload {

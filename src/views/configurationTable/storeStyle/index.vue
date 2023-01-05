@@ -210,7 +210,7 @@
 </style>
 
 <script>
-import { listAdd, listDelete, listGet, listEdit } from '@/api/configurationTable/storeStyle'
+import { brandStyleCreate, brandStyleDelete, brandStyleList, brandStyleUpdate } from '@/api/business/brandStyle'
 import { uploadPath } from '@/api/business/storage'
 import { getToken } from '@/utils/auth'
 import Pagination from '@/components/Pagination'
@@ -268,7 +268,7 @@ export default {
   methods: {
     getList () {
       this.listLoading = true
-      listGet(this.listQuery)
+      brandStyleList(this.listQuery)
         .then(response => {
           this.list = response.data.items
           this.total = response.data.total
@@ -303,7 +303,7 @@ export default {
     createData () {
       this.$refs['dataForm'].validate(valid => {
         if (valid) {
-          listAdd(this.dataForm)
+          brandStyleCreate(this.dataForm)
             .then(() => {
               this.getList()
               this.dialogFormVisible = false
@@ -332,7 +332,7 @@ export default {
     updateData () {
       this.$refs['dataForm'].validate(valid => {
         if (valid) {
-          listEdit(this.dataForm)
+          brandStyleUpdate(this.dataForm)
             .then(() => {
               this.dialogFormVisible = false
               this.$notify.success({
@@ -351,7 +351,7 @@ export default {
       })
     },
     handleDelete (row) {
-      listDelete(row)
+      brandStyleDelete(row)
         .then(() => {
           this.$notify.success({
             title: '成功',

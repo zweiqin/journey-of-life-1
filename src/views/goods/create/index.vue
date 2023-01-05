@@ -14,24 +14,8 @@
             <el-input v-model="formData.goodsSn" placeholder="商品编号，不填则自动生成" maxlength="30" show-word-limit />
           </el-form-item>
 
-          <el-form-item label="商品类型" prop="goodsType">
-            <el-select
-              v-model="formData.goodsType"
-              class="filter-item"
-              clearable
-              placeholder="请选择商品类型"
-            >
-              <el-option
-                v-for="item in goodTypeList"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              />
-            </el-select>
-          </el-form-item>
-
-          <el-form-item label="商品名称" prop="name">
-            <el-input v-model="formData.name" placeholder="请输入商品名称" maxlength="30" show-word-limit />
+          <el-form-item label="商品描述" prop="name">
+            <el-input v-model="formData.name" placeholder="请输入商品描述" maxlength="30" show-word-limit />
           </el-form-item>
 
           <el-form-item label="商品简介" prop="brief">
@@ -108,6 +92,37 @@
               <el-radio :label="2">售罄</el-radio>
             </el-radio-group>
           </el-form-item>
+
+          
+          <!-- 预售时间 -->
+          <template v-if="formData.saleType == 1">
+            <el-form-item label="开售时间" prop="startTime">
+              <el-date-picker
+                v-model="formData.startTime"
+                type="date"
+                value-format="yyyy-MM-dd HH:mm:ss"
+                placeholder="选择开售时间"
+              />
+            </el-form-item>
+            <el-form-item label="时间限制" prop="timeType">
+              <el-radio-group v-model="formData.timeType">
+                <el-radio :label="0">结束天数</el-radio>
+                <el-radio :label="1">结束时间</el-radio>
+              </el-radio-group>
+            </el-form-item>
+            <el-form-item v-if="formData.timeType==0" label="开售时间开始" prop="limitDays">
+              <el-input v-model="formData.limitDays" clearable placeholder="请输入" style="width:100px" /> 天结束
+            </el-form-item>
+            <el-form-item v-if="formData.timeType==1" label="结束时间" prop="endTime">
+              <el-date-picker
+                v-model="formData.endTime"
+                type="date"
+                value-format="yyyy-MM-dd HH:mm:ss"
+                placeholder="选择结束时间"
+              />
+            </el-form-item>
+          </template>
+
           <el-form-item label="产品标签" prop="productTag">
             <el-radio-group v-model="formData.productTag">
               <el-radio :label="0">常规</el-radio>
@@ -121,7 +136,7 @@
             <el-form-item label="商品状态" prop="is_deliveryDay">
               <el-radio-group v-model="formData.is_deliveryDay">
                 <el-radio :label="true">现货</el-radio>
-                <el-radio :label="false">预售</el-radio>
+                <el-radio :label="false">其它</el-radio>
               </el-radio-group>
             </el-form-item>
             <el-form-item v-if="!formData.is_deliveryDay" label-width="10px" prop="deliveryDay">
@@ -169,36 +184,8 @@
               />
             </el-select>
           </el-form-item>
-          <el-form-item label="供货单位" prop="commpany">
-            <el-input v-model="formData.commpany" clearable placeholder="请输入供货单位" />
-          </el-form-item>
           <el-form-item label="商品排序" prop="sortOrder">
             <el-input v-model="formData.sortOrder" clearable placeholder="请输入商品排序" />
-          </el-form-item>
-          <el-form-item label="开售时间" prop="startTime">
-            <el-date-picker
-              v-model="formData.startTime"
-              type="date"
-              value-format="yyyy-MM-dd HH:mm:ss"
-              placeholder="选择开售时间"
-            />
-          </el-form-item>
-          <el-form-item label="时间限制" prop="timeType">
-            <el-radio-group v-model="formData.timeType">
-              <el-radio :label="0">结束天数</el-radio>
-              <el-radio :label="1">结束时间</el-radio>
-            </el-radio-group>
-          </el-form-item>
-          <el-form-item v-if="formData.timeType==0" label="开售时间开始" prop="limitDays">
-            <el-input v-model="formData.limitDays" clearable placeholder="请输入" style="width:100px" /> 天结束
-          </el-form-item>
-          <el-form-item v-if="formData.timeType==1" label="结束时间" prop="endTime">
-            <el-date-picker
-              v-model="formData.endTime"
-              type="date"
-              value-format="yyyy-MM-dd HH:mm:ss"
-              placeholder="选择结束时间"
-            />
           </el-form-item>
 
           <el-form-item label="商品详情" prop="detail">
@@ -469,7 +456,6 @@ export default {
       formData: {
         id: '',
         goodsSn: '',
-        goodsType: '',
         name: '',
         brief: '',
         unit: '',
@@ -490,7 +476,6 @@ export default {
         styleId: '',
         tagId: '',
         productPlace: '',
-        commpany: '',
         sortOrder: '100',
         startTime: dayjs().startOf('day').format('YYYY-MM-DD HH:mm:ss'),
         timeType: 0,
@@ -499,11 +484,8 @@ export default {
         detail: '',
       },
       formRules: {
-        goodsType: [
-          { required: true, message: '请选择商品类型' }
-        ],
         name: [
-          { required: true, message: '请输入商品名称' }
+          { required: true, message: '请输入商品描述' }
         ],
         brief: [
           { required: true, message: '请输入商品简介' }
@@ -555,9 +537,6 @@ export default {
         ],
         productPlace: [
           { required: true, message: '请选择商品产地' }
-        ],
-        commpany: [
-          { required: true, message: '请输入供货单位' }
         ],
         sortOrder: [
           { required: true, message: '请输入商品排序' }
@@ -672,7 +651,10 @@ export default {
     },
     // 商品风格
     async getGoodsStyleList() {
-      const res = await goodsStyleList()
+      const res = await goodsStyleList({
+        page: 1,
+        limit: 9999
+      })
       this.goodsStyleList = res.data.items
     },
     // 商品标签
@@ -698,7 +680,21 @@ export default {
       this.handlePublish()
     },
     handlePublish () {
-      const { keywords, gallery, is_deliveryDay, deliveryDay, timeType, limitDays, endTime, category_arr, ...opts } = this.formData
+       const {
+        keywords,
+        gallery,
+        is_deliveryDay,
+        deliveryDay,
+        // 预售
+        saleType,
+        timeType,
+        startTime,
+        endTime,
+        limitDays,
+        // 品类
+        category_arr,
+        ...opts
+      } = this.formData
       const select_categoryId = category_arr[category_arr.length - 1]
       const categoryItem = XeUtils.findTree(this.categoryList, item => item.value === select_categoryId)
       if (!categoryItem) {
@@ -707,18 +703,24 @@ export default {
         return
       }
       const finalGoods = {
-        goods: {
-          ...opts,
+       goods: Object.assign({}, opts, {
           keywords: keywords.toString(),
           gallery: Array.isArray(gallery) ? gallery.map(v => v.resData || v) : [],
-          is_deliveryDay: is_deliveryDay ? '0' : deliveryDay,
-          limitDays: timeType === 0 ? limitDays : '',
+          deliveryDay: is_deliveryDay ? '0' : deliveryDay,
+        }, (saleType == 1 ? {
+          timeType,
+          startTime,
           endTime: timeType === 1 ? endTime : '',
+          limitDays: timeType === 0 ? limitDays : '',
+        } : {
+          timeType: '',
+          startTime: '',
+          endTime: '',
+          limitDays: '',
+        }), {
           categoryId: categoryItem.item.value,
-          categoryName	: categoryItem.item.label,
-          is_deliveryDay: undefined,
-          category_arr: undefined,
-        },
+          categoryName: categoryItem.item.label,
+        }),
         specifications: this.specifications,
         products: this.products,
         attributes: this.attributes
@@ -882,7 +884,6 @@ export default {
   }
 }
 </script>
-
 
 <style lang="scss" scoped>
 .el-input, 

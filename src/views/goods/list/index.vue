@@ -17,22 +17,34 @@
         size="mini"
         class="filter-item"
         style="width: 200px;"
-        placeholder="请输入商品名称"
+        placeholder="请输入商品描述"
       />
       <el-select
-        v-model="listQuery.goodType"
+        v-model="listQuery.styleId"
+        clearable
         size="mini"
         class="filter-item"
-        clearable
-        placeholder="请选择商品类型"
+        style="width: 200px;"
+        placeholder="选择商品风格"
       >
         <el-option
-          v-for="item in goodTypeList"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value"
+          v-for="item in goodsStyleList"
+          :key="item.id"
+          :label="item.value"
+          :value="item.id"
         />
       </el-select>
+      <el-cascader
+        v-model="listQuery.category_arr"
+        placeholder="请选择商品类型"
+        :options="categoryList"
+        :props="{ checkStrictly: true }"
+        expand-trigger="hover"
+        clearable
+        size="mini"
+        class="filter-item"
+        style="width: 200px;"
+      />
       <el-button
         v-permission="[`GET /admin${api.goodsList}`]"
         size="mini"
@@ -70,12 +82,7 @@
       >
         <el-table-column align="center" width="100" label="商品编号" prop="goodsSn" fixed="left" />
         <el-table-column align="center" width="150" label="品类名称" prop="categoryName" fixed="left" show-overflow-tooltip />
-        <el-table-column align="center" min-width="200" label="商品名称" prop="name" fixed="left" show-overflow-tooltip />
-        <el-table-column align="center" width="80" label="商品类型" prop="goodsType" >
-          <template slot-scope="{row}">
-            {{ typeFilterFn(row.goodsType, goodTypeList) }}
-          </template>
-        </el-table-column>
+        <el-table-column align="center" min-width="200" label="商品描述" prop="name" fixed="left" show-overflow-tooltip />
         <el-table-column align="center" width="80" prop="picUrl" label="商品图片" >
           <template slot-scope="{row}">
             <img :src="row.picUrl" width="40" />
@@ -141,7 +148,7 @@
         <el-table-column align="center" width="150" label="创建时间" prop="addTime" show-overflow-tooltip />
         <el-table-column align="center" width="150" label="更新时间" prop="updateTime" show-overflow-tooltip />
 
-        <el-table-column align="center" label="审批状态" prop="approveStatus">
+        <!-- <el-table-column align="center" label="审批状态" prop="approveStatus">
           <template slot-scope="{row}">
             <el-tag v-if="row.approveStatus==0" effect="plain">待审批</el-tag>
             <el-tag v-else-if="row.approveStatus==1" effect="plain" type="success">审批通过</el-tag>
@@ -154,7 +161,7 @@
           <template slot-scope="{row}">
             <span>{{ row.brokerageType | brokerageTypeFilter }}</span>
           </template>
-        </el-table-column>
+        </el-table-column> -->
 
         <el-table-column
           align="center"
@@ -212,6 +219,8 @@ import {
   goodsDelete,
   goodsUpOnSale
 } from '@/api/business/goods'
+import { goodsStyleList } from '@/api/business/goodsStyle'
+import { categoryTreeList } from '@/api/business/category'
 import { getUserInfo } from '@/api/login'
 import { getToken } from '@/utils/auth'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
@@ -240,34 +249,28 @@ export default {
   data () {
     return {
       api,
-      goodTypeList: [
-        {
-          value: 1,
-          label: '家具'
-        }, {
-          value: 2,
-          label: '材料'
-        }
-      ],
       list: [],
       total: 0,
       listLoading: true,
       listQuery: {
         page: 1,
         limit: 20,
-        goodsSn: undefined,
-        name: undefined,
-        goodType: undefined,
-        cateId: undefined,
+        goodsSn: '',
+        name: '',
+        styleId: '',
+        category_arr: [],
         sort: 'add_time',
         order: 'desc'
       },
+      goodsStyleList: [], // 商品风格
+      categoryList: [], // 商品类目-树结构
       downloadLoading: false
     }
   },
   created () {
     this.getRoles()
-    // this.getList()
+    this.getCategoryTreeList()
+    this.getGoodsStyleList()
   },
   methods: {
     getRoles () {
@@ -283,7 +286,13 @@ export default {
     },
     getList () {
       this.listLoading = true
-      goodsList(this.listQuery).then(response => {
+      const { category_arr, ...other } = this.listQuery
+      const cateId = Array.isArray(category_arr) && category_arr.length ? category_arr[category_arr.length - 1] : ''
+      const params = {
+        ...other,
+        cateId
+      }
+      goodsList(params).then(response => {
         this.list = response.data.items
         this.total = response.data.total
         this.listLoading = false
@@ -292,6 +301,19 @@ export default {
         this.total = 0
         this.listLoading = false
       })
+    },
+    // 商品风格
+    async getGoodsStyleList() {
+      const res = await goodsStyleList({
+        page: 1,
+        limit: 9999
+      })
+      this.goodsStyleList = res.data.items
+    },
+    // 商品类目
+    async getCategoryTreeList() {
+      const res = await categoryTreeList()
+      this.categoryList = res.data.items
     },
     handleFilter () {
       this.listQuery.page = 1

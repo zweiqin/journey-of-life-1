@@ -499,7 +499,7 @@
 
 <script>
 import { brandList, brandCreate, brandUpdate, brandDelete, brandCatAndAdmin } from '@/api/business/brand'
-import { listGet } from '@/api/configurationTable/storeStyle'
+import { brandStyleList } from '@/api/business/brandStyle'
 import { listStoreType } from '@/api/configurationTable/storeType'
 import { uploadPath } from '@/api/business/storage'
 import { getToken } from '@/utils/auth'
@@ -605,7 +605,7 @@ export default {
             this.getList()
             this.init()
           } else {
-            this.$router.push({ name: 'brandSetting' })
+            this.$router.push({ name: 'BrandSetting' })
           }
         })
         .catch()
@@ -628,13 +628,9 @@ export default {
           this.typeOptions = []
         })
     },
-    getStyleOption () {
-      listGet().then(response => {
-        this.styleOptions = response.data.items
-      })
-        .catch(() => {
-          this.styleOptions = []
-        })
+    async getStyleOption () {
+      const res = await brandStyleList()
+      this.styleOptions = res.data.items
     },
     getList () {
       this.listLoading = true

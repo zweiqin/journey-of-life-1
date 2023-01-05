@@ -80,7 +80,8 @@
       
         <el-table-column align="center" width="100" label="状态" prop="isEnable">
           <template slot-scope="{row}">
-            <el-switch v-permission="[`GET /admin${api.issueChangeEnable}`]" :value ="row.isEnable" @change="switchChange(row)" />
+            <el-tag v-if="row.isEnable" type="success" effect="plain">是</el-tag>
+            <el-tag v-else type="danger" effect="plain">否</el-tag>
           </template>
         </el-table-column>
       
@@ -89,7 +90,7 @@
         <el-table-column
           align="center"
           label="操作"
-          width="120"
+          width="200"
           fixed="right"
           class-name="small-padding fixed-width"
         >
@@ -98,8 +99,22 @@
               v-permission="[`POST /admin${api.issueUpdate}`]"
               type="primary"
               size="mini"
-              @click="handleUpdate(row)"
+              @click="handleEdit(row)"
             >编辑</el-button>
+            <el-button
+              v-if="row.isEnable"
+              v-permission="[`GET /admin${api.issueChangeEnable}`]"
+              type="info"
+              size="mini"
+              @click="handleUpdate(row)"
+            >下架</el-button>
+            <el-button
+              v-else
+              v-permission="[`GET /admin${api.issueChangeEnable}`]"
+              type="warning"
+              size="mini"
+              @click="handleUpdate(row)"
+            >上架</el-button>
             <el-button
               v-permission="[`POST /admin${api.issueDelete}`]"
               type="danger"
@@ -212,16 +227,14 @@ export default {
       this.listQuery.page = 1;
       this.getList();
     },
-    async handleUpdate({ id, type, question, answer }) {
+    async handleEdit({ id, type, question, answer }) {
       this.$refs.EditModal && this.$refs.EditModal.handleOpen({ id, type, question, answer })
     },
-    async switchChange({ id, isEnable }) {
-      const loading =  this.$elLoading()
+    async handleUpdate({ id, isEnable }) {
       await issueChangeEnable({
         id,
         isEnable: !isEnable
       })
-      loading.close()
       this.$elMessage()
       this.getList()
     },

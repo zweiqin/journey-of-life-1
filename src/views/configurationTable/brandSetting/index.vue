@@ -1,363 +1,180 @@
 <template>
   <div class="app-container">
 
-    <el-card class="box-card">
-      <h3>编辑门店信息</h3>
-      <el-form
-        ref="dataForm"
-        :rules="rules"
-        :model="dataForm"
-        status-icon
-        label-position="left"
-        label-width="170px"
-        style="width: 400px; margin-left:50px;"
-      >
-        <el-form-item
-          label="门店名称"
-          prop="name"
+    <div class="body-container">
+      <el-card class="box-card">
+        <h3 slot="header">编辑门店信息</h3>
+        <el-form
+          ref="formData"
+          :model="formData"
+          :rules="formRules"
+          label-width="150px"
         >
-          <el-input v-model="dataForm.name" />
-        </el-form-item>
-        <el-form-item label="主营类目">
-          <el-cascader
-            :options="categoryList"
-            v-model="dataForm.categoryIds"
-            expand-trigger="hover"
-            @change="handleCategoryChange"
-          />
-        </el-form-item>
-        <el-form-item label="管理员">
-          <el-select v-model="dataForm.adminId">
-            <el-option
-              v-for="item in adminList"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
+          <el-form-item label="品牌商名称" prop="name">
+            <el-input v-model="formData.name" placeholder="请输入品牌商名称" maxlength="30" show-word-limit />
+          </el-form-item>
+          <el-form-item label="店主名称" prop="keeperName">
+            <el-input v-model="formData.keeperName" placeholder="请输入店主名称" maxlength="30" show-word-limit />
+          </el-form-item>
+          <el-form-item label="简介" prop="desc">
+            <el-input v-model="formData.desc" type="textarea" placeholder="请输入简介" maxlength="520" :rows="3" show-word-limit />
+          </el-form-item>
+          <el-form-item label="门店固定电话" prop="phone">
+            <el-input v-model="formData.phone" placeholder="请输入门店固定电话" maxlength="30" />
+          </el-form-item>
+          <el-form-item label="门店地址" prop="address">
+            <el-input v-model="formData.address" placeholder="请输入门店地址" maxlength="30" />
+          </el-form-item>
+          <el-form-item label="经度" prop="longitude">
+            <el-input v-model="formData.longitude" placeholder="请输入经度" />
+          </el-form-item>
+          <el-form-item label="纬度" prop="latitude">
+            <el-input v-model="formData.latitude" placeholder="请输入纬度" />
+          </el-form-item>
+          <el-form-item label="区域编码" prop="regionCode">
+            <el-input v-model="formData.regionCode" placeholder="请输入区域编码" maxlength="30" />
+          </el-form-item>
+          <el-form-item label="品牌商图片" prop="picUrl">
+            <MyUpload v-model="formData.picUrl" />
+          </el-form-item>
+          <el-form-item label="Logo" prop="logoUrl">
+            <MyUpload v-model="formData.logoUrl" />
+          </el-form-item>
+          <el-form-item label="店铺图片" prop="picUrls">
+            <MyUpload v-model="formData.picUrls" :limit="9" />
+          </el-form-item>
+          <el-form-item label="营业执照" prop="licenseUrl">
+            <MyUpload v-model="formData.licenseUrl" />
+          </el-form-item>
+          <el-form-item label="开始营业时间" prop="startTime">
+            <el-date-picker
+              v-model="formData.startTime"
+              type="date"
+              value-format="yyyy-MM-dd HH:mm:ss"
+              placeholder="选择开始营业时间"
             />
-          </el-select>
-        </el-form-item>
-
-        <el-form-item
-          label="门店固定电话"
-          prop="phone"
-        >
-          <el-input v-model="dataForm.phone" />
-        </el-form-item>
-
-        <el-form-item
-          label="介绍"
-          prop="simpleDesc"
-        >
-          <el-input v-model="dataForm.desc" />
-        </el-form-item>
-        <el-form-item
-          label="门店图片"
-          prop="picUrl"
-        >
-          <el-upload
-            :headers="headers"
-            :action="uploadPath"
-            :show-file-list="false"
-            :on-success="uploadPicUrl"
-            class="avatar-uploader"
-            accept=".jpg,.jpeg,.png,.gif"
-          >
-            <img
-              v-if="dataForm.picUrl"
-              :src="dataForm.picUrl"
-              class="avatar"
-            >
-            <i
-              v-else
-              class="el-icon-plus avatar-uploader-icon"
+          </el-form-item>
+          <el-form-item label="结束营业时间" prop="endTime">
+            <el-date-picker
+              v-model="formData.endTime"
+              type="date"
+              value-format="yyyy-MM-dd HH:mm:ss"
+              placeholder="选择结束营业时间"
             />
-          </el-upload>
-        </el-form-item>
+          </el-form-item>
+          <el-form-item label="入驻说明" prop="explain">
+            <el-input v-model="formData.explain" type="textarea" placeholder="请输入入驻说明" maxlength="520" :rows="3" show-word-limit />
+          </el-form-item>
+          <el-form-item label="门店风格" prop="styleId">
+            <el-select v-model="formData.styleId" placeholder="请选择门店风格">
+              <el-option
+                v-for="item in brandStyleList"
+                :key="item.id"
+                :label="item.name"
+                :value="item.id"
+              />
+            </el-select>
+          </el-form-item>
+          <el-form-item label="门店标签" prop="labelId">
+            <el-select v-model="formData.labelId" placeholder="请选择门店标签">
+              <el-option
+                v-for="item in brandLabelList"
+                :key="item.code"
+                :label="item.value"
+                :value="item.code"
+              />
+            </el-select>
+          </el-form-item>
 
-        <el-form-item
-          label="底价"
-          prop="floorPrice"
-        >
-          <el-input v-model="dataForm.floorPrice" />
-        </el-form-item>
+        </el-form>
+      </el-card>
+    </div>
 
-        <el-form-item label="门店类型" prop="brandgenre">
-          <el-cascader
-            :options="typeOptions"
-            v-model="dataForm.brandgenre"
-            :props="{ checkStrictly: true }"
-            expand-trigger="hover"
-            clearable
-            @change="handleTypeChange"
-          />
-        </el-form-item>
-
-        <!-- <el-form-item
-          label="门店类型"
-          prop="brandgenre"
-        >
-          <el-select
-            v-model="dataForm.brandgenre"
-            filterable
-            placeholder="请选择门店类型"
-          >
-            <el-option
-              v-for="item in typeOptions"
-              :key="item.id"
-              :label="item.storeName"
-              :value="item.id"
-            />
-          </el-select>
-
-        </el-form-item> -->
-
-        <el-form-item
-          label="开始营业时间"
-          prop="startTime"
-        >
-          <el-time-picker
-            v-model="dataForm.startTime"
-            placeholder="起始时间"
-          />
-
-        </el-form-item>
-
-        <el-form-item
-          label="结束营业时间"
-          prop="endTime"
-        >
-          <el-time-picker
-            v-model="dataForm.endTime"
-            placeholder="结束时间"
-          />
-        </el-form-item>
-
-        <el-form-item
-          label="门店地址"
-          prop="address"
-        >
-          <el-input v-model="dataForm.address" />
-        </el-form-item>
-
-        <el-form-item
-          label="营业执照"
-          prop="licenseUrl"
-        >
-          <el-upload
-            :headers="headers"
-            :action="uploadPath"
-            :show-file-list="false"
-            :on-success="uploadLicenseUrl"
-            class="avatar-uploader"
-            accept=".jpg,.jpeg,.png,.gif"
-          >
-            <img
-              v-if="dataForm.licenseUrl"
-              :src="dataForm.licenseUrl"
-              class="avatar"
-            >
-            <i
-              v-else
-              class="el-icon-plus avatar-uploader-icon"
-            />
-          </el-upload>
-        </el-form-item>
-
-        <el-form-item
-          label="法人身份证正面"
-          prop="idcardProsUrl"
-        >
-          <el-upload
-            :headers="headers"
-            :action="uploadPath"
-            :show-file-list="false"
-            :on-success="uploadIdcardProsUrl"
-            class="avatar-uploader"
-            accept=".jpg,.jpeg,.png,.gif"
-          >
-            <img
-              v-if="dataForm.idcardProsUrl"
-              :src="dataForm.idcardProsUrl"
-              class="avatar"
-            >
-            <i
-              v-else
-              class="el-icon-plus avatar-uploader-icon"
-            />
-          </el-upload>
-        </el-form-item>
-
-        <el-form-item
-          label="法人身份证反面"
-          prop="idcardConsUrl"
-        >
-          <el-upload
-            :headers="headers"
-            :action="uploadPath"
-            :show-file-list="false"
-            :on-success="uploadIdcardConsUrl"
-            class="avatar-uploader"
-            accept=".jpg,.jpeg,.png,.gif"
-          >
-            <img
-              v-if="dataForm.idcardConsUrl"
-              :src="dataForm.idcardConsUrl"
-              class="avatar"
-            >
-            <i
-              v-else
-              class="el-icon-plus avatar-uploader-icon"
-            />
-          </el-upload>
-        </el-form-item>
-
-        <el-form-item
-          label="入驻说明"
-          prop="explain"
-        >
-          <el-input v-model="dataForm.explain" />
-        </el-form-item>
-
-        <el-form-item
-          label="是否支持门店余额充值"
-          prop="enableBalance"
-        >
-          <el-radio-group v-model="dataForm.enableBalance">
-            <el-radio :label="true">是</el-radio>
-            <el-radio :label="false">否</el-radio>
-          </el-radio-group>
-        </el-form-item>
-
-        <el-form-item
-          label="充值比例"
-          prop="balanceRatio"
-        >
-          <el-input v-model="dataForm.balanceRatio" />
-        </el-form-item>
-
-        <el-form-item
-          label="启用等级"
-          prop="enableLevel"
-        >
-          <el-radio-group v-model="dataForm.enableLevel">
-            <el-radio :label="true">是</el-radio>
-            <el-radio :label="false">否</el-radio>
-          </el-radio-group>
-        </el-form-item>
-
-        <el-form-item
-          label="门店风格"
-          prop="styleId"
-        >
-          <el-select
-            v-model="dataForm.styleId"
-            filterable
-            placeholder="请选择门店风格"
-          >
-            <el-option
-              v-for="item in styleOptions"
-              :key="item.id"
-              :label="item.name"
-              :value="item.id"
-            />
-          </el-select>
-
-        </el-form-item>
-
-      </el-form>
-    </el-card>
-
-    <div class="op-container">
-      <el-button @click="handleCancel">取消</el-button>
-      <el-button type="primary" @click="handleEdit">更新</el-button>
+    <div class="footer-container">
+      <el-button size="medium" @click="hanldeReset">重置</el-button>
+      <el-button type="primary" size="medium" @click="handleSubmit">保存</el-button>
     </div>
 
   </div>
 </template>
 
-<style>
-.el-card {
-  margin-bottom: 10px;
-}
-.el-tag + .el-tag {
-  margin-left: 10px;
-}
-.input-new-keyword {
-  width: 90px;
-  margin-left: 10px;
-  vertical-align: bottom;
-}
-.avatar-uploader .el-upload {
-  border: 1px dashed #d9d9d9;
-  border-radius: 6px;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-}
-.avatar-uploader .el-upload:hover {
-  border-color: #20a0ff;
-}
-.avatar-uploader-icon {
-  font-size: 28px;
-  color: #8c939d;
-  width: 120px;
-  height: 120px;
-  line-height: 120px;
-  text-align: center;
-}
-.avatar {
-  width: 145px;
-  height: 145px;
-  display: block;
-}
-</style>
-
 <script>
-import { brandList, brandCatAndAdmin, brandUpdate } from '@/api/business/brand'
-import { listGet } from '@/api/configurationTable/storeStyle'
-import { listStoreType } from '@/api/configurationTable/storeType'
-import { uploadPath } from '@/api/business/storage'
+import MyUpload from '@/components/MyUpload'
+import { brandRead, brandUpdate, brandLabelList } from '@/api/business/brand'
+import { brandStyleList } from '@/api/business/brandStyle'
 import { getToken } from '@/utils/auth'
 import { getUserInfo } from '@/api/login'
+
 export default {
   name: 'BrandSetting',
+  components: {
+    MyUpload
+  },
   data () {
     return {
       typeOptions: [],
       styleOptions: [],
-      uploadPath,
       categoryList: [],
       adminList: [],
-      listQuery: {
-        page: 1,
-        limit: 20,
-        id: undefined,
-        name: undefined,
-        sort: 'add_time',
-        order: 'desc'
-      },
-      dataForm: {
-        id: undefined,
-        brandgenre: undefined,
+      brandLabelList: [],
+      brandStyleList: [],
+      formData: {
         name: '',
-        phone: '',
+        keeperName: '',
         desc: '',
-        picUrl: undefined,
-        floorPrice: undefined,
-        categoryIds: [],
-        adminId: undefined,
-        defaultCategoryId: 1,
-        address: undefined,
-        startTime: undefined,
-        endTime: undefined,
-        licenseUrl: undefined,
-        idcardProsUrl: undefined,
-        idcardConsUrl: undefined,
-        explain: undefined,
-        enableBalance: undefined,
-        balanceRatio: undefined,
-        enableLevel: undefined,
-        styleId: undefined
+        phone: '',
+        address: '',
+        longitude: '',
+        latitude: '',
+        regionCode: '',
+        picUrl: '',
+        logoUrl: '',
+        picUrls: [],
+        licenseUrl: '',
+        startTime: '',
+        endTime: '',
+        explain: '',
+        styleId: '',
+        labelId: '',
+      },
+      dataForm: {},
+      formRules: {
+        name: [
+          { required: true, message: '请输入品牌商名称' }
+        ],
+        keeperName: [
+          { required: true, message: '请输入店主名称' }
+        ],
+        desc: [
+          { required: true, message: '请输入简介' }
+        ],
+        phone: [
+          { required: true, message: '请输入门店固定电话' }
+        ],
+        address: [
+          { required: true, message: '请输入门店地址' }
+        ],
+        longitude: [
+          { required: true, message: '请输入经度' }
+        ],
+        latitude: [
+          { required: true, message: '请输入纬度' }
+        ],
+        regionCode: [
+          { required: true, message: '请输入区域编码' }
+        ],
+        picUrl: [
+          { required: true, message: '请上传品牌商图片' }
+        ],
+        licenseUrl: [
+          { required: true, message: '请上传营业执照' }
+        ],
+        styleId: [
+          { required: true, message: '请选择门店风格' }
+        ],
+        labelId: [
+          { required: true, message: '请选择门店标签' }
+        ],
       },
       rules: {
         name: [
@@ -395,6 +212,7 @@ export default {
     }
   },
   created () {
+    this.initList()
     this.getRoles()
   },
   methods: {
@@ -404,32 +222,42 @@ export default {
           if (response.data.roles[0] === '超级管理员') {
             this.$router.push({ name: 'brandInfo' })
           } else {
-            this.getList()
-            this.init()
+            this.getInfo()
           }
         })
         .catch()
     },
-    init () {
-      brandCatAndAdmin().then(response => {
-        this.categoryList = response.data.categoryList
-        this.adminList = response.data.adminList
-        // 获取门店类型
-        this.getTypeOption()
-        // 获取门店风格
-        this.getStyleOption()
-      })
+    initList () {
+      this.getBrandLabelList()
+      this.getBrandStyleList()
     },
-    getList () {
-      this.$nextTick(() => {
-        this.$refs['dataForm'].clearValidate()
+    async getInfo () {
+      const loading = this.$elLoading('加载中')
+      try {
+        const res = await brandRead()
+        this.formData = Object.assign(this.$options.data().formData, res.data, {
+          picUrl: res.data.picUrl || '',
+          picUrls: res.data.picUrls || [],
+          logoUrl: res.data.logoUrl || '',
+          licenseUrl: res.data.licenseUrl || '',
+        })
+        this.$refs.formData && this.$refs.formData.resetFields()
+      } finally {
+        loading.close()
+      }
+    },
+    // 商品标签
+    async getBrandLabelList() {
+      const res = await brandLabelList()
+      this.brandLabelList = res.data.data
+    },
+    // 商品风格
+    async getBrandStyleList() {
+      const res = await brandStyleList({
+        page: 1,
+        limit: 9999
       })
-      brandList(this.listQuery)
-        .then(response => {
-          this.dataForm = response.data.items[0]
-        })
-        .catch(() => {
-        })
+      this.brandStyleList = res.data.items
     },
     getTypeOption () {
       listStoreType().then(response => {
@@ -439,37 +267,17 @@ export default {
           this.typeOptions = []
         })
     },
-    getStyleOption () {
-      listGet().then(response => {
-        this.styleOptions = response.data.items
-      })
-        .catch(() => {
-          this.styleOptions = []
-        })
+    async getStyleOption () {
+      const res = await brandStyleList()
+      this.styleOptions = res.data.items
     },
-    handleCancel () {
-      this.getList()
+    hanldeReset () {
+      this.getInfo()
     },
-    handleEdit () {
-      this.$refs['dataForm'].validate(valid => {
-        if (valid) {
-          brandUpdate(this.dataForm)
-            .then(() => {
-              this.getList()
-              this.$notify.success({
-                title: '成功',
-                message: '更新成功'
-              })
-            })
-            .catch(response => {
-              this.getList()
-              this.$notify.error({
-                title: '失败',
-                message: response.errmsg
-              })
-            })
-        }
-      })
+    async handleSubmit () {
+      await this.$validatorForm('formData')
+      await brandUpdate(this.formData)
+      this.$elMessage('保存成功!')
     },
     handleCategoryChange (value) {
       if (value) {
@@ -480,18 +288,6 @@ export default {
       if (value) {
         this.dataForm.brandgenre = value[value.length - 1]
       }
-    },
-    uploadPicUrl: function (response) {
-      this.dataForm.picUrl = response.data.url
-    },
-    uploadLicenseUrl: function (response) {
-      this.dataForm.licenseUrl = response.data.url
-    },
-    uploadIdcardProsUrl: function (response) {
-      this.dataForm.idcardProsUrl = response.data.url
-    },
-    uploadIdcardConsUrl: function (response) {
-      this.dataForm.idcardConsUrl = response.data.url
     },
     resetForm () {
       this.dataForm = {
@@ -520,3 +316,39 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.el-input, 
+.el-textarea,
+.el-select,
+.el-cascader
+{
+  width: 400px;
+}
+
+.input-new-keyword {
+  width: 90px;
+  margin-left: 10px;
+  vertical-align: bottom;
+}
+.app-container {
+  height: 100%;
+  padding: 0;
+}
+.body-container {
+  flex: 1;
+  overflow-y: auto;
+  .el-card {
+    margin: 20px;
+  }
+  .el-tag + .el-tag {
+    margin-left: 10px;
+  }
+}
+.footer-container {
+  padding: 10px 20px;
+  display: flex;
+  justify-content: center;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1)
+}
+</style>

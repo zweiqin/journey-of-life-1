@@ -1,6 +1,5 @@
 import request from '@/utils/request'
 
-
 export const api = {
   brandList: '/brand/list',
   brandRead: '/brand/read',
@@ -8,6 +7,7 @@ export const api = {
   brandUpdate: '/brand/update',
   brandDelete: '/brand/delete',
   brandCatAndAdmin: '/brand/catAndAdmin',
+  brandLabelList: '/brand/labelList',
 }
 
 // 门店列表
@@ -20,7 +20,7 @@ export function brandList (params) {
 }
 
 // 门店详情
-export function readBrand (params) {
+export function brandRead (params) {
   return request({
     url: api.brandRead,
     method: 'GET',
@@ -36,7 +36,6 @@ export function brandCreate (data) {
     data
   })
 }
-
 
 // 编辑门店
 export function brandUpdate (data) {
@@ -60,6 +59,15 @@ export function brandDelete (data) {
 export function brandCatAndAdmin (params) {
   return request({
     url: api.brandCatAndAdmin,
+    method: 'GET',
+    params
+  })
+}
+
+// 门店标签列表
+export function brandLabelList (params) {
+  return request({
+    url: api.brandLabelList,
     method: 'GET',
     params
   })

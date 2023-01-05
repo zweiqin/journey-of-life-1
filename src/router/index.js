@@ -188,7 +188,7 @@ export const asyncRouterMap = [
           {
             path: 'brandSetting',
             component: () => import('@/views/configurationTable/brandSetting'),
-            name: 'brandSetting',
+            name: 'BrandSetting',
             meta: {
               perms: ['POST /admin/brand/update', 'GET /admin/brand/list'],
               title: '门店列表',
@@ -209,27 +209,27 @@ export const asyncRouterMap = [
       }
     ]
   },
-  // {
-  //   path: '/membershipChain',
-  //   component: Layout,
-  //   redirect: 'noredirect',
-  //   alwaysShow: true,
-  //   name: 'MembershipChain',
-  //   meta: {
-  //     title: '会员关系链',
-  //     icon: 'membership'
-  //   },
-  //   children: [
-  //     {
-  //       path: 'partnerApply',
-  //       component: () => import('@/views/membershipChain/partnerApply'),
-  //       name: 'PartnerApply',
-  //       meta: {
-  //         title: '合伙人申请',
-  //       }
-  //     }
-  //   ]
-  // },
+  {
+    path: '/membershipChain',
+    component: Layout,
+    redirect: 'noredirect',
+    alwaysShow: true,
+    name: 'MembershipChain',
+    meta: {
+      title: '会员关系链',
+      icon: 'membership'
+    },
+    children: [
+      {
+        path: 'partnerApply',
+        component: () => import('@/views/membershipChain/partnerApply'),
+        name: 'PartnerApply',
+        meta: {
+          title: '合伙人申请',
+        }
+      }
+    ]
+  },
   {
     path: '/goods',
     component: Layout,

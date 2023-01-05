@@ -4,13 +4,36 @@
     <!-- 查询和其他操作 -->
     <div class="filter-container">
       <el-input
-        v-model="listQuery.value"
+        v-model="listQuery.userId"
         clearable
         class="filter-item"
         style="width: 200px;"
-        placeholder="请输入标签值"
+        placeholder="请输入用户编号"
         @clear="getList"
       />
+      <el-input
+        v-model="listQuery.valueId"
+        clearable
+        class="filter-item"
+        style="width: 200px;"
+        placeholder="请输入商品编号"
+        @clear="getList"
+      />
+      <el-select
+        v-model="listQuery.type"
+        clearable
+        class="filter-item"
+        style="width: 200px;"
+        placeholder="选择评论类型"
+        @clear="getList"
+      >
+        <el-option
+          v-for="item in typeList"
+          :key="item.value"
+          :label="item.label"
+          :value="item.value"
+        />
+      </el-select>
       <el-button
         v-permission="[`GET /admin${api.commentList}`]"
         size="mini"
@@ -35,7 +58,7 @@
         <el-table-column align="center" width="50" label="ID" prop="id" fixed="left" />
         <el-table-column align="center" width="150" label="评论类型" prop="type">
           <template slot-scope="{row}">
-            {{ typeFilterFn(row.type) }}
+            {{ row.type | typeFilter(typeList) }}
           </template>
         </el-table-column>
         <el-table-column align="center" min-width="200" label="评论内容" prop="content" show-overflow-tooltip />
@@ -80,18 +103,18 @@
         >
           <template slot-scope="{row}">
             <el-button
-              v-if="typeFilterFn(row.type)"
-              v-permission="[`POST /admin${api.commentBrandReply}`]"
-              type="primary"
-              size="mini"
-              @click="handleAddComment(row)"
-            >添加{{ typeFilterFn(row.type) }}</el-button>
-            <el-button
               v-permission="[`POST /admin${api.commentDelete}`]"
               type="danger"
               size="mini"
               @click="handleDelete(row)"
             >删除</el-button>
+            <el-button
+              v-if="row.type == 0"
+              v-permission="[`POST /admin${api.commentBrandReply}`]"
+              type="primary"
+              size="mini"
+              @click="handleAddComment(row)"
+            >店铺回复评论</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -126,6 +149,12 @@ export default {
     Pagination,
     EditModal,
   },
+  filters: {
+    typeFilter(val, list = []) {
+      const obj = list.find(item => +item.value === +val)
+      return obj ? obj.label : '--'
+    }
+  },
   data() {
     return {
       api,
@@ -135,8 +164,15 @@ export default {
       listQuery: {
         page: 1,
         size: 20,
-        value: '',
+        userId: '',
+        valueId: '',
+        type: '',
       },
+      typeList: [
+        { label: '商品评论', value: '0' },
+        { label: '专题评论', value: '1' },
+        { label: '店铺回复评论', value: '3' },
+      ]
     };
   },
   computed: {
@@ -175,16 +211,9 @@ export default {
       this.listQuery.page = 1;
       this.getList();
     },
-    typeFilterFn(val) {
-      return {
-        0: '商品评论',
-        1: '专题评论',
-        3: '订单商品评论',
-      }[val] || ''
-    },
     // 添加评论
     async handleAddComment({ type, valueId, pid }) {
-      this.$refs.EditModal && this.$refs.EditModal.handleOpen({ type, valueId, pid }, this.typeFilterFn(type))
+      this.$refs.EditModal && this.$refs.EditModal.handleOpen({ type, valueId, pid }, '添加店铺回复评论')
     },
     async handleDelete({ id }) {
       await this.$elConfirm('确认删除?')
