@@ -68,16 +68,8 @@ export default {
       this.visible = true
       this.$refs.formData && this.$refs.formData.resetFields()
     },
-    handleSubmit() {
-      this.$refs.formData.validate((valid) => {
-        if (valid) {
-          this.saveRequest()
-        } else {
-          return false;
-        }
-      });
-    },
-    async saveRequest() {
+    async handleSubmit() {
+      await this.$validatorForm('formData')
       const res = this.formData.id ? await goodsTagUpdate(this.formData) : await goodsTagCreate(this.formData)
       this.$elMessage(`${this.formData.id ? '编辑' : '添加'}成功!`)
       this.$emit('success')

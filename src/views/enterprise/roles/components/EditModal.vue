@@ -4,18 +4,22 @@
     v-bind="modalOptions"
   >
     <el-form ref="formData" :model="formData" :rules="formRules" size="mini" label-width="100px">
-      <el-form-item label="标签值" prop="value">
+      <el-form-item label="部门名称" prop="name">
         <el-input
-          v-model="formData.value"
+          v-model="formData.name"
           maxlength="30"
           show-word-limit
-          placeholder="请输入标签值"
+          placeholder="请输入部门名称"
         />
       </el-form-item>
-      <el-form-item label="排序" prop="sortOrder">
+      <el-form-item label="说明" prop="desc">
         <el-input
-          v-model="formData.sortOrder"
-          placeholder="请输入排序"
+          v-model="formData.desc"
+          type="textarea"
+          :autosize="{ minRows: 3, maxRows: 5 }"
+          maxlength="520"
+          show-word-limit
+          placeholder="请输入说明"
         />
       </el-form-item>
     
@@ -28,8 +32,7 @@
 </template>
 
 <script>
-import { goodsStyleCreate, goodsStyleUpdate } from '@/api/business/goodsStyle';
-import { regInt } from '@/utils/reg'
+import { roleCreate, roleUpdate } from '@/api/enterprise/role'
 
 export default {
   name: 'EditModal',
@@ -43,17 +46,16 @@ export default {
       visible: false,
       formData: {
         id: '',
-        value: '',
+        name: '',
         sortOrder: '100',
       },
       formRules: {
-        value: [
-          { required: true, message: '请输入标签值' },
+        name: [
+          { required: true, message: '请输入部门名称' },
           { max: 30, message: '30字以内' },
         ],
-        sortOrder: [
-          { required: true, message: '请输入排序' },
-          { pattern: regInt,  message: '请输入正整数' }
+        desc: [
+          { max: 520, message: '520字以内' },
         ]
       },
     }
@@ -63,14 +65,14 @@ export default {
       this.visible = false
     },
     handleOpen(params = {}) {
-      this.modalOptions.title = params.id ? '编辑商品风格' : '添加商品风格'
+      this.modalOptions.title = params.id ? '编辑部门' : '添加部门'
       this.formData = Object.assign(this.$options.data().formData, params)
       this.visible = true
       this.$refs.formData && this.$refs.formData.resetFields()
     },
     async handleSubmit() {
       await this.$validatorForm('formData')
-      const res = this.formData.id ? await goodsStyleUpdate(this.formData) : await goodsStyleCreate(this.formData)
+      const res = this.formData.id ? await roleUpdate(this.formData) : await roleCreate(this.formData)
       this.$elMessage(`${this.formData.id ? '编辑' : '添加'}成功!`)
       this.$emit('success')
       this.visible = false

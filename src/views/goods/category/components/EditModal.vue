@@ -206,16 +206,8 @@ export default {
       this.formData.pid = ''
       this.formData.parentId = ''
     },
-    handleSubmit() {
-      this.$refs.formData.validate((valid) => {
-        if (valid) {
-          this.saveRequest()
-        } else {
-          return false;
-        }
-      });
-    },
-    async saveRequest() {
+    async handleSubmit() {
+      await this.$validatorForm('formData')
       const res = this.formData.id ? await categoryUpdate(this.formData) : await categoryCreate(this.formData)
       this.$message.success(`${this.formData.id ? '编辑' : '添加'}成功!`)
       this.$emit('success')

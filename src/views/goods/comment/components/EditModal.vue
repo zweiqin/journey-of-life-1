@@ -79,10 +79,6 @@ export default {
     },
     async handleSubmit() {
       await this.$validatorForm('formData')
-      console.log('v', this.formData)
-      this.saveRequest()
-    },
-    async saveRequest() {
       const res = await commentBrandReply({
         ...this.formData,
         picUrls: Array.isArray(this.formData.picUrls) ? this.formData.picUrls.map(v => v.resData) : [],

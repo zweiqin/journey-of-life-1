@@ -215,6 +215,7 @@ export const asyncRouterMap = [
     redirect: 'noredirect',
     alwaysShow: true,
     name: 'MembershipChain',
+    _ROLES: ['ADMIN'],
     meta: {
       title: '会员关系链',
       icon: 'membership'
@@ -224,6 +225,7 @@ export const asyncRouterMap = [
         path: 'partnerApply',
         component: () => import('@/views/membershipChain/partnerApply'),
         name: 'PartnerApply',
+        _ROLES: ['ADMIN'],
         meta: {
           title: '合伙人申请',
         }
@@ -276,10 +278,11 @@ export const asyncRouterMap = [
       {
         path: 'brandList',
         component: () => import('@/views/goods/brandList/index'),
-        name: 'brandGoodsList',
+        name: 'BrandGoodsList',
+        _ROLES: ['ADMIN'],
         meta: {
           perms: ['GET /admin/brand/list'],
-          title: '门店-商品',
+          title: '门店管理',
           noCache: true
         },
         // hidden: true
@@ -298,6 +301,7 @@ export const asyncRouterMap = [
         path: 'category',
         component: () => import('@/views/goods/category'),
         name: 'Category',
+        _ROLES: ['ADMIN'],
         meta: {
           perms: ['GET /admin/category/list'],
           title: '商品类目',
@@ -338,6 +342,7 @@ export const asyncRouterMap = [
         path: 'goodsTag',
         component: () => import('@/views/goods/goodsTag/index'),
         name: 'GoodsTag',
+        _ROLES: ['ADMIN'],
         meta: {
           perms: ['GET /admin/goodsTag/list'],
           title: '大类标签',
@@ -348,6 +353,7 @@ export const asyncRouterMap = [
         path: 'goodsStyle',
         component: () => import('@/views/goods/goodsStyle/index'),
         name: 'GoodsStyle',
+        _ROLES: ['ADMIN'],
         meta: {
           perms: ['GET /admin/goodsStyle/list'],
           title: '商品风格',
@@ -637,64 +643,45 @@ export const asyncRouterMap = [
   },
 
   {
-    path: '/brand',
+    path: '/enterprise',
     component: Layout,
     redirect: 'noredirect',
     alwaysShow: true,
     meta: {
-      title: '企业管理', icon: 'shopping', noCache: true
+      title: '企业管理',
+      icon: 'shopping',
+      noCache: true
     },
     children: [
       {
-        path: 'brandInfo',
-        component: () => import('@/views/configurationTable/brand'),
-        name: 'brandInfo',
+        path: 'BaseInfo',
+        component: () => import('@/views/enterprise/baseInfo'),
+        name: 'BaseInfo',
+        _ROLES: ['USER'],
         meta: {
-          perms: ['POST /admin/brand/update', 'POST /admin/brand/delete', 'GET /admin/brand/read', 'POST /admin/brand/create', 'GET /admin/brand/list'],
+          perms: ['GET /admin/brand/read'],
           title: '基本信息',
           noCache: true
         }
       },
       {
-        path: 'staffManagement',
-        component: () => import('@/views/errorPage/developing'),
-        name: 'staffManagement',
+        path: 'roles',
+        component: () => import('@/views/enterprise/roles'),
+        name: 'Roles',
         meta: {
-          // perms: [],
+          title: '部门管理',
+          noCache: true
+        }
+      },
+      {
+        path: 'staff',
+        component: () => import('@/views/enterprise/staff'),
+        name: 'Staff',
+        meta: {
           title: '员工管理',
           noCache: true
         }
       },
-      {
-        path: 'authorizationManagement',
-        component: () => import('@/views/errorPage/developing'),
-        name: 'authorizationManagement',
-        meta: {
-          // perms: [],
-          title: '授权管理',
-          noCache: true
-        }
-      },
-      {
-        path: 'plugInManagement',
-        component: () => import('@/views/errorPage/developing'),
-        name: 'plugInManagement',
-        meta: {
-          // perms: [],
-          title: '插件管理',
-          noCache: true
-        }
-      },
-      {
-        path: 'rechargeManagement',
-        component: () => import('@/views/errorPage/developing'),
-        name: 'rechargeManagement',
-        meta: {
-          // perms: [],
-          title: '充值管理',
-          noCache: true
-        }
-      }
     ]
   },
   {

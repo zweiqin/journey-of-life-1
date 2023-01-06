@@ -276,11 +276,7 @@ export default {
     getRoles () {
       getUserInfo(getToken())
         .then(response => {
-          if (response.data.roles[0] === '超级管理员') {
-            this.$router.push({ name: 'brandGoodsList' })
-          } else if (response.data.roles[0] === '门店' || response.data.roles[0] === '营销策划') {
-            this.getList()
-          }
+          this.getList()
         })
         .catch()
     },

@@ -362,7 +362,7 @@ export default {
       })
     },
     handleCancel () {
-      this.$router.push({ name: 'brandGoodsList' })
+      this.$router.push({ name: 'BrandGoodsList' })
     }
   }
 }
