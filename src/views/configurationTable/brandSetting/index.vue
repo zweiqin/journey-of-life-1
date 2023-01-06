@@ -100,8 +100,8 @@
 
 <script>
 import MyUpload from '@/components/MyUpload'
-import { brandRead, brandUpdate, brandLabelList } from '@/api/business/brand'
-import { brandStyleList } from '@/api/business/brandStyle'
+import { brandRead, brandUpdate, brandLabelList } from '@/api/brand/brandList'
+import { brandStyleList } from '@/api/brand/brandStyle'
 import { getToken } from '@/utils/auth'
 import { getUserInfo } from '@/api/login'
 

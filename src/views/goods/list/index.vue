@@ -85,18 +85,15 @@
         <el-table-column align="center" min-width="200" label="商品描述" prop="name" fixed="left" show-overflow-tooltip />
         <el-table-column align="center" width="80" prop="picUrl" label="商品图片" >
           <template slot-scope="{row}">
-            <img :src="row.picUrl" width="40" />
+            <el-image v-if="row.picUrl" :src="row.picUrl" style="width:40px; height:40px" fit="cover" :preview-src-list="[row.picUrl]" />
           </template>
         </el-table-column>
         <el-table-column align="center" min-width="150" label="宣传图片" prop="gallery">
           <template slot-scope="{row}">
-            <img
-              v-for="(item, index) in row.gallery"
-              :key="index"
-              :src="item"
-              width="40"
-              style="margin:4px;"
-            >
+            <div v-if="row.gallery && row.gallery.length">
+              <el-image :src="row.gallery[0]" style="width:40px; height:40px" fit="cover" :preview-src-list="row.gallery" />
+              <span v-if="row.gallery.length>1" style="margin-left:8px;">+{{ row.gallery.length }}</span>
+            </div>
           </template>
         </el-table-column>
         <el-table-column align="center" min-width="150" label="商品简介" prop="brief" show-overflow-tooltip />
@@ -148,21 +145,6 @@
         <el-table-column align="center" width="150" label="创建时间" prop="addTime" show-overflow-tooltip />
         <el-table-column align="center" width="150" label="更新时间" prop="updateTime" show-overflow-tooltip />
 
-        <!-- <el-table-column align="center" label="审批状态" prop="approveStatus">
-          <template slot-scope="{row}">
-            <el-tag v-if="row.approveStatus==0" effect="plain">待审批</el-tag>
-            <el-tag v-else-if="row.approveStatus==1" effect="plain" type="success">审批通过</el-tag>
-            <el-tag v-else-if="row.approveStatus==2" effect="plain" type="danger">审批拒绝</el-tag>
-            <el-tag v-else-if="row.approveStatus==4" effect="plain" type="info">未提交</el-tag>
-            <span v-else>{{ row.approveStatus }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column align="center" width="150" label="佣金类型" prop="brokerageType">
-          <template slot-scope="{row}">
-            <span>{{ row.brokerageType | brokerageTypeFilter }}</span>
-          </template>
-        </el-table-column> -->
-
         <el-table-column
           align="center"
           label="操作"
@@ -202,7 +184,7 @@
       </el-table>
     </div>
 
-    <pagination
+    <Pagination
       :total="total"
       :page.sync="listQuery.page"
       :limit.sync="listQuery.limit"
@@ -218,11 +200,9 @@ import {
   goodsList,
   goodsDelete,
   goodsUpOnSale
-} from '@/api/business/goods'
-import { goodsStyleList } from '@/api/business/goodsStyle'
-import { categoryTreeList } from '@/api/business/category'
-import { getUserInfo } from '@/api/login'
-import { getToken } from '@/utils/auth'
+} from '@/api/goods/goodsList'
+import { goodsStyleList } from '@/api/goods/goodsStyle'
+import { categoryTreeList } from '@/api/goods/goodsCategory'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
 
 export default {
@@ -253,6 +233,7 @@ export default {
       total: 0,
       listLoading: true,
       listQuery: {
+        brandId: '',
         page: 1,
         limit: 20,
         goodsSn: '',
@@ -268,35 +249,30 @@ export default {
     }
   },
   created () {
-    this.getRoles()
+    const { brandId = '' } = this.$route.query
+    if (brandId) {
+      this.listQuery.brandId = brandId
+    }
+    this.getList()
     this.getCategoryTreeList()
     this.getGoodsStyleList()
   },
   methods: {
-    getRoles () {
-      getUserInfo(getToken())
-        .then(response => {
-          this.getList()
-        })
-        .catch()
-    },
-    getList () {
-      this.listLoading = true
-      const { category_arr, ...other } = this.listQuery
-      const cateId = Array.isArray(category_arr) && category_arr.length ? category_arr[category_arr.length - 1] : ''
-      const params = {
-        ...other,
-        cateId
+    async getList () {
+      this.listLoading = true;
+      try {
+        const { category_arr, ...other } = this.listQuery
+        const cateId = Array.isArray(category_arr) && category_arr.length ? category_arr[category_arr.length - 1] : ''
+        const params = {
+          ...other,
+          cateId
+        }
+        const res = await goodsList(params)
+        this.list = res.data.items;
+        this.total = res.data.total;
+      } finally {
+        this.listLoading = false;
       }
-      goodsList(params).then(response => {
-        this.list = response.data.items
-        this.total = response.data.total
-        this.listLoading = false
-      }).catch(() => {
-        this.list = []
-        this.total = 0
-        this.listLoading = false
-      })
     },
     // 商品风格
     async getGoodsStyleList() {
@@ -316,10 +292,10 @@ export default {
       this.getList()
     },
     handleCreate () {
-      this.$router.push({ name: 'GoodsCreate' })
+      this.$router.push({ name: 'GoodsCreate', query: { brandId: this.listQuery.brandId } })
     },
     handleEdit (row) {
-      this.$router.push({ name: 'GoodsEdit', query: { id: row.id } })
+      this.$router.push({ name: 'GoodsEdit', query: { id: row.id, brandId: this.listQuery.brandId } })
     },
     async handleDelete({ id }) {
       await this.$elConfirm('确认删除?')

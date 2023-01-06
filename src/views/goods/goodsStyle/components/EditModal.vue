@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import { goodsStyleCreate, goodsStyleUpdate } from '@/api/business/goodsStyle';
+import { goodsStyleCreate, goodsStyleUpdate } from '@/api/goods/goodsStyle';
 import { regInt } from '@/utils/reg'
 
 export default {

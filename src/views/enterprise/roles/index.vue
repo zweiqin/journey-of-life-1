@@ -9,7 +9,6 @@
         class="filter-item"
         style="width: 200px;"
         placeholder="请输入角色名称"
-        @clear="getList"
       />
       <el-button
         v-permission="[`GET /admin${api.roleList}`]"

@@ -100,7 +100,7 @@ import {
   categoryUpdate,
   categoryRead,
   categoryTreeList,
-} from '@/api/business/category';
+} from '@/api/goods/goodsCategory';
 import MyUpload from '@/components/MyUpload'
 import XeUtils from 'xe-utils';
 

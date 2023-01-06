@@ -9,7 +9,6 @@
         class="filter-item"
         style="width: 200px;"
         placeholder="请输入标签值"
-        @clear="getList"
       />
       <el-button
         v-permission="[`GET /admin${api.goodsTagList}`]"
@@ -40,7 +39,7 @@
         v-bind="$tableCommonOptions"
       >
 
-        <el-table-column align="center" width="50" label="ID" prop="id" fixed="left" />
+        <el-table-column align="center" width="100" label="ID" prop="id" fixed="left" />
         <el-table-column align="center" min-width="200" label="标签值" prop="value" show-overflow-tooltip />
         <el-table-column align="center" min-width="100" label="排序" prop="sortOrder" />
         <el-table-column align="center" min-width="150" label="创建时间" prop="addTime" />
@@ -69,7 +68,7 @@
       </el-table>
     </div>
 
-    <pagination
+    <Pagination
       :total="total"
       :page.sync="listQuery.page"
       :limit.sync="listQuery.size"
@@ -86,9 +85,7 @@ import {
   api,
   goodsTagList,
   goodsTagDelete
-} from '@/api/business/goodsTag'
-import { getToken } from '@/utils/auth';
-import { getUserInfo } from '@/api/login';
+} from '@/api/goods/goodsTag'
 import Pagination from '@/components/Pagination';
 import EditModal from './components/EditModal'
 
@@ -111,37 +108,19 @@ export default {
       },
     };
   },
-  computed: {
-    headers() {
-      return {
-        'X-Dts-Admin-Token': getToken()
-      };
-    }
-  },
   created() {
-    this.getRoles();
+    this.getList();
   },
   methods: {
-    getRoles() {
-      getUserInfo(getToken())
-        .then(response => {
-          this.getList();
-        })
-        .catch();
-    },
-    getList() {
+    async getList() {
       this.listLoading = true;
-      goodsTagList(this.listQuery)
-        .then(response => {
-          this.list = response.data.items;
-          this.total = response.data.total;
-          this.listLoading = false;
-        })
-        .catch(() => {
-          this.list = [];
-          this.total = 0;
-          this.listLoading = false;
-        });
+      try {
+        const res = await goodsTagList(this.listQuery)
+        this.list = res.data.items;
+        this.total = res.data.total;
+      } finally {
+        this.listLoading = false;
+      }
     },
     handleFilter() {
       this.listQuery.page = 1;

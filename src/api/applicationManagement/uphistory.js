@@ -36,15 +36,6 @@ export function listGet (data, page) {
   })
 }
 
-// 通过id查询列表
-export function idGet (data) {
-  return request({
-    url: '/userup/list',
-    method: 'post',
-    data: data
-  })
-}
-
 // // 注册
 // export function signin (url, data) {
 //   return request({

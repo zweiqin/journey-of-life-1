@@ -612,7 +612,7 @@
 
 <script>
 import { memberListGet, listAdd, InfoGet } from '@/api/applicationManagement/shopUpCreate'
-import { listStoreType } from '@/api/business/brand'
+import { listStoreType } from '@/api/brand/brandList'
 import { listGet } from '@/api/configurationTable/userLevel'
 import { uploadPath } from '@/api/business/storage'
 import { regionData, CodeToText } from 'element-china-area-data'

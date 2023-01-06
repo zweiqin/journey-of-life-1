@@ -10,7 +10,6 @@
         class="filter-item"
         style="width: 200px;"
         placeholder="请输入"
-        @clear="getList"
       />
       <el-select
         v-model="listQuery.status"
@@ -19,7 +18,6 @@
         class="filter-item"
         style="width: 200px;"
         placeholder="请选择"
-        @clear="getList"
       >
         <el-option
           v-for="item in statusList"
@@ -56,11 +54,11 @@
         v-bind="$tableCommonOptions"
       >
 
-        <el-table-column align="center" label="ID" prop="id" width="50" fixed="left" />
+        <el-table-column align="center" label="ID" prop="id" width="100" fixed="left" />
         <el-table-column align="center" min-width="150" label="会员名称" prop="userName" fixed="left" show-overflow-tooltip />
         <el-table-column align="center" min-width="150" label="会员头像" prop="userAvatar">
           <template slot-scope="{row}">
-            <img :src="row.userAvatar">
+            <el-image v-if="row.userAvatar" :src="row.userAvatar" style="width:40px; height:40px" fit="cover" :preview-src-list="[row.userAvatar]" />
           </template>
         </el-table-column>
 
@@ -149,7 +147,7 @@
       </el-table>
     </div>
 
-    <pagination
+    <Pagination
       :total="total"
       :page.sync="listQuery.page"
       :limit.sync="listQuery.size"
@@ -172,8 +170,6 @@ import {
   messagesentryConversion,
   messagesentryIsConversion
 } from '@/api/businessManagement/informationSentry';
-import { getToken } from '@/utils/auth';
-import { getUserInfo } from '@/api/login';
 import Pagination from '@/components/Pagination'; // Secondary package based on el-pagination
 import AddUserModal from './components/AddUserModal'
 import AddSalesmanModal from './components/AddSalesmanModal'
@@ -220,37 +216,19 @@ export default {
       ]
     };
   },
-  computed: {
-    headers() {
-      return {
-        'X-Dts-Admin-Token': getToken()
-      };
-    }
-  },
   created() {
-    this.getRoles();
+    this.getList();
   },
   methods: {
-    getRoles() {
-      getUserInfo(getToken())
-        .then(response => {
-          this.getList();
-        })
-        .catch();
-    },
-    getList() {
+    async getList() {
       this.listLoading = true;
-      messagesentryQueryMsgSentryList(this.listQuery)
-        .then(response => {
-          this.list = response.data.items;
-          this.total = response.data.total;
-          this.listLoading = false;
-        })
-        .catch(() => {
-          this.list = [];
-          this.total = 0;
-          this.listLoading = false;
-        });
+      try {
+        const res = await messagesentryQueryMsgSentryList(this.listQuery)
+        this.list = res.data.items;
+        this.total = res.data.total;
+      } finally {
+        this.listLoading = false;
+      }
     },
     handleFilter() {
       this.listQuery.page = 1;

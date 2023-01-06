@@ -195,7 +195,7 @@
 </template>
 
 <script>
-import { listStoreType } from '@/api/business/brand'
+import { listStoreType } from '@/api/brand/brandList'
 import { regionData, CodeToText, TextToCode } from 'element-china-area-data'
 import { uploadPath } from '@/api/business/storage'
 export default {

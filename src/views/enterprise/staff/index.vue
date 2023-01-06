@@ -9,7 +9,6 @@
         class="filter-item"
         style="width: 200px;"
         placeholder="请输入员工姓名"
-        @clear="getList"
       />
       <el-input
         v-model="listQuery.phone"
@@ -17,7 +16,6 @@
         class="filter-item"
         style="width: 200px;"
         placeholder="请输入员工电话"
-        @clear="getList"
       />
       <el-select
         v-model="listQuery.status"
@@ -25,7 +23,6 @@
         class="filter-item"
         style="width: 200px;"
         placeholder="选择状态"
-        @clear="getList"
       >
         <el-option
           v-for="item in statusList"

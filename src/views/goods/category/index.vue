@@ -9,7 +9,6 @@
         class="filter-item"
         style="width: 200px;"
         placeholder="输入类目ID"
-        @clear="getList"
       />
       <el-input
         v-model="listQuery.name"
@@ -17,7 +16,6 @@
         class="filter-item"
         style="width: 200px;"
         placeholder="输入类目名称"
-        @clear="getList"
       />
       <el-button
         v-permission="[`GET /admin${api.categoryList}`]"
@@ -46,17 +44,16 @@
         :data="list"
         v-bind="$tableCommonOptions"
       >
-
         <el-table-column align="center" width="100" label="ID" prop="id" fixed="left" />
         <el-table-column align="center" width="150" label="类目名" prop="name" show-overflow-tooltip />
         <el-table-column align="center" width="100" label="类目图标" prop="iconUrl">
           <template slot-scope="{row}">
-            <img v-if="row.iconUrl" :src="row.iconUrl" width="40" />
+            <el-image v-if="row.iconUrl" :src="row.iconUrl" style="width:40px; height:40px" fit="cover" :preview-src-list="[row.iconUrl]" />
           </template>
         </el-table-column>
         <el-table-column align="center" width="100" label="类目图片" prop="picUrl">
           <template slot-scope="{row}">
-            <img v-if="row.picUrl" :src="row.picUrl" width="40" />
+            <el-image v-if="row.picUrl" :src="row.picUrl" style="width:40px; height:40px" fit="cover" :preview-src-list="[row.picUrl]" />
           </template>
         </el-table-column>
         <el-table-column align="center" min-width="150" label="关键字" prop="keywords" show-overflow-tooltip />
@@ -81,7 +78,7 @@
         >
           <template slot-scope="{row}">
             <el-button
-              v-permission="[`POST /admin${api.issueUpdate}`]"
+              v-permission="[`POST /admin${api.categoryUpdate}`]"
               type="primary"
               size="mini"
               @click="handleUpdate(row)"
@@ -97,7 +94,7 @@
       </el-table>
     </div>
 
-    <pagination
+    <Pagination
       :total="total"
       :page.sync="listQuery.page"
       :limit.sync="listQuery.limit"
@@ -116,13 +113,10 @@ import {
   categoryL2, 
   categoryList,
   categoryDelete
-} from '@/api/business/category'
-
-import { getToken } from '@/utils/auth';
-import { getUserInfo } from '@/api/login';
+} from '@/api/goods/goodsCategory'
 import Pagination from '@/components/Pagination'; // Secondary package based on el-pagination
 import EditModal from './components/EditModal'
-import { goodsCatAndBrand } from '@/api/business/goods'
+import { goodsCatAndBrand } from '@/api/goods/goodsList'
 
 export default {
   name: 'Category',
@@ -150,37 +144,19 @@ export default {
       },
     };
   },
-  computed: {
-    headers() {
-      return {
-        'X-Dts-Admin-Token': getToken()
-      };
-    }
-  },
   created() {
-    this.getRoles();
+    this.getList();
   },
   methods: {
-    getRoles() {
-      getUserInfo(getToken())
-        .then(response => {
-          this.getList();
-        })
-        .catch();
-    },
-    getList() {
+    async getList() {
       this.listLoading = true;
-      categoryList(this.listQuery)
-        .then(response => {
-          this.list = response.data.items;
-          this.total = response.data.total;
-          this.listLoading = false;
-        })
-        .catch(() => {
-          this.list = [];
-          this.total = 0;
-          this.listLoading = false;
-        });
+      try {
+        const res = await categoryList(this.listQuery)
+        this.list = res.data.items;
+        this.total = res.data.total;
+      } finally {
+        this.listLoading = false;
+      }
     },
     handleFilter() {
       this.listQuery.page = 1;

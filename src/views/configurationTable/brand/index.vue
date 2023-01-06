@@ -498,8 +498,8 @@
 </style>
 
 <script>
-import { brandList, brandCreate, brandUpdate, brandDelete, brandCatAndAdmin } from '@/api/business/brand'
-import { brandStyleList } from '@/api/business/brandStyle'
+import { brandList, brandCreate, brandUpdate, brandDelete, brandCatAndAdmin } from '@/api/brand/brandList'
+import { brandStyleList } from '@/api/brand/brandStyle'
 import { listStoreType } from '@/api/configurationTable/storeType'
 import { uploadPath } from '@/api/business/storage'
 import { getToken } from '@/utils/auth'

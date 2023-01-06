@@ -274,7 +274,7 @@
 </style>
 
 <script>
-import { goodsList, goodsDelete } from '@/api/business/goods'
+import { goodsList, goodsDelete } from '@/api/goods/goodsList'
 import BackToTop from '@/components/BackToTop'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
 

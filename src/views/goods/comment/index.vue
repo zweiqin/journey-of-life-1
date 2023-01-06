@@ -9,7 +9,6 @@
         class="filter-item"
         style="width: 200px;"
         placeholder="请输入用户编号"
-        @clear="getList"
       />
       <el-input
         v-model="listQuery.valueId"
@@ -17,7 +16,6 @@
         class="filter-item"
         style="width: 200px;"
         placeholder="请输入商品编号"
-        @clear="getList"
       />
       <el-select
         v-model="listQuery.type"
@@ -25,7 +23,6 @@
         class="filter-item"
         style="width: 200px;"
         placeholder="选择评论类型"
-        @clear="getList"
       >
         <el-option
           v-for="item in typeList"
@@ -55,7 +52,7 @@
         v-bind="$tableCommonOptions"
       >
 
-        <el-table-column align="center" width="50" label="ID" prop="id" fixed="left" />
+        <el-table-column align="center" width="100" label="ID" prop="id" fixed="left" />
         <el-table-column align="center" width="150" label="评论类型" prop="type">
           <template slot-scope="{row}">
             {{ row.type | typeFilter(typeList) }}
@@ -65,16 +62,17 @@
         
         <el-table-column align="center" width="100" label="用户头像" prop="userImg">
           <template slot-scope="{row}">
-            <img v-if="row.userImg" :src="row.userImg" width="40" />
+            <el-image v-if="row.userImg" :src="row.userImg" style="width:40px; height:40px" fit="cover" :preview-src-list="[row.userImg]" />
           </template>
         </el-table-column>
         <el-table-column align="center" width="100" label="用户编号" prop="userId" show-overflow-tooltip />
         <el-table-column align="center" min-width="100" label="用户名称" prop="userName" show-overflow-tooltip />
-        <el-table-column align="center" width="100" label="图片" prop="hasPicture">
+        <el-table-column align="center" width="100" label="图片" prop="picUrls">
           <template slot-scope="{row}">
-            <template v-if="row.hasPicture">
-              <img v-for="(item,index) in row.picUrls" :key="index" :src="item" width="40" style="margin-right:4px;" />
-            </template>
+            <div v-if="row.picUrls && row.picUrls.length">
+              <el-image :src="row.picUrls[0]" style="width:40px; height:40px" fit="cover" :preview-src-list="row.picUrls" />
+              <span v-if="row.picUrls.length>1" style="margin-left:8px;">+{{ row.picUrls.length }}</span>
+            </div>
           </template>
         </el-table-column>
         <el-table-column align="center" width="140" label="商品评分" prop="goodsStar">
@@ -120,7 +118,7 @@
       </el-table>
     </div>
 
-    <pagination
+    <Pagination
       :total="total"
       :page.sync="listQuery.page"
       :limit.sync="listQuery.size"
@@ -137,9 +135,7 @@ import {
   api,
   commentList,
   commentDelete
-} from '@/api/business/comment'
-import { getToken } from '@/utils/auth';
-import { getUserInfo } from '@/api/login';
+} from '@/api/goods/goodsComment'
 import Pagination from '@/components/Pagination';
 import EditModal from './components/EditModal'
 
@@ -175,37 +171,19 @@ export default {
       ]
     };
   },
-  computed: {
-    headers() {
-      return {
-        'X-Dts-Admin-Token': getToken()
-      };
-    }
-  },
   created() {
-    this.getRoles();
+    this.getList();
   },
   methods: {
-    getRoles() {
-      getUserInfo(getToken())
-        .then(response => {
-          this.getList();
-        })
-        .catch();
-    },
-    getList() {
+    async getList() {
       this.listLoading = true;
-      commentList(this.listQuery)
-        .then(response => {
-          this.list = response.data.items;
-          this.total = response.data.total;
-          this.listLoading = false;
-        })
-        .catch(() => {
-          this.list = [];
-          this.total = 0;
-          this.listLoading = false;
-        });
+      try {
+        const res = await commentList(this.listQuery)
+        this.list = res.data.items;
+        this.total = res.data.total;
+      } finally {
+        this.listLoading = false;
+      }
     },
     handleFilter() {
       this.listQuery.page = 1;

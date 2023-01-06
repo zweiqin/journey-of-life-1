@@ -39,7 +39,7 @@
   position: relative;
   margin: 0 auto;
   margin-top: 5vh !important;
-  max-height: calc(100% - 180px);
+  max-height: calc(100vh - 100px);
   min-height: 200px;
   display: flex;
   flex-direction: column;

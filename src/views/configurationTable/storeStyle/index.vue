@@ -210,7 +210,7 @@
 </style>
 
 <script>
-import { brandStyleCreate, brandStyleDelete, brandStyleList, brandStyleUpdate } from '@/api/business/brandStyle'
+import { brandStyleCreate, brandStyleDelete, brandStyleList, brandStyleUpdate } from '@/api/brand/brandStyle'
 import { uploadPath } from '@/api/business/storage'
 import { getToken } from '@/utils/auth'
 import Pagination from '@/components/Pagination'

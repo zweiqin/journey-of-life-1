@@ -65,8 +65,6 @@
 
 
 <script>
-import { getToken } from '@/utils/auth';
-import { getUserInfo } from '@/api/login';
 import { statisticalHome } from '@/api/businessManagement/marketingPortrait';
 import XeUtils from 'xe-utils'
 import { commafyFn } from '@/utils'
@@ -104,16 +102,9 @@ export default {
     }
   },
   mounted() {
-    this.getRoles()
+    this.initData()
   },
   methods: {
-    getRoles() {
-      getUserInfo(getToken())
-        .then(response => {
-          this.initData();
-        })
-        .catch();
-    },
     async initData() {
       const res = await statisticalHome()
       this.statisticalDetail = res.data

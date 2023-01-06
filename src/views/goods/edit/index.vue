@@ -419,12 +419,12 @@ import {
   goodsCatAndBrand,
   goodsProductPlaceList,
   goodsDetail
-} from '@/api/business/goods'
+} from '@/api/goods/goodsList'
 import { createStorage } from '@/api/business/storage'
 import { MessageBox } from 'element-ui'
 import { getToken } from '@/utils/auth'
-import { goodsStyleList } from '@/api/business/goodsStyle'
-import { goodsTagList } from '@/api/business/goodsTag'
+import { goodsStyleList } from '@/api/goods/goodsStyle'
+import { goodsTagList } from '@/api/goods/goodsTag'
 import { parseTime } from '@/utils'
 import { regZero, regFloat } from '@/utils/reg'
 import XeUtils from 'xe-utils'
@@ -645,11 +645,6 @@ export default {
     },
     // 品类列表
     async getcategoryList() {
-      let params = {}
-      if (this.$route.query.lastRouter === 'brandListShow') {
-        this.goods.brandId = this.$route.query.brandId
-        params = this.goods.brandId
-      }
       goodsCatAndBrand(params).then(response => {
         this.categoryList = response.data.categoryList
         this.brandList = response.data.brandList
@@ -690,11 +685,7 @@ export default {
       this.attributes = attributes
     },
     handleCancel: function () {
-      if (this.$route.query.lastRouter === 'brandListShow') {
-        this.$router.push({ name: 'brandGoodsListShow', query: { id: this.$route.query.brandId } })
-      } else {
-        this.$router.push({ name: 'GoodsList' })
-      }
+      this.$router.back()
     },
     getCategoryItem() {
       const { category_arr } = this.formData

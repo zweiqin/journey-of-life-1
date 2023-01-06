@@ -185,26 +185,60 @@ export const asyncRouterMap = [
           noCache: true
         },
         children: [
+          // {
+          //   path: 'brandSetting',
+          //   component: () => import('@/views/configurationTable/brandSetting'),
+          //   name: 'BrandSetting',
+          //   meta: {
+          //     perms: ['POST /admin/brand/update', 'GET /admin/brand/list'],
+          //     title: '门店列表',
+          //     noCache: true
+          //   }
+          // },
           {
-            path: 'brandSetting',
-            component: () => import('@/views/configurationTable/brandSetting'),
-            name: 'BrandSetting',
+            path: 'brandList',
+            component: () => import('@/views/brand/brandList'),
+            name: 'BrandList',
+            _ROLES: ['ADMIN'],
             meta: {
-              perms: ['POST /admin/brand/update', 'GET /admin/brand/list'],
+              perms: ['GET /admin/brand/list'],
               title: '门店列表',
               noCache: true
-            }
+            },
           },
           {
-            path: 'salesmanApplication',
-            component: () => import('@/views/applicationManagement/salesmanApplication'),
-            name: 'salesmanApplication',
+            path: 'brandListGoods',
+            component: () => import('@/views/goods/list'),
+            name: 'BrandListGoods',
             meta: {
-              // perms: [],
-              title: '门店申请管理',
+              perms: ['GET /admin/goods/list'],
+              title: '门店-商品',
               noCache: true
-            }
-          }
+            },
+            hidden: true
+          },
+          {
+            path: 'brandStyle',
+            component: () => import('@/views/brand/brandStyle'),
+            name: 'BrandStyle',
+            _ROLES: ['ADMIN'],
+            meta: {
+              perms: ['GET /admin/brand/list'],
+              title: '门店风格',
+              noCache: true
+            },
+          },
+          {
+            path: 'brandApply',
+            component: () => import('@/views/brand/brandApply'),
+            name: 'BrandApply',
+            _ROLES: ['ADMIN'],
+            meta: {
+              perms: ['GET /admin/brand/list'],
+              title: '门店申请',
+              noCache: true
+            },
+          },
         ]
       }
     ]
@@ -247,6 +281,7 @@ export const asyncRouterMap = [
         path: 'list',
         component: () => import('@/views/goods/list'),
         name: 'GoodsList',
+        _ROLES: ['USER'],
         meta: {
           perms: ['GET /admin/goods/list'],
           title: '商品列表',
@@ -274,18 +309,6 @@ export const asyncRouterMap = [
           noCache: true
         },
         hidden: true
-      },
-      {
-        path: 'brandList',
-        component: () => import('@/views/goods/brandList/index'),
-        name: 'BrandGoodsList',
-        _ROLES: ['ADMIN'],
-        meta: {
-          perms: ['GET /admin/brand/list'],
-          title: '门店管理',
-          noCache: true
-        },
-        // hidden: true
       },
       {
         path: 'brandListShow',
@@ -662,7 +685,7 @@ export const asyncRouterMap = [
           perms: ['GET /admin/brand/read'],
           title: '基本信息',
           noCache: true
-        }
+        },
       },
       {
         path: 'roles',

@@ -9,7 +9,6 @@
         class="filter-item"
         style="width: 200px;"
         placeholder="请输入话术"
-        @clear="getList"
       />
       <el-select
         v-model="listQuery.msgSayType"
@@ -17,7 +16,6 @@
         class="filter-item"
         style="width: 200px;"
         placeholder="请选择话术类型"
-        @clear="getList"
       >
         <el-option
           v-for="item in msgSayTypeList"
@@ -54,7 +52,7 @@
         v-bind="$tableCommonOptions"
       >
 
-        <el-table-column align="center" width="50" label="ID" prop="id" fixed="left" />
+        <el-table-column align="center" width="100" label="ID" prop="id" fixed="left" />
         <el-table-column align="center" min-width="150" label="话术内容" prop="say" show-overflow-tooltip />
         <el-table-column align="center" width="150" label="话术类型" prop="userGender">
           <template slot-scope="{row}">
@@ -87,7 +85,7 @@
       </el-table>
     </div>
 
-    <pagination
+    <Pagination
       :total="total"
       :page.sync="listQuery.page"
       :limit.sync="listQuery.size"
@@ -106,8 +104,6 @@ import {
   msgsayMsgSayList,
   msgsayDeleteById,
 } from '@/api/businessManagement/scriptSetting';
-import { getToken } from '@/utils/auth';
-import { getUserInfo } from '@/api/login';
 import Pagination from '@/components/Pagination'; // Secondary package based on el-pagination
 import EditModal from './components/EditModal'
 
@@ -138,42 +134,24 @@ export default {
       msgSayTypeList: []
     };
   },
-  computed: {
-    headers() {
-      return {
-        'X-Dts-Admin-Token': getToken()
-      };
-    }
-  },
   created() {
     this.getMsgSayTypeList();
-    this.getRoles();
+    this.getList();
   },
   methods: {
     async getMsgSayTypeList() {
       const res = await msgsayMsgSayTypeList()
       this.msgSayTypeList = res.data
     },
-    getRoles() {
-      getUserInfo(getToken())
-        .then(response => {
-          this.getList();
-        })
-        .catch();
-    },
-    getList() {
+    async getList() {
       this.listLoading = true;
-      msgsayMsgSayList(this.listQuery)
-        .then(response => {
-          this.list = response.data.items;
-          this.total = response.data.total;
-          this.listLoading = false;
-        })
-        .catch(() => {
-          this.list = [];
-          this.total = 0;
-          this.listLoading = false;
-        });
+      try {
+        const res = await msgsayMsgSayList(this.listQuery)
+        this.list = res.data.items;
+        this.total = res.data.total;
+      } finally {
+        this.listLoading = false;
+      }
     },
     handleFilter() {
       this.listQuery.page = 1;

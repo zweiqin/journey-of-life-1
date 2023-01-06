@@ -4,19 +4,16 @@
     v-bind="modalOptions"
   >
     <el-form ref="formData" :model="formData" :rules="formRules" size="mini" label-width="100px">
-      <el-form-item label="标签值" prop="value">
+      <el-form-item label="风格名称" prop="name">
         <el-input
-          v-model="formData.value"
+          v-model="formData.name"
           maxlength="30"
           show-word-limit
-          placeholder="请输入标签值"
+          placeholder="请输入风格名称"
         />
       </el-form-item>
-      <el-form-item label="排序" prop="sortOrder">
-        <el-input
-          v-model="formData.sortOrder"
-          placeholder="请输入排序"
-        />
+      <el-form-item label="图片" prop="picUrl">
+        <MyUpload v-model="formData.picUrl" />
       </el-form-item>
     
     </el-form>
@@ -28,11 +25,14 @@
 </template>
 
 <script>
-import { goodsTagCreate, goodsTagUpdate } from '@/api/goods/goodsTag';
-import { regInt } from '@/utils/reg'
+import MyUpload from '@/components/MyUpload'
+import { brandStyleCreate, brandStyleUpdate } from '@/api/brand/brandStyle';
 
 export default {
   name: 'EditModal',
+  components: {
+    MyUpload
+  },
   data() {
     return {
       modalOptions: {
@@ -43,17 +43,15 @@ export default {
       visible: false,
       formData: {
         id: '',
-        value: '',
-        sortOrder: '100',
+        name: '',
+        picUrl: '',
       },
       formRules: {
-        value: [
-          { required: true, message: '请输入标签值' },
-          { max: 30, message: '30字以内' },
+        name: [
+          { required: true, message: '请输入风格名称' },
         ],
-        sortOrder: [
-          { required: true, message: '请输入排序' },
-          { pattern: regInt,  message: '请输入正整数' }
+        picUrl: [
+          { required: true, message: '请上传图片' },
         ]
       },
     }
@@ -63,14 +61,14 @@ export default {
       this.visible = false
     },
     handleOpen(params = {}) {
-      this.modalOptions.title = params.id ? '编辑大类标签' : '添加大类标签'
+      this.modalOptions.title = params.id ? '编辑门店风格' : '添加门店风格'
       this.formData = Object.assign(this.$options.data().formData, params)
       this.visible = true
       this.$refs.formData && this.$refs.formData.resetFields()
     },
     async handleSubmit() {
       await this.$validatorForm('formData')
-      const res = this.formData.id ? await goodsTagUpdate(this.formData) : await goodsTagCreate(this.formData)
+      const res = this.formData.id ? await brandStyleUpdate(this.formData) : await brandStyleCreate(this.formData)
       this.$elMessage(`${this.formData.id ? '编辑' : '添加'}成功!`)
       this.$emit('success')
       this.visible = false

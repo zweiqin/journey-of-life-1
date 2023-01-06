@@ -424,7 +424,7 @@
 
 <script>
 import { listGet } from '@/api/applicationManagement/history';
-import { listStoreType } from '@/api/business/brand';
+import { listStoreType } from '@/api/brand/brandList';
 import { roleOptions } from '@/api/business/role';
 import { uploadPath } from '@/api/business/storage';
 import { getToken } from '@/utils/auth';

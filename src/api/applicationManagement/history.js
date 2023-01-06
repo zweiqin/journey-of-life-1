@@ -28,15 +28,6 @@ export function listGet (url, data) {
   })
 }
 
-// 通过id查询列表
-export function idGet (data) {
-  return request({
-    url: '/userup/list',
-    method: 'post',
-    data: data
-  })
-}
-
 // // 改
 // export function listedit (data) {
 //   return request({

@@ -50,7 +50,7 @@
 import {
   issueCreate,
   issueUpdate,
-} from '@/api/business/issue';
+} from '@/api/goods/issue';
 
 export default {
   name: 'EditModal',

@@ -462,7 +462,7 @@
 </style>
 
 <script>
-import { brandList, brandCreate, brandUpdate, brandDelete, brandCatAndAdmin, listStoreType } from '@/api/business/brand'
+import { brandList, brandCreate, brandUpdate, brandDelete, brandCatAndAdmin, listStoreType } from '@/api/brand/brandList'
 import { uploadPath } from '@/api/business/storage'
 import { getToken } from '@/utils/auth'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination

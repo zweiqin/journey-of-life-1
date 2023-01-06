@@ -1,6 +1,5 @@
 <template>
   <div class="app-container">
-
     <div class="body-container">
       <el-card class="box-card">
         <h3 slot="header">编辑门店信息</h3>
@@ -10,8 +9,8 @@
           :rules="formRules"
           label-width="150px"
         >
-          <el-form-item label="品牌商名称" prop="name">
-            <el-input v-model="formData.name" placeholder="请输入品牌商名称" maxlength="30" show-word-limit />
+          <el-form-item label="公司名称" prop="name">
+            <el-input v-model="formData.name" placeholder="请输入公司名称" maxlength="30" show-word-limit />
           </el-form-item>
           <el-form-item label="店主名称" prop="keeperName">
             <el-input v-model="formData.keeperName" placeholder="请输入店主名称" maxlength="30" show-word-limit />
@@ -19,11 +18,11 @@
           <el-form-item label="简介" prop="desc">
             <el-input v-model="formData.desc" type="textarea" placeholder="请输入简介" maxlength="520" :rows="3" show-word-limit />
           </el-form-item>
-          <el-form-item label="门店固定电话" prop="phone">
-            <el-input v-model="formData.phone" placeholder="请输入门店固定电话" maxlength="30" />
+          <el-form-item label="电话" prop="phone">
+            <el-input v-model="formData.phone" placeholder="请输入电话" maxlength="30" />
           </el-form-item>
-          <el-form-item label="门店地址" prop="address">
-            <el-input v-model="formData.address" placeholder="请输入门店地址" maxlength="30" />
+          <el-form-item label="地址" prop="address">
+            <el-input v-model="formData.address" placeholder="请输入地址" maxlength="30" />
           </el-form-item>
           <el-form-item label="经度" prop="longitude">
             <el-input v-model="formData.longitude" placeholder="请输入经度" />
@@ -34,7 +33,7 @@
           <el-form-item label="区域编码" prop="regionCode">
             <el-input v-model="formData.regionCode" placeholder="请输入区域编码" maxlength="30" />
           </el-form-item>
-          <el-form-item label="品牌商图片" prop="picUrl">
+          <el-form-item label="公司图片" prop="picUrl">
             <MyUpload v-model="formData.picUrl" />
           </el-form-item>
           <el-form-item label="Logo" prop="logoUrl">
@@ -100,8 +99,8 @@
 
 <script>
 import MyUpload from '@/components/MyUpload'
-import { brandRead, brandUpdate, brandLabelList } from '@/api/business/brand'
-import { brandStyleList } from '@/api/business/brandStyle'
+import { brandRead, brandUpdate, brandLabelList } from '@/api/brand/brandList'
+import { brandStyleList } from '@/api/brand/brandStyle'
 
 export default {
   name: 'BaseInfo',
@@ -110,10 +109,6 @@ export default {
   },
   data () {
     return {
-      typeOptions: [],
-      styleOptions: [],
-      categoryList: [],
-      adminList: [],
       brandLabelList: [],
       brandStyleList: [],
       formData: {
@@ -135,10 +130,9 @@ export default {
         styleId: '',
         labelId: '',
       },
-      dataForm: {},
       formRules: {
         name: [
-          { required: true, message: '请输入品牌商名称' }
+          { required: true, message: '请输入公司名称' }
         ],
         keeperName: [
           { required: true, message: '请输入店主名称' }
@@ -147,10 +141,10 @@ export default {
           { required: true, message: '请输入简介' }
         ],
         phone: [
-          { required: true, message: '请输入门店固定电话' }
+          { required: true, message: '请输入电话' }
         ],
         address: [
-          { required: true, message: '请输入门店地址' }
+          { required: true, message: '请输入地址' }
         ],
         longitude: [
           { required: true, message: '请输入经度' }
@@ -162,7 +156,7 @@ export default {
           { required: true, message: '请输入区域编码' }
         ],
         picUrl: [
-          { required: true, message: '请上传品牌商图片' }
+          { required: true, message: '请上传公司图片' }
         ],
         licenseUrl: [
           { required: true, message: '请上传营业执照' }
@@ -174,32 +168,6 @@ export default {
           { required: true, message: '请选择门店标签' }
         ],
       },
-      rules: {
-        name: [
-          { required: true, message: '门店名称不能为空', trigger: 'blur' }
-        ],
-        phone: [
-          { required: true, message: '门店固定电话不能为空', trigger: 'blur' }
-        ],
-        brandgenre: [
-          { required: true, message: '门店类型不能为空', trigger: 'blur' }
-        ],
-        licenseUrl: [
-          { required: true, message: '营业执照不能为空', trigger: 'blur' }
-        ],
-        idcardProsUrl: [
-          { required: true, message: '法人身份证正面不能为空', trigger: 'blur' }
-        ],
-        idcardConsUrl: [
-          { required: true, message: '法人身份证反面不能为空', trigger: 'blur' }
-        ],
-        address: [
-          { required: true, message: '门店地址不能为空', trigger: 'blur' }
-        ],
-        styleId: [
-          { required: true, message: '门店风格不能为空', trigger: 'blur' }
-        ]
-      }
     }
   },
   created () {
@@ -239,18 +207,6 @@ export default {
       })
       this.brandStyleList = res.data.items
     },
-    getTypeOption () {
-      listStoreType().then(response => {
-        this.typeOptions = response.data
-      })
-        .catch(() => {
-          this.typeOptions = []
-        })
-    },
-    async getStyleOption () {
-      const res = await brandStyleList()
-      this.styleOptions = res.data.items
-    },
     hanldeReset () {
       this.getInfo()
     },
@@ -259,40 +215,6 @@ export default {
       await brandUpdate(this.formData)
       this.$elMessage('保存成功!')
     },
-    handleCategoryChange (value) {
-      if (value) {
-        this.dataForm.defaultCategoryId = value[value.length - 1]
-      }
-    },
-    handleTypeChange (value) {
-      if (value) {
-        this.dataForm.brandgenre = value[value.length - 1]
-      }
-    },
-    resetForm () {
-      this.dataForm = {
-        id: undefined,
-        brandgenre: undefined,
-        name: '',
-        phone: '',
-        desc: '',
-        picUrl: undefined,
-        floorPrice: undefined,
-        categoryIds: [],
-        adminId: undefined,
-        defaultCategoryId: 1,
-        address: undefined,
-        startTime: undefined,
-        endTime: undefined,
-        licenseUrl: undefined,
-        idcardProsUrl: undefined,
-        idcardConsUrl: undefined,
-        explain: undefined,
-        enableBalance: undefined,
-        balanceRatio: undefined,
-        enableLevel: undefined
-      }
-    }
   }
 }
 </script>

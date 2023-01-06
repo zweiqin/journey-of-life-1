@@ -9,7 +9,6 @@
         class="filter-item"
         style="width: 200px;"
         placeholder="输入问题内容"
-        @clear="getList"
       />
       <el-select
         v-model="listQuery.type"
@@ -17,7 +16,6 @@
         class="filter-item"
         style="width: 200px;"
         placeholder="选择问题范围"
-        @clear="getList"
       >
         <el-option
           v-for="item in issueGetTypeEnumList"
@@ -32,7 +30,6 @@
         class="filter-item"
         style="width: 200px;"
         placeholder="选择门店"
-        @clear="getList"
       >
         <el-option
           v-for="item in brandList"
@@ -69,7 +66,7 @@
         v-bind="$tableCommonOptions"
       >
 
-        <el-table-column align="center" width="50" label="ID" prop="id" fixed="left" />
+        <el-table-column align="center" width="100" label="ID" prop="id" fixed="left" />
         <el-table-column align="center" width="150" label="问题范围" prop="type" show-overflow-tooltip>
           <template slot-scope="{row}">
             {{ row.type | typeFilter(issueGetTypeEnumList) }}
@@ -126,7 +123,7 @@
       </el-table>
     </div>
 
-    <pagination
+    <Pagination
       :total="total"
       :page.sync="listQuery.page"
       :limit.sync="listQuery.size"
@@ -145,12 +142,10 @@ import {
   issueList,
   issueDelete,
   issueChangeEnable,
-} from '@/api/business/issue';
-import { getToken } from '@/utils/auth';
-import { getUserInfo } from '@/api/login';
+} from '@/api/goods/issue';
 import Pagination from '@/components/Pagination'; // Secondary package based on el-pagination
 import EditModal from './components/EditModal'
-import { goodsCatAndBrand } from '@/api/business/goods'
+import { goodsCatAndBrand } from '@/api/goods/goodsList'
 
 export default {
   name: 'Issue',
@@ -181,17 +176,10 @@ export default {
       issueGetTypeEnumList: []
     };
   },
-  computed: {
-    headers() {
-      return {
-        'X-Dts-Admin-Token': getToken()
-      };
-    }
-  },
   created() {
     this.getBrandList();
     this.getIssueGetTypeEnumList();
-    this.getRoles();
+    this.getList();
   },
   methods: {
     async getIssueGetTypeEnumList() {
@@ -202,26 +190,15 @@ export default {
       const res = await goodsCatAndBrand()
       this.brandList = res.data.brandList
     },
-    getRoles() {
-      getUserInfo(getToken())
-        .then(response => {
-          this.getList();
-        })
-        .catch();
-    },
-    getList() {
+    async getList() {
       this.listLoading = true;
-      issueList(this.listQuery)
-        .then(response => {
-          this.list = response.data.items;
-          this.total = response.data.total;
-          this.listLoading = false;
-        })
-        .catch(() => {
-          this.list = [];
-          this.total = 0;
-          this.listLoading = false;
-        });
+      try {
+        const res = await issueList(this.listQuery)
+        this.list = res.data.items;
+        this.total = res.data.total;
+      } finally {
+        this.listLoading = false;
+      }
     },
     handleFilter() {
       this.listQuery.page = 1;

@@ -45,7 +45,7 @@
 import {
   keywordCreate,
   keywordUpdate,
-} from '@/api/business/keyword';
+} from '@/api/goods/keyword';
 
 export default {
   name: 'EditModal',

@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import { goodsTagCreate, goodsTagUpdate } from '@/api/business/goodsTag';
+import { goodsTagCreate, goodsTagUpdate } from '@/api/goods/goodsTag';
 import { regInt } from '@/utils/reg'
 
 export default {

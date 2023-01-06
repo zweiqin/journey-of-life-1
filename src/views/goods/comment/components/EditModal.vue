@@ -30,7 +30,7 @@
 
 <script>
 import MyUpload from '@/components/MyUpload'
-import { commentBrandReply } from '@/api/business/comment';
+import { commentBrandReply } from '@/api/goods/goodsComment';
 import { regInt } from '@/utils/reg'
 
 export default {

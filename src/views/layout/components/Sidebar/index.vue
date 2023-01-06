@@ -32,7 +32,7 @@ function renderMenu(route, roles = []) {
       if (roles.includes('USER')) {
         return {
           ...item,
-          hidden: !isAdmin
+          hidden: isAdmin
         }
       // admin专属页面
       } else if (roles.includes('ADMIN')) {
