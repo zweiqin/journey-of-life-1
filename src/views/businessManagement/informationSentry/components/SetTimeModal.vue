@@ -3,7 +3,14 @@
     :visible.sync="visible"
     v-bind="modalOptions"
   >
-    <el-form ref="formData" :model="formData" :rules="formRules" size="mini" label-width="100px">
+    <el-form
+      ref="formData"
+      :model="formData"
+      :rules="formRules"
+      size="mini"
+      label-suffix=":"
+      label-width="100px"
+    >
       <el-form-item label="报警时间" prop="setTime">
         <el-input v-model.trim="formData.setTime" clearable placeholder="请输入报警时间" style="width:200px">
           <template slot="append">天</template>

@@ -8,6 +8,7 @@
       :model="formData"
       :rules="formRules"
       size="mini"
+      label-suffix=":"
       label-width="100px"
     >
       <el-form-item label="类目名称" prop="name">

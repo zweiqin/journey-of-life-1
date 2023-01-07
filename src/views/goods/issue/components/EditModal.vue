@@ -8,6 +8,7 @@
       :model="formData"
       :rules="formRules"
       size="mini"
+      label-suffix=":"
       label-width="100px"
     >
       <el-form-item label="问题范围" prop="type">

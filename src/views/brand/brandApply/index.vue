@@ -60,8 +60,9 @@
         <el-table-column align="center" min-width="150" label="创建时间" prop="addTime" />
         <el-table-column align="center" min-width="150" label="更新时间" prop="updateTime" />
         <el-table-column
+          align="center"
           label="操作"
-          width="160"
+          width="100"
           fixed="right"
           class-name="small-padding fixed-width"
         >
@@ -69,24 +70,16 @@
             <el-button
               v-if="row.status == 0"
               v-permission="[`POST /admin${api.userupManage}`]"
-              type="primary"
               size="mini"
               @click="handleUpdate(row.id, 5)"
             >开始审核</el-button>
             <el-button
               v-if="row.status == 1"
               v-permission="[`POST /admin${api.userupManage}`]"
-              type="danger"
-              size="mini"
-              @click="handleUpdate(row.id, 2)"
-            >驳回</el-button>
-            <el-button
-              v-permission="[`POST /admin${api.userupManage}`]"
-              v-if="row.status == 1"
               type="warning"
               size="mini"
-              @click="handleUpgrade(row)"
-            >通过并注册</el-button>
+              @click="handleExamine(row)"
+            >门店审核</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -99,6 +92,8 @@
       @pagination="getList"
     />
 
+    <!-- 审核 -->
+    <ExamineModal ref="ExamineModal" @success="getList" />
   </div>
 </template>
 
@@ -110,11 +105,13 @@ import {
   userupSignin,
 } from '@/api/brand/brandApply'
 import Pagination from '@/components/Pagination';
+import ExamineModal from './components/ExamineModal';
 
 export default {
   name: 'BrandApply',
   components: {
     Pagination,
+    ExamineModal,
   },
   filters: {
     typeFilter(val, list = []) {
@@ -169,15 +166,9 @@ export default {
       this.$elMessage('操作成功!')
       this.getList()
     },
-    // 状态5的时候，手动升级
-    async handleUpgrade({ id, userId }) {
-      await userupSignin({
-        id,
-        userId
-      })
-      this.$elMessage('操作成功!')
-      this.getList()
-    },
+    handleExamine(item) {
+      this.$refs.ExamineModal && this.$refs.ExamineModal.handleOpen(item)
+    }
   }
 };
 </script>

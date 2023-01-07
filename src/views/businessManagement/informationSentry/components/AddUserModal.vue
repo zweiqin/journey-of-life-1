@@ -3,7 +3,14 @@
     :visible.sync="visible"
     v-bind="modalOptions"
   >
-    <el-form ref="formData" :model="formData" :rules="formRules" size="mini" label-width="100px">
+    <el-form
+      ref="formData"
+      :model="formData"
+      :rules="formRules"
+      size="mini"
+      label-suffix=":"
+      label-width="100px"
+    >
       <el-form-item label="客户名称" prop="userName">
         <el-input v-model.trim="formData.userName" clearable placeholder="请输入客户名称" />
       </el-form-item>

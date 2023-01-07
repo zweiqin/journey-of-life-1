@@ -3,7 +3,14 @@
     :visible.sync="visible"
     v-bind="modalOptions"
   >
-    <el-form ref="formData" :model="formData" :rules="formRules" size="mini" label-width="100px">
+    <el-form
+      ref="formData"
+      :model="formData"
+      :rules="formRules"
+      size="mini"
+      label-suffix=":"
+      label-width="100px"
+    >
       <el-form-item label="风格名称" prop="name">
         <el-input
           v-model="formData.name"

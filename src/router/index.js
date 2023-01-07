@@ -315,6 +315,7 @@ export const asyncRouterMap = [
         component: () => import('@/views/goods/brandListShow'),
         name: 'brandGoodsListShow',
         meta: {
+          perms: ['GET /admin/goods/list'],
           title: '门店-商品展示',
           noCache: true
         },

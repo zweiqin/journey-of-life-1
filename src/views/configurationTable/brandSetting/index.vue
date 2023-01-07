@@ -8,6 +8,8 @@
           ref="formData"
           :model="formData"
           :rules="formRules"
+          size="mini"
+          label-suffix=":"
           label-width="150px"
         >
           <el-form-item label="品牌商名称" prop="name">
