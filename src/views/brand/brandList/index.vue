@@ -135,7 +135,7 @@
               type="primary"
               size="mini"
               @click="handleChoose(row)"
-            >选择</el-button>
+            >查看商品</el-button>
             <el-button
               v-permission="[`POST /admin${api.brandDelete}`]"
               type="danger"
@@ -242,7 +242,7 @@ export default {
       this.getList();
     },
     handleChoose (row) {
-      this.$router.push({ name: 'BrandListGoods', query: { brandId: row.id } })
+      this.$router.push({ name: 'BrandGoods', query: { brandId: row.id } })
     },
     async handleDelete({ id }) {
       await this.$elConfirm('确认删除?')

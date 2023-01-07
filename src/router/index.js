@@ -207,9 +207,9 @@ export const asyncRouterMap = [
             },
           },
           {
-            path: 'brandListGoods',
-            component: () => import('@/views/goods/list'),
-            name: 'BrandListGoods',
+            path: 'brandGoods',
+            component: () => import('@/views/brand/brandGoods'),
+            name: 'BrandGoods',
             meta: {
               perms: ['GET /admin/goods/list'],
               title: '门店-商品',

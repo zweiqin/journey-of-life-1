@@ -739,16 +739,9 @@ export default {
         products: this.products,
         attributes: this.attributes
       }
-      goodsUpdate(finalGoods).then(response => {
-        this.$elMessage('保存成功！')
-        if (this.$route.query.lastRouter === 'brandListShow') {
-          this.$router.push({ name: 'brandGoodsListShow', query: { id: this.$route.query.brandId } })
-        } else {
-          this.$router.push({ name: 'GoodsList' })
-        }
-      }).catch(err => {
-        this.$elMessage(err.errmsg, 'error')
-      })
+      await goodsUpdate(finalGoods)
+      this.$elMessage('保存成功！')
+      this.$router.back()
     },
     handleClose (idx) {
       this.formData.keywords.splice(idx, 1)
