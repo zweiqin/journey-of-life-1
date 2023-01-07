@@ -11,22 +11,41 @@
       label-suffix=":"
       label-width="100px"
     >
-      <el-form-item label="部门名称" prop="name">
-        <el-input
-          v-model="formData.name"
-          maxlength="30"
-          show-word-limit
-          placeholder="请输入部门名称"
+      <el-form-item label="生日" prop="birthday">
+        <el-date-picker
+          v-model="formData.birthday"
+          :disabled="!isAdmin"
+          type="date"
+          value-format="yyyy-MM-dd"
+          placeholder="选择生日"
         />
       </el-form-item>
-      <el-form-item label="说明" prop="desc">
+      <el-form-item label="区域编号" prop="regionCode">
         <el-input
-          v-model="formData.desc"
+          v-model="formData.regionCode"
+          :disabled="!isAdmin"
+          placeholder="请输入区域编号"
+        />
+      </el-form-item>
+      <el-form-item label="门店备注" prop="brandRemark">
+        <el-input
+          v-model="formData.brandRemark"
           type="textarea"
           :autosize="{ minRows: 3, maxRows: 5 }"
           maxlength="520"
           show-word-limit
-          placeholder="请输入说明"
+          placeholder="请输入门店备注"
+        />
+      </el-form-item>
+      <el-form-item label="平台备注" prop="platformRemark">
+        <el-input
+          v-model="formData.platformRemark"
+          type="textarea"
+          :disabled="!isAdmin"
+          :autosize="{ minRows: 3, maxRows: 5 }"
+          maxlength="520"
+          show-word-limit
+          placeholder="请输入平台备注"
         />
       </el-form-item>
     
@@ -39,10 +58,19 @@
 </template>
 
 <script>
-import { roleCreate, roleUpdate } from '@/api/enterprise/role'
+import { userUpdate, brandStyleUpdate } from '@/api/userManagement/memberList';
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'EditModal',
+  computed: {
+    ...mapGetters([
+      'roles',
+    ]),
+    isAdmin() {
+      return this.roles.includes('超级管理员')
+    },
+  },
   data() {
     return {
       modalOptions: {
@@ -53,18 +81,18 @@ export default {
       visible: false,
       formData: {
         id: '',
-        name: '',
-        sortOrder: '100',
+        birthday: '',
+        regionCode: '',
+        brandRemark: '',
+        platformRemark: '',
       },
       formRules: {
-        name: [
-          { required: true, message: '请输入部门名称' },
-          { max: 30, message: '30字以内' },
-        ],
-        desc: [
-          { max: 520, message: '520字以内' },
-        ]
       },
+      pickerOptions: {
+        disabledDate(time) {
+          return time.getTime() > Date.now();
+        },
+      }
     }
   },
   methods: {
@@ -72,7 +100,7 @@ export default {
       this.visible = false
     },
     handleOpen(params = {}) {
-      this.modalOptions.title = params.id ? '编辑部门' : '添加部门'
+      this.modalOptions.title = params.id ? '编辑会员信息' : '添加会员信息'
       this.formData = Object.assign(this.$options.data().formData, params)
       this.visible = true
       this.$refs.formData && this.$refs.formData.resetFields()
@@ -81,9 +109,9 @@ export default {
       const loading = this.$elLoading()
       try {
         await this.$validatorForm('formData')
-        const res = this.formData.id ? await roleUpdate(this.formData) : await roleCreate(this.formData)
+        const res = await userUpdate(this.formData)
         loading.close()
-        this.$elMessage(`${this.formData.id ? '编辑' : '添加'}成功!`)
+        this.$elMessage(`编辑成功!`)
         this.$emit('success')
         this.visible = false
       } catch(e) {

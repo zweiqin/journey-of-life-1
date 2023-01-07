@@ -227,11 +227,17 @@ export default {
       }
     },
     async handleSubmit() {
-      await this.$validatorForm('formData')
-      const res = await brandCreate(this.formData)
-      this.$elMessage(`添加成功!`)
-      this.$emit('success')
-      this.visible = false
+      const loading = this.$elLoading()
+      try {
+        await this.$validatorForm('formData')
+        const res = await brandCreate(this.formData)
+        loading.close()
+        this.$elMessage(`添加成功!`)
+        this.$emit('success')
+        this.visible = false
+      } catch(e) {
+        loading.close()
+      }
     },
   }
 }

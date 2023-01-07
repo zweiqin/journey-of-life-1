@@ -80,17 +80,18 @@ export default {
       this.assignedPermissions = res.data.assignedPermissions
     },
     async handleSubmit() {
-      const permissions = this.$refs.tree.getCheckedKeys(true)
       const loading = this.$elLoading()
       try {
+        const permissions = this.$refs.tree.getCheckedKeys(true)
         await rolePermissions({
           roleId: this.formData.id,
           permissions
         })
+        loading.close()
         this.$elMessage('授权成功!')
         this.$emit('success')
         this.visible = false
-      } finally {
+      } catch(e) {
         loading.close()
       }
     },

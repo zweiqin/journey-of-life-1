@@ -3,24 +3,15 @@
 
     <!-- 查询和其他操作 -->
     <div class="filter-container">
-      <el-input
-        v-model="listQuery.name"
-        clearable
-        class="filter-item"
-        style="width: 200px;"
-        placeholder="请输入风格名称"
-      />
       <el-button
-        v-permission="[`GET /admin${api.brandStyleList}`]"
+        v-permission="[`GET /admin${api.brandLevelList}`]"
         size="mini"
         class="filter-item"
-        type="primary"
         icon="el-icon-search"
-        style="margin-left:10px;"
         @click="handleFilter"
-      >查找</el-button>
+      >刷新</el-button>
       <el-button
-        v-permission="[`POST /admin${api.brandStyleCreate}`]"
+        v-permission="[`POST /admin${api.brandLevelCreate}`]"
         size="mini"
         class="filter-item"
         type="primary"
@@ -40,12 +31,14 @@
       >
 
         <el-table-column align="center" width="100" label="ID" prop="id" fixed="left" />
-        <el-table-column align="center" min-width="150" label="风格名称" prop="name" show-overflow-tooltip />
-        <el-table-column align="center" width="100" label="图片" prop="picUrl">
-          <template slot-scope="{row}">
-            <el-image v-if="row.picUrl" :src="row.picUrl" style="width:40px; height:40px" fit="cover" :preview-src-list="[row.picUrl]" />
-          </template>
-        </el-table-column>
+        <el-table-column align="center" width="100" label="门店ID" prop="brandId" />
+        <el-table-column align="center" min-width="100" label="等级层级" prop="levelTier" show-overflow-tooltip />
+        <el-table-column align="center" min-width="150" label="等级名称" prop="name" show-overflow-tooltip />
+        <el-table-column align="center" min-width="100" label="等级折扣" prop="discount" show-overflow-tooltip />
+        <el-table-column align="center" min-width="150" label="等级描述" prop="description" show-overflow-tooltip />
+        <el-table-column align="center" min-width="150" label="等级所需消费总额" prop="moneyCriterion" show-overflow-tooltip />
+        <el-table-column align="center" min-width="150" label="等级所需消费次数" prop="countCriterion" show-overflow-tooltip />
+        <el-table-column align="center" min-width="150" label="等级所需消费的产品" prop="goodIdCriterion" show-overflow-tooltip />
         <el-table-column align="center" min-width="150" label="创建时间" prop="addTime" />
         <el-table-column align="center" min-width="150" label="更新时间" prop="updateTime" />
         <el-table-column
@@ -56,13 +49,13 @@
         >
           <template slot-scope="{row}">
             <el-button
-              v-permission="[`POST /admin${api.brandStyleUpdate}`]"
+              v-permission="[`POST /admin${api.brandLevelUpdate}`]"
               type="primary"
               size="mini"
               @click="handleUpdate(row)"
             >编辑</el-button>
             <el-button
-              v-permission="[`POST /admin${api.brandStyleDelete}`]"
+              v-permission="[`POST /admin${api.brandLevelDelete}`]"
               type="danger"
               size="mini"
               @click="handleDelete(row)"
@@ -87,14 +80,14 @@
 <script>
 import {
   api,
-  brandStyleList,
-  brandStyleDelete
-} from '@/api/brand/brandStyle'
+  brandLevelList,
+  brandLevelDelete
+} from '@/api/brand/brandLevel'
 import Pagination from '@/components/Pagination';
 import EditModal from './components/EditModal'
 
 export default {
-  name: 'BrandStyle',
+  name: 'BrandLevel',
   components: {
     Pagination,
     EditModal,
@@ -119,7 +112,7 @@ export default {
     async getList() {
       this.listLoading = true;
       try {
-        const res = await brandStyleList(this.listQuery)
+        const res = await brandLevelList(this.listQuery)
         this.list = res.data.items;
         this.total = res.data.total;
       } finally {
@@ -130,12 +123,12 @@ export default {
       this.listQuery.page = 1;
       this.getList();
     },
-    async handleUpdate({ id, value, sortOrder }) {
-      this.$refs.EditModal && this.$refs.EditModal.handleOpen({ id, value, sortOrder })
+    async handleUpdate({ id, name, discount, description, moneyCriterion, countCriterion, goodIdCriterion }) {
+      this.$refs.EditModal && this.$refs.EditModal.handleOpen({ id, name, discount, description, moneyCriterion, countCriterion, goodIdCriterion })
     },
     async handleDelete({ id }) {
       await this.$elConfirm('确认删除?')
-      await brandStyleDelete({ id })
+      await brandLevelDelete({ id })
       this.$elMessage('删除成功!')
       this.handleFilter()
     }

@@ -28,7 +28,6 @@ router.beforeEach((to, from, next) => {
         store.dispatch('GetUserInfo').then(res => { // 拉取user_info
           const perms = res.data.perms // note: perms must be a array! such as: ['GET /aaa','POST /bbb']
           store.dispatch('GenerateRoutes', { perms }).then(() => { // 根据perms权限生成可访问的路由表
-            console.log('thenthenthen', perms)
             router.addRoutes(store.getters.addRouters) // 动态添加可访问路由表
             next({ ...to, replace: true }) // hack方法 确保addRoutes已完成 ,set the replace: true so the navigation will not leave a history record
           })
@@ -50,7 +49,6 @@ router.beforeEach((to, from, next) => {
     }
   } else {
     /* has no token*/
-    // console.log(whiteList.indexOf(to.path))
     if (whiteList.indexOf(to.path) !== -1) { // 在免登录白名单，直接进入
       next()
     } else {

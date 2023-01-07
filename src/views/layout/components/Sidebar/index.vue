@@ -19,34 +19,6 @@ import { mapGetters } from 'vuex'
 import SidebarItem from './SidebarItem'
 import XeUtils from 'xe-utils'
 
-function renderMenu(route, roles = []) {
-  const isAdmin = roles.includes('超级管理员')
-  const _route = route.map(item => {
-    if (item.children && Array.isArray(item.children) && item.children.length) {
-      item.children = renderMenu(item.children, roles)
-    }
-    // 菜单权限
-    if (item._ROLES) {
-      const roles = item._ROLES
-      // 非admin显示页面
-      if (roles.includes('USER')) {
-        return {
-          ...item,
-          hidden: isAdmin
-        }
-      // admin专属页面
-      } else if (roles.includes('ADMIN')) {
-        return {
-          ...item,
-          hidden: !isAdmin
-        }
-      }
-    }
-    return item
-  })
-  return _route
-}
-
 export default {
   components: { SidebarItem },
   computed: {
@@ -59,7 +31,18 @@ export default {
       return !this.sidebar.opened
     },
     menuList() {
-      const routers = renderMenu(XeUtils.clone(this.permission_routers, true), this.roles)
+      const isAdmin = this.roles.includes('超级管理员')
+      const routers = XeUtils.mapTree(this.permission_routers, item => {
+        if (item._ROLES) {
+          if (item._ROLES.includes('USER')) {
+            item.hidden = isAdmin
+          }
+          if (item._ROLES.includes('ADMIN')) {
+            item.hidden = !isAdmin
+          }
+        }
+        return item
+      })
       return routers
     }
   }

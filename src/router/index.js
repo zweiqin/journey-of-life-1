@@ -132,21 +132,21 @@ export const asyncRouterMap = [
     meta: { title: '会员系统', icon: 'peoples', noCache: true },
     children: [
       {
-        path: 'user',
+        path: 'userManagement',
         component: () => import('@/views/children'),
         redirect: 'noredirect',
         alwaysShow: true,
-        name: 'userManage',
+        name: 'userManagement',
         meta: {
           title: '用户管理',
         },
         children: [
           {
-            path: 'user',
-            component: () => import('@/views/user/user'),
+            path: 'memberList',
+            component: () => import('@/views/userManagement/memberList'),
             name: 'user',
             meta: {
-              perms: ['GET /admin/user/list', 'POST /admin/user/approveAgency', 'GET /admin/user/detailApprove', 'GET /admin/user/levelList'],
+              perms: ['GET /admin/user/list'],
               title: '会员管理',
               noCache: true
             }
@@ -164,15 +164,37 @@ export const asyncRouterMap = [
         },
         children: [
           {
-            path: 'account',
-            component: () => import('@/views/user/account'),
-            name: 'account',
+            path: 'commissionRecordList',
+            component: () => import('@/views/brand/commissionRecordList'),
+            name: 'CommissionRecordList',
+            _ROLES: ['ADMIN'],
             meta: {
-              perms: ['GET /admin/brokerage/list', 'POST /admin/brokerage/approve'],
-              title: '佣金管理',
+              perms: ['GET /admin/commission/recordList'],
+              title: '佣金流水列表',
               noCache: true
-            }
-          }
+            },
+          },
+          {
+            path: 'commissionList',
+            component: () => import('@/views/brand/commissionList'),
+            name: 'CommissionList',
+            _ROLES: ['ADMIN'],
+            meta: {
+              perms: ['GET /admin/commission/list'],
+              title: '佣金提现申请列表',
+              noCache: true
+            },
+          },
+          {
+            path: 'comModule',
+            component: () => import('@/views/brand/comModule'),
+            name: 'ComModule',
+            meta: {
+              perms: ['GET /admin/comModule/list'],
+              title: '佣金板块',
+              noCache: true
+            },
+          },
         ]
       },
       {
@@ -180,21 +202,12 @@ export const asyncRouterMap = [
         component: () => import('@/views/children'),
         redirect: 'noredirect',
         alwaysShow: true,
+        _ROLES: ['ADMIN'],
         meta: {
           title: '门店管理',
           noCache: true
         },
         children: [
-          // {
-          //   path: 'brandSetting',
-          //   component: () => import('@/views/configurationTable/brandSetting'),
-          //   name: 'BrandSetting',
-          //   meta: {
-          //     perms: ['POST /admin/brand/update', 'GET /admin/brand/list'],
-          //     title: '门店列表',
-          //     noCache: true
-          //   }
-          // },
           {
             path: 'brandList',
             component: () => import('@/views/brand/brandList'),
@@ -223,7 +236,7 @@ export const asyncRouterMap = [
             name: 'BrandStyle',
             _ROLES: ['ADMIN'],
             meta: {
-              perms: ['GET /admin/brand/list'],
+              perms: ['GET /admin/brandStyle/list'],
               title: '门店风格',
               noCache: true
             },
@@ -240,7 +253,30 @@ export const asyncRouterMap = [
             },
           },
         ]
-      }
+      },
+      {
+        path: 'memberConfig',
+        component: () => import('@/views/children'),
+        redirect: 'noredirect',
+        alwaysShow: true,
+        meta: {
+          title: '会员配置',
+          noCache: true
+        },
+        children: [
+          {
+            path: 'brandLevel',
+            component: () => import('@/views/brand/brandLevel'),
+            name: 'BrandLevel',
+            // _ROLES: ['USER'],
+            meta: {
+              perms: ['GET /admin/brandLevel/list'],
+              title: '等级列表',
+              noCache: true
+            },
+          },
+        ]
+      },
     ]
   },
   {
@@ -581,69 +617,69 @@ export const asyncRouterMap = [
       }
     ]
   },
-  {
-    path: 'external-link',
-    // component: Layout,
-    redirect: 'noredirect',
-    alwaysShow: true,
-    name: 'externalLink',
-    hidden: true,
-    meta: {
-      title: '外链',
-      icon: 'link'
-    },
-    children: [
-      {
-        path: 'https://cloud.tencent.com/product/cos',
-        meta: {
-          title: '腾讯云存储',
-          // perms: []
-        }
-      },
-      {
-        path: 'https://cloud.tencent.com/product/sms',
-        meta: {
-          title: '腾讯云短信',
-          // perms: []
-        }
-      },
-      {
-        path: 'https://pay.weixin.qq.com/index.php/core/home/login',
-        meta: {
-          title: '微信支付',
-          // perms: []
-        }
-      },
-      {
-        path: 'https://mpkf.weixin.qq.com/',
-        meta: {
-          title: '小程序客服',
-          // perms: []
-        }
-      },
-      {
-        path: 'https://www.alibabacloud.com/zh/product/oss',
-        meta: {
-          title: '阿里云存储',
-          // perms: []
-        }
-      },
-      {
-        path: 'https://www.qiniu.com/products/kodo',
-        meta: {
-          title: '七牛云存储',
-          // perms: []
-        }
-      },
-      {
-        path: 'http://www.kdniao.com/api-track',
-        meta: {
-          title: '快递鸟',
-          // perms: []
-        }
-      }
-    ]
-  },
+  // {
+  //   path: 'external-link',
+  //   // component: Layout,
+  //   redirect: 'noredirect',
+  //   alwaysShow: true,
+  //   name: 'externalLink',
+  //   hidden: true,
+  //   meta: {
+  //     title: '外链',
+  //     icon: 'link'
+  //   },
+  //   children: [
+  //     {
+  //       path: 'https://cloud.tencent.com/product/cos',
+  //       meta: {
+  //         title: '腾讯云存储',
+  //         // perms: []
+  //       }
+  //     },
+  //     {
+  //       path: 'https://cloud.tencent.com/product/sms',
+  //       meta: {
+  //         title: '腾讯云短信',
+  //         // perms: []
+  //       }
+  //     },
+  //     {
+  //       path: 'https://pay.weixin.qq.com/index.php/core/home/login',
+  //       meta: {
+  //         title: '微信支付',
+  //         // perms: []
+  //       }
+  //     },
+  //     {
+  //       path: 'https://mpkf.weixin.qq.com/',
+  //       meta: {
+  //         title: '小程序客服',
+  //         // perms: []
+  //       }
+  //     },
+  //     {
+  //       path: 'https://www.alibabacloud.com/zh/product/oss',
+  //       meta: {
+  //         title: '阿里云存储',
+  //         // perms: []
+  //       }
+  //     },
+  //     {
+  //       path: 'https://www.qiniu.com/products/kodo',
+  //       meta: {
+  //         title: '七牛云存储',
+  //         // perms: []
+  //       }
+  //     },
+  //     {
+  //       path: 'http://www.kdniao.com/api-track',
+  //       meta: {
+  //         title: '快递鸟',
+  //         // perms: []
+  //       }
+  //     }
+  //   ]
+  // },
   {
     path: '/profile',
     component: Layout,

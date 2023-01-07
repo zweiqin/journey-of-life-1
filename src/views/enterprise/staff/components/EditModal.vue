@@ -168,12 +168,18 @@ export default {
       this.roleList = res.data.items;
     },
     async handleSubmit() {
-      await this.$validatorForm('formData')
-      const res = this.formData.id ? await staffUpdate(this.formData) : await staffCreate(this.formData)
-      this.$elMessage(`${this.formData.id ? '编辑' : '添加'}成功!`)
-      this.$emit('success')
-      this.visible = false
-    },
+      const loading = this.$elLoading()
+      try {
+        await this.$validatorForm('formData')
+        const res = this.formData.id ? await staffUpdate(this.formData) : await staffCreate(this.formData)
+        loading.close()
+        this.$elMessage(`${this.formData.id ? '编辑' : '添加'}成功!`)
+        this.$emit('success')
+        this.visible = false
+      } catch(e) {
+        loading.close()
+      }
+    }
   }
 }
 </script>

@@ -3,15 +3,21 @@
 
     <!-- 查询和其他操作 -->
     <div class="filter-container">
-      <el-input
-        v-model="listQuery.name"
-        clearable
+      <el-select
+        v-model="listQuery.level"
         class="filter-item"
         style="width: 200px;"
-        placeholder="请输入风格名称"
-      />
+        placeholder="选择类型"
+      >
+        <el-option
+          v-for="item in statusList"
+          :key="item.value"
+          :label="item.label"
+          :value="item.value"
+        />
+      </el-select>
       <el-button
-        v-permission="[`GET /admin${api.brandStyleList}`]"
+        v-permission="[`GET /admin${api.comModuleList}`]"
         size="mini"
         class="filter-item"
         type="primary"
@@ -20,7 +26,7 @@
         @click="handleFilter"
       >查找</el-button>
       <el-button
-        v-permission="[`POST /admin${api.brandStyleCreate}`]"
+        v-permission="[`POST /admin${api.comModuleAdd}`]"
         size="mini"
         class="filter-item"
         type="primary"
@@ -40,29 +46,44 @@
       >
 
         <el-table-column align="center" width="100" label="ID" prop="id" fixed="left" />
-        <el-table-column align="center" min-width="150" label="风格名称" prop="name" show-overflow-tooltip />
-        <el-table-column align="center" width="100" label="图片" prop="picUrl">
+        <el-table-column align="center" min-width="150" label="板块名" prop="name" show-overflow-tooltip />
+        <el-table-column align="center" min-width="100" label="类型" prop="level">
           <template slot-scope="{row}">
-            <el-image v-if="row.picUrl" :src="row.picUrl" style="width:40px; height:40px" fit="cover" :preview-src-list="[row.picUrl]" />
+            {{ row.level | typeFilter(statusList) }}
+          </template>
+        </el-table-column>
+        <el-table-column align="center" min-width="150" label="业务费用" prop="cost" show-overflow-tooltip />
+        <el-table-column align="center" min-width="200" label="业务内容" prop="content" show-overflow-tooltip />
+        <el-table-column align="center" min-width="200" label="备注" prop="remark" show-overflow-tooltip />
+        <el-table-column align="center" min-width="100" label="费用类型" prop="costType">
+          <template slot-scope="{row}">
+            {{ row.costType | typeFilter(costTypeList) }}
           </template>
         </el-table-column>
         <el-table-column align="center" min-width="150" label="创建时间" prop="addTime" />
         <el-table-column align="center" min-width="150" label="更新时间" prop="updateTime" />
         <el-table-column
           label="操作"
-          width="150"
+          width="200"
           fixed="right"
           class-name="small-padding fixed-width"
         >
           <template slot-scope="{row}">
             <el-button
-              v-permission="[`POST /admin${api.brandStyleUpdate}`]"
+              v-permission="[`POST /admin${api.comModuleUpdate}`]"
               type="primary"
               size="mini"
               @click="handleUpdate(row)"
             >编辑</el-button>
             <el-button
-              v-permission="[`POST /admin${api.brandStyleDelete}`]"
+              v-if="row.level == 2 && row.costType == 2"
+              v-permission="[`POST /admin${api.comModuleSaveRatio}`]"
+              type="warning"
+              size="mini"
+              @click="handleRatio(row)"
+            >设置比例</el-button>
+            <el-button
+              v-permission="[`POST /admin${api.comModuleDeleted}`]"
               type="danger"
               size="mini"
               @click="handleDelete(row)"
@@ -81,23 +102,33 @@
 
     <!-- 新增编辑 -->
     <EditModal ref="EditModal" @success="getList" />
+    <!-- 设置比例 -->
+    <RatioModal ref="RatioModal" @success="getList" />
   </div>
 </template>
 
 <script>
 import {
   api,
-  brandStyleList,
-  brandStyleDelete
-} from '@/api/brand/brandStyle'
+  comModuleList,
+  comModuleDeleted
+} from '@/api/brand/comModule'
 import Pagination from '@/components/Pagination';
 import EditModal from './components/EditModal'
+import RatioModal from './components/RatioModal'
 
 export default {
-  name: 'BrandStyle',
+  name: 'ComModule',
   components: {
     Pagination,
     EditModal,
+    RatioModal,
+  },
+  filters: {
+    typeFilter(val, list = []) {
+      const obj = list.find(item => item.value === +val)
+      return obj ? obj.label : '--'
+    }
   },
   data() {
     return {
@@ -108,8 +139,16 @@ export default {
       listQuery: {
         page: 1,
         limit: 20,
-        name: '',
+        level: 1,
       },
+      statusList: [
+        { label: '板块', value: 1 },
+        { label: '业务', value: 2 },
+      ],
+      costTypeList: [
+        { label: '金额', value: 1 },
+        { label: '比例', value: 2 },
+      ],
     };
   },
   created() {
@@ -119,7 +158,7 @@ export default {
     async getList() {
       this.listLoading = true;
       try {
-        const res = await brandStyleList(this.listQuery)
+        const res = await comModuleList(this.listQuery)
         this.list = res.data.items;
         this.total = res.data.total;
       } finally {
@@ -130,14 +169,19 @@ export default {
       this.listQuery.page = 1;
       this.getList();
     },
-    async handleUpdate({ id, value, sortOrder }) {
-      this.$refs.EditModal && this.$refs.EditModal.handleOpen({ id, value, sortOrder })
+    async handleUpdate({ id, level, pid, name, cost, content, remark, costType }) {
+      this.$refs.EditModal && this.$refs.EditModal.handleOpen({ id, level, pid, name, cost, content, remark, costType })
     },
     async handleDelete({ id }) {
       await this.$elConfirm('确认删除?')
-      await brandStyleDelete({ id })
+      await comModuleDeleted({ id })
       this.$elMessage('删除成功!')
       this.handleFilter()
+    },
+    async handleRatio({ id }) {
+      this.$refs.RatioModal && this.$refs.RatioModal.handleOpen({
+        moduleId: id
+      })
     }
   }
 };

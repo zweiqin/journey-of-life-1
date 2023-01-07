@@ -3,30 +3,14 @@
 
     <!-- 查询和其他操作 -->
     <div class="filter-container">
-      <el-input
-        v-model="listQuery.name"
-        clearable
-        class="filter-item"
-        style="width: 200px;"
-        placeholder="请输入风格名称"
-      />
       <el-button
-        v-permission="[`GET /admin${api.brandStyleList}`]"
+        v-permission="[`POST /admin${api.commissionRecordList}`]"
         size="mini"
         class="filter-item"
         type="primary"
         icon="el-icon-search"
-        style="margin-left:10px;"
         @click="handleFilter"
-      >查找</el-button>
-      <el-button
-        v-permission="[`POST /admin${api.brandStyleCreate}`]"
-        size="mini"
-        class="filter-item"
-        type="primary"
-        icon="el-icon-edit"
-        @click="$refs.EditModal && $refs.EditModal.handleOpen({ id: '' })"
-      >添加</el-button>
+      >刷新</el-button>
     </div>
 
     <!-- 查询结果 -->
@@ -39,11 +23,13 @@
         v-bind="$tableCommonOptions"
       >
 
-        <el-table-column align="center" width="100" label="ID" prop="id" fixed="left" />
-        <el-table-column align="center" min-width="150" label="风格名称" prop="name" show-overflow-tooltip />
-        <el-table-column align="center" width="100" label="图片" prop="picUrl">
+        <el-table-column align="center" width="50" label="ID" prop="id" fixed="left" />
+        <el-table-column align="center" min-width="100" label="申请提现的会员id" prop="userId" show-overflow-tooltip />
+        <el-table-column align="center" min-width="150" label="提现的佣金金额" prop="commission" show-overflow-tooltip />
+        <el-table-column align="center" min-width="150" label="当前佣金余额" prop="balance" show-overflow-tooltip />
+        <el-table-column align="center" min-width="100" label="状态" prop="type">
           <template slot-scope="{row}">
-            <el-image v-if="row.picUrl" :src="row.picUrl" style="width:40px; height:40px" fit="cover" :preview-src-list="[row.picUrl]" />
+            {{ row.type | typeFilter(statusList) }}
           </template>
         </el-table-column>
         <el-table-column align="center" min-width="150" label="创建时间" prop="addTime" />
@@ -75,29 +61,30 @@
     <Pagination
       :total="total"
       :page.sync="listQuery.page"
-      :limit.sync="listQuery.limit"
+      :limit.sync="listQuery.size"
       @pagination="getList"
     />
 
-    <!-- 新增编辑 -->
-    <EditModal ref="EditModal" @success="getList" />
   </div>
 </template>
 
 <script>
 import {
   api,
-  brandStyleList,
-  brandStyleDelete
-} from '@/api/brand/brandStyle'
+  commissionRecordList,
+} from '@/api/brand/commission'
 import Pagination from '@/components/Pagination';
-import EditModal from './components/EditModal'
 
 export default {
-  name: 'BrandStyle',
+  name: 'CommissionList',
   components: {
     Pagination,
-    EditModal,
+  },
+  filters: {
+    typeFilter(val, list = []) {
+      const obj = list.find(item => item.value === +val)
+      return obj ? obj.label : '--'
+    }
   },
   data() {
     return {
@@ -110,6 +97,11 @@ export default {
         limit: 20,
         name: '',
       },
+      statusList: [
+        { label: '申请中', value: 0 },
+        { label: '失败', value: -1 },
+        { label: '成功', value: 1 },
+      ]
     };
   },
   created() {
@@ -119,7 +111,7 @@ export default {
     async getList() {
       this.listLoading = true;
       try {
-        const res = await brandStyleList(this.listQuery)
+        const res = await commissionRecordList(this.listQuery)
         this.list = res.data.items;
         this.total = res.data.total;
       } finally {
@@ -130,15 +122,6 @@ export default {
       this.listQuery.page = 1;
       this.getList();
     },
-    async handleUpdate({ id, value, sortOrder }) {
-      this.$refs.EditModal && this.$refs.EditModal.handleOpen({ id, value, sortOrder })
-    },
-    async handleDelete({ id }) {
-      await this.$elConfirm('确认删除?')
-      await brandStyleDelete({ id })
-      this.$elMessage('删除成功!')
-      this.handleFilter()
-    }
   }
 };
 </script>

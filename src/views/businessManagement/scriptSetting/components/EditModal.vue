@@ -88,11 +88,17 @@ export default {
       this.$refs.formData && this.$refs.formData.resetFields()
     },
     async handleSubmit() {
-      await this.$validatorForm('formData')
-      const res = this.formData.id ? await msgsayUpdateSay(this.formData) : await msgsaySaveMsgSay(this.formData)
-      this.$message.success(`${this.formData.id ? '编辑' : '添加'}成功!`)
-      this.$emit('success')
-      this.visible = false
+      const loading = this.$elLoading()
+      try {
+        await this.$validatorForm('formData')
+        const res = this.formData.id ? await msgsayUpdateSay(this.formData) : await msgsaySaveMsgSay(this.formData)
+        loading.close()
+        this.$message.success(`${this.formData.id ? '编辑' : '添加'}成功!`)
+        this.$emit('success')
+        this.visible = false
+      } catch(e) {
+        loading.close()
+      }
     },
   }
 }
