@@ -95,10 +95,6 @@ export default {
             this.loading = false
             this.$router.push({ path: this.redirect || '/' })
           }).catch(response => {
-            this.$notify.error({
-              title: '失败',
-              message: response.errmsg
-            })
             this.loading = false
           })
         } else {

@@ -24,23 +24,6 @@
           <screenfull class="screenfull right-menu-item" />
         </el-tooltip>
 
-        <el-tooltip
-          :content="$t('navbar.size')"
-          effect="dark"
-          placement="bottom"
-        >
-          <size-select class="international right-menu-item" />
-        </el-tooltip>
-
-        <lang-select class="international right-menu-item" />
-
-        <el-tooltip
-          :content="$t('navbar.theme')"
-          effect="dark"
-          placement="bottom"
-        >
-          <theme-picker class="theme-switch right-menu-item" />
-        </el-tooltip>
       </template>
 
       <el-dropdown
@@ -176,7 +159,7 @@ export default {
   .right-menu {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: flex-end;
     align-items: center;
     height: 100%;
     width: 25%;

@@ -9,7 +9,7 @@
       :rules="formRules"
       size="mini"
       label-suffix=":"
-      label-width="150px"
+      label-width="160px"
     >
       <el-form-item label="等级名称" prop="name">
         <el-input
@@ -53,6 +53,12 @@
           placeholder="请输入等级所需消费的产品"
         />
       </el-form-item>
+      <el-form-item v-if="formData.id" label="调整当前会员的等级" prop="isAdjustUserLevel">
+        <el-radio-group v-model="formData.isAdjustUserLevel">
+          <el-radio :label="1">是</el-radio>
+          <el-radio :label="0">否</el-radio>
+        </el-radio-group>
+      </el-form-item>
     
     </el-form>
     <span slot="footer" class="dialog-footer">
@@ -86,6 +92,7 @@ export default {
         moneyCriterion: '',
         countCriterion: '',
         goodIdCriterion: '',
+        isAdjustUserLevel: 0,
       },
       formRules: {
         name: [
@@ -122,7 +129,16 @@ export default {
       const loading = this.$elLoading()
       try {
         await this.$validatorForm('formData')
-        const res = this.formData.id ? await brandLevelUpdate(this.formData) : await brandLevelCreate(this.formData)
+        const { id, isAdjustUserLevel, moneyCriterion, countCriterion, goodIdCriterion, ...opts } = this.formData
+        const params = {
+          ...opts,
+          id,
+          moneyCriterion: moneyCriterion || '',
+          countCriterion: countCriterion || '',
+          goodIdCriterion: goodIdCriterion || '',
+          isAdjustUserLevel: id ? isAdjustUserLevel : undefined
+        }
+        const res = this.formData.id ? await brandLevelUpdate(params) : await brandLevelCreate(params)
         loading.close()
         this.$elMessage(`${this.formData.id ? '编辑' : '添加'}成功!`)
         this.$emit('success')

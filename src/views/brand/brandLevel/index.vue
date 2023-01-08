@@ -123,8 +123,8 @@ export default {
       this.listQuery.page = 1;
       this.getList();
     },
-    async handleUpdate({ id, name, discount, description, moneyCriterion, countCriterion, goodIdCriterion }) {
-      this.$refs.EditModal && this.$refs.EditModal.handleOpen({ id, name, discount, description, moneyCriterion, countCriterion, goodIdCriterion })
+    async handleUpdate({ id, levelTier, name, discount, description, moneyCriterion, countCriterion, goodIdCriterion }) {
+      this.$refs.EditModal && this.$refs.EditModal.handleOpen({ id, levelTier, name, discount, description, moneyCriterion, countCriterion, goodIdCriterion })
     },
     async handleDelete({ id }) {
       await this.$elConfirm('确认删除?')

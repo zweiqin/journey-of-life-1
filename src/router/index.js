@@ -91,7 +91,7 @@ export const constantRouterMap = [
         // component: () => import('@/views/dashboard/index'),
         component: () => import('@/views/homepage/index'),
         name: 'Dashboard',
-        meta: { title: 'dashboard', icon: 'dashboard', noCache: true }
+        meta: { title: 'dashboard', icon: 'home', noCache: true }
       }
     ]
   },
@@ -129,7 +129,11 @@ export const asyncRouterMap = [
     component: Layout,
     alwaysShow: true,
     redirect: 'noredirect',
-    meta: { title: '会员系统', icon: 'peoples', noCache: true },
+    meta: {
+      title: '会员系统',
+      icon: 'member',
+      noCache: true
+    },
     children: [
       {
         path: 'userManagement',
@@ -280,6 +284,29 @@ export const asyncRouterMap = [
     ]
   },
   {
+    path: '/orderManagement',
+    component: Layout,
+    alwaysShow: true,
+    redirect: 'noredirect',
+    meta: {
+      title: '订单管理',
+      icon: 'order',
+      noCache: true
+    },
+    children: [
+      {
+        path: 'orderList',
+        component: () => import('@/views/orderManagement/orderList'),
+        name: 'user',
+        meta: {
+          perms: ['GET /admin/order/list'],
+          title: '订单列表',
+          noCache: true
+        }
+      }
+    ]
+  },
+  {
     path: '/membershipChain',
     component: Layout,
     redirect: 'noredirect',
@@ -288,7 +315,7 @@ export const asyncRouterMap = [
     _ROLES: ['ADMIN'],
     meta: {
       title: '会员关系链',
-      icon: 'membership'
+      icon: 'peoples'
     },
     children: [
       {
@@ -310,7 +337,7 @@ export const asyncRouterMap = [
     name: 'goodsManage',
     meta: {
       title: '商品管理',
-      icon: 'tab'
+      icon: 'goods'
     },
     children: [
       {
@@ -701,7 +728,6 @@ export const asyncRouterMap = [
     ],
     hidden: true
   },
-
   {
     path: '/enterprise',
     component: Layout,
@@ -709,7 +735,7 @@ export const asyncRouterMap = [
     alwaysShow: true,
     meta: {
       title: '企业管理',
-      icon: 'shopping',
+      icon: 'enterprise',
       noCache: true
     },
     children: [
@@ -748,7 +774,11 @@ export const asyncRouterMap = [
     path: '/marketingManagement',
     component: Layout,
     redirect: 'noredirect',
-    meta: { title: '营销管理', icon: 'table', noCache: true },
+    meta: {
+      title: '营销管理',
+      icon: 'marketing',
+      noCache: true
+    },
     children: [
       {
         path: 'couponManagement',
@@ -908,12 +938,15 @@ export const asyncRouterMap = [
       }
     ]
   },
-
   {
     path: '/businessManagement',
     component: Layout,
     redirect: 'noredirect',
-    meta: { title: '业务管理', icon: 'log', noCache: true },
+    meta: {
+      title: '业务管理',
+      icon: 'business',
+      noCache: true
+    },
     children: [
       {
         path: 'informationSentry',
@@ -957,7 +990,6 @@ export const asyncRouterMap = [
       }
     ]
   },
-
   {
     path: '/materialManagement',
     component: Layout,
@@ -966,7 +998,7 @@ export const asyncRouterMap = [
     name: 'materialManagement',
     meta: {
       title: '材料管理',
-      icon: 'table'
+      icon: 'material'
     },
     children: [
       {
@@ -998,7 +1030,6 @@ export const asyncRouterMap = [
       }
     ]
   },
-
   {
     path: '/community',
     component: Layout,
@@ -1008,7 +1039,7 @@ export const asyncRouterMap = [
     meta: {
       perms: ['POST /admin/community/richText/update', 'POST /admin/community/richText/delete', 'POST /admin/community/richText/create', 'GET /admin/community/richText/list', 'GET /admin/community/richText/detail'],
       title: '社区管理',
-      icon: 'table'
+      icon: 'community'
     },
     children: [
       {
@@ -1051,50 +1082,5 @@ export const asyncRouterMap = [
       }
     ]
   },
-
-  {
-    path: '/orderManagement',
-    component: Layout,
-    redirect: 'noredirect',
-    alwaysShow: true,
-    name: 'orderManagement',
-    meta: {
-      title: '订单管理',
-      icon: 'nested'
-    },
-    children: [
-      {
-        path: 'orderCreate',
-        component: () => import('@/views/errorPage/developing'),
-        name: 'orderCreate',
-        meta: {
-          // perms: [],
-          title: '创建订单',
-          noCache: true
-        }
-      },
-      {
-        path: 'order',
-        component: () => import('@/views/mall/order'),
-        name: 'order',
-        meta: {
-          perms: ['GET /admin/order/list', 'POST /admin/order/reply', 'GET /admin/order/detail', 'POST /admin/order/ship', 'GET /admin/order/listShipChannel', 'POST /admin/order/refund'],
-          title: '订单列表',
-          noCache: true
-        }
-      },
-      {
-        path: 'abnormalOrder',
-        component: () => import('@/views/errorPage/developing'),
-        name: 'abnormalOrder',
-        meta: {
-          // perms: [],
-          title: '异常订单',
-          noCache: true
-        }
-      }
-    ]
-  },
-
   { path: '*', redirect: '/404', hidden: true }
 ]
