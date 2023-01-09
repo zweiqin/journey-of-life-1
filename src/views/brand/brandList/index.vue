@@ -197,7 +197,7 @@ export default {
         page: 1,
         limit: 20,
         name: '',
-        regionCode: '',
+        region_arr: [],
         keeperName: '',
         phone: '',
         labelId: '',
@@ -240,7 +240,13 @@ export default {
     async getList() {
       this.listLoading = true;
       try {
-        const res = await brandList(this.listQuery)
+        const { region_arr, ...other } = this.listQuery
+        const regionCode = Array.isArray(region_arr) && region_arr.length ? region_arr[region_arr.length - 1] : ''
+        const params = {
+          ...other,
+          regionCode
+        }
+        const res = await brandList(params)
         this.list = res.data.items;
         this.total = res.data.total;
       } finally {
