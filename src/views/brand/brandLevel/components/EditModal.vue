@@ -48,10 +48,18 @@
         />
       </el-form-item>
       <el-form-item label="等级所需消费的产品" prop="goodIdCriterion">
-        <el-input
+        <el-select
           v-model="formData.goodIdCriterion"
-          placeholder="请输入等级所需消费的产品"
-        />
+          placeholder="请选择商品"
+          filterable
+        >
+          <el-option
+            v-for="item in goodsList"
+            :key="item.id"
+            :label="item.name"
+            :value="item.id"
+          />
+        </el-select>
       </el-form-item>
       <el-form-item v-if="formData.id" label="调整当前会员的等级" prop="isAdjustUserLevel">
         <el-radio-group v-model="formData.isAdjustUserLevel">
@@ -71,6 +79,7 @@
 <script>
 import { brandLevelCreate, brandLevelUpdate } from '@/api/brand/brandLevel';
 import { regZero } from '@/utils/reg'
+import { goodsList } from '@/api/goods/goodsList'
 
 export default {
   name: 'EditModal',
@@ -113,6 +122,7 @@ export default {
           { pattern: regZero,  message: '请输入正整数' }
         ],
       },
+      goodsList: []
     }
   },
   methods: {
@@ -120,10 +130,19 @@ export default {
       this.visible = false
     },
     handleOpen(params = {}) {
+      this.getGoodsList()
       this.modalOptions.title = params.id ? '编辑等级' : '添加等级'
       this.formData = Object.assign(this.$options.data().formData, params)
       this.visible = true
       this.$refs.formData && this.$refs.formData.resetFields()
+    },
+    // 商品列表
+    async getGoodsList() {
+      const res = await goodsList({
+        page: 1,
+        limit: 99999
+      })
+      this.goodsList = res.data.items
     },
     async handleSubmit() {
       await this.$validatorForm('formData')
