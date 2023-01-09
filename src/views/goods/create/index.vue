@@ -699,32 +699,38 @@ export default {
         this.$elMessage('品类有误，请重新选择!', 'warning')
         return
       }
-      const finalGoods = {
-       goods: Object.assign({}, opts, {
-          keywords: keywords.toString(),
-          gallery: Array.isArray(gallery) ? gallery.map(v => v.resData || v) : [],
-          deliveryDay: is_deliveryDay ? '0' : deliveryDay,
-        }, (saleType == 1 ? {
-          timeType,
-          startTime,
-          endTime: timeType === 1 ? endTime : '',
-          limitDays: timeType === 0 ? limitDays : '',
-        } : {
-          timeType: '',
-          startTime: '',
-          endTime: '',
-          limitDays: '',
-        }), {
-          categoryId: categoryItem.value,
-          categoryName: categoryItem.label,
-        }),
-        specifications: this.specifications,
-        products: this.products,
-        attributes: this.attributes
+      const loading = this.$elLoading()
+      try {
+        const finalGoods = {
+         goods: Object.assign({}, opts, {
+            keywords: keywords.toString(),
+            gallery: Array.isArray(gallery) ? gallery.map(v => v.resData || v) : [],
+            deliveryDay: is_deliveryDay ? '0' : deliveryDay,
+          }, (saleType == 1 ? {
+            timeType,
+            startTime,
+            endTime: timeType === 1 ? endTime : '',
+            limitDays: timeType === 0 ? limitDays : '',
+          } : {
+            timeType: '',
+            startTime: '',
+            endTime: '',
+            limitDays: '',
+          }), {
+            categoryId: categoryItem.value,
+            categoryName: categoryItem.label,
+          }),
+          specifications: this.specifications,
+          products: this.products,
+          attributes: this.attributes
+        }
+        await goodsCreate(finalGoods)
+        loading.close()
+        this.$elMessage('保存成功！')
+        this.$router.back()
+      } catch(e) {
+        loading.close()
       }
-      await goodsCreate(finalGoods)
-      this.$elMessage('保存成功！')
-      this.$router.back()
     },
     handleClose (idx) {
       this.formData.keywords.splice(idx, 1)

@@ -114,9 +114,9 @@ export default {
       this.$refs.formData && this.$refs.formData.resetFields()
     },
     async handleSubmit() {
+      await this.$validatorForm('formData')
       const loading = this.$elLoading()
       try {
-        await this.$validatorForm('formData')
         const { level, indirectBusinessRatio, indirectExpandRatio , ...otps } = this.formData
         const params = {
           ...otps,

@@ -1,17 +1,14 @@
 import request from '@/utils/request'
 
-export function listRegion(query) {
-  return request({
-    url: '/region/list',
-    method: 'get',
-    params: query
-  })
+const api = {
+  regionList: '/region/list',
 }
 
-export function listSubRegion(query) {
+// 获取区域集合
+export function regionList(params) {
   return request({
-    url: '/region/clist',
+    url: api.regionList,
     method: 'get',
-    params: query
+    params
   })
 }

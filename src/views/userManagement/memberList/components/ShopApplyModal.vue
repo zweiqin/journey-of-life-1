@@ -11,21 +11,17 @@
       label-suffix=":"
       label-width="100px"
     >
-      <el-form-item label="标签值" prop="value">
-        <el-input
-          v-model="formData.value"
-          maxlength="30"
-          show-word-limit
-          placeholder="请输入标签值"
-        />
+      <el-form-item label="申请类型" prop="applicationType">
+        <el-radio-group v-model="formData.applicationType">
+          <el-radio :label="1">门店</el-radio>
+        </el-radio-group>
       </el-form-item>
-      <el-form-item label="排序" prop="sortOrder">
-        <el-input
-          v-model="formData.sortOrder"
-          placeholder="请输入排序"
-        />
+      <el-form-item label="账号" prop="username">
+        <el-input v-model="formData.username" clearable placeholder="请输入账号" />
       </el-form-item>
-    
+      <el-form-item label="密码" prop="password">
+        <el-input v-model="formData.password" clearable placeholder="请输入密码" />
+      </el-form-item>
     </el-form>
     <span slot="footer" class="dialog-footer">
       <el-button size="mini" @click="handleClose">取 消</el-button>
@@ -35,34 +31,37 @@
 </template>
 
 <script>
-import { goodsTagCreate, goodsTagUpdate } from '@/api/goods/goodsTag';
-import { regInt } from '@/utils/reg'
+import { userupSaveAndSignin } from '@/api/userManagement/memberList'
 
 export default {
-  name: 'EditModal',
+  name: 'ShopApplyModal',
   data() {
     return {
       modalOptions: {
         closeOnClickModal: false,
         width: '520px',
-        title: ''
+        title: '门店申请'
       },
       visible: false,
       formData: {
-        id: '',
-        value: '',
-        sortOrder: '100',
+        userId: '',
+        applicationType: 1,
+        username: '',
+        password: '',
       },
       formRules: {
-        value: [
-          { required: true, message: '请输入标签值' },
-          { max: 30, message: '30字以内' },
+        applicationType: [
+          { required: true, message: '请选择申请类型' },
         ],
-        sortOrder: [
-          { required: true, message: '请输入排序' },
-          { pattern: regInt,  message: '请输入正整数' }
-        ]
-      },
+        username: [
+          { required: true, message: '请输入账号' },
+          { min: 4, message: '不得少于4位', trigger: 'blur' },
+        ],
+        password: [
+          { required: true, message: '请输入密码' },
+          { min: 6, message: '不得少于6位', trigger: 'blur' },
+        ],
+      }
     }
   },
   methods: {
@@ -70,7 +69,6 @@ export default {
       this.visible = false
     },
     handleOpen(params = {}) {
-      this.modalOptions.title = params.id ? '编辑大类标签' : '添加大类标签'
       this.formData = Object.assign(this.$options.data().formData, params)
       this.visible = true
       this.$refs.formData && this.$refs.formData.resetFields()
@@ -79,9 +77,9 @@ export default {
       await this.$validatorForm('formData')
       const loading = this.$elLoading()
       try {
-        const res = this.formData.id ? await goodsTagUpdate(this.formData) : await goodsTagCreate(this.formData)
+        const res = await userupSaveAndSignin(this.formData)
         loading.close()
-        this.$elMessage(`${this.formData.id ? '编辑' : '添加'}成功!`)
+        this.$elMessage()
         this.$emit('success')
         this.visible = false
       } catch(e) {

@@ -32,8 +32,15 @@
       <el-form-item label="纬度" prop="latitude">
         <el-input v-model="formData.latitude" placeholder="请输入纬度" />
       </el-form-item>
-      <el-form-item label="区域编码" prop="regionCode">
-        <el-input v-model="formData.regionCode" placeholder="请输入区域编码" maxlength="30" />
+      <el-form-item label="区域" prop="region_arr">
+        <el-cascader
+          v-model="formData.region_arr"
+          placeholder="请选择区域"
+          :options="common_regionList"
+          :props="{ label: 'name', value: 'code' }"
+          expand-trigger="hover"
+          clearable
+        />
       </el-form-item>
       <el-form-item label="公司图片" prop="picUrl">
         <MyUpload v-model="formData.picUrl" />
@@ -95,10 +102,12 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import MyUpload from '@/components/MyUpload'
 import { brandRead, brandCreate, brandLabelList } from '@/api/brand/brandList'
 import { roleList } from '@/api/enterprise/role'
 import { brandStyleList } from '@/api/brand/brandStyle'
+import XeUtils from 'xe-utils';
 
 export default {
   name: 'EditModal',
@@ -110,6 +119,11 @@ export default {
       type: Array,
       default: () => ([])
     }
+  },
+  computed: {
+    ...mapGetters([
+      'common_regionList'
+    ]),
   },
   data() {
     return {
@@ -127,7 +141,7 @@ export default {
         address: '',
         longitude: '',
         latitude: '',
-        regionCode: '',
+        region_arr: [],
         picUrl: '',
         logoUrl: '',
         picUrls: [],
@@ -160,8 +174,8 @@ export default {
         latitude: [
           { required: true, message: '请输入纬度' }
         ],
-        regionCode: [
-          { required: true, message: '请输入区域编码' }
+        region_arr: [
+          { required: true, type: 'array', message: '请选择区域编码' },
         ],
         picUrl: [
           { required: true, message: '请上传公司图片' }
@@ -221,16 +235,28 @@ export default {
           logoUrl: res.data.logoUrl || '',
           licenseUrl: res.data.licenseUrl || '',
         })
+        res.data.regionCode && this.setRegion_arr(res.data.regionCode)
         this.$refs.formData && this.$refs.formData.resetFields()
       } finally {
         loading.close()
       }
     },
+    setRegion_arr(regionCode) {
+      const regionItem = XeUtils.findTree(this.common_regionList, item => item.code === regionCode)
+      if (Array.isArray(regionItem.nodes)) {
+        this.formData.region_arr = regionItem.nodes.map(v => v.code)
+      }
+    },
     async handleSubmit() {
+      await this.$validatorForm('formData')
       const loading = this.$elLoading()
       try {
-        await this.$validatorForm('formData')
-        const res = await brandCreate(this.formData)
+        const { region_arr, ...opts } = this.formData
+        const params = {
+          ...opts,
+          regionCode: region_arr[region_arr.length - 1]
+        }
+        const res = await brandCreate(params)
         loading.close()
         this.$elMessage(`添加成功!`)
         this.$emit('success')

@@ -208,9 +208,9 @@ export default {
       this.formData.parentId = ''
     },
     async handleSubmit() {
+      await this.$validatorForm('formData')
       const loading = this.$elLoading()
       try {
-        await this.$validatorForm('formData')
         const res = this.formData.id ? await categoryUpdate(this.formData) : await categoryCreate(this.formData)
         loading.close()
         this.$elMessage(`${this.formData.id ? '编辑' : '添加'}成功!`)

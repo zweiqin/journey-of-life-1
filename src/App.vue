@@ -12,6 +12,9 @@ export default {
       isShow: true
     }
   },
+  created() {
+    this.$store.dispatch('GET_RegionList')
+  },
   methods: {
 
   }

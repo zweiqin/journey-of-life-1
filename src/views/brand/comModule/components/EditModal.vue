@@ -153,9 +153,9 @@ export default {
       this.levelList = res.data.items;
     },
     async handleSubmit() {
+      await this.$validatorForm('formData')
       const loading = this.$elLoading()
       try {
-        await this.$validatorForm('formData')
         const { id, level, name, pid, costType, cost, content, remark } = this.formData
         const params = {
           id,

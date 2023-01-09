@@ -106,9 +106,9 @@ export default {
       this.$refs.formData && this.$refs.formData.resetFields()
     },
     async handleSubmit() {
+      await this.$validatorForm('formData')
       const loading = this.$elLoading()
       try {
-        await this.$validatorForm('formData')
         const res = await userUpdate(this.formData)
         loading.close()
         this.$elMessage(`编辑成功!`)

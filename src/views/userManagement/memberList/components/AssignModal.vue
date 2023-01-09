@@ -11,21 +11,16 @@
       label-suffix=":"
       label-width="100px"
     >
-      <el-form-item label="标签值" prop="value">
-        <el-input
-          v-model="formData.value"
-          maxlength="30"
-          show-word-limit
-          placeholder="请输入标签值"
-        />
+      <el-form-item label="业务员" prop="salesmanId">
+        <el-select v-model="formData.salesmanId" filterable style="width:100%;" placeholder="请选择业务员">
+          <el-option
+            v-for="item in staffList"
+            :key="item.id"
+            :label="`${item.roleName}-${item.name}`"
+            :value="item.id"
+          >{{ item.roleName }}-{{item.name}}</el-option>
+        </el-select>
       </el-form-item>
-      <el-form-item label="排序" prop="sortOrder">
-        <el-input
-          v-model="formData.sortOrder"
-          placeholder="请输入排序"
-        />
-      </el-form-item>
-    
     </el-form>
     <span slot="footer" class="dialog-footer">
       <el-button size="mini" @click="handleClose">取 消</el-button>
@@ -35,34 +30,29 @@
 </template>
 
 <script>
-import { goodsTagCreate, goodsTagUpdate } from '@/api/goods/goodsTag';
-import { regInt } from '@/utils/reg'
+import { staffList } from '@/api/enterprise/staff'
+import { orderSVsAdd } from '@/api/userManagement/memberList'
 
 export default {
-  name: 'EditModal',
+  name: 'AssignModal',
   data() {
     return {
       modalOptions: {
         closeOnClickModal: false,
         width: '520px',
-        title: ''
+        title: '指派业务员'
       },
       visible: false,
       formData: {
-        id: '',
-        value: '',
-        sortOrder: '100',
+        userIds: [],
+        salesmanId: '',
       },
       formRules: {
-        value: [
-          { required: true, message: '请输入标签值' },
-          { max: 30, message: '30字以内' },
+        salesmanId: [
+          { required: true, message: '请选择业务员' },
         ],
-        sortOrder: [
-          { required: true, message: '请输入排序' },
-          { pattern: regInt,  message: '请输入正整数' }
-        ]
       },
+      staffList: []
     }
   },
   methods: {
@@ -70,18 +60,26 @@ export default {
       this.visible = false
     },
     handleOpen(params = {}) {
-      this.modalOptions.title = params.id ? '编辑大类标签' : '添加大类标签'
+      this.getStaffList()
       this.formData = Object.assign(this.$options.data().formData, params)
       this.visible = true
       this.$refs.formData && this.$refs.formData.resetFields()
+    },
+    // 员工列表
+    async getStaffList() {
+      const res = await staffList({
+        page: 1,
+        limit: 9999,
+      })
+      this.staffList = res.data.items
     },
     async handleSubmit() {
       await this.$validatorForm('formData')
       const loading = this.$elLoading()
       try {
-        const res = this.formData.id ? await goodsTagUpdate(this.formData) : await goodsTagCreate(this.formData)
+        const res = await orderSVsAdd(this.formData)
         loading.close()
-        this.$elMessage(`${this.formData.id ? '编辑' : '添加'}成功!`)
+        this.$elMessage(`指派成功!`)
         this.$emit('success')
         this.visible = false
       } catch(e) {

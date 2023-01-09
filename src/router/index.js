@@ -315,7 +315,7 @@ export const asyncRouterMap = [
     _ROLES: ['ADMIN'],
     meta: {
       title: '会员关系链',
-      icon: 'peoples'
+      icon: 'membership'
     },
     children: [
       {

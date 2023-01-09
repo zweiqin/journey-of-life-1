@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import { listRegion } from '@/api/business/region'
+import { regionList } from '@/api/business/region'
 import Pagination from '@/components/Pagination'
 
 export default {
@@ -58,7 +58,7 @@ export default {
   methods: {
     getList () {
       this.listLoading = true
-      listRegion(this.listQuery).then(response => {
+      regionList(this.listQuery).then(response => {
         this.list = response.data.items
         this.total = response.data.total
         this.listLoading = false

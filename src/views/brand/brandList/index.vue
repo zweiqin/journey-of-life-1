@@ -10,13 +10,6 @@
         placeholder="输入公司名称"
       />
       <el-input
-        v-model="listQuery.regionCode"
-        clearable
-        class="filter-item"
-        style="width: 200px;"
-        placeholder="输入区域编码"
-      />
-      <el-input
         v-model="listQuery.keeperName"
         clearable
         class="filter-item"
@@ -29,6 +22,17 @@
         class="filter-item"
         style="width: 200px;"
         placeholder="输入电话"
+      />
+      <el-cascader
+        v-model="listQuery.region_arr"
+        placeholder="选择区域"
+        :options="common_regionList"
+        :props="{ checkStrictly: true, label: 'name', value: 'code' }"
+        expand-trigger="hover"
+        clearable
+        size="mini"
+        class="filter-item"
+        style="width: 200px;"
       />
       <el-select
         v-model="listQuery.styleId"
@@ -115,7 +119,7 @@
             <el-image v-if="row.picUrl" :src="row.picUrl" style="width:40px; height:40px" fit="cover" :preview-src-list="[row.picUrl]" />
           </template>
         </el-table-column>
-        <el-table-column align="center" width="100" label="区域编码" prop="regionCode" show-overflow-tooltip />
+        <el-table-column align="center" min-width="150" label="区域" prop="regionList" show-overflow-tooltip />
         <el-table-column align="center" min-width="150" label="门店类型" prop="brandgenreName" show-overflow-tooltip />
         <el-table-column align="center" min-width="150" label="门店风格" prop="styleName" show-overflow-tooltip />
         <el-table-column align="center" width="100" label="产品数量" prop="productAmount" show-overflow-tooltip />
@@ -160,6 +164,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import Pagination from '@/components/Pagination';
 import EditModal from './components/EditModal'
 import {
@@ -176,6 +181,11 @@ export default {
   components: {
     Pagination,
     EditModal,
+  },
+  computed: {
+    ...mapGetters([
+      'common_regionList'
+    ]),
   },
   data() {
     return {

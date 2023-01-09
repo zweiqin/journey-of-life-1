@@ -126,9 +126,9 @@ export default {
       this.$refs.formData && this.$refs.formData.resetFields()
     },
     async handleSubmit() {
+      await this.$validatorForm('formData')
       const loading = this.$elLoading()
       try {
-        await this.$validatorForm('formData')
         const { id, isAdjustUserLevel, moneyCriterion, countCriterion, goodIdCriterion, ...opts } = this.formData
         const params = {
           ...opts,

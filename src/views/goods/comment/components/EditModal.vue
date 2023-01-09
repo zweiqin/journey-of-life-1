@@ -85,9 +85,9 @@ export default {
       this.$refs.formData && this.$refs.formData.resetFields()
     },
     async handleSubmit() {
+      await this.$validatorForm('formData')
       const loading = this.$elLoading()
       try {
-        await this.$validatorForm('formData')
         const res = await commentBrandReply({
           ...this.formData,
           picUrls: Array.isArray(this.formData.picUrls) ? this.formData.picUrls.map(v => v.resData || v) : [],

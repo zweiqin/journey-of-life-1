@@ -78,9 +78,9 @@ export default {
       this.$refs.formData && this.$refs.formData.resetFields()
     },
     async handleSubmit() {
+      await this.$validatorForm('formData')
       const loading = this.$elLoading()
       try {
-        await this.$validatorForm('formData')
         const res = this.formData.id ? await roleUpdate(this.formData) : await roleCreate(this.formData)
         loading.close()
         this.$elMessage(`${this.formData.id ? '编辑' : '添加'}成功!`)

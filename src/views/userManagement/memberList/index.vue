@@ -4,6 +4,13 @@
     <!-- 查询和其他操作 -->
     <div class="filter-container">
       <el-input
+        v-model="listQuery.id"
+        clearable
+        class="filter-item"
+        style="width: 200px;"
+        placeholder="请输入用户ID"
+      />
+      <el-input
         v-model="listQuery.nickname"
         clearable
         class="filter-item"
@@ -17,19 +24,28 @@
         style="width: 200px;"
         placeholder="请输入电话"
       />
-      <el-input
+      <el-select
         v-model="listQuery.userLevel"
         clearable
         class="filter-item"
         style="width: 200px;"
-        placeholder="请输入会员等价"
-      />
-      <el-input
-        v-model="listQuery.region"
+        placeholder="选择层级"
+      >
+        <el-option label="会员" :value="5" />
+        <el-option label="门店" :value="1" />
+        <el-option label="合伙人" :value="6" />
+        <el-option label="超级合伙人" :value="7" />
+      </el-select>
+      <el-cascader
+        v-model="listQuery.region_arr"
+        placeholder="选择区域"
+        :options="common_regionList"
+        :props="{ checkStrictly: true, label: 'name', value: 'code' }"
+        expand-trigger="hover"
         clearable
+        size="mini"
         class="filter-item"
         style="width: 200px;"
-        placeholder="请输入区域编码"
       />
       <el-button
         v-permission="[`GET /admin${api.userList}`]"
@@ -60,7 +76,7 @@
           </template>
         </el-table-column>
         <el-table-column align="center" min-width="150" label="生日" prop="birthday" show-overflow-tooltip />
-        <el-table-column align="center" min-width="100" label="用户层级" prop="userLevel" show-overflow-tooltip />
+        <el-table-column align="center" min-width="160" label="用户在平台的角色简称" prop="userLevelDesc" show-overflow-tooltip />
         <el-table-column align="center" min-width="100" label="昵称" prop="nickname" show-overflow-tooltip />
         <el-table-column align="center" min-width="100" label="电话" prop="mobile" show-overflow-tooltip />
         <el-table-column align="center" width="100" label="头像" prop="avatar">
@@ -68,27 +84,79 @@
             <el-image v-if="row.avatar" :src="row.avatar" style="width:40px; height:40px" fit="cover" :preview-src-list="[row.avatar]" />
           </template>
         </el-table-column>
-        <el-table-column align="center" min-width="100" label="区域编码" prop="regionCode" show-overflow-tooltip />
+        <el-table-column align="center" min-width="150" label="区域" prop="regionList" show-overflow-tooltip />
         <el-table-column align="center" min-width="200" label="门店备注" prop="brandRemark" show-overflow-tooltip />
         <el-table-column align="center" min-width="200" label="平台备注" prop="platformRemark" show-overflow-tooltip />
         <el-table-column v-if="isAdmin" align="center" min-width="150" label="用户在门店中的等级" prop="brandLevelDesc" show-overflow-tooltip />
         <el-table-column v-if="isAdmin || isShop" align="center" min-width="150" label="负责人名称" prop="principalName" show-overflow-tooltip />
-        <el-table-column align="center" min-width="160" label="用户在平台的角色简称" prop="userLevelDesc" show-overflow-tooltip />
         <el-table-column align="center" min-width="150" label="创建时间" prop="addTime" />
         <el-table-column align="center" min-width="150" label="更新时间" prop="updateTime" />
         <el-table-column
           label="操作"
-          width="150"
+          :width="isAdmin ? 320 : 150"
           fixed="right"
           class-name="small-padding fixed-width"
         >
           <template slot-scope="{row}">
             <el-button
               v-permission="[`POST /admin${api.userUpdate}`]"
-              type="primary"
               size="mini"
               @click="handleEdit(row)"
             >编辑</el-button>
+            <!-- 超管专属 -->
+            <template v-if="isAdmin">
+              <el-button
+                v-if="row.userLevel == 5 && !row.principalId"
+                v-permission="[`POST /admin${api.bdUserAdd}`]"
+                type="success"
+                size="mini"
+                @click="handleBind(row, true)"
+              >添加绑定</el-button>
+              <el-button
+                v-if="row.userLevel == 5 && row.principalId"
+                v-permission="[`POST /admin${api.bdUserAdd}`]"
+                type="danger"
+                size="mini"
+                @click="handleBind(row, false)"
+              >解除绑定</el-button>
+
+              <el-button
+                v-if="row.userLevel == 5"
+                v-permission="[`POST /admin${api.userupSaveAndSignin}`]"
+                type="warning"
+                size="mini"
+                @click="handleShopApply(row)"
+              >门店申请</el-button>
+              <el-button
+                v-if="row.userLevel == 5"
+                v-permission="[`POST /admin${api.partnerApplySaveAndSignin}`]"
+                type="warning"
+                @click="handlePartnerApply(row, 6)"
+              >合伙人申请</el-button>
+              <el-button
+                v-if="row.userLevel == 6"
+                v-permission="[`POST /admin${api.partnerApplySaveAndSignin}`]"
+                type="warning"
+                @click="handlePartnerApply(row, 7)"
+              >超级合伙人申请</el-button>
+            </template>
+            <!-- 门店专属 -->
+            <template v-if="isShop">
+              <el-button
+                v-if="row.principalId"
+                v-permission="[`POST /admin${api.orderSVsDeleted}`]"
+                type="danger"
+                size="mini"
+                @click="handleAssign(row, false)"
+              >取消指派</el-button>
+              <el-button
+                v-else
+                v-permission="[`POST /admin${api.orderSVsAdd}`]"
+                type="success"
+                size="mini"
+                @click="handleAssign(row, true)"
+              >指派</el-button>
+            </template>
           </template>
         </el-table-column>
       </el-table>
@@ -103,6 +171,14 @@
 
     <!-- 新增编辑 -->
     <EditModal ref="EditModal" @success="getList" />
+    <!-- 绑定用户 -->
+    <BindUserModal ref="BindUserModal" @success="getList" />
+    <!-- 门店申请 -->
+    <ShopApplyModal ref="ShopApplyModal" @success="getList" />
+    <!-- 合伙人申请 -->
+    <PartnerApplyModal ref="PartnerApplyModal" @success="getList" />
+    <!-- 指派业务员 -->
+    <AssignModal ref="AssignModal" @success="getList"/>
   </div>
 </template>
 
@@ -110,9 +186,16 @@
 import {
   api,
   userList,
+  bdUserDeleted,
+  orderSVsDeleted,
 } from '@/api/userManagement/memberList'
+import XeUtils from 'xe-utils'
 import Pagination from '@/components/Pagination';
 import EditModal from './components/EditModal'
+import BindUserModal from './components/BindUserModal'
+import ShopApplyModal from './components/ShopApplyModal'
+import PartnerApplyModal from './components/PartnerApplyModal'
+import AssignModal from './components/AssignModal'
 import { mapGetters } from 'vuex'
 
 export default {
@@ -120,6 +203,10 @@ export default {
   components: {
     Pagination,
     EditModal,
+    BindUserModal,
+    ShopApplyModal,
+    PartnerApplyModal,
+    AssignModal,
   },
   filters: {
     genderFilter(val) {
@@ -128,11 +215,12 @@ export default {
         1: '男',
         2: '女',
       }[val] || '--'
-    }
+    },
   },
   computed: {
     ...mapGetters([
       'roles',
+      'common_regionList'
     ]),
     isAdmin() {
       return this.roles.includes('超级管理员')
@@ -150,7 +238,11 @@ export default {
       listQuery: {
         page: 1,
         limit: 20,
-        name: '',
+        id: '',
+        nickname: '',
+        mobile: '',
+        userLevel: '',
+        region_arr: [],
       },
     };
   },
@@ -161,7 +253,13 @@ export default {
     async getList() {
       this.listLoading = true;
       try {
-        const res = await userList(this.listQuery)
+        const { region_arr, ...other } = this.listQuery
+        const region = Array.isArray(region_arr) && region_arr.length ? region_arr[region_arr.length - 1] : ''
+        const params = {
+          ...other,
+          region
+        }
+        const res = await userList(params)
         this.list = res.data.items;
         this.total = res.data.total;
       } finally {
@@ -174,6 +272,33 @@ export default {
     },
     async handleEdit({ id, birthday, regionCode, brandRemark, platformRemark }) {
       this.$refs.EditModal && this.$refs.EditModal.handleOpen({ id, birthday, regionCode, brandRemark, platformRemark })
+    },
+    async handleBind({ id, regionCode = '' }, flag) {
+      if (flag) {
+        this.$refs.BindUserModal && this.$refs.BindUserModal.handleOpen({ userIds: [id], region: regionCode })
+      } else {
+        await bdUserDeleted({ userIds: [id] })
+        this.$elMessage('解除绑定成功!')
+        this.getList()
+      }
+    },
+    handleShopApply({ id }) {
+      this.$refs.ShopApplyModal && this.$refs.ShopApplyModal.handleOpen({ userId: id })
+    },
+    handlePartnerApply({ id, regionCode }, applicationType) {
+      this.$refs.PartnerApplyModal && this.$refs.PartnerApplyModal.handleOpen({
+        userId: id,
+        applicationType,
+      }, regionCode)
+    },
+    async handleAssign({ id }, flag) {
+      if (flag) {
+        this.$refs.AssignModal && this.$refs.AssignModal.handleOpen({ userIds: [id] })
+      } else {
+        await bdUserDeleted({ userIds: [id] })
+        this.$elMessage('取消指派成功!')
+        this.getList()
+      }
     },
   }
 };

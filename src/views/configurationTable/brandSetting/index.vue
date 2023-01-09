@@ -276,10 +276,16 @@ export default {
     hanldeReset () {
       this.getInfo()
     },
-    async handleSubmit () {
+    async handleSubmit() {
       await this.$validatorForm('formData')
-      await brandUpdate(this.formData)
-      this.$elMessage('保存成功!')
+      const loading = this.$elLoading()
+      try {
+        await brandUpdate(this.formData)
+        loading.close()
+        this.$elMessage('保存成功!')
+      } catch(e) {
+        loading.close()
+      }
     },
     handleCategoryChange (value) {
       if (value) {
