@@ -23,14 +23,14 @@
         type="primary"
         icon="el-icon-search"
         style="margin-left:10px;"
-        @click="handleFilter"
+        @click="handleSearch"
       >查找</el-button>
       <el-button
         v-permission="[`POST /admin${api.comModuleAdd}`]"
         size="mini"
         class="filter-item"
         type="primary"
-        icon="el-icon-edit"
+        icon="el-icon-plus"
         @click="$refs.EditModal && $refs.EditModal.handleOpen({ id: '' })"
       >添加</el-button>
     </div>
@@ -64,24 +64,23 @@
         <el-table-column align="center" min-width="150" label="更新时间" prop="updateTime" />
         <el-table-column
           label="操作"
-          width="200"
+          width="120"
           fixed="right"
           class-name="small-padding fixed-width"
         >
           <template slot-scope="{row}">
             <el-button
               v-permission="[`POST /admin${api.comModuleUpdate}`]"
-              type="primary"
               size="mini"
               @click="handleUpdate(row)"
             >编辑</el-button>
-            <el-button
+            <!-- <el-button
               v-if="row.level == 2 && row.costType == 2"
               v-permission="[`POST /admin${api.comModuleSaveRatio}`]"
               type="warning"
               size="mini"
               @click="handleRatio(row)"
-            >设置比例</el-button>
+            >设置比例</el-button> -->
             <el-button
               v-permission="[`POST /admin${api.comModuleDeleted}`]"
               type="danger"
@@ -165,7 +164,7 @@ export default {
         this.listLoading = false;
       }
     },
-    handleFilter() {
+    handleSearch() {
       this.listQuery.page = 1;
       this.getList();
     },
@@ -176,7 +175,7 @@ export default {
       await this.$elConfirm('确认删除?')
       await comModuleDeleted({ id })
       this.$elMessage('删除成功!')
-      this.handleFilter()
+      this.handleSearch()
     },
     async handleRatio({ id }) {
       this.$refs.RatioModal && this.$refs.RatioModal.handleOpen({

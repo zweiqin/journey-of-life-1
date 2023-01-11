@@ -19,12 +19,7 @@
         @contextmenu.prevent.native="openMenu(tag,$event)"
       >
         {{ generateTitle(tag.title) }}
-        <span
-          :style="{
-            height:16*$root.dw+'px',
-            width:16*$root.dw+'px',
-            verticalAlign:2*$root.dw+'px'
-          }"
+        <i
           class="el-icon-close"
           @click.prevent.stop="closeSelectedTag(tag)"
         />
@@ -184,8 +179,8 @@ export default {
       border: 1px solid #d8dce5;
       height: 26px;
       line-height: 26px;
-      padding: 0 8px;
-      // font-size: 12px;
+      padding: 4px 0 4px 8px;
+      font-size: 14px;
       margin-left: 5px;
       margin-top: 4px;
       &:first-of-type {
@@ -207,6 +202,16 @@ export default {
           border-radius: 50%;
           position: relative;
           margin-right: 2px;
+        }
+      }
+      .el-icon-close {
+        margin-right: 4px;
+        font-size: 14px;
+        border-radius: 50%;
+        padding: 2px;
+         &:hover {
+          background-color: #b4bccc;
+          color: #fff;
         }
       }
     }
@@ -232,28 +237,6 @@ export default {
       cursor: pointer;
       &:hover {
         background: #eee;
-      }
-    }
-  }
-}
-</style>
-
-<style rel="stylesheet/scss" lang="scss">
-//reset element css of el-icon-close
-.tags-view-wrapper {
-  .tags-view-item {
-    .el-icon-close {
-      border-radius: 50%;
-      text-align: center;
-      transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
-      transform-origin: 100% 50%;
-      &:before {
-        transform: scale(0.6);
-        display: inline-block;
-      }
-      &:hover {
-        background-color: #b4bccc;
-        color: #fff;
       }
     }
   }

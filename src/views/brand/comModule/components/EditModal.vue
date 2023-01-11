@@ -12,10 +12,10 @@
       label-width="100px"
     >
       <el-form-item label="类型" prop="level">
-        <el-select v-model="formData.level" placeholder="请选择类型">
-          <el-option label="板块" :value="1" />
-          <el-option label="业务" :value="2" />
-        </el-select>
+        <el-radio-group v-model="formData.level">
+          <el-radio :label="1">板块</el-radio>
+          <el-radio :label="2">业务</el-radio>
+        </el-radio-group>
       </el-form-item>
 
       <template v-if="formData.level==1">
@@ -49,15 +49,15 @@
           />
         </el-form-item>
         <el-form-item label="费用类型" prop="costType">
-          <el-select v-model="formData.costType" placeholder="请选择费用类型">
-            <el-option label="金额" :value="1" />
-            <el-option label="比例" :value="2" />
-          </el-select>
+          <el-radio-group v-model="formData.costType">
+            <el-radio :label="1">金额</el-radio>
+            <el-radio :label="2">比例</el-radio>
+          </el-radio-group>
         </el-form-item>
-        <el-form-item v-if="formData.costType==1" label="业务费用" prop="cost">
+        <el-form-item :label="formData.costType==1 ? '业务费用' : '比例'" prop="cost">
           <el-input
             v-model="formData.cost"
-            placeholder="请输入业务费用"
+            placeholder="请输入"
           />
         </el-form-item>
         <el-form-item label="业务内容" prop="content">
@@ -91,7 +91,7 @@
 
 <script>
 import { comModuleList, comModuleAdd, comModuleUpdate } from '@/api/brand/comModule';
-import { regZero } from '@/utils/reg'
+import { regMoney } from '@/utils/reg'
 
 export default {
   name: 'EditModal',
@@ -127,8 +127,8 @@ export default {
           { required: true, message: '请选择费用类型' },
         ],
         cost: [
-          { required: true, message: '请输入业务费用' },
-          { pattern: regZero,  message: '请输入正整数' }
+          { required: true, message: '请输入' },
+          { pattern: regMoney,  message: '数值有误' }
         ],
         content: [
           { required: true, message: '请输入业务内容' },
@@ -156,7 +156,7 @@ export default {
       await this.$validatorForm('formData')
       const loading = this.$elLoading()
       try {
-        const { id, level, name, pid, costType, cost, content, remark } = this.formData
+        const { id, level, name, pid, costType, content, remark } = this.formData
         const params = {
           id,
           level,
@@ -164,7 +164,6 @@ export default {
           remark,
           pid: level === 2 ? pid : '',
           costType: level === 2 ? costType : '',
-          cost: level === 2 && costType === 1 ? cost : '',
           content: level === 2 ? content : '',
         }
         const res = this.formData.id ? await comModuleUpdate(params) : await comModuleAdd(params)

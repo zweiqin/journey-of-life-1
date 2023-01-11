@@ -24,7 +24,7 @@
         type="primary"
         size="mini"
         icon="el-icon-search"
-        @click="handleFilter"
+        @click="handleSearch"
       >
         查找
       </el-button>
@@ -45,7 +45,7 @@
         type="primary"
         size="mini"
         icon="el-icon-search"
-        @click="handleFilter"
+        @click="handleSearch"
       >
         查找
       </el-button>
@@ -376,7 +376,7 @@ export default {
       })
     },
 
-    handleFilter () {
+    handleSearch () {
       if (this.isAdmin) {
         this.listQuery.page = 1
         if (!this.listQuery.id) {

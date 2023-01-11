@@ -8,7 +8,7 @@
       <el-select v-model="listQuery.statusArray" multiple size="small" style="width: 200px" class="filter-item" placeholder="请选择提现状态">
         <el-option v-for="(key, value) in statusMap" :key="key" :label="key" :value="value"/>
       </el-select>
-      <el-button class="filter-item" type="primary" size="small" icon="el-icon-search" @click="handleFilter">查找</el-button>
+      <el-button class="filter-item" type="primary" size="small" icon="el-icon-search" @click="handleSearch">查找</el-button>
     </div>
 
     <!-- 查询结果 -->
@@ -145,7 +145,7 @@ export default {
         this.listLoading = false
       })
     },
-    handleFilter() {
+    handleSearch() {
       this.listQuery.page = 1
       this.getList()
     },

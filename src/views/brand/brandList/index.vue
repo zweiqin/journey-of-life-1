@@ -86,7 +86,7 @@
         type="primary"
         icon="el-icon-search"
         style="margin-left:10px;"
-        @click="handleFilter"
+        @click="handleSearch"
       >查找</el-button>
       <el-button
       brandCreate
@@ -94,7 +94,7 @@
         size="mini"
         class="filter-item"
         type="primary"
-        icon="el-icon-edit"
+        icon="el-icon-plus"
         @click="$refs.EditModal && $refs.EditModal.handleOpen({ id: '' })"
       >添加</el-button>
     </div>
@@ -130,16 +130,19 @@
         <el-table-column
           align="center"
           label="操作"
-          width="150"
+          width="180"
           fixed="right"
           class-name="small-padding fixed-width"
         >
           <template slot-scope="{row}">
             <el-button
-              type="primary"
               size="mini"
-              @click="handleChoose(row)"
-            >查看商品</el-button>
+              @click="handleGoods(row)"
+            >商品</el-button>
+            <el-button
+              size="mini"
+              @click="handleOrder(row)"
+            >订单</el-button>
             <el-button
               v-permission="[`POST /admin${api.brandDelete}`]"
               type="danger"
@@ -253,18 +256,21 @@ export default {
         this.listLoading = false;
       }
     },
-    handleFilter() {
+    handleSearch() {
       this.listQuery.page = 1;
       this.getList();
     },
-    handleChoose (row) {
+    handleGoods (row) {
       this.$router.push({ name: 'BrandGoods', query: { brandId: row.id } })
+    },
+    handleOrder (row) {
+      this.$router.push({ name: 'OrderList', query: { brandId: row.id } })
     },
     async handleDelete({ id }) {
       await this.$elConfirm('确认删除?')
       await brandDelete({ id })
       this.$elMessage('删除成功!')
-      this.handleFilter()
+      this.handleSearch()
     }
   }
 };

@@ -17,14 +17,14 @@
         class="filter-item"
         type="primary"
         icon="el-icon-search"
-        @click="handleFilter"
+        @click="handleSearch"
       >查找</el-button>
       <el-button
         v-permission="['POST /admin/admin/create']"
         size="mini"
         class="filter-item"
         type="primary"
-        icon="el-icon-edit"
+        icon="el-icon-plus"
         @click="handleCreate"
       >添加</el-button>
       <!-- <el-button
@@ -88,7 +88,6 @@
               <template slot-scope="scope">
                 <el-button
                   v-permission="['POST /admin/admin/update']"
-                  type="primary"
                   size="mini"
                   @click="handleUpdate(scope.row)"
                 >编辑</el-button>
@@ -133,7 +132,6 @@
         <template slot-scope="scope">
           <el-button
             v-permission="['POST /admin/admin/update']"
-            type="primary"
             size="mini"
             @click="handleUpdate(scope.row)"
           >编辑</el-button>
@@ -332,7 +330,7 @@ export default {
         this.listIdLoading = false
       })
     },
-    handleFilter () {
+    handleSearch () {
       this.listQuery.page = 1
       this.getList()
     },

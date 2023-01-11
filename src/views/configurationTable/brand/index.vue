@@ -25,14 +25,14 @@
         class="filter-item"
         type="primary"
         icon="el-icon-search"
-        @click="handleFilter"
+        @click="handleSearch"
       >查找</el-button>
       <el-button
         v-permission="['POST /admin/brand/create']"
         size="mini"
         class="filter-item"
         type="primary"
-        icon="el-icon-edit"
+        icon="el-icon-plus"
         @click="handleCreate"
       >添加</el-button>
       <!-- <el-button :loading="downloadLoading" size="mini" class="filter-item" type="warning" icon="el-icon-download" @click="handleDownload">导出</el-button> -->
@@ -187,7 +187,6 @@
           >推广码</el-button>
           <el-button
             v-permission="['POST /admin/brand/update']"
-            type="primary"
             size="mini"
             @click="handleUpdate(scope.row)"
           >编辑</el-button>
@@ -646,7 +645,7 @@ export default {
           this.listLoading = false
         })
     },
-    handleFilter () {
+    handleSearch () {
       this.listQuery.page = 1
       this.getList()
     },

@@ -79,26 +79,17 @@ export function elLoading(text = '提交中，请稍候……') {
   inputValidator	输入框的校验函数。可以返回布尔值或字符串，若返回一个字符串, 则返回结果会被赋值给 inputErrorMessage	function	—	—
   inputErrorMessage	校验未通过时的提示文本	string	—	输入的数据不合法!
  */
-export function elPrompt(clues = '请注明拒绝原因：', prompyConfig) {
+export function elPrompt(clues = '', prompyConfig = {}) {
   return new Promise((resolve) => {
     MessageBox.prompt(clues, prompyConfig.title || '提示', {
       dangerouslyUseHTMLString: true,
       closeOnClickModal: false, // 是否可通过点击遮罩关闭
       closeOnPressEscape: false, // 是否可通过按下 ESC 键关闭
-      inputPlaceholder: '请简短叙述拒绝原因(24字以内)',
+      inputPlaceholder: '请输入',
       inputType: 'textarea',
-      inputValidator: (value) => {
-        if (!value) {
-          return '请输入拒绝原因'
-        }
-        if (value.length > 24) {
-          return '24个字以内'
-        }
-        return true
-      },
       ...prompyConfig
     }).then(({ value }) => {
-      resolve(value)
+      resolve(value || '')
     }).catch(() => {})
   })
 }

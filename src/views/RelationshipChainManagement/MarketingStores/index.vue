@@ -10,7 +10,7 @@
         class="filter-item"
         style="width: 200px;"
         placeholder="请输入账号或名称"
-        @keyup.enter.native="handleFilter()"
+        @keyup.enter.native="handleSearch()"
       />
       <el-button
         v-permission="['']"
@@ -18,14 +18,14 @@
         class="filter-item"
         type="primary"
         icon="el-icon-search"
-        @click="handleFilter()"
+        @click="handleSearch()"
       >查找</el-button>
       <!-- <el-button
         v-permission="['POST /admin/brand/create']"
         size="mini"
         class="filter-item"
         type="primary"
-        icon="el-icon-edit"
+        icon="el-icon-plus"
         @click="handleCreate"
       >添加</el-button>
       <el-button
@@ -905,7 +905,7 @@ export default {
     },
 
     // 一级查询
-    handleFilter () {
+    handleSearch () {
       this.listQuery.page = 1
       this.getList()
     },

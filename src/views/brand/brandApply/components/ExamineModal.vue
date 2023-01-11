@@ -123,9 +123,12 @@ export default {
       this.visible = true
     },
     async handleReject() {
+      const comment = await this.$elPrompt('驳回理由')
+      console.log('value', value)
       await userupManage({
         id: this.formData.id,
-        stateEnum: 2
+        stateEnum: 2,
+        comment
       })
       this.$elMessage('操作成功!')
       this.$emit('success')

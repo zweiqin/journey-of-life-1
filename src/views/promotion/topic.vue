@@ -5,8 +5,8 @@
     <div class="filter-container">
       <el-input v-model="listQuery.title" clearable size="mini" class="filter-item" style="width: 200px;" placeholder="请输入专题标题"/>
       <el-input v-model="listQuery.subtitle" clearable size="mini" class="filter-item" style="width: 200px;" placeholder="请输入专题子标题"/>
-      <el-button v-permission="['GET /admin/topic/list']" size="mini" class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查找</el-button>
-      <el-button v-permission="['POST /admin/topic/create']" size="mini" class="filter-item" type="primary" icon="el-icon-edit" @click="handleCreate">添加</el-button>
+      <el-button v-permission="['GET /admin/topic/list']" size="mini" class="filter-item" type="primary" icon="el-icon-search" @click="handleSearch">查找</el-button>
+      <el-button v-permission="['POST /admin/topic/create']" size="mini" class="filter-item" type="primary" icon="el-icon-plus" @click="handleCreate">添加</el-button>
       <el-button :loading="downloadLoading" size="mini" class="filter-item" type="warning" icon="el-icon-download" @click="handleDownload">导出</el-button>
     </div>
 
@@ -27,7 +27,7 @@
           <el-dialog :visible.sync="contentDialogVisible" title="专题详情">
             <div v-html="contentDetail"/>
           </el-dialog>
-          <el-button type="primary" size="mini" @click="showContent(scope.row.content)">查看</el-button>
+          <el-button size="mini" @click="showContent(scope.row.content)">查看</el-button>
         </template>
       </el-table-column>
 
@@ -37,7 +37,7 @@
 
       <el-table-column align="center" label="操作" min-width="150" class-name="small-padding fixed-width">
         <template slot-scope="scope">
-          <el-button v-permission="['POST /admin/topic/update']" type="primary" size="mini" @click="handleUpdate(scope.row)">编辑</el-button>
+          <el-button v-permission="['POST /admin/topic/update']" size="mini" @click="handleUpdate(scope.row)">编辑</el-button>
           <el-button v-permission="['POST /admin/topic/delete']" type="danger" size="mini" @click="handleDelete(scope.row)">删除</el-button>
         </template>
       </el-table-column>
@@ -244,7 +244,7 @@ export default {
           this.listLoading = false
         })
     },
-    handleFilter() {
+    handleSearch() {
       this.listQuery.page = 1
       this.getList()
     },

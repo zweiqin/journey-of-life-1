@@ -10,8 +10,8 @@
       <el-select v-model="listQuery.status" clearable size="mini" style="width: 200px" class="filter-item" placeholder="请选择优惠券状态">
         <el-option v-for="type in statusOptions" :key="type.value" :label="type.label" :value="type.value"/>
       </el-select>
-      <el-button v-permission="['GET /admin/coupon/list']" size="mini" class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查找</el-button>
-      <el-button v-permission="['POST /admin/coupon/create']" size="mini" class="filter-item" type="primary" icon="el-icon-edit" @click="handleCreate">添加</el-button>
+      <el-button v-permission="['GET /admin/coupon/list']" size="mini" class="filter-item" type="primary" icon="el-icon-search" @click="handleSearch">查找</el-button>
+      <el-button v-permission="['POST /admin/coupon/create']" size="mini" class="filter-item" type="primary" icon="el-icon-plus" @click="handleCreate">添加</el-button>
       <el-button :loading="downloadLoading" size="mini" class="filter-item" type="warning" icon="el-icon-download" @click="handleDownload">导出</el-button>
     </div>
 
@@ -56,7 +56,7 @@
 
       <el-table-column align="center" min-width="250px" label="操作" class-name="small-padding fixed-width">
         <template slot-scope="scope">
-          <el-button v-permission="['GET /admin/coupon/read']" type="primary" size="mini" @click="handleDetail(scope.row)">详情</el-button>
+          <el-button v-permission="['GET /admin/coupon/read']" size="mini" @click="handleDetail(scope.row)">详情</el-button>
           <el-button v-permission="['POST /admin/coupon/update']" type="info" size="mini" @click="handleUpdate(scope.row)">编辑</el-button>
           <el-button v-permission="['POST /admin/coupon/delete']" type="danger" size="mini" @click="handleDelete(scope.row)">删除</el-button>
         </template>
@@ -307,7 +307,7 @@ export default {
           this.listLoading = false
         })
     },
-    handleFilter() {
+    handleSearch() {
       this.listQuery.page = 1
       this.getList()
     },

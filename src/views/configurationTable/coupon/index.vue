@@ -38,7 +38,6 @@
         <template slot-scope="scope">
           <el-button
             v-permission="['POST /admin/voucher/update']"
-            type="primary"
             size="mini"
             @click="handleUpdate(scope.row)"
           >编辑</el-button>

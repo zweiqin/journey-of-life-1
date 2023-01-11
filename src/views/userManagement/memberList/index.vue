@@ -54,7 +54,7 @@
         type="primary"
         icon="el-icon-search"
         style="margin-left:10px;"
-        @click="handleFilter"
+        @click="handleSearch"
       >查找</el-button>
     </div>
 
@@ -87,13 +87,13 @@
         <el-table-column align="center" min-width="150" label="区域" prop="regionList" show-overflow-tooltip />
         <el-table-column align="center" min-width="200" label="门店备注" prop="brandRemark" show-overflow-tooltip />
         <el-table-column align="center" min-width="200" label="平台备注" prop="platformRemark" show-overflow-tooltip />
-        <el-table-column v-if="isAdmin" align="center" min-width="150" label="用户在门店中的等级" prop="brandLevelDesc" show-overflow-tooltip />
-        <el-table-column v-if="isAdmin || isShop" align="center" min-width="150" label="负责人名称" prop="principalName" show-overflow-tooltip />
+        <el-table-column v-if="isAdminRole" align="center" min-width="150" label="用户在门店中的等级" prop="brandLevelDesc" show-overflow-tooltip />
+        <el-table-column v-if="isAdminRole || isShopRole" align="center" min-width="150" label="负责人名称" prop="principalName" show-overflow-tooltip />
         <el-table-column align="center" min-width="150" label="创建时间" prop="addTime" />
         <el-table-column align="center" min-width="150" label="更新时间" prop="updateTime" />
         <el-table-column
           label="操作"
-          :width="isAdmin ? 320 : 150"
+          :width="isAdminRole ? 320 : 150"
           fixed="right"
           class-name="small-padding fixed-width"
         >
@@ -104,7 +104,7 @@
               @click="handleEdit(row)"
             >编辑</el-button>
             <!-- 超管专属 -->
-            <template v-if="isAdmin">
+            <template v-if="isAdminRole">
               <el-button
                 v-if="row.userLevel == 5 && !row.principalId"
                 v-permission="[`POST /admin${api.bdUserAdd}`]"
@@ -141,7 +141,7 @@
               >超级合伙人申请</el-button>
             </template>
             <!-- 门店专属 -->
-            <template v-if="isShop">
+            <template v-if="isShopRole">
               <el-button
                 v-if="row.principalId"
                 v-permission="[`POST /admin${api.orderSVsDeleted}`]"
@@ -222,10 +222,10 @@ export default {
       'roles',
       'common_regionList'
     ]),
-    isAdmin() {
+    isAdminRole() {
       return this.roles.includes('超级管理员')
     },
-    isShop() {
+    isShopRole() {
       return this.roles.includes('门店')
     }
   },
@@ -266,7 +266,7 @@ export default {
         this.listLoading = false;
       }
     },
-    handleFilter() {
+    handleSearch() {
       this.listQuery.page = 1;
       this.getList();
     },

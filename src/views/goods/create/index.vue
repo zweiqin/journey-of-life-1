@@ -216,18 +216,15 @@
         </div>
 
         <el-table :data="specifications">
-          <el-table-column
-            property="specification"
-            label="规格名"
-          />
-          <el-table-column property="value" label="规格值">
+          <el-table-column prop="specification" label="规格名" />
+          <el-table-column prop="value" label="规格值">
             <template slot-scope="{row}">
               <el-tag type="primary">{{ row.value }}</el-tag>
             </template>
           </el-table-column>
-          <el-table-column property="picUrl" label="规格图片">
+          <el-table-column prop="picUrl" label="规格图片">
             <template slot-scope="{row}">
-              <img v-if="row.picUrl" :src="row.picUrl" width="40" />
+              <el-image v-if="row.picUrl" :src="row.picUrl" style="width:40px; height:40px" fit="cover" :preview-src-list="[row.picUrl]" />
             </template>
           </el-table-column>
           <el-table-column v-if="multipleSpec" label="操作" width="100" class-name="small-padding fixed-width">
@@ -239,6 +236,7 @@
 
         <el-dialog
           :visible.sync="specVisiable"
+          :closeOnClickModal="false"
           width="550px"
           title="设置规格"
         >
@@ -288,7 +286,7 @@
           <el-table-column prop="number" width="100" label="货品数量" />
           <el-table-column prop="url" width="100" label="货品图片">
             <template slot-scope="{row}">
-              <img v-if="row.url" :src="row.url" width="40" />
+              <el-image v-if="row.url" :src="row.url" style="width:40px; height:40px" fit="cover" :preview-src-list="[row.url]" />
             </template>
           </el-table-column>
           <el-table-column align="center" label="操作" width="100" class-name="small-padding fixed-width">
@@ -300,6 +298,7 @@
 
         <el-dialog
           :visible.sync="productVisiable"
+          :closeOnClickModal="false"
           width="550px"
           title="设置货品"
         >
@@ -367,6 +366,7 @@
 
         <el-dialog
           :visible.sync="attributeVisiable"
+          :closeOnClickModal="false"
           width="550px"
           title="设置商品参数"
         >

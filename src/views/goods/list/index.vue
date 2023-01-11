@@ -51,14 +51,14 @@
         class="filter-item"
         type="primary"
         icon="el-icon-search"
-        @click="handleFilter"
+        @click="handleSearch"
       >查找</el-button>
       <el-button
         v-permission="[`POST /admin${api.goodsCreate}`]"
         size="mini"
         class="filter-item"
         type="primary"
-        icon="el-icon-edit"
+        icon="el-icon-plus"
         @click="handleCreate"
       >添加</el-button>
       <el-button
@@ -76,6 +76,7 @@
     <div v-tableHeight>
       <el-table
         v-loading="listLoading"
+        height="100%"
         element-loading-text="正在查询中。。。"
         :data="list"
         v-bind="$tableCommonOptions"
@@ -155,7 +156,6 @@
           <template slot-scope="{row}">
             <el-button
               v-permission="[`POST /admin${api.goodsUpdate}`]"
-              type="primary"
               size="mini"
               @click="handleEdit(row)"
             >编辑</el-button>
@@ -287,7 +287,7 @@ export default {
       const res = await categoryTreeList()
       this.categoryList = res.data.items
     },
-    handleFilter () {
+    handleSearch () {
       this.listQuery.page = 1
       this.getList()
     },
@@ -301,7 +301,7 @@ export default {
       await this.$elConfirm('确认删除?')
       await goodsDelete({ id })
       this.$elMessage('删除成功!')
-      this.handleFilter()
+      this.handleSearch()
     },
     async handleUpdate({ id, isOnSale }) {
       const loading =  this.$elLoading()

@@ -34,14 +34,14 @@
         class="filter-item"
         type="primary"
         icon="el-icon-search"
-        @click="handleFilter"
+        @click="handleSearch"
       >查找</el-button>
       <el-button
         v-permission="['POST /admin/circula/circula']"
         size="mini"
         class="filter-item"
         type="primary"
-        icon="el-icon-edit"
+        icon="el-icon-plus"
         @click="handleTransfer"
       >转赠</el-button>
     </div>
@@ -188,7 +188,7 @@ export default {
           this.listLoading = false
         })
     },
-    handleFilter () {
+    handleSearch () {
       this.listQuery.page = 1
       this.getList()
     },

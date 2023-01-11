@@ -2,12 +2,14 @@
  * 订单管理
 */
 import request from '@/utils/request'
+import Qs from 'qs'
 
 export const api = {
   orderList: '/order/list',
   orderDetail: '/order/detail',
   orderShip: '/order/ship',
   orderChangePrice: '/order/changePrice',
+  orderRefund: '/order/refund',
   orderIsFreeze: '/order/isFreeze',
   orderAddLineOrder: '/order/addLineOrder',
   orderListShipChannel: '/order/listShipChannel',
@@ -18,7 +20,10 @@ export function orderList(params) {
   return request({
     url: api.orderList,
     method: 'GET',
-    params
+    params,
+    paramsSerializer: function(params) {
+      return Qs.stringify(params, { arrayFormat: 'repeat' })
+    }
   })
 }
 
@@ -44,6 +49,15 @@ export function orderShip(data) {
 export function orderChangePrice(data) {
   return request({
     url: api.orderChangePrice,
+    method: 'POST',
+    data
+  })
+}
+
+// 订单退款
+export function orderRefund(data) {
+  return request({
+    url: api.orderRefund,
     method: 'POST',
     data
   })

@@ -4,7 +4,7 @@
     <!-- 查询和其他操作 -->
     <div class="filter-container">
       <el-input v-model="listQuery.rulesId" clearable size="mini" class="filter-item" style="width: 200px;" placeholder="请输入商品编号"/>
-      <el-button v-permission="['GET /admin/groupon/listRecord']" size="mini" class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查找</el-button>
+      <el-button v-permission="['GET /admin/groupon/listRecord']" size="mini" class="filter-item" type="primary" icon="el-icon-search" @click="handleSearch">查找</el-button>
       <el-button
         :loading="downloadLoading"
         size="mini"
@@ -126,7 +126,7 @@ export default {
         this.listLoading = false
       })
     },
-    handleFilter() {
+    handleSearch() {
       this.listQuery.page = 1
       this.getList()
     },

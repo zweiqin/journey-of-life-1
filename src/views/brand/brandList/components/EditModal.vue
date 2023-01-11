@@ -175,7 +175,7 @@ export default {
           { required: true, message: '请输入纬度' }
         ],
         region_arr: [
-          { required: true, type: 'array', message: '请选择区域编码' },
+          { required: true, type: 'array', message: '请选择区域' },
         ],
         picUrl: [
           { required: true, message: '请上传公司图片' }
@@ -243,7 +243,7 @@ export default {
     },
     setRegion_arr(regionCode) {
       const regionItem = XeUtils.findTree(this.common_regionList, item => item.code === regionCode)
-      if (Array.isArray(regionItem.nodes)) {
+      if (regionItem && Array.isArray(regionItem.nodes)) {
         this.formData.region_arr = regionItem.nodes.map(v => v.code)
       }
     },

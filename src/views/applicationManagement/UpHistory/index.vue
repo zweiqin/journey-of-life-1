@@ -44,14 +44,14 @@
         type="primary"
         icon="el-icon-search"
         style="margin-bottom: 0px"
-        @click="handleFilter"
+        @click="handleSearch"
       >查找</el-button>
       <!-- <el-button
         v-permission="['POST /admin/admin/create']"
         size="mini"
         class="filter-item"
         type="primary"
-        icon="el-icon-edit"
+        icon="el-icon-plus"
         @click="handleCreate"
       >添加</el-button> -->
       <!-- <el-button
@@ -603,7 +603,7 @@ export default {
     /**
      * 点击查询查询
      */
-    handleFilter () {
+    handleSearch () {
       this.listQuery.page = 1
       this.getList()
     },

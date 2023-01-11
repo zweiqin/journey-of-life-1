@@ -2,7 +2,6 @@ import Vue from 'vue'
 import * as tipTools from './tipTools'
 
 Vue.prototype.$tableCommonOptions = {
-  height: '100%',
   stripe: true,
   size: 'small',
   border: true,

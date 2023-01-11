@@ -5,8 +5,8 @@
     <div class="filter-container">
       <el-input v-model="listQuery.key" clearable size="mini" class="filter-item" style="width: 200px;" placeholder="请输入对象KEY" />
       <el-input v-model="listQuery.name" clearable size="mini" class="filter-item" style="width: 200px;" placeholder="请输入对象名称" />
-      <el-button v-permission="['GET /admin/storage/list']" size="mini" class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查找</el-button>
-      <el-button v-permission="['POST /admin/storage/create']" size="mini" class="filter-item" type="primary" icon="el-icon-edit" @click="handleCreate">添加</el-button>
+      <el-button v-permission="['GET /admin/storage/list']" size="mini" class="filter-item" type="primary" icon="el-icon-search" @click="handleSearch">查找</el-button>
+      <el-button v-permission="['POST /admin/storage/create']" size="mini" class="filter-item" type="primary" icon="el-icon-plus" @click="handleCreate">添加</el-button>
       <el-button :loading="downloadLoading" size="mini" class="filter-item" type="warning" icon="el-icon-download" @click="handleDownload">导出</el-button>
     </div>
 
@@ -31,7 +31,7 @@
 
       <el-table-column align="center" min-width="120px" label="操作" class-name="small-padding fixed-width">
         <template slot-scope="scope">
-          <el-button v-permission="['POST /admin/storage/update']" type="primary" size="mini" @click="handleUpdate(scope.row)">编辑</el-button>
+          <el-button v-permission="['POST /admin/storage/update']" size="mini" @click="handleUpdate(scope.row)">编辑</el-button>
           <el-button v-permission="['POST /admin/storage/delete']" type="danger" size="mini" @click="handleDelete(scope.row)">删除</el-button>
         </template>
       </el-table-column>
@@ -42,7 +42,7 @@
     <!-- 添加对话框 -->
     <el-dialog :visible.sync="createDialogVisible" title="上传对象">
       <el-upload :show-file-list="false" :limit="1" :http-request="handleUpload" action="#" list-type="picture">
-        <el-button size="small" type="primary">点击上传</el-button>
+        <el-button size="small" >点击上传</el-button>
       </el-upload>
     </el-dialog>
 
@@ -110,7 +110,7 @@ export default {
         this.listLoading = false
       })
     },
-    handleFilter () {
+    handleSearch () {
       this.listQuery.page = 1
       this.getList()
     },

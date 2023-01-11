@@ -9,7 +9,7 @@
         class="filter-item"
         type="primary"
         icon="el-icon-search"
-        @click="handleFilter"
+        @click="handleSearch"
       >刷新</el-button>
     </div>
 
@@ -43,7 +43,6 @@
           <template slot-scope="{row}">
             <el-button
               v-permission="[`POST /admin${api.brandStyleUpdate}`]"
-              type="primary"
               size="mini"
               @click="handleUpdate(row)"
             >编辑</el-button>
@@ -118,7 +117,7 @@ export default {
         this.listLoading = false;
       }
     },
-    handleFilter() {
+    handleSearch() {
       this.listQuery.page = 1;
       this.getList();
     },

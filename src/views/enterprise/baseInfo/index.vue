@@ -2,7 +2,7 @@
   <div class="app-container">
     <div class="body-container">
       <el-card class="box-card">
-        <h3 slot="header">编辑门店信息</h3>
+        <h3 slot="header">{{ formData.id ? '编辑' : '添加' }}门店信息</h3>
         <el-form
           ref="formData"
           :model="formData"
@@ -99,7 +99,7 @@
     </div>
 
     <div class="footer-container">
-      <el-button size="medium" @click="hanldeReset">重置</el-button>
+      <el-button size="medium" @click="handleReset">重置</el-button>
       <el-button type="primary" size="medium" @click="handleSubmit">保存</el-button>
     </div>
 
@@ -108,7 +108,7 @@
 
 <script>
 import MyUpload from '@/components/MyUpload'
-import { brandRead, brandUpdate, brandLabelList } from '@/api/brand/brandList'
+import { brandRead, brandCreate, brandUpdate, brandLabelList } from '@/api/brand/brandList'
 import { brandStyleList } from '@/api/brand/brandStyle'
 import { mapGetters } from 'vuex'
 import XeUtils from 'xe-utils';
@@ -128,6 +128,7 @@ export default {
       brandLabelList: [],
       brandStyleList: [],
       formData: {
+        id: '',
         name: '',
         keeperName: '',
         desc: '',
@@ -169,7 +170,7 @@ export default {
           { required: true, message: '请输入纬度' }
         ],
         region_arr: [
-          { required: true, type: 'array', message: '请选择区域编码' },
+          { required: true, type: 'array', message: '请选择区域' },
         ],
         picUrl: [
           { required: true, message: '请上传公司图片' }
@@ -199,13 +200,16 @@ export default {
       const loading = this.$elLoading('加载中')
       try {
         const res = await brandRead()
-        this.formData = Object.assign(this.$options.data().formData, res.data, {
-          picUrl: res.data.picUrl || '',
-          picUrls: res.data.picUrls || [],
-          logoUrl: res.data.logoUrl || '',
-          licenseUrl: res.data.licenseUrl || '',
-        })
-        res.data.regionCode && this.setRegion_arr(res.data.regionCode)
+        console.log('res.data', res)
+        if (res.data && res.data.id) {
+          this.formData = Object.assign(this.$options.data().formData, res.data, {
+            picUrl: res.data.picUrl || '',
+            picUrls: res.data.picUrls || [],
+            logoUrl: res.data.logoUrl || '',
+            licenseUrl: res.data.licenseUrl || '',
+          })
+          res.data.regionCode && this.setRegion_arr(res.data.regionCode)
+        }
         this.$refs.formData && this.$refs.formData.resetFields()
       } finally {
         loading.close()
@@ -213,7 +217,7 @@ export default {
     },
     setRegion_arr(regionCode) {
       const regionItem = XeUtils.findTree(this.common_regionList, item => item.code === regionCode)
-      if (Array.isArray(regionItem.nodes)) {
+      if (regionItem && Array.isArray(regionItem.nodes)) {
         this.formData.region_arr = regionItem.nodes.map(v => v.code)
       }
     },
@@ -230,21 +234,23 @@ export default {
       })
       this.brandStyleList = res.data.items
     },
-    hanldeReset () {
+    handleReset () {
       this.getInfo()
     },
     async handleSubmit() {
       await this.$validatorForm('formData')
       const loading = this.$elLoading()
       try {
-        const { region_arr, ...opts } = this.formData
+        const { id, region_arr, ...opts } = this.formData
         const params = {
           ...opts,
+          id,
           regionCode: region_arr[region_arr.length - 1]
         }
-        await brandUpdate(params)
+        id ? await brandUpdate(params) : await brandCreate(params)
         loading.close()
         this.$elMessage('保存成功!')
+        this.getInfo()
       } catch(e) {
         loading.close()
       }

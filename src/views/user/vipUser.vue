@@ -24,7 +24,7 @@
         type="primary"
         size="mini"
         icon="el-icon-search"
-        @click="handleFilter"
+        @click="handleSearch"
       >查找</el-button>
       <el-button
         :loading="downloadLoading"
@@ -246,7 +246,7 @@ export default {
         this.listLoading = false
       })
     },
-    handleFilter () {
+    handleSearch () {
       this.listQuery.page = 1
       this.getList()
     },

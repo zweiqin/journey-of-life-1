@@ -32,14 +32,14 @@
         class="filter-item"
         type="primary"
         icon="el-icon-search"
-        @click="handleFilter"
+        @click="handleSearch"
       >查找</el-button>
       <el-button
         v-permission="[`POST ${api.messagesentrySaveMsgSentry}`]"
         size="mini"
         class="filter-item"
         type="primary"
-        icon="el-icon-edit"
+        icon="el-icon-plus"
         @click="$refs.AddUserModal && $refs.AddUserModal.handleOpen()"
       >添加</el-button>
     </div>
@@ -119,7 +119,7 @@
               v-permission="[`POST ${api.messagesentrySetOverdueTime}`]"
               type="danger"
               size="mini"
-              @click="hanldeSetTime(row)"
+              @click="handleSetTime(row)"
             >报警时间</el-button>
             <el-button
               v-if="row.status==1"
@@ -230,7 +230,7 @@ export default {
         this.listLoading = false;
       }
     },
-    handleFilter() {
+    handleSearch() {
       this.listQuery.page = 1;
       this.getList();
     },
@@ -242,7 +242,7 @@ export default {
     handleBind({ id, belongsSalesman, belongsDepartment }) {
       this.$refs.AddSalesmanModal && this.$refs.AddSalesmanModal.handleOpen({ id, belongsSalesman, belongsDepartment })
     },
-    hanldeSetTime({ id, setTime }) {
+    handleSetTime({ id, setTime }) {
       this.$refs.SetTimeModal && this.$refs.SetTimeModal.handleOpen({ id, setTime })
     }
   }

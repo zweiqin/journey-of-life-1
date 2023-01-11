@@ -50,7 +50,7 @@ export default {
     return {
       modalOptions: {
         closeOnClickModal: false,
-        width: '520px',
+        width: '800px',
         title: '权限配置'
       },
       visible: false,

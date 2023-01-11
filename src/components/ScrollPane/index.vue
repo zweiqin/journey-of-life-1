@@ -86,6 +86,8 @@ export default {
     }
     .el-scrollbar__wrap {
       height: 49px;
+      display: flex;
+      align-items: center;
     }
   }
 }

@@ -297,12 +297,22 @@ export const asyncRouterMap = [
       {
         path: 'orderList',
         component: () => import('@/views/orderManagement/orderList'),
-        name: 'user',
+        name: 'OrderList',
         meta: {
           perms: ['GET /admin/order/list'],
           title: '订单列表',
           noCache: true
         }
+      },
+      {
+        path: 'orderDetail',
+        component: () => import('@/views/orderManagement/orderDetail'),
+        name: 'OrderDetail',
+        meta: {
+          title: '订单详情',
+          noCache: true
+        },
+        hidden: true
       }
     ]
   },
@@ -740,7 +750,7 @@ export const asyncRouterMap = [
     },
     children: [
       {
-        path: 'BaseInfo',
+        path: 'baseInfo',
         component: () => import('@/views/enterprise/baseInfo'),
         name: 'BaseInfo',
         _ROLES: ['USER'],

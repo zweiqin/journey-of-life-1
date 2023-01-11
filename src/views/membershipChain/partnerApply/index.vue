@@ -31,7 +31,7 @@
         type="primary"
         icon="el-icon-search"
         style="margin-left:10px;"
-        @click="handleFilter"
+        @click="handleSearch"
       >查找</el-button>
     </div>
 
@@ -66,7 +66,6 @@
         <el-table-column align="center" min-width="150" label="创建时间" prop="createTime" />
         <el-table-column align="center" min-width="150" label="更新时间" prop="updateTime" />
         <el-table-column
-          align="center"
           label="操作"
           width="200"
           fixed="right"
@@ -85,7 +84,7 @@
               v-permission="[`POST /admin${api.partnerApplyManage}`]"
               type="danger"
               size="mini"
-              @click="handleUpdate(row.id, 2)"
+              @click="handleReject(row.id, 2)"
             >驳回</el-button>
             <el-button
               v-if="row.status == 1"
@@ -193,7 +192,7 @@ export default {
           this.listLoading = false;
         });
     },
-    handleFilter() {
+    handleSearch() {
       this.listQuery.page = 1;
       this.getList();
     },
@@ -201,6 +200,17 @@ export default {
       await partnerApplyManage({
         id,
         stateEnum
+      })
+      this.$elMessage('操作成功!')
+      this.getList()
+    },
+    // 驳回
+    async handleReject(id) {
+      const comment = await this.$elPrompt('驳回理由')
+      await partnerApplyManage({
+        id,
+        comment,
+        stateEnum: 2,
       })
       this.$elMessage('操作成功!')
       this.getList()

@@ -5,7 +5,7 @@
     <div class="filter-container">
       <el-input v-model="listQuery.username" clearable size="mini" class="filter-item" style="width: 200px;" placeholder="请输入用户名"/>
       <el-input v-model="listQuery.id" clearable size="mini" class="filter-item" style="width: 200px;" placeholder="请输入反馈ID"/>
-      <el-button class="filter-item" size="mini" type="primary" icon="el-icon-search" @click="handleFilter">查找</el-button>
+      <el-button class="filter-item" size="mini" type="primary" icon="el-icon-search" @click="handleSearch">查找</el-button>
       <el-button :loading="downloadLoading" size="mini" class="filter-item" type="warning" icon="el-icon-download" @click="handleDownload">导出</el-button>
     </div>
 
@@ -75,7 +75,7 @@ export default {
         this.listLoading = false
       })
     },
-    handleFilter() {
+    handleSearch() {
       this.listQuery.page = 1
       this.getList()
     },

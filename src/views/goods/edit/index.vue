@@ -215,18 +215,15 @@
         </div>
 
         <el-table :data="specifications">
-          <el-table-column
-            property="specification"
-            label="规格名"
-          />
-          <el-table-column property="value" label="规格值">
+          <el-table-column prop="specification" label="规格名" />
+          <el-table-column prop="value" label="规格值">
             <template slot-scope="{row}">
               <el-tag type="primary">{{ row.value }}</el-tag>
             </template>
           </el-table-column>
-          <el-table-column property="picUrl" label="规格图片">
+          <el-table-column prop="picUrl" label="规格图片">
             <template slot-scope="{row}">
-              <img v-if="row.picUrl" :src="row.picUrl" width="40" />
+              <el-image v-if="row.picUrl" :src="row.picUrl" style="width:40px; height:40px" fit="cover" :preview-src-list="[row.picUrl]" />
             </template>
           </el-table-column>
           <el-table-column v-if="multipleSpec" label="操作" width="100" class-name="small-padding fixed-width">
@@ -238,6 +235,7 @@
 
         <el-dialog
           :visible.sync="specVisiable"
+          :closeOnClickModal="false"
           width="550px"
           title="设置规格"
         >
@@ -287,7 +285,7 @@
           <el-table-column prop="number" width="100" label="货品数量" />
           <el-table-column prop="url" width="100" label="货品图片">
             <template slot-scope="{row}">
-              <img v-if="row.url" :src="row.url" width="40" />
+              <el-image v-if="row.url" :src="row.url" style="width:40px; height:40px" fit="cover" :preview-src-list="[row.url]" />
             </template>
           </el-table-column>
           <el-table-column align="center" label="操作" width="100" class-name="small-padding fixed-width">
@@ -299,6 +297,7 @@
 
         <el-dialog
           :visible.sync="productVisiable"
+          :closeOnClickModal="false"
           width="550px"
           title="设置货品"
         >
@@ -366,6 +365,7 @@
 
         <el-dialog
           :visible.sync="attributeVisiable"
+          :closeOnClickModal="false"
           width="550px"
           title="设置商品参数"
         >
@@ -645,7 +645,7 @@ export default {
     },
     // 品类列表
     async getcategoryList() {
-      goodsCatAndBrand(params).then(response => {
+      goodsCatAndBrand().then(response => {
         this.categoryList = response.data.categoryList
         this.brandList = response.data.brandList
       })
@@ -680,6 +680,7 @@ export default {
         timeType: goods.endTime ? 1 : 0,
         category_arr: categoryIds
       }
+      this.multipleSpec = Array.isArray(specifications) && specifications.length ? true : false
       this.specifications = specifications
       this.products = products
       this.attributes = attributes
@@ -716,6 +717,7 @@ export default {
         this.$elMessage('品类有误，请重新选择!', 'warning')
         return
       }
+      const loading = this.$elLoading()
       try {
         const finalGoods = {
           goods: Object.assign({}, opts, {

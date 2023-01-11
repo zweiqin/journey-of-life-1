@@ -17,14 +17,14 @@
         type="primary"
         icon="el-icon-search"
         style="margin-left:10px;"
-        @click="handleFilter"
+        @click="handleSearch"
       >查找</el-button>
       <el-button
         v-permission="[`POST /admin${api.goodsTagCreate}`]"
         size="mini"
         class="filter-item"
         type="primary"
-        icon="el-icon-edit"
+        icon="el-icon-plus"
         @click="$refs.EditModal && $refs.EditModal.handleOpen({ id: '' })"
       >添加</el-button>
     </div>
@@ -53,7 +53,6 @@
           <template slot-scope="{row}">
             <el-button
               v-permission="[`POST /admin${api.goodsStyleUpdate}`]"
-              type="primary"
               size="mini"
               @click="handleUpdate(row)"
             >编辑</el-button>
@@ -122,7 +121,7 @@ export default {
         this.listLoading = false;
       }
     },
-    handleFilter() {
+    handleSearch() {
       this.listQuery.page = 1;
       this.getList();
     },
@@ -133,7 +132,7 @@ export default {
       await this.$elConfirm('确认删除?')
       await goodsStyleDelete({ id })
       this.$elMessage('删除成功!')
-      this.handleFilter()
+      this.handleSearch()
     }
   }
 };

@@ -93,7 +93,7 @@
     </div>
 
     <div class="footer-container">
-      <el-button size="medium" @click="hanldeReset">重置</el-button>
+      <el-button size="medium" @click="handleReset">重置</el-button>
       <el-button type="primary" size="medium" @click="handleSubmit">保存</el-button>
     </div>
 
@@ -273,7 +273,7 @@ export default {
       const res = await brandStyleList()
       this.styleOptions = res.data.items
     },
-    hanldeReset () {
+    handleReset () {
       this.getInfo()
     },
     async handleSubmit() {

@@ -4,7 +4,7 @@
     <!-- 查询和其他操作 -->
     <div class="filter-container">
       <el-input v-model="listQuery.name" clearable size="mini" class="filter-item" style="width: 200px;" placeholder="请输入门店名称"/>
-      <el-button size="mini" class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查找</el-button>
+      <el-button size="mini" class="filter-item" type="primary" icon="el-icon-search" @click="handleSearch">查找</el-button>
       <el-button :loading="downloadLoading" size="mini" class="filter-item" type="warning" icon="el-icon-download" @click="handleDownload">导出</el-button>
     </div>
 
@@ -138,7 +138,7 @@ export default {
       })
     },
 
-    handleFilter () {
+    handleSearch () {
       this.listQuery.page = 1
       this.getList()
     },
