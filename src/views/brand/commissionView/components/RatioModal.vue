@@ -12,24 +12,18 @@
       label-width="110px"
     >
       <el-form-item label="层级" prop="level">
-        <el-select v-model="formData.level" placeholder="请选择层级">
-          <el-option label="合伙人" :value="1" />
-          <el-option label="超级合伙人" :value="2" />
-        </el-select>
+        <el-radio-group v-model="formData.level">
+          <el-radio :label="1">合伙人</el-radio>
+          <el-radio :label="2">超级合伙人</el-radio>
+        </el-radio-group>
       </el-form-item>
       <el-form-item label="受益方" prop="levelId">
-        <el-select v-model="formData.levelId" placeholder="请选择受益方">
-          <el-option label="合伙人" :value="6" />
-          <el-option label="超级合伙人" :value="7" />
-        </el-select>
+        <el-radio-group v-model="formData.levelId">
+          <el-radio :label="6">合伙人</el-radio>
+          <el-radio :label="7">超级合伙人</el-radio>
+        </el-radio-group>
       </el-form-item>
 
-      <el-form-item label="直接拓展比例" prop="directExpandRatio">
-        <el-input
-          v-model="formData.directExpandRatio"
-          placeholder="请输入直接拓展比例"
-        />
-      </el-form-item>
       <el-form-item label="直接业务比例" prop="directBusinessRatio">
         <el-input
           v-model="formData.directBusinessRatio"
@@ -40,6 +34,12 @@
         <el-input
           v-model="formData.indirectBusinessRatio"
           placeholder="请输入间接业务比例"
+        />
+      </el-form-item>
+      <el-form-item label="直接拓展比例" prop="directExpandRatio">
+        <el-input
+          v-model="formData.directExpandRatio"
+          placeholder="请输入直接拓展比例"
         />
       </el-form-item>
       <el-form-item v-if="formData.level >= 2" label="间接拓展比例" prop="indirectExpandRatio">
@@ -57,8 +57,8 @@
 </template>
 
 <script>
-import { comModuleSaveRatio } from '@/api/brand/comModule';
-import { regZero } from '@/utils/reg'
+import { comModuleSaveRatio } from '@/api/brand/commissionSetting';
+import { regFloat } from '@/utils/reg'
 
 export default {
   name: 'EditModal',
@@ -74,10 +74,10 @@ export default {
         moduleId: '',
         levelId: '',
         level: '',
-        directExpandRatio: '',
-        indirectBusinessRatio: '',
-        indirectExpandRatio: '',
         directBusinessRatio: '',
+        indirectBusinessRatio: '',
+        directExpandRatio: '',
+        indirectExpandRatio: '',
       },
       formRules: {
         levelId: [
@@ -86,20 +86,17 @@ export default {
         level: [
           { required: true, message: '请选择层级' },
         ],
-        costType: [
-          { required: true, message: '请选择费用类型' },
-        ],
         directExpandRatio: [
-          { pattern: regZero,  message: '请输入正整数' }
+          { pattern: regFloat,  message: '数值有误' }
         ],
         indirectBusinessRatio: [
-          { pattern: regZero,  message: '请输入正整数' }
+          { pattern: regFloat,  message: '数值有误' }
         ],
         indirectExpandRatio: [
-          { pattern: regZero,  message: '请输入正整数' }
+          { pattern: regFloat,  message: '数值有误' }
         ],
         directBusinessRatio: [
-          { pattern: regZero,  message: '请输入正整数' }
+          { pattern: regFloat,  message: '数值有误' }
         ],
       },
     }

@@ -90,7 +90,7 @@
 </template>
 
 <script>
-import { comModuleList, comModuleAdd, comModuleUpdate } from '@/api/brand/comModule';
+import { comModuleList, comModuleAdd, comModuleUpdate } from '@/api/brand/commissionSetting';
 import { regMoney } from '@/utils/reg'
 
 export default {

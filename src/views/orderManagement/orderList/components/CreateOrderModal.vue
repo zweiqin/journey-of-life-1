@@ -122,7 +122,7 @@
         <el-form-item label="发货时间" prop="shipTime">
           <el-date-picker
             v-model="formData.shipTime"
-            type="date"
+            type="datetime"
             value-format="yyyy-MM-dd HH:mm:ss"
             placeholder="选择发货时间"
           />
@@ -329,7 +329,7 @@ export default {
         const params = {
           order: {
             ...opts,
-            regionCode: region_arr[region_arr.length - 1],
+            regionId: region_arr[region_arr.length - 1],
             freightType,
             goodsPrice: this.goodsPrice,
             orderPrice: this.orderPrice,

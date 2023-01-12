@@ -190,7 +190,6 @@
     <ChangePriceModal ref="ChangePriceModal" @success="getInfo" />
     <!-- 退款 -->
     <RefundModal ref="RefundModal" @success="getInfo" />
-    <!-- 创建订单 -->
   </div>
 </template>
 

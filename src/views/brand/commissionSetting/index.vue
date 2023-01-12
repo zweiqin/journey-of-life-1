@@ -74,13 +74,6 @@
               size="mini"
               @click="handleUpdate(row)"
             >编辑</el-button>
-            <!-- <el-button
-              v-if="row.level == 2 && row.costType == 2"
-              v-permission="[`POST /admin${api.comModuleSaveRatio}`]"
-              type="warning"
-              size="mini"
-              @click="handleRatio(row)"
-            >设置比例</el-button> -->
             <el-button
               v-permission="[`POST /admin${api.comModuleDeleted}`]"
               type="danger"
@@ -101,8 +94,6 @@
 
     <!-- 新增编辑 -->
     <EditModal ref="EditModal" @success="getList" />
-    <!-- 设置比例 -->
-    <RatioModal ref="RatioModal" @success="getList" />
   </div>
 </template>
 
@@ -111,17 +102,15 @@ import {
   api,
   comModuleList,
   comModuleDeleted
-} from '@/api/brand/comModule'
+} from '@/api/brand/commissionSetting'
 import Pagination from '@/components/Pagination';
 import EditModal from './components/EditModal'
-import RatioModal from './components/RatioModal'
 
 export default {
-  name: 'ComModule',
+  name: 'CommissionSetting',
   components: {
     Pagination,
     EditModal,
-    RatioModal,
   },
   filters: {
     typeFilter(val, list = []) {
@@ -177,11 +166,6 @@ export default {
       this.$elMessage('删除成功!')
       this.handleSearch()
     },
-    async handleRatio({ id }) {
-      this.$refs.RatioModal && this.$refs.RatioModal.handleOpen({
-        moduleId: id
-      })
-    }
   }
 };
 </script>

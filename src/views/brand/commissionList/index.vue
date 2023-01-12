@@ -1,18 +1,5 @@
 <template>
   <div class="app-container">
-
-    <!-- 查询和其他操作 -->
-    <div class="filter-container">
-      <el-button
-        v-permission="[`POST /admin${api.commissionRecordList}`]"
-        size="mini"
-        class="filter-item"
-        type="primary"
-        icon="el-icon-search"
-        @click="handleSearch"
-      >刷新</el-button>
-    </div>
-
     <!-- 查询结果 -->
     <div v-tableHeight>
       <el-table

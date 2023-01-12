@@ -190,12 +190,22 @@ export const asyncRouterMap = [
             },
           },
           {
-            path: 'comModule',
-            component: () => import('@/views/brand/comModule'),
-            name: 'ComModule',
+            path: 'commissionSetting',
+            component: () => import('@/views/brand/commissionSetting'),
+            name: 'CommissionSetting',
             meta: {
               perms: ['GET /admin/comModule/list'],
               title: '佣金板块',
+              noCache: true
+            },
+          },
+          {
+            path: 'commissionView',
+            component: () => import('@/views/brand/commissionView'),
+            name: 'CommissionView',
+            meta: {
+              perms: ['GET /admin/comModule/moduleList'],
+              title: '佣金查看',
               noCache: true
             },
           },
