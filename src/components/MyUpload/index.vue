@@ -50,7 +50,7 @@
         </div>
       </div>
     </el-upload>
-    <el-image-viewer v-if="dialogVisible" :on-close="closeViewer" :url-list="[dialogImageUrl]" />
+    <el-image-viewer v-if="dialogVisible" :zIndex="3000" :on-close="closeViewer" :url-list="[dialogImageUrl]" />
   </div>
 </template>
 

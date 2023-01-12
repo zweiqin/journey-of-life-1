@@ -73,7 +73,7 @@ export default {
       formData: {
         moduleId: '',
         levelId: '',
-        level: '',
+        level: 1,
         directBusinessRatio: '',
         indirectBusinessRatio: '',
         directExpandRatio: '',

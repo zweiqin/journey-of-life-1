@@ -174,7 +174,7 @@ export const asyncRouterMap = [
             _ROLES: ['ADMIN'],
             meta: {
               perms: ['GET /admin/commission/recordList'],
-              title: '佣金流水列表',
+              title: '佣金流水',
               noCache: true
             },
           },
@@ -185,7 +185,7 @@ export const asyncRouterMap = [
             _ROLES: ['ADMIN'],
             meta: {
               perms: ['GET /admin/commission/list'],
-              title: '佣金提现申请列表',
+              title: '佣金提现申请',
               noCache: true
             },
           },
@@ -282,7 +282,6 @@ export const asyncRouterMap = [
             path: 'brandLevel',
             component: () => import('@/views/brand/brandLevel'),
             name: 'BrandLevel',
-            // _ROLES: ['USER'],
             meta: {
               perms: ['GET /admin/brandLevel/list'],
               title: '等级列表',
@@ -491,14 +490,16 @@ export const asyncRouterMap = [
     },
     hidden: true,
     children: [
-      {
-        path: '',
-        component: () => import('@/views/digitalDashboard/informationSentry'),
-        name: 'informationSentry',
-        meta: {
-          title: '信息哨兵',
-        }
-      },
+      // {
+      //   path: '',
+      //   component: () => import('@/views/digitalDashboard/informationSentry'),
+      //   name: 'informationSentry',
+      //   meta: {
+      //     perms: ['POST /admin/messagesentry/queryMsgSentryList'],
+      //     title: '信息哨兵',
+      //     noCache: true
+      //   }
+      // },
       {
         path: '/performanceControlDashboard',
         component: () => import('@/views/digitalDashboard/performanceControlDashboard'),
@@ -970,10 +971,10 @@ export const asyncRouterMap = [
     children: [
       {
         path: 'informationSentry',
-        component: () => import('@/views/businessManagement/informationSentry/index'),
+        component: () => import('@/views/businessManagement/informationSentry'),
         name: 'InformationSentry',
         meta: {
-          perms: ['POST /messagesentry/queryMsgSentryList'],
+          perms: ['POST /admin/messagesentry/queryMsgSentryList'],
           title: '信息哨兵',
           noCache: true
         }
@@ -993,7 +994,7 @@ export const asyncRouterMap = [
         component: () => import('@/views/businessManagement/scriptSetting'),
         name: 'ScriptSetting',
         meta: {
-          perms: ['GET /msgsay/msgSayTypeList'],
+          perms: ['POST /admin/msgsay/msgSayList'],
           title: '话术设置',
           noCache: true
         }
@@ -1003,7 +1004,7 @@ export const asyncRouterMap = [
         component: () => import('@/views/businessManagement/marketingPortrait'),
         name: 'MarketingPortrait',
         meta: {
-          perms: ['GET /statistical/home'],
+          perms: ['GET /admin/statistical/home'],
           title: '营销画像',
           noCache: true
         }
