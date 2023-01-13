@@ -42,7 +42,7 @@
         :data="list"
         v-bind="$tableCommonOptions"
       >
-        <el-table-column align="center" width="50" label="ID" prop="id" fixed="left" />
+        <el-table-column align="center" width="100" label="序号" prop="id" fixed="left" />
         <el-table-column align="center" min-width="100" label="申请提现的会员ID" prop="userId" show-overflow-tooltip />
         <el-table-column align="center" min-width="100" label="提现的佣金金额" prop="commission" show-overflow-tooltip />
         <el-table-column align="center" min-width="100" label="状态" prop="status">
@@ -61,15 +61,15 @@
         >
           <template slot-scope="{row}">
             <el-button
-              v-if="row.status==0"
               v-permission="[`POST /admin${api.commissionGrant}`]"
+              :disabled="row.status!==0"
               type="success"
               size="mini"
               @click="handleApproval(row)"
             >放款</el-button>
             <el-button
-              v-if="row.status==0"
               v-permission="[`POST /admin${api.commissionRevoke}`]"
+              :disabled="row.status!==0"
               type="danger"
               size="mini"
               @click="handleReject(row)"

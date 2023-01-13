@@ -103,7 +103,7 @@
         @selection-change="handleSelectionChange"
       >
         <el-table-column type="selection" width="55" :selectable="checkSelectable" fixed="left" />
-        <el-table-column align="center" width="100" label="ID" prop="id" fixed="left" />
+        <el-table-column align="center" width="100" label="序号" prop="id" fixed="left" />
         <el-table-column align="center" min-width="150" label="用户名" prop="username" show-overflow-tooltip fixed="left" />
         <el-table-column align="center" min-width="100" label="性别" prop="gender">
           <template slot-scope="{row}">

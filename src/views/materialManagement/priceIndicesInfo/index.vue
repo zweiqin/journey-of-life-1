@@ -52,9 +52,8 @@
       <el-table-column
         align="center"
         min-width="100px"
-        label="ID"
+        label="序号"
         prop="id"
-        sortable
       />
 
       <el-table-column
@@ -166,7 +165,7 @@
       >
         <el-form-item
           v-if="dialogStatus!=='create'"
-          label="ID"
+          label="序号"
           prop="id"
         >
           {{ dataForm.id }}

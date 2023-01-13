@@ -38,7 +38,7 @@
         :data="list"
         v-bind="$tableCommonOptions"
       >
-        <el-table-column align="center" width="50" label="ID" prop="id" fixed="left" />
+        <el-table-column align="center" width="100" label="序号" prop="id" fixed="left" />
         <el-table-column align="center" min-width="100" label="部门名称" prop="name" show-overflow-tooltip />
         <el-table-column align="center" min-width="200" label="说明" prop="desc" />
         <el-table-column align="center" width="150" label="创建时间" prop="addTime" />

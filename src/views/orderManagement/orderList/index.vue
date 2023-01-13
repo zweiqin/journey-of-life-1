@@ -83,7 +83,7 @@
         :data="list"
         v-bind="$tableCommonOptions"
       >
-        <el-table-column align="center" width="100" label="ID" prop="id" fixed="left" />
+        <el-table-column align="center" width="100" label="序号" prop="id" fixed="left" />
         <el-table-column align="center" min-width="150" label="订单编号" prop="orderSn" show-overflow-tooltip fixed="left" />
         <el-table-column align="center" min-width="100" label="用户ID" prop="userId" show-overflow-tooltip fixed="left" />
         <el-table-column align="center" min-width="100" label="订单类型" prop="orderType">
@@ -161,7 +161,7 @@
         <el-table-column align="center" min-width="150" label="更新时间" prop="updateTime" />
         <el-table-column
           label="操作"
-          width="200"
+          width="300"
           fixed="right"
           class-name="small-padding fixed-width"
         >
@@ -172,36 +172,37 @@
               @click="handleDetail(row)"
             >查看</el-button>
             <el-button
-              v-if="isShopRole && row.orderStatus==101"
+              v-if="isShopRole"
               v-permission="[`POST /admin${api.orderChangePrice}`]"
+              :disabled="row.orderStatus!=101"
               size="mini"
               type="warning"
               @click="handleChangePrice(row)"
             >改价</el-button>
             <el-button
-              v-if="row.orderStatus==201"
               v-permission="[`POST /admin${api.orderShip}`]"
+              :disabled="row.orderStatus!=201"
               size="mini"
-              type="success"
+              type="primary"
               @click="handleDeliver(row)"
             >发货</el-button>
             <el-button
-              v-if="row.orderStatus==202"
               v-permission="[`POST /admin${api.orderRefund}`]"
+              :disabled="row.orderStatus!=202"
               size="mini"
               type="warning"
               @click="handleRefund(row)"
             >退款</el-button>
             <el-button
-              v-if="!row.isFreeze"
               v-permission="[`POST /admin${api.orderIsFreeze}`]"
+              :disabled="row.isFreeze"
               size="mini"
               type="danger"
               @click="handleFreeze(row, true)"
             >冻结</el-button>
             <el-button
-              v-if="row.isFreeze"
               v-permission="[`POST /admin${api.orderIsFreeze}`]"
+              :disabled="!row.isFreeze"
               size="mini"
               type="success"
               @click="handleFreeze(row, false)"

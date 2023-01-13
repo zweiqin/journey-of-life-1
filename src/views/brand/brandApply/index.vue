@@ -3,13 +3,13 @@
 
     <!-- 查询和其他操作 -->
     <div class="filter-container">
-      <el-input
+      <!-- <el-input
         v-model="listQuery.userId"
         clearable
         class="filter-item"
         style="width: 200px;"
         placeholder="请输入会员ID"
-      />
+      /> -->
       <el-select
         v-model="listQuery.status"
         clearable
@@ -45,37 +45,40 @@
         v-bind="$tableCommonOptions"
       >
 
-        <el-table-column align="center" width="50" label="ID" prop="id" fixed="left" />
+        <el-table-column align="center" width="100" label="序号" prop="id" fixed="left" />
         <el-table-column align="center" min-width="150" label="会员名称" prop="username" show-overflow-tooltip />
-        <el-table-column align="center" min-width="100" label="状态" prop="status">
+        <el-table-column align="center" min-width="150" label="门店名称" prop="brandname" show-overflow-tooltip />
+        <el-table-column align="center" min-width="150" label="联系电话" prop="brandPhone" show-overflow-tooltip />
+        <el-table-column align="center" min-width="100" label="申请会员ID" prop="userId" show-overflow-tooltip />
+        <el-table-column align="center" min-width="100" label="审核人账户" prop="operatorname" show-overflow-tooltip />
+        <el-table-column align="center" min-width="100" label="审核状态" prop="status">
           <template slot-scope="{row}">
             {{ row.status | typeFilter(statusList) }}
           </template>
         </el-table-column>
-        <!-- <el-table-column align="center" width="100" label="图片" prop="picUrl">
-          <template slot-scope="{row}">
-            <el-image v-if="row.picUrl" :src="row.picUrl" style="width:40px; height:40px" fit="cover" :preview-src-list="[row.picUrl]" />
-          </template>
-        </el-table-column> -->
-        <el-table-column align="center" min-width="150" label="创建时间" prop="addTime" />
-        <el-table-column align="center" min-width="150" label="更新时间" prop="updateTime" />
+        <el-table-column align="center" min-width="200" label="驳回理由" prop="comment" show-overflow-tooltip />
+        <el-table-column align="center" min-width="150" label="标签名" prop="labelName" show-overflow-tooltip />
+        <el-table-column align="center" min-width="150" label="会员昵称" prop="nickname" show-overflow-tooltip />
+        <el-table-column align="center" min-width="150" label="区域" prop="regionName" show-overflow-tooltip />
+        <el-table-column align="center" min-width="150" label="创建时间" prop="createtime" />
+        <el-table-column align="center" min-width="150" label="更新时间" prop="updatetime" />
         <el-table-column
           align="center"
           label="操作"
-          width="100"
+          width="200"
           fixed="right"
           class-name="small-padding fixed-width"
         >
           <template slot-scope="{row}">
             <el-button
-              v-if="row.status == 0"
               v-permission="[`POST /admin${api.userupManage}`]"
+              :disabled="row.status !== 0"
               size="mini"
               @click="handleUpdate(row.id, 5)"
             >开始审核</el-button>
             <el-button
-              v-if="row.status == 1"
               v-permission="[`POST /admin${api.userupManage}`]"
+              :disabled="row.status != 1"
               type="warning"
               size="mini"
               @click="handleExamine(row)"

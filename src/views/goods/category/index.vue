@@ -44,7 +44,7 @@
         :data="list"
         v-bind="$tableCommonOptions"
       >
-        <el-table-column align="center" width="100" label="ID" prop="id" fixed="left" />
+        <el-table-column align="center" width="100" label="序号" prop="id" fixed="left" />
         <el-table-column align="center" width="150" label="类目名" prop="name" show-overflow-tooltip />
         <el-table-column align="center" width="100" label="类目图标" prop="iconUrl">
           <template slot-scope="{row}">

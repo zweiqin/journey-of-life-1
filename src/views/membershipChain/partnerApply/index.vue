@@ -45,14 +45,10 @@
         :data="list"
       >
 
-        <el-table-column align="center" width="50" label="ID" prop="id" fixed="left" />
-        <el-table-column align="center" min-width="100" label="品牌商账户名" prop="username" show-overflow-tooltip />
-        <el-table-column align="center" min-width="150" label="品牌商密码" prop="password" show-overflow-tooltip />
+        <el-table-column align="center" width="100" label="序号" prop="id" fixed="left" />
         <el-table-column align="center" min-width="100" label="会员ID" prop="userId" show-overflow-tooltip />
         <el-table-column align="center" min-width="100" label="推荐人" prop="referrerName" show-overflow-tooltip />
-        <el-table-column align="center" min-width="100" label="区域编码" prop="regionCode" show-overflow-tooltip />
         <el-table-column align="center" min-width="200" label="订单ID" prop="orderId" show-overflow-tooltip />
-        <el-table-column align="center" min-width="100" label="审核人ID" prop="operatorId" show-overflow-tooltip />
         <el-table-column align="center" min-width="100" label="审核人账户名" prop="operatorName" show-overflow-tooltip />
         <el-table-column align="center" min-width="100" label="审核状态" prop="status">
           <template slot-scope="{row}">
@@ -60,42 +56,41 @@
           </template>
         </el-table-column>
         <el-table-column align="center" min-width="200" label="备注" prop="comment" show-overflow-tooltip />
-        <el-table-column align="center" min-width="100" label="申请类型" prop="applicationType" show-overflow-tooltip />
         <el-table-column align="center" min-width="100" label="申请会员昵称" prop="nickname" show-overflow-tooltip />
         <el-table-column align="center" min-width="100" label="联系方式" prop="mobile" show-overflow-tooltip />
+        <el-table-column align="center" min-width="150" label="区域名称" prop="regionName" show-overflow-tooltip />
         <el-table-column align="center" min-width="150" label="创建时间" prop="createTime" />
         <el-table-column align="center" min-width="150" label="更新时间" prop="updateTime" />
         <el-table-column
           label="操作"
-          width="200"
+          width="300"
           fixed="right"
           class-name="small-padding fixed-width"
         >
           <template slot-scope="{row}">
             <el-button
-              v-if="row.status == 0"
               v-permission="[`POST /admin${api.partnerApplyManage}`]"
-              type="primary"
+              :disabled="row.status !== 0"
               size="mini"
               @click="handleUpdate(row.id, 5)"
             >开始审核</el-button>
             <el-button
-              v-if="row.status == 1"
               v-permission="[`POST /admin${api.partnerApplyManage}`]"
+              :disabled="row.status !== 1"
               type="danger"
               size="mini"
               @click="handleReject(row.id, 2)"
             >驳回</el-button>
             <el-button
-              v-if="row.status == 1"
               v-permission="[`POST /admin${api.partnerApplyManage}`]"
-              type="primary"
+              :disabled="row.status !== 1"
+              type="success"
               size="mini"
               @click="handleUpdate(row.id, 7)"
-            >已通过,待付款</el-button>
+            >通过</el-button>
             <el-button
               v-permission="[`POST /admin${api.partnerApplySignin}`]"
-              v-if="row.status == 5"
+              :disabled="row.status !== 5"
               type="warning"
               size="mini"
               @click="handleUpgrade(row)"

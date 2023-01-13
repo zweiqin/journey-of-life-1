@@ -19,8 +19,8 @@
       <el-form-item label="简介" prop="desc">
         {{ formData.desc || '--' }}
       </el-form-item>
-      <el-form-item label="电话" prop="phone">
-        {{ formData.phone || '--' }}
+      <el-form-item label="电话" prop="brandPhone">
+        {{ formData.brandPhone || '--' }}
       </el-form-item>
       <el-form-item label="地址" prop="address">
         {{ formData.address || '--' }}
