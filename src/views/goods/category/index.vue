@@ -36,6 +36,7 @@
 		<div v-tableHeight>
 
 			<el-table
+				ref="multipleTable"
 				v-loading="listLoading"
 				height="100%"
 				element-loading-text="正在查询中。。。"
@@ -102,7 +103,7 @@
 		</div>
 
 		<!-- 新增编辑 -->
-		<EditModal ref="EditModal" @success="getList" />
+		<EditModal ref="EditModal" @success="reStore()" />
 	</div>
 </template>
 
@@ -160,11 +161,19 @@ export default {
 				this.listLoading = false
 			}
 		},
+		reStore() {
+			this.list = []
+			this.total = 0
+			this.$nextTick(() => {
+				this.getList()
+			})
+		},
 		async load(tree, treeNode, resolve) {
 			// console.log(tree, treeNode)
 			try {
 				const tempLevel = 'L' + (Number(tree.level.substring(1)) + 1)
 				const res = await categoryAllList({ level: tempLevel, parentId: tree.id })
+				console.log(res)
 				resolve(res.data.data)
 				if (res.data.total === 0) this.$message.warning(`没有更多数据了！`)
 			} finally {
@@ -175,14 +184,19 @@ export default {
 		// 	this.listQuery.page = 1
 		// 	this.getList()
 		// },
-		async handleUpdate({ id }) {
-			this.$refs.EditModal && this.$refs.EditModal.handleOpen({ id })
+		handleUpdate(row) {
+			console.log(row)
+			this.$refs.EditModal && this.$refs.EditModal.handleOpen({ id: row.id })
 		},
 		async handleDelete({ id }) {
 			await this.$elConfirm('确认删除?')
 			await categoryDelete({ id })
 			this.$elMessage('删除成功！')
-			this.handleSearch()
+			this.list = []
+			this.total = 0
+			this.$nextTick(() => {
+				this.getList()
+			})
 		}
 	}
 }
