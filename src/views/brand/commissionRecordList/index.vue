@@ -52,7 +52,7 @@
         v-bind="$tableCommonOptions"
       >
 
-        <el-table-column align="center" width="100" label="ID" prop="id" fixed="left" />
+        <el-table-column align="center" width="100" label="序号" prop="id" fixed="left" />
         <el-table-column align="center" min-width="100" label="佣金" prop="commission" show-overflow-tooltip />
         <el-table-column align="center" min-width="150" label="获得佣金的会员ID" prop="userId" show-overflow-tooltip />
         <el-table-column align="center" min-width="150" label="升级或者产生订单的会员id" prop="produceUserId" show-overflow-tooltip />

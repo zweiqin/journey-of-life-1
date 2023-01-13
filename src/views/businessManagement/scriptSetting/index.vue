@@ -52,7 +52,7 @@
         v-bind="$tableCommonOptions"
       >
 
-        <el-table-column align="center" width="100" label="ID" prop="id" fixed="left" />
+        <el-table-column align="center" width="100" label="序号" prop="id" fixed="left" />
         <el-table-column align="center" min-width="150" label="话术内容" prop="say" show-overflow-tooltip />
         <el-table-column align="center" width="150" label="话术类型" prop="userGender">
           <template slot-scope="{row}">

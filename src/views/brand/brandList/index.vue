@@ -108,7 +108,7 @@
         v-bind="$tableCommonOptions"
       >
 
-        <el-table-column align="center" width="100" label="ID" prop="id" fixed="left" />
+        <el-table-column align="center" width="100" label="序号" prop="id" fixed="left" />
         <el-table-column align="center" width="150" label="公司名称" prop="name" fixed="left" show-overflow-tooltip />
         <el-table-column align="center" width="150" label="店主名称" prop="keeperName" fixed="left" show-overflow-tooltip />
         <el-table-column align="center" width="200" label="简介" prop="desc" show-overflow-tooltip />

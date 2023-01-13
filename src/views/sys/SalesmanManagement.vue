@@ -49,9 +49,8 @@
     >
       <el-table-column
         align="center"
-        label="ID"
+        label="序号"
         prop="id"
-        sortable
       />
 
       <el-table-column
@@ -187,7 +186,7 @@
         <el-form-item
           v-if="dialogStatus!='create'"
           align="left"
-          label="ID"
+          label="序号"
           prop="id"
           sortable
         >

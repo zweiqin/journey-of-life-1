@@ -54,7 +54,7 @@
         v-bind="$tableCommonOptions"
       >
 
-        <el-table-column align="center" label="ID" prop="id" width="100" fixed="left" />
+        <el-table-column align="center" width="100" label="序号" prop="id" fixed="left" />
         <el-table-column align="center" min-width="150" label="会员名称" prop="userName" fixed="left" show-overflow-tooltip />
         <el-table-column align="center" min-width="150" label="会员头像" prop="userAvatar">
           <template slot-scope="{row}">
