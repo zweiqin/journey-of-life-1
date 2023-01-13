@@ -2,13 +2,13 @@
   <div class="app-container">
     <!-- 查询和其他操作 -->
     <div class="filter-container">
-      <el-input
+      <!-- <el-input
         v-model="listQuery.userId"
         clearable
         class="filter-item"
         style="width: 200px;"
         placeholder="请输入会员ID"
-      />
+      /> -->
       <el-select
         v-model="listQuery.status"
         clearable
@@ -121,7 +121,7 @@ export default {
       listQuery: {
         page: 1,
         limit: 20,
-        userId: '',
+        // userId: '',
         status: '',
       },
       statusList: [

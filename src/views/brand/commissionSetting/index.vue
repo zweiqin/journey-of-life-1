@@ -25,10 +25,10 @@
         style="margin-left:10px;"
         @click="handleSearch"
       >查找</el-button>
+      <br />
       <el-button
         v-permission="[`POST /admin${api.comModuleAdd}`]"
         size="mini"
-        class="filter-item"
         type="primary"
         icon="el-icon-plus"
         @click="$refs.EditModal && $refs.EditModal.handleOpen({ id: '' })"

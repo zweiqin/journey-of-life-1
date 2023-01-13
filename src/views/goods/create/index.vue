@@ -35,7 +35,7 @@
             <MyUpload v-model="formData.gallery" :limit="3" multiple accept="image/*" />
           </el-form-item>
 
-          <el-form-item label="关键字" prop="keywords">
+          <el-form-item label="搜索关键字" prop="keywords">
             <el-tag
               v-for="(tag, idx) in formData.keywords"
               :key="tag"
@@ -59,7 +59,7 @@
               icon="el-icon-plus"
               plain
               @click="showInput"
-            >添加关键字</el-button>
+            >添加</el-button>
           </el-form-item>
 
           <el-form-item label="所属分类" prop="category_arr">
@@ -504,7 +504,7 @@ export default {
           { type: 'array', required: true, message: '请上传商品宣传图片' }
         ],
         keywords: [
-          { type: 'array', required: true, message: '请输入关键字' }
+          { type: 'array', required: true, message: '请输入搜索关键字' }
         ],
         category_arr: [
           { type: 'array', required: true, message: '请选择所属分类' }

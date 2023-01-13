@@ -4,13 +4,6 @@
     <!-- 查询和其他操作 -->
     <div class="filter-container">
       <el-input
-        v-model="listQuery.id"
-        clearable
-        class="filter-item"
-        style="width: 200px;"
-        placeholder="请输入用户ID"
-      />
-      <el-input
         v-model="listQuery.nickname"
         clearable
         class="filter-item"
@@ -50,24 +43,66 @@
       <el-button
         v-permission="[`GET /admin${api.userList}`]"
         size="mini"
-        class="filter-item"
         type="primary"
         icon="el-icon-search"
-        style="margin-left:10px;"
+        class="filter-item"
         @click="handleSearch"
       >查找</el-button>
+      <br />
+
+      <!-- 超管专属 -->
+      <template v-if="isAdminRole">
+        <el-button
+          v-permission="[`POST /admin${api.bdUserAdd}`]"
+          :disabled="bdUserAddBtnDisabled"
+          icon="el-icon-lock"
+          type="success"
+          size="mini"
+          @click="handleBind(true)"
+        >添加绑定</el-button>
+        <el-button
+          v-permission="[`POST /admin${api.bdUserDeleted}`]"
+          :disabled="bdUserDeletedBtnDisabled"
+          icon="el-icon-unlock"
+          type="danger"
+          size="mini"
+          @click="handleBind(false)"
+        >解除绑定</el-button>
+      </template>
+
+      <!-- 门店专属 -->
+      <template v-if="isShopRole">
+        <el-button
+          v-permission="[`POST /admin${api.orderSVsAdd}`]"
+          :disabled="orderSVsAddBtnDisabled"
+          icon="el-icon-lock"
+          type="success"
+          size="mini"
+          @click="handleAssign(true)"
+        >指派业务员</el-button>
+        <el-button
+          v-permission="[`POST /admin${api.orderSVsDeleted}`]"
+          :disabled="orderSVsDeletedBtnDisabled"
+          icon="el-icon-unlock"
+          type="danger"
+          size="mini"
+          @click="handleAssign(false)"
+        >解除业务员</el-button>
+      </template>
     </div>
 
     <!-- 查询结果 -->
     <div v-tableHeight>
       <el-table
         height="100%"
+        ref="elTable"
         v-loading="listLoading"
         element-loading-text="正在查询中。。。"
         :data="list"
         v-bind="$tableCommonOptions"
+        @selection-change="handleSelectionChange"
       >
-
+        <el-table-column type="selection" width="55" :selectable="checkSelectable" fixed="left" />
         <el-table-column align="center" width="100" label="ID" prop="id" fixed="left" />
         <el-table-column align="center" min-width="150" label="用户名" prop="username" show-overflow-tooltip fixed="left" />
         <el-table-column align="center" min-width="100" label="性别" prop="gender">
@@ -76,7 +111,7 @@
           </template>
         </el-table-column>
         <el-table-column align="center" min-width="150" label="生日" prop="birthday" show-overflow-tooltip />
-        <el-table-column align="center" min-width="160" label="用户在平台的角色简称" prop="userLevelDesc" show-overflow-tooltip />
+        <el-table-column align="center" min-width="160" label="平台角色" prop="userLevelDesc" show-overflow-tooltip />
         <el-table-column align="center" min-width="100" label="昵称" prop="nickname" show-overflow-tooltip />
         <el-table-column align="center" min-width="100" label="电话" prop="mobile" show-overflow-tooltip />
         <el-table-column align="center" width="100" label="头像" prop="avatar">
@@ -93,7 +128,7 @@
         <el-table-column align="center" min-width="150" label="更新时间" prop="updateTime" />
         <el-table-column
           label="操作"
-          :width="isAdminRole ? 320 : 150"
+          :width="isAdminRole ? 360 : 100"
           fixed="right"
           class-name="small-padding fixed-width"
         >
@@ -106,56 +141,24 @@
             <!-- 超管专属 -->
             <template v-if="isAdminRole">
               <el-button
-                v-if="row.userLevel == 5 && !row.principalId"
-                v-permission="[`POST /admin${api.bdUserAdd}`]"
-                type="success"
-                size="mini"
-                @click="handleBind(row, true)"
-              >添加绑定</el-button>
-              <el-button
-                v-if="row.userLevel == 5 && row.principalId"
-                v-permission="[`POST /admin${api.bdUserAdd}`]"
-                type="danger"
-                size="mini"
-                @click="handleBind(row, false)"
-              >解除绑定</el-button>
-
-              <el-button
-                v-if="row.userLevel == 5"
                 v-permission="[`POST /admin${api.userupSaveAndSignin}`]"
-                type="warning"
+                :disabled="row.userLevel !== 5"
+                type="primary"
                 size="mini"
                 @click="handleShopApply(row)"
               >门店申请</el-button>
               <el-button
-                v-if="row.userLevel == 5"
                 v-permission="[`POST /admin${api.partnerApplySaveAndSignin}`]"
+                :disabled="row.userLevel !== 5"
                 type="warning"
                 @click="handlePartnerApply(row, 6)"
               >合伙人申请</el-button>
               <el-button
-                v-if="row.userLevel == 6"
                 v-permission="[`POST /admin${api.partnerApplySaveAndSignin}`]"
+                :disabled="row.userLevel !== 6"
                 type="warning"
                 @click="handlePartnerApply(row, 7)"
               >超级合伙人申请</el-button>
-            </template>
-            <!-- 门店专属 -->
-            <template v-if="isShopRole">
-              <el-button
-                v-if="row.principalId"
-                v-permission="[`POST /admin${api.orderSVsDeleted}`]"
-                type="danger"
-                size="mini"
-                @click="handleAssign(row, false)"
-              >取消指派</el-button>
-              <el-button
-                v-else
-                v-permission="[`POST /admin${api.orderSVsAdd}`]"
-                type="success"
-                size="mini"
-                @click="handleAssign(row, true)"
-              >指派</el-button>
             </template>
           </template>
         </el-table-column>
@@ -227,6 +230,18 @@ export default {
     },
     isShopRole() {
       return this.roles.includes('门店')
+    },
+    bdUserAddBtnDisabled() {
+      return !(this.multipleSelection.length && this.multipleSelection.every(v => !v.principalId))
+    },
+    bdUserDeletedBtnDisabled() {
+      return !(this.multipleSelection.length && this.multipleSelection.every(v => v.principalId))
+    },
+    orderSVsAddBtnDisabled() {
+      return !(this.multipleSelection.length && this.multipleSelection.every(v => !v.principalId))
+    },
+    orderSVsDeletedBtnDisabled() {
+      return !(this.multipleSelection.length && this.multipleSelection.every(v => v.principalId))
     }
   },
   data() {
@@ -238,18 +253,25 @@ export default {
       listQuery: {
         page: 1,
         limit: 20,
-        id: '',
         nickname: '',
         mobile: '',
         userLevel: '',
         region_arr: [],
       },
+      multipleSelection: [],
     };
   },
   created() {
     this.getList();
   },
   methods: {
+    // 勾选
+    checkSelectable(row) {
+      return this.isAdminRole ? row.userLevel === 5 : true
+    },
+    handleSelectionChange(val) {
+      this.multipleSelection = val
+    },
     async getList() {
       this.listLoading = true;
       try {
@@ -262,6 +284,8 @@ export default {
         const res = await userList(params)
         this.list = res.data.items;
         this.total = res.data.total;
+        this.multipleSelection = []
+        this.$refs.elTable.clearSelection()
       } finally {
         this.listLoading = false;
       }
@@ -274,10 +298,14 @@ export default {
       this.$refs.EditModal && this.$refs.EditModal.handleOpen({ id, birthday, regionCode, brandRemark, platformRemark })
     },
     async handleBind({ id, regionCode = '' }, flag) {
+      if (!this.multipleSelection.length) {
+        return this.$elMessage('请勾选', 'waring')
+      }
+      const userIds = this.multipleSelection.map(v => v.id)
       if (flag) {
-        this.$refs.BindUserModal && this.$refs.BindUserModal.handleOpen({ userIds: [id], region: regionCode })
+        this.$refs.BindUserModal && this.$refs.BindUserModal.handleOpen({ userIds, region: regionCode })
       } else {
-        await bdUserDeleted({ userIds: [id] })
+        await bdUserDeleted({ userIds })
         this.$elMessage('解除绑定成功!')
         this.getList()
       }
@@ -292,10 +320,14 @@ export default {
       }, regionCode)
     },
     async handleAssign({ id }, flag) {
+       if (!this.multipleSelection.length) {
+        return this.$elMessage('请勾选', 'waring')
+      }
+      const userIds = this.multipleSelection.map(v => v.id)
       if (flag) {
-        this.$refs.AssignModal && this.$refs.AssignModal.handleOpen({ userIds: [id] })
+        this.$refs.AssignModal && this.$refs.AssignModal.handleOpen({ userIds })
       } else {
-        await bdUserDeleted({ userIds: [id] })
+        await bdUserDeleted({ userIds })
         this.$elMessage('取消指派成功!')
         this.getList()
       }

@@ -8,7 +8,7 @@
         clearable
         class="filter-item"
         style="width: 200px;"
-        placeholder="输入关键字"
+        placeholder="输入搜索关键字"
       />
       <el-input
         v-model="listQuery.url"
@@ -25,10 +25,10 @@
         icon="el-icon-search"
         @click="handleSearch"
       >查找</el-button>
+      <br />
       <el-button
         v-permission="[`POST /admin${api.keywordCreate}`]"
         size="mini"
-        class="filter-item"
         type="primary"
         icon="el-icon-plus"
         @click="$refs.EditModal && $refs.EditModal.handleOpen({ id: '' })"
@@ -46,7 +46,7 @@
       >
 
         <el-table-column align="center" width="100" label="ID" prop="id" fixed="left" />
-        <el-table-column align="center" min-width="100" label="关键字" prop="keyword" fixed="left" />
+        <el-table-column align="center" min-width="100" label="搜索关键字" prop="keyword" fixed="left" />
         <el-table-column align="center" min-width="150" label="跳转链接" prop="url">
           <template slot-scope="{row}">
             <a :href="row.url" target="_blank">{{ row.url }}</a>

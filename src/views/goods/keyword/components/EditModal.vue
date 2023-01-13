@@ -11,12 +11,12 @@
       label-suffix=":"
       label-width="100px"
     >
-      <el-form-item label="关键字" prop="keyword">
+      <el-form-item label="搜索关键字" prop="keyword">
         <el-input
           v-model="formData.keyword"
           maxlength="100"
           show-word-limit
-          placeholder="请输入关键字"
+          placeholder="请输入搜索关键字"
         />
       </el-form-item>
       <el-form-item label="跳转链接" prop="url">
@@ -67,7 +67,7 @@ export default {
       },
       formRules: {
         keyword: [
-          { required: true, message: '请输入关键字' },
+          { required: true, message: '请输入搜索关键字' },
           { max: 100, message: '100字以内' },
         ],
       },
@@ -78,7 +78,7 @@ export default {
       this.visible = false
     },
     handleOpen(params = {}) {
-      this.modalOptions.title = params.id ? '编辑关键字' : '添加关键字'
+      this.modalOptions.title = params.id ? '编辑搜索关键字' : '添加搜索关键字'
       this.formData = Object.assign(this.$options.data().formData, params)
       this.visible = true
       this.$refs.formData && this.$refs.formData.resetFields()

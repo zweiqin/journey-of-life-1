@@ -3,7 +3,7 @@
 
     <!-- 查询和其他操作 -->
     <div class="filter-container">
-      <el-input
+      <!-- <el-input
         v-model="listQuery.userId"
         clearable
         class="filter-item"
@@ -16,7 +16,7 @@
         class="filter-item"
         style="width: 200px;"
         placeholder="输入产生订单的会员ID"
-      />
+      /> -->
       <el-select
         v-model="listQuery.type"
         clearable
@@ -103,8 +103,8 @@ export default {
       listQuery: {
         page: 1,
         limit: 20,
-        userId: '',
-        produceUserId: '',
+        // userId: '',
+        // produceUserId: '',
         type: '',
       },
       statusList: [

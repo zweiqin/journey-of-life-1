@@ -98,7 +98,7 @@
           </template>
         </el-table-column>
         <el-table-column align="center" min-width="150" label="商品简介" prop="brief" show-overflow-tooltip />
-        <el-table-column align="center" min-width="100" label="关键字" prop="keywords" show-overflow-tooltip />
+        <el-table-column align="center" min-width="100" label="搜索关键字" prop="keywords" show-overflow-tooltip />
         <el-table-column align="center" min-width="100" label="商品单位" prop="unit" />
         <el-table-column align="center" width="100" label="零售价格" prop="counterPrice" show-overflow-tooltip />
         <el-table-column align="center" width="100" label="会员价格" prop="vipPrice" show-overflow-tooltip />
@@ -327,7 +327,7 @@ export default {
           name: '商品名称',
           goodsType: '商品类型',
           brief: '商品简介',
-          keywords: '关键字',
+          keywords: '搜索关键字',
           unit: '商品单位',
           counterPrice: '零售价格',
           vipPrice: '会员价格',

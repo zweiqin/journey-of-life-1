@@ -4,13 +4,6 @@
     <!-- 查询和其他操作 -->
     <div class="filter-container">
       <el-input
-        v-model="listQuery.userId"
-        clearable
-        class="filter-item"
-        style="width: 150px;"
-        placeholder="请输入用户ID"
-      />
-      <el-input
         v-model="listQuery.orderSn"
         clearable
         class="filter-item"
@@ -70,11 +63,11 @@
         style="margin-left:10px;"
         @click="handleSearch"
       >查找</el-button>
+      <br />
       <el-button
         v-if="isShopRole"
         v-permission="[`POST /admin${api.orderAddLineOrder}`]"
         size="mini"
-        class="filter-item"
         type="primary"
         icon="el-icon-plus"
         @click="$refs.CreateOrderModal && $refs.CreateOrderModal.handleOpen({ id: '' })"
@@ -312,7 +305,6 @@ export default {
       listQuery: {
         page: 1,
         size: 20,
-        userId: '',
         orderSn: '',
         consignee: '',
         region_arr: [],

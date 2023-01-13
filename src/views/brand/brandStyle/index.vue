@@ -19,10 +19,10 @@
         style="margin-left:10px;"
         @click="handleSearch"
       >查找</el-button>
+      <br />
       <el-button
         v-permission="[`POST /admin${api.brandStyleCreate}`]"
         size="mini"
-        class="filter-item"
         type="primary"
         icon="el-icon-plus"
         @click="$refs.EditModal && $refs.EditModal.handleOpen({ id: '' })"
@@ -38,7 +38,6 @@
         :data="list"
         v-bind="$tableCommonOptions"
       >
-
         <el-table-column align="center" width="100" label="ID" prop="id" fixed="left" />
         <el-table-column align="center" min-width="150" label="风格名称" prop="name" show-overflow-tooltip />
         <el-table-column align="center" width="100" label="图片" prop="picUrl">

@@ -430,7 +430,7 @@ export const asyncRouterMap = [
         name: 'Keyword',
         meta: {
           perms: ['GET /admin/keyword/list'],
-          title: '关键词',
+          title: '搜索关键字',
           noCache: true
         }
       },

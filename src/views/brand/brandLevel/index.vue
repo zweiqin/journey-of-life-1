@@ -7,7 +7,7 @@
         v-permission="[`GET /admin${api.brandLevelList}`]"
         size="mini"
         class="filter-item"
-        icon="el-icon-search"
+        icon="el-icon-refresh"
         @click="handleSearch"
       >刷新</el-button>
       <el-button

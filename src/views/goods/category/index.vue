@@ -25,10 +25,10 @@
         icon="el-icon-search"
         @click="handleSearch"
       >查找</el-button>
+      <br />
       <el-button
         v-permission="[`POST /admin${api.categoryCreate}`]"
         size="mini"
-        class="filter-item"
         type="primary"
         icon="el-icon-plus"
         @click="$refs.EditModal && $refs.EditModal.handleOpen({ id: '' })"
@@ -56,7 +56,7 @@
             <el-image v-if="row.picUrl" :src="row.picUrl" style="width:40px; height:40px" fit="cover" :preview-src-list="[row.picUrl]" />
           </template>
         </el-table-column>
-        <el-table-column align="center" min-width="150" label="关键字" prop="keywords" show-overflow-tooltip />
+        <el-table-column align="center" min-width="150" label="搜索关键字" prop="keywords" show-overflow-tooltip />
         <el-table-column align="center" min-width="150" label="简介" prop="desc" show-overflow-tooltip />
         <el-table-column align="center" width="100" label="级别" prop="level">
           <template slot-scope="{row}">

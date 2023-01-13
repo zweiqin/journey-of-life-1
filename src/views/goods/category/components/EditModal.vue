@@ -19,10 +19,10 @@
           placeholder="请输入类目名称"
         />
       </el-form-item>
-      <el-form-item label="关键字" prop="keywords">
+      <el-form-item label="搜索关键字" prop="keywords">
         <el-input
           v-model="formData.keywords"
-          placeholder="请输入关键字"
+          placeholder="请输入搜索关键字"
         />
       </el-form-item>
       <el-form-item label="级别" prop="level">
