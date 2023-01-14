@@ -49,7 +49,9 @@
           <MyLoading :width="width" :height="height" />
         </div>
       </div>
+
     </el-upload>
+    <div v-if="showTipsMessage && !disabled" class="tipsMessage">图片最大支持20MB</div>
     <el-image-viewer v-if="dialogVisible" :zIndex="3000" :on-close="closeViewer" :url-list="[dialogImageUrl]" />
   </div>
 </template>
@@ -95,10 +97,10 @@ export default {
       type: Boolean,
       default: false
     },
-    // 限制图片上传大小, 默认10m
+    // 限制图片上传大小, 默认20m
     fileSize: {
       type: Number,
-      default: 10 * 1024
+      default: 20 * 1024
     },
     // 双向数据绑定的图片url, string 则默认为一个(limit也要设置为1), Array默认为多个
     fileUrl: {
@@ -153,7 +155,11 @@ export default {
     activeClass: {
       type: Boolean,
       default: false
-    }
+    },
+    showTipsMessage: {
+      type: Boolean,
+      default: true
+    },
   },
   data() {
     return {
@@ -416,5 +422,10 @@ export default {
 .my-upload-wrap-active {
   width: 146px !important;
   height: 146px !important;
+}
+.tipsMessage {
+  line-height: 1;
+  font-size: 12px;
+  color: #666;
 }
 </style>

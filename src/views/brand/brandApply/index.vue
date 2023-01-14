@@ -65,7 +65,7 @@
         <el-table-column
           align="center"
           label="操作"
-          width="200"
+          width="280"
           fixed="right"
           class-name="small-padding fixed-width"
         >
@@ -76,6 +76,12 @@
               size="mini"
               @click="handleUpdate(row.id, 5)"
             >开始审核</el-button>
+            <el-button
+              v-permission="[`POST /admin${api.userupSetCharge}`]"
+              size="mini"
+              type="primary"
+              @click="handleSetCharge(row)"
+            >负责人设置</el-button>
             <el-button
               v-permission="[`POST /admin${api.userupManage}`]"
               :disabled="row.status != 1"
@@ -97,6 +103,8 @@
 
     <!-- 审核 -->
     <ExamineModal ref="ExamineModal" @success="getList" />
+    <!-- 负责人设置 -->
+    <ChargeModal ref="ChargeModal" @success="getList" />
   </div>
 </template>
 
@@ -109,12 +117,14 @@ import {
 } from '@/api/brand/brandApply'
 import Pagination from '@/components/Pagination';
 import ExamineModal from './components/ExamineModal';
+import ChargeModal from './components/ChargeModal';
 
 export default {
   name: 'BrandApply',
   components: {
     Pagination,
     ExamineModal,
+    ChargeModal,
   },
   filters: {
     typeFilter(val, list = []) {
@@ -168,6 +178,9 @@ export default {
       })
       this.$elMessage('操作成功!')
       this.getList()
+    },
+    handleSetCharge({ id }) {
+      this.$refs.ChargeModal && this.$refs.ChargeModal.handleOpen({ id })
     },
     handleExamine(item) {
       this.$refs.ExamineModal && this.$refs.ExamineModal.handleOpen(item)

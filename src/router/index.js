@@ -174,7 +174,7 @@ export const asyncRouterMap = [
             _ROLES: ['ADMIN'],
             meta: {
               perms: ['GET /admin/commission/recordList'],
-              title: '佣金流水',
+              title: '佣金报表',
               noCache: true
             },
           },
@@ -185,7 +185,7 @@ export const asyncRouterMap = [
             _ROLES: ['ADMIN'],
             meta: {
               perms: ['GET /admin/commission/list'],
-              title: '佣金提现申请',
+              title: '佣金提现',
               noCache: true
             },
           },
