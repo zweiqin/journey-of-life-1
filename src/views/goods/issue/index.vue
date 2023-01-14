@@ -199,7 +199,7 @@ export default {
 		},
 		async getBrandList() {
 			const res = await goodsCatAndBrand()
-			console.log(res)
+			// console.log(res)
 			this.brandList = res.data.brandList
 		},
 		async getList() {
