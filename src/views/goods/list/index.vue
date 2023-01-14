@@ -155,11 +155,18 @@
 				<el-table-column
 					align="center"
 					label="操作"
-					width="200"
+					width="250"
 					fixed="right"
 					class-name="small-padding fixed-width"
 				>
 					<template slot-scope="{ row }">
+						<el-button
+							type="warning"
+							size="mini"
+							@click="handleDetail(row)"
+						>
+							详情
+						</el-button>
 						<el-button
 							v-permission="[ `POST /admin${api.goodsUpdate}` ]"
 							size="mini"
@@ -205,6 +212,9 @@
 			@pagination="getList"
 		/>
 
+		<!-- 查看详情 -->
+		<DetailModal ref="DetailModal" />
+
 	</div>
 </template>
 
@@ -218,11 +228,13 @@ import {
 import { goodsStyleList } from '@/api/goods/goodsStyle'
 import { categoryTreeList } from '@/api/goods/goodsCategory'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
+import DetailModal from './components/DetailModal'
 
 export default {
 	name: 'GoodsList',
 	components: {
-		Pagination
+		Pagination,
+		DetailModal
 	},
 	filters: {
 		saleTypeFilter(val) {
@@ -365,6 +377,9 @@ export default {
 				excel.export_json_to_excel2(tHeader, this.list, filterVal, '商品信息')
 				this.downloadLoading = false
 			})
+		},
+		handleDetail(row) {
+			this.$refs.DetailModal && this.$refs.DetailModal.handleOpen(row)
 		}
 	}
 }
