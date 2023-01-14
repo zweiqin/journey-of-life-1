@@ -7,6 +7,7 @@ export const api = {
   userupList: '/userup/list',
   userupManage: '/userup/manage',
   userupSignin: '/userup/signin',
+  userupSetCharge: '/userup/setCharge',
 }
 
 // 门店申请列表
@@ -31,6 +32,15 @@ export function userupManage(data) {
 export function userupSignin(data) {
   return request({
     url: api.userupSignin,
+    method: 'POST',
+    data
+  })
+}
+
+// 责任人设置
+export function userupSetCharge(data) {
+  return request({
+    url: api.userupSetCharge,
     method: 'POST',
     data
   })
