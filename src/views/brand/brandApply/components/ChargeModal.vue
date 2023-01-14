@@ -129,8 +129,8 @@ export default {
     // 合伙人列表
     async getParentList() {
       const res = await userList({
-        userLevel: 1,
-        page: 6,
+        userLevel: 6,
+        page: 1,
         limit: 99999,
       })
       this.parentList = res.data.items

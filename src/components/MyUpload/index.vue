@@ -49,7 +49,9 @@
           <MyLoading :width="width" :height="height" />
         </div>
       </div>
+
     </el-upload>
+    <div v-if="showTipsMessage && !disabled" class="tipsMessage">图片最大支持20MB</div>
     <el-image-viewer v-if="dialogVisible" :zIndex="3000" :on-close="closeViewer" :url-list="[dialogImageUrl]" />
   </div>
 </template>
@@ -153,7 +155,11 @@ export default {
     activeClass: {
       type: Boolean,
       default: false
-    }
+    },
+    showTipsMessage: {
+      type: Boolean,
+      default: true
+    },
   },
   data() {
     return {
@@ -416,5 +422,10 @@ export default {
 .my-upload-wrap-active {
   width: 146px !important;
   height: 146px !important;
+}
+.tipsMessage {
+  line-height: 1;
+  font-size: 12px;
+  color: #666;
 }
 </style>

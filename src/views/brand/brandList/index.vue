@@ -119,27 +119,33 @@
           </template>
         </el-table-column>
         <el-table-column align="center" min-width="150" label="区域" prop="regionList" show-overflow-tooltip />
-        <el-table-column align="center" min-width="150" label="门店类型" prop="brandgenreName" show-overflow-tooltip />
+        <!-- <el-table-column align="center" min-width="150" label="门店类型" prop="brandgenreName" show-overflow-tooltip /> -->
         <el-table-column align="center" min-width="150" label="门店风格" prop="styleName" show-overflow-tooltip />
         <el-table-column align="center" width="100" label="产品数量" prop="productAmount" show-overflow-tooltip />
         <el-table-column align="center" width="100" label="员工数量" prop="employeeAmount" show-overflow-tooltip />
-        <el-table-column align="center" width="150" label="上级名称" prop="chargeName" show-overflow-tooltip />
+        <el-table-column align="center" width="150" label="负责人" prop="chargeName" show-overflow-tooltip />
         <el-table-column align="center" width="150" label="创建时间" prop="addTime" />
         <el-table-column align="center" width="150" label="更新时间" prop="updateTime" />
         <el-table-column
           align="center"
           label="操作"
-          width="180"
+          width="250"
           fixed="right"
           class-name="small-padding fixed-width"
         >
           <template slot-scope="{row}">
             <el-button
               size="mini"
+              @click="handleDetail(row)"
+            >查看</el-button>
+            <el-button
+              size="mini"
+              type="success"
               @click="handleGoods(row)"
             >商品</el-button>
             <el-button
               size="mini"
+              type="success"
               @click="handleOrder(row)"
             >订单</el-button>
             <el-button
@@ -162,6 +168,8 @@
 
     <!-- 新增编辑 -->
     <EditModal ref="EditModal" @success="getList" />
+    <!-- 查看详情 -->
+    <DetailModal ref="DetailModal" @success="getList" />
   </div>
 </template>
 
@@ -169,6 +177,7 @@
 import { mapGetters } from 'vuex'
 import Pagination from '@/components/Pagination';
 import EditModal from './components/EditModal'
+import DetailModal from './components/DetailModal'
 import {
   api,
   brandList,
@@ -183,6 +192,7 @@ export default {
   components: {
     Pagination,
     EditModal,
+    DetailModal,
   },
   computed: {
     ...mapGetters([
@@ -258,6 +268,9 @@ export default {
     handleSearch() {
       this.listQuery.page = 1;
       this.getList();
+    },
+    handleDetail (row) {
+      this.$refs.DetailModal && this.$refs.DetailModal.handleOpen(row)
     },
     handleGoods (row) {
       this.$router.push({ name: 'BrandGoods', query: { brandId: row.id } })
