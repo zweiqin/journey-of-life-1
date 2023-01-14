@@ -97,10 +97,10 @@ export default {
       type: Boolean,
       default: false
     },
-    // 限制图片上传大小, 默认10m
+    // 限制图片上传大小, 默认20m
     fileSize: {
       type: Number,
-      default: 10 * 1024
+      default: 20 * 1024
     },
     // 双向数据绑定的图片url, string 则默认为一个(limit也要设置为1), Array默认为多个
     fileUrl: {
