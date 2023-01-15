@@ -31,13 +31,13 @@ export default {
   /* position: fixed; */
   overflow-y: auto;
 }
-::v-deep .el-table__fixed {
+/* ::v-deep .el-table__fixed {
     height: auto !important;
     bottom: 10px;
   }
 ::v-deep .el-table__fixed-right {
       height: auto !important;
       bottom: 10px;
-    }
+    } */
 </style>
 

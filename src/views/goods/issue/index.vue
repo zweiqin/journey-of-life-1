@@ -91,7 +91,7 @@
 				<el-table-column
 					align="center"
 					label="操作"
-					width="200"
+					width="250"
 					fixed="right"
 					class-name="small-padding fixed-width"
 				>
@@ -104,8 +104,8 @@
 							编辑
 						</el-button>
 						<el-button
-							v-if="row.isEnable"
 							v-permission="[ `GET /admin${api.issueChangeEnable}` ]"
+							:disabled="!row.isEnable"
 							type="info"
 							size="mini"
 							@click="handleUpdate(row)"
@@ -113,8 +113,8 @@
 							下架
 						</el-button>
 						<el-button
-							v-else
 							v-permission="[ `GET /admin${api.issueChangeEnable}` ]"
+							:disabled="row.isEnable"
 							type="warning"
 							size="mini"
 							@click="handleUpdate(row)"
@@ -137,7 +137,7 @@
 		<Pagination
 			:total="total"
 			:page.sync="listQuery.page"
-			:limit.sync="listQuery.size"
+			:limit.sync="listQuery.limit"
 			@pagination="getList"
 		/>
 
@@ -178,7 +178,7 @@ export default {
 			listLoading: true,
 			listQuery: {
 				page: 1,
-				size: 20,
+				limit: 20,
 				question: '',
 				type: '',
 				brandId: ''

@@ -155,7 +155,7 @@
 				<el-table-column
 					align="center"
 					label="操作"
-					width="250"
+					width="300"
 					fixed="right"
 					class-name="small-padding fixed-width"
 				>
@@ -175,8 +175,8 @@
 							编辑
 						</el-button>
 						<el-button
-							v-if="row.isOnSale"
 							v-permission="[ `POST /admin${api.goodsUpOnSale}` ]"
+							:disabled="!row.isOnSale"
 							type="info"
 							size="mini"
 							@click="handleUpdate(row)"
@@ -184,8 +184,8 @@
 							下架
 						</el-button>
 						<el-button
-							v-else
 							v-permission="[ `POST /admin${api.goodsUpOnSale}` ]"
+							:disabled="row.isOnSale"
 							type="warning"
 							size="mini"
 							@click="handleUpdate(row)"

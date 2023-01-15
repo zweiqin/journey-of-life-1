@@ -111,8 +111,8 @@
 							删除
 						</el-button>
 						<el-button
-							v-if="row.type == 0"
 							v-permission="[ `POST /admin${api.commentBrandReply}` ]"
+							:disabled="row.type != 0"
 							type="primary"
 							size="mini"
 							@click="handleAddComment(row)"
