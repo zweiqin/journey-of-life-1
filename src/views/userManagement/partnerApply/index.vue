@@ -44,8 +44,8 @@
         v-bind="$tableCommonOptions"
         :data="list"
       >
-
-        <el-table-column align="center" width="100" label="序号" prop="id" fixed="left" />
+        <!-- <el-table-column align="center" width="50" label="序号" type="index" fixed="left" /> -->
+        <el-table-column align="center" width="100" label="ID" prop="id" fixed="left" />
         <el-table-column align="center" min-width="100" label="会员ID" prop="userId" show-overflow-tooltip />
         <el-table-column align="center" min-width="100" label="推荐人" prop="referrerName" show-overflow-tooltip />
         <el-table-column align="center" min-width="200" label="订单ID" prop="orderId" show-overflow-tooltip />
@@ -115,7 +115,7 @@ import {
   partnerApplyList,
   partnerApplyManage,
   partnerApplySignin,
-} from '@/api/membershipChain/partnerApply'
+} from '@/api/userManagement/partnerApply'
 import { getToken } from '@/utils/auth';
 import { getUserInfo } from '@/api/login';
 import Pagination from '@/components/Pagination';

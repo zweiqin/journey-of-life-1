@@ -154,6 +154,15 @@ export const asyncRouterMap = [
               title: '会员管理',
               noCache: true
             }
+          },
+          {
+            path: 'partnerApply',
+            component: () => import('@/views/userManagement/partnerApply'),
+            name: 'PartnerApply',
+            _ROLES: ['ADMIN'],
+            meta: {
+              title: '合伙人申请',
+            }
           }
         ]
       },
@@ -322,29 +331,6 @@ export const asyncRouterMap = [
           noCache: true
         },
         hidden: true
-      }
-    ]
-  },
-  {
-    path: '/membershipChain',
-    component: Layout,
-    redirect: 'noredirect',
-    alwaysShow: true,
-    name: 'MembershipChain',
-    _ROLES: ['ADMIN'],
-    meta: {
-      title: '会员关系链',
-      icon: 'membership'
-    },
-    children: [
-      {
-        path: 'partnerApply',
-        component: () => import('@/views/membershipChain/partnerApply'),
-        name: 'PartnerApply',
-        _ROLES: ['ADMIN'],
-        meta: {
-          title: '合伙人申请',
-        }
       }
     ]
   },

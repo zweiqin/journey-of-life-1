@@ -102,7 +102,7 @@
 		</div>
 
 		<!-- 查询结果 -->
-		<div class="table-container"">
+		<div class="table-container">
 			<el-table
 				ref="elTable"
 				v-loading="listLoading"
@@ -133,7 +133,11 @@
 				<el-table-column align="center" min-width="200" label="门店备注" prop="brandRemark" show-overflow-tooltip />
 				<el-table-column align="center" min-width="200" label="平台备注" prop="platformRemark" show-overflow-tooltip />
 				<el-table-column v-if="isAdminRole" align="center" min-width="150" label="用户在门店中的等级" prop="brandLevelDesc" show-overflow-tooltip />
-				<el-table-column v-if="isAdminRole || isShopRole" align="center" min-width="150" label="负责人名称" prop="principalName" show-overflow-tooltip />
+				<el-table-column v-if="isAdminRole || isShopRole" align="center" min-width="150" label="推荐人" prop="principalName" show-overflow-tooltip>
+					<template slot-scope="{ row }">
+						{{ rwo.principalName || '团蜂' }}
+					</template>
+				</el-table-column>
 				<el-table-column align="center" min-width="150" label="创建时间" prop="addTime" />
 				<el-table-column align="center" min-width="150" label="更新时间" prop="updateTime" />
 				<el-table-column
