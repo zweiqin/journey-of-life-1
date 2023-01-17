@@ -28,11 +28,11 @@
           </el-form-item>
 
           <el-form-item label="商品图片" prop="picUrl">
-            <MyUpload v-model="formData.picUrl" accept="image/*" />
+            <MyUpload v-model="formData.picUrl" />
           </el-form-item>
 
           <el-form-item label="商品宣传图片" prop="gallery">
-            <MyUpload v-model="formData.gallery" :limit="3" multiple accept="image/*" />
+            <MyUpload v-model="formData.gallery" :limit="3" multiple />
           </el-form-item>
 
           <el-form-item label="搜索关键字" prop="keywords">
@@ -252,7 +252,7 @@
               <el-input v-model="specForm.value" placeholder="请输入商品规格值" />
             </el-form-item>
             <el-form-item label="规格图片" prop="picUrl">
-              <MyUpload v-model="specForm.picUrl" accept="image/*" />
+              <MyUpload v-model="specForm.picUrl" />
             </el-form-item>
           </el-form>
           <div
@@ -334,7 +334,7 @@
               label="货品图片"
               prop="url"
             >
-              <MyUpload v-model="productForm.url" accept="image/*" />
+              <MyUpload v-model="productForm.url" />
             </el-form-item>
           </el-form>
           <div
@@ -513,11 +513,9 @@ export default {
           { pattern: regZero,  message: '请输入正整数' }
         ],
         vipPrice: [
-          { required: true, message: '请输入会员价格' },
           { pattern: regZero,  message: '请输入正整数' }
         ],
         retailPrice: [
-          { required: true, message: '请输入优惠价格' },
           { pattern: regZero,  message: '请输入正整数' }
         ],
         saleType: [
@@ -570,7 +568,7 @@ export default {
           { required: true, message: '请输入商品规格值' }
         ],
         picUrl: [
-          { required: true, message: '请上传商品规格图片' }
+          // { required: true, message: '请上传商品规格图片' }
         ],
       },
       productForm: {
@@ -590,7 +588,7 @@ export default {
           { pattern: regZero,  message: '请输入正整数' }
         ],
         url: [
-          { required: true, message: '请上传商品规格图片' }
+          // { required: true, message: '请上传商品规格图片' }
         ],
       },
       attributeForm: {

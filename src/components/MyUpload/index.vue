@@ -424,7 +424,6 @@ export default {
   height: 146px !important;
 }
 .tipsMessage {
-  line-height: 1;
   font-size: 12px;
   color: #666;
 }

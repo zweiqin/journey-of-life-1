@@ -25,7 +25,7 @@
         <el-switch v-model="formData.hasPicture" />
       </el-form-item>
       <el-form-item v-if="formData.hasPicture" label="图片" prop="picUrls">
-        <MyUpload v-model="formData.picUrls" :limit="3" multiple accept="image/*"  />
+        <MyUpload v-model="formData.picUrls" :limit="3" multiple />
       </el-form-item>
     </el-form>
     <span slot="footer" class="dialog-footer">

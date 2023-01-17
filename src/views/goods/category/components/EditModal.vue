@@ -71,10 +71,10 @@
       </template>
 
       <el-form-item label="类目图标" prop="iconUrl">
-        <MyUpload v-model="formData.iconUrl" accept="image/*" />
+        <MyUpload v-model="formData.iconUrl" />
       </el-form-item>
       <el-form-item label="类目图片" prop="picUrl">
-        <MyUpload v-model="formData.picUrl" accept="image/*" />
+        <MyUpload v-model="formData.picUrl" />
       </el-form-item>
 
       <el-form-item label="类目简介" prop="desc">
