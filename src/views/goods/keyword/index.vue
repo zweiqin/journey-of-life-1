@@ -48,8 +48,8 @@
 				:data="list"
 				v-bind="$tableCommonOptions"
 			>
-
-				<el-table-column align="center" width="100" label="序号" prop="id" fixed="left" />
+        <el-table-column align="center" width="50" label="序号" type="index" :index="tableMixin_indexMethod" fixed="left" />
+				<el-table-column align="center" width="100" label="ID" prop="id" fixed="left" />
 				<el-table-column align="center" min-width="100" label="搜索关键字" prop="keyword" fixed="left" />
 				<el-table-column align="center" min-width="150" label="跳转链接" prop="url">
 					<template slot-scope="{ row }">

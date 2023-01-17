@@ -113,7 +113,8 @@
 				@selection-change="handleSelectionChange"
 			>
 				<el-table-column type="selection" width="55" :selectable="checkSelectable" fixed="left" />
-				<el-table-column align="center" width="100" label="序号" prop="id" fixed="left" />
+        <el-table-column align="center" width="50" label="序号" type="index" :index="tableMixin_indexMethod" fixed="left" />
+				<el-table-column align="center" width="100" label="ID" prop="id" fixed="left" />
 				<el-table-column align="center" min-width="150" label="用户名" prop="username" show-overflow-tooltip fixed="left" />
 				<el-table-column align="center" min-width="100" label="性别" prop="gender">
 					<template slot-scope="{ row }">
@@ -135,7 +136,7 @@
 				<el-table-column v-if="isAdminRole" align="center" min-width="150" label="用户在门店中的等级" prop="brandLevelDesc" show-overflow-tooltip />
 				<el-table-column v-if="isAdminRole || isShopRole" align="center" min-width="150" label="推荐人" prop="principalName" show-overflow-tooltip>
 					<template slot-scope="{ row }">
-						{{ rwo.principalName || '团蜂' }}
+						{{ row.principalName || '团蜂' }}
 					</template>
 				</el-table-column>
 				<el-table-column align="center" min-width="150" label="创建时间" prop="addTime" />
@@ -187,7 +188,7 @@
 			</el-table>
 		</div>
 
-		<div v-show="!!total" style="display: flex;justify-content: space-between;">
+		<!-- <div v-show="!!total" style="display: flex;justify-content: space-between;">
 			<div class="card-container">
 				<el-card>
 					<div slot="header"><span>平台角色统计</span></div>
@@ -225,7 +226,13 @@
 					@pagination="getList"
 				/>
 			</div>
-		</div>
+		</div> -->
+		<Pagination
+			:total="total"
+			:page.sync="listQuery.page"
+			:limit.sync="listQuery.limit"
+			@pagination="getList"
+		/>
 
 		<!-- 新增编辑 -->
 		<EditModal ref="EditModal" @success="getList" />

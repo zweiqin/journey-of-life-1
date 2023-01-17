@@ -47,9 +47,10 @@
       fit
       highlight-current-row
     >
+      <el-table-column align="center" width="50" label="序号" type="index" :index="tableMixin_indexMethod" fixed="left" />
       <el-table-column
         align="center"
-        label="序号"
+        label="ID"
         prop="id"
       />
 

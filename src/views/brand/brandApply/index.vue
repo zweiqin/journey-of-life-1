@@ -44,8 +44,8 @@
         :data="list"
         v-bind="$tableCommonOptions"
       >
-
-        <el-table-column align="center" width="100" label="序号" prop="id" fixed="left" />
+        <el-table-column align="center" width="50" label="序号" type="index" :index="tableMixin_indexMethod" fixed="left" />
+        <el-table-column align="center" width="100" label="ID" prop="id" fixed="left" />
         <el-table-column align="center" min-width="150" label="会员名称" prop="username" show-overflow-tooltip />
         <el-table-column align="center" min-width="150" label="门店名称" prop="brandname" show-overflow-tooltip />
         <el-table-column align="center" min-width="150" label="联系电话" prop="brandPhone" show-overflow-tooltip />

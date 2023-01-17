@@ -42,7 +42,8 @@
         :data="list"
         v-bind="$tableCommonOptions"
       >
-        <el-table-column align="center" width="100" label="序号" prop="id" fixed="left" />
+        <el-table-column align="center" width="50" label="序号" type="index" :index="tableMixin_indexMethod" fixed="left" />
+        <el-table-column align="center" width="100" label="ID" prop="id" fixed="left" />
         <el-table-column align="center" min-width="100" label="申请提现的会员ID" prop="userId" show-overflow-tooltip />
         <el-table-column align="center" min-width="100" label="提现的佣金金额" prop="commission" show-overflow-tooltip />
         <el-table-column align="center" min-width="100" label="状态" prop="status">

@@ -49,7 +49,8 @@
 				:default-expand-all="false"
 				:tree-props="{ children: 'children', hasChildren: 'id' }"
 			>
-				<el-table-column align="left" width="140" label="序号" prop="id" fixed="left" />
+        <el-table-column align="center" width="50" label="序号" type="index" :index="tableMixin_indexMethod" fixed="left" />
+				<el-table-column align="left" width="140" label="ID" prop="id" fixed="left" />
 				<el-table-column align="center" width="150" label="类目名" prop="name" show-overflow-tooltip />
 				<el-table-column align="center" width="100" label="类目图标" prop="iconUrl">
 					<template slot-scope="{ row }">

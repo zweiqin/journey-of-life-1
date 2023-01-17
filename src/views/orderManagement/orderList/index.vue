@@ -83,7 +83,8 @@
         :data="list"
         v-bind="$tableCommonOptions"
       >
-        <el-table-column align="center" width="100" label="序号" prop="id" fixed="left" />
+        <el-table-column align="center" width="50" label="序号" type="index" :index="tableMixin_indexMethod" fixed="left" />
+        <el-table-column align="center" width="100" label="ID" prop="id" fixed="left" />
         <el-table-column align="center" min-width="150" label="订单编号" prop="orderSn" show-overflow-tooltip fixed="left" />
         <el-table-column align="center" min-width="100" label="用户ID" prop="userId" show-overflow-tooltip fixed="left" />
         <el-table-column align="center" min-width="100" label="订单类型" prop="orderType">

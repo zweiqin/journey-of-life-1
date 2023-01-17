@@ -44,7 +44,7 @@
         v-bind="$tableCommonOptions"
         :data="list"
       >
-        <!-- <el-table-column align="center" width="50" label="序号" type="index" fixed="left" /> -->
+        <el-table-column align="center" width="50" label="序号" type="index" :index="tableMixin_indexMethod" fixed="left" />
         <el-table-column align="center" width="100" label="ID" prop="id" fixed="left" />
         <el-table-column align="center" min-width="100" label="会员ID" prop="userId" show-overflow-tooltip />
         <el-table-column align="center" min-width="100" label="推荐人" prop="referrerName" show-overflow-tooltip />

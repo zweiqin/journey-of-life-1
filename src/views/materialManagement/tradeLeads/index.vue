@@ -48,11 +48,12 @@
       fit
       highlight-current-row
     >
+      <el-table-column align="center" width="50" label="序号" type="index" :index="tableMixin_indexMethod" fixed="left" />
 
       <el-table-column
         align="center"
-        min-width="100px"
-        label="序号"
+        width="100px"
+        label="ID"
         prop="id"
       />
 
@@ -185,7 +186,7 @@
       >
         <el-form-item
           v-if="dialogStatus!=='create'"
-          label="序号"
+          label="ID"
           prop="id"
         >
           {{ dataForm.id }}

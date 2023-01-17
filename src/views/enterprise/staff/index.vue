@@ -59,8 +59,8 @@
         :data="list"
         v-bind="$tableCommonOptions"
       >
-
-        <el-table-column align="center" width="100" label="序号" prop="id" fixed="left" />
+        <el-table-column align="center" width="50" label="序号" type="index" :index="tableMixin_indexMethod" fixed="left" />
+        <el-table-column align="center" width="100" label="ID" prop="id" fixed="left" />
         <el-table-column align="center" width="100" label="系统账户id" prop="adminId" />
         <el-table-column align="center" width="150" label="部门名称" prop="roleName" />
         <el-table-column align="center" width="150" label="员工姓名" prop="name" show-overflow-tooltip />

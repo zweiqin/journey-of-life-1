@@ -42,8 +42,8 @@
 				:data="list"
 				v-bind="$tableCommonOptions"
 			>
-
-				<el-table-column align="center" width="100" label="序号" prop="id" fixed="left" />
+        <el-table-column align="center" width="50" label="序号" type="index" :index="tableMixin_indexMethod" fixed="left" />
+				<el-table-column align="center" width="100" label="ID" prop="id" fixed="left" />
 				<el-table-column align="center" min-width="200" label="标签值" prop="value" show-overflow-tooltip />
 				<el-table-column align="center" min-width="100" label="排序" prop="sortOrder" />
 				<el-table-column align="center" min-width="150" label="创建时间" prop="addTime" />
