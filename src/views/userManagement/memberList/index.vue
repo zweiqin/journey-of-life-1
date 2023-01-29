@@ -113,7 +113,7 @@
 				@selection-change="handleSelectionChange"
 			>
 				<el-table-column type="selection" width="55" :selectable="checkSelectable" fixed="left" />
-        <el-table-column align="center" width="50" label="序号" type="index" :index="tableMixin_indexMethod" fixed="left" />
+				<el-table-column align="center" width="50" label="序号" type="index" :index="tableMixin_indexMethod" fixed="left" />
 				<el-table-column align="center" width="100" label="ID" prop="id" fixed="left" />
 				<el-table-column align="center" min-width="150" label="用户名" prop="username" show-overflow-tooltip fixed="left" />
 				<el-table-column align="center" min-width="100" label="性别" prop="gender">
@@ -137,6 +137,19 @@
 				<el-table-column v-if="isAdminRole || isShopRole" align="center" min-width="150" label="推荐人" prop="principalName" show-overflow-tooltip>
 					<template slot-scope="{ row }">
 						{{ row.principalName || '团蜂' }}
+					</template>
+				</el-table-column>
+				<el-table-column align="center" min-width="150" label="绑定合伙人数量" prop="todo1" show-overflow-tooltip>
+					<template slot-scope="{ row }">
+						<span v-if="row.userLevel === 7">{{ row.todo1 }}</span>
+						<span v-else>-</span>
+					</template>
+				</el-table-column>
+				<el-table-column align="center" min-width="150" label="绑定普通会员数量" prop="todo2" show-overflow-tooltip>
+					<template slot-scope="{ row }">
+						<span v-if="row.userLevel === 7">{{ row.todo2 }}</span>
+						<span v-else-if="row.userLevel === 6">{{ row.todo2 }}</span>
+						<span v-else>-</span>
 					</template>
 				</el-table-column>
 				<el-table-column align="center" min-width="150" label="创建时间" prop="addTime" />
@@ -188,7 +201,7 @@
 			</el-table>
 		</div>
 
-		<!-- <div v-show="!!total" style="display: flex;justify-content: space-between;">
+		<div v-show="!!total" class="statistics-container">
 			<div class="card-container">
 				<el-card>
 					<div slot="header"><span>平台角色统计</span></div>
@@ -218,21 +231,13 @@
 					</div>
 				</el-card>
 			</div>
-			<div>
-				<Pagination
-					:total="total"
-					:page.sync="listQuery.page"
-					:limit.sync="listQuery.limit"
-					@pagination="getList"
-				/>
-			</div>
-		</div> -->
-		<Pagination
-			:total="total"
-			:page.sync="listQuery.page"
-			:limit.sync="listQuery.limit"
-			@pagination="getList"
-		/>
+			<Pagination
+				:total="total"
+				:page.sync="listQuery.page"
+				:limit.sync="listQuery.limit"
+				@pagination="getList"
+			/>
+		</div>
 
 		<!-- 新增编辑 -->
 		<EditModal ref="EditModal" @success="getList" />
@@ -408,6 +413,10 @@ export default {
 .table-container {
 	flex: 1;
 	height: 0;
+}
+.statistics-container {
+	display: flex;
+	justify-content: space-between;
 }
 .card-container {
 	flex: 1;

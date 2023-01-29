@@ -107,7 +107,14 @@
 				<el-table-column align="center" min-width="100" label="搜索关键字" prop="keywords" show-overflow-tooltip />
 				<el-table-column align="center" min-width="100" label="商品单位" prop="unit" />
 				<el-table-column align="center" width="100" label="零售价格" prop="counterPrice" show-overflow-tooltip />
-				<el-table-column align="center" width="100" label="会员价格" prop="vipPrice" show-overflow-tooltip />
+				<!-- <el-table-column align="center" width="100" label="会员价格" prop="vipPrice" show-overflow-tooltip :formatter="refreshVipPrice" /> -->
+				<el-table-column align="center" width="100" label="会员价格" prop="vipPrice" show-overflow-tooltip>
+					<template slot-scope="{ row }">
+						<span v-if="row.vipPrice === ''"></span>
+						<span v-else-if="row.vipPrice > row.retailPrice" type="danger" effect="plain">-</span>
+						<span v-else-if="row.vipPrice <= row.retailPrice" type="danger" effect="plain">{{ row.vipPrice }}</span>
+					</template>
+				</el-table-column>
 				<el-table-column align="center" width="100" label="优惠价格" prop="retailPrice" show-overflow-tooltip />
 				<el-table-column align="center" width="80" prop="isOnSale" label="上架状态">
 					<template slot-scope="{ row }">
@@ -381,6 +388,15 @@ export default {
 		handleDetail(row) {
 			this.$refs.DetailModal && this.$refs.DetailModal.handleOpen(row)
 		}
+		// refreshVipPrice(row, column, cellValue) {
+		// 	if (cellValue === '') {
+		// 		return '-'
+		// 	} else if (cellValue > row.retailPrice) {
+		// 		return '-'
+		// 	} else if (cellValue <= row.retailPrice) {
+		// 		return cellValue
+		// 	}
+		// }
 	}
 }
 </script>

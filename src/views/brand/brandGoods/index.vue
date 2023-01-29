@@ -107,7 +107,7 @@
 				<el-table-column align="center" min-width="100" label="搜索关键字" prop="keywords" show-overflow-tooltip />
 				<el-table-column align="center" min-width="100" label="商品单位" prop="unit" />
 				<el-table-column align="center" width="100" label="零售价格" prop="counterPrice" show-overflow-tooltip />
-				<el-table-column align="center" width="100" label="会员价格" prop="vipPrice" show-overflow-tooltip />
+				<!-- <el-table-column align="center" width="100" label="会员价格" prop="vipPrice" show-overflow-tooltip /> -->
 				<el-table-column align="center" width="100" label="优惠价格" prop="retailPrice" show-overflow-tooltip />
 				<el-table-column align="center" width="80" prop="isOnSale" label="上架状态">
 					<template slot-scope="{ row }">
