@@ -7,17 +7,43 @@
 			</div>
 			<div class="login-card">
 
-				<!-- 切换为二维码登录 -->
-				<div class="login-changein" @click="switchLogin">
-					<p>扫码登录更安全<em></em><span></span></p>
-					<div class="code-img">
-						<a href=""><svg-icon icon-class="qr-code" class="code-icon" /></a>
+				<div class="login-changein">
+					<div class="code-img" @click="switchLogin">
+						<svg-icon v-if="activeName === 'third'" icon-class="computer" class="code-icon code-icon-computer" />
+						<svg-icon v-else icon-class="qr-code" class="code-icon code-icon-qr" />
+					</div>
+					<div class="login-tip">
+						<div class="poptip">
+							<div class="poptip-arrow"><!-- <em></em> --><span></span></div>
+							<div class="poptip-content">{{ activeName === 'third' ? '切换为账号密码登录' : '扫码登录更便捷' }}</div>
+						</div>
 					</div>
 				</div>
 				<el-card>
-					<el-tabs v-model="activeName" @tab-click="handleClick">
+					<div v-if="activeName === 'third'">
+						<div class="login-box">
+
+							<div class="login-content">
+								<div class="master-login-title">手机扫码，安全登录</div>
+								<div class="qrcode-login">
+									<div class="qrcode-img">
+										<img
+											style="height: 250px; width: 250px;"
+											src="https://i0.hdslb.com/bfs/archive/aff45710ff2ac08360c5881e013b9bde3284b71f.jpg"
+										>
+									</div>
+									<div class="qrcode-desc">
+										<p>打开<span class="light-link"> 微信APP </span>扫一扫登录</p>
+									</div>
+								</div>
+							</div>
+
+						</div>
+					</div>
+
+					<el-tabs v-else v-model="activeName" @tab-click="handleClick">
 						<el-tab-pane label="密码登录" name="first">
-							<div class="login-box">
+							<div class="login-box login-tab-box">
 								<el-form ref="loginForm" :model="loginForm" :rules="loginRules">
 									<el-form-item prop="username">
 										<el-input v-model="loginForm.username" type="text" auto-complete="off" placeholder="账号">
@@ -59,7 +85,7 @@
 							</div>
 						</el-tab-pane>
 						<el-tab-pane label="短信登录" name="second">
-							<div class="login-box">
+							<div class="login-box login-tab-box">
 								<!-- 手机验证登录表单 -->
 								<el-form ref="validationForm" :model="validationForm" :rules="validationRules" class="login-form">
 									<el-form-item prop="phone">
@@ -99,6 +125,7 @@
 							</div>
 							</el-tab-pane> -->
 					</el-tabs>
+
 				</el-card>
 			</div>
 		</div>
@@ -175,10 +202,11 @@ export default {
 	},
 	methods: {
 		switchLogin() {
-			if (this.loginFer == 'MyLogin') {
-				this.loginFer = 'CodeLogin'
+			console.log(11)
+			if (this.activeName === 'third') {
+				this.activeName = 'first'
 			} else {
-				this.loginFer = 'MyLogin'
+				this.activeName = 'third'
 			}
 		},
 		handleClick(tab, event) {
@@ -237,6 +265,8 @@ export default {
 							})
 					}
 				})
+			} else if (this.activeName === 'third') {
+				return false
 			}
 		},
 		sendCode() {
@@ -290,64 +320,137 @@ export default {
 		.login-card {
 			position: relative;
 
+			.el-tabs__nav-wrap::after {
+				background-color: transparent;
+			}
+
 			.login-changein {
 				position: absolute;
-				// width: 106px;
-				height: 28px;
-				top: 10px;
-				right: 40px;
-				// padding: 5px 10px;
-				box-sizing: border-box;
-
-				p {
-					font-size: 12px;
-					color: #3d7fff;
-					border: 1px solid #f3d995;
-					padding: 5px 10px;
-					background-color: rgba(61,127,255,.1);
-
-					em {
-						position: absolute;
-						top: 6px;
-						right: -12px;
-						display: block;
-						border: 6px solid transparent;
-						border-left: 6px solid #ff9000;
-						// border-width: 6px 6px 6px 6px;
-					}
-
-					span {
-						position: absolute;
-						top: 6px;
-						right: -11px;
-						display: block;
-						border: 6px solid transparent;
-						border-left: 6px solid #fff;
-					}
-				}
+				right: 2px;
+				top: 2px;
+				z-index: 2;
+				width: 50%;
+				height: 44px;
+				margin: 0 auto;
 
 				.code-img {
 					position: absolute;
-					// background: black;
-					width: 40px;
-					height: 40px;
-					top: -10px;
-					right: -35px;
+					top: 2px;
+					right: 2px;
 
+					// z-index: 1;
 					.code-icon {
-						color: #f40;
-						font-size: 45px;
+						color: #111;
+						cursor: pointer;
+					}
+
+					.code-icon-computer {
+						font-size: 50px;
+					}
+
+					.code-icon-qr {
+						font-size: 60px;
 					}
 				}
 
+				.login-tip {
+					position: absolute;
+					top: 10px;
+					right: 61px;
+
+					.poptip {
+						position: relative;
+						// z-index: 3;
+						border-radius: 6px;
+						background-color: rgba(61, 127, 255, .1);
+						border: none;
+						height: 30px;
+						line-height: 30px;
+						padding: 0 10px;
+
+						.poptip-arrow {
+							position: absolute;
+							// z-index: 2;
+							top: 9px;
+							right: 0;
+
+							// em {
+							// 	position: absolute;
+							// 	top: 0;
+							// 	left: 1px;
+							// 	width: 0;
+							// 	height: 0;
+							// 	border: none;
+							// }
+
+							span {
+								position: absolute;
+								top: 0;
+								left: 0;
+								width: 0;
+								height: 0;
+								border-style: solid;
+								border-color: #fff0;
+								border-width: 6px 0 6px 6px;
+								border-left-color: rgba(61, 127, 255, .1);
+								overflow: hidden;
+							}
+
+						}
+
+						.poptip-content {
+							font-size: 14px;
+							font-weight: 400;
+							color: rgba(61, 127, 255, 1);
+						}
+					}
+				}
 			}
 
 			.login-box {
-				width: 400px;
-				height: 280px;
+				width: 500px;
+				height: 350px;
 				padding: 25px 25px 5px 25px;
 				background: #ffffff;
 				border-radius: 6px;
+			}
+
+			.login-content {
+				.master-login-title {
+					padding-top: 10px;
+					font-weight: lighter;
+					font-size: 20px;
+					text-align: center;
+					font-family: PingFangSC-Regular;
+					color: #111;
+				}
+
+				.qrcode-login {
+					.qrcode-img {
+						width: 100%;
+						height: 260px;
+						display: flex;
+						align-items: center;
+						justify-content: center;
+						box-shadow: 0 0;
+					}
+
+					.qrcode-desc {
+						width: 100%;
+						margin: 0 auto;
+
+						p {
+							text-align: center;
+							font-size: 20px;
+							color: #111;
+							font-family: PingFangSC-Regular;
+						}
+					}
+				}
+			}
+
+			.login-tab-box {
+				height: 310px;
 
 				.login-form {
 					display: flex;
@@ -386,6 +489,7 @@ export default {
 						vertical-align: middle;
 					}
 				}
+
 			}
 		}
 	}

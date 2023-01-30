@@ -366,7 +366,7 @@ export default {
 		},
 		async handleBind({ id, regionCode = '' }, flag) {
 			if (!this.multipleSelection.length) {
-				return this.$elMessage('请勾选', 'waring')
+				return this.$elMessage('请勾选', 'warning')
 			}
 			const userIds = this.multipleSelection.map((v) => v.id)
 			if (flag) {
@@ -388,7 +388,7 @@ export default {
 		},
 		async handleAssign({ id }, flag) {
 			if (!this.multipleSelection.length) {
-				return this.$elMessage('请勾选', 'waring')
+				return this.$elMessage('请勾选', 'warning')
 			}
 			const userIds = this.multipleSelection.map((v) => v.id)
 			if (flag) {
