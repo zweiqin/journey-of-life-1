@@ -200,7 +200,7 @@
 							<el-input v-model="specForm.specification" placeholder="请输入商品规格名称" />
 						</el-form-item>
 						<el-form-item label="规格值" prop="value">
-							<el-input v-model="specForm.value" placeholder="请输入商品规格值" />
+							<el-input v-model="specForm.value" placeholder="请输入商品规格值，可以使用 逗号 进行批量添加操作" />
 						</el-form-item>
 						<el-form-item label="规格图片" prop="picUrl">
 							<MyUpload v-model="specForm.picUrl" />
@@ -339,6 +339,15 @@ export default {
 		Editor
 	},
 	data() {
+		const valueCheck = (rule, value, callback) => {
+			if (!value) {
+				return callback(new Error('请输入商品规格值'))
+			}
+			if (value.startsWith(',') || value.startsWith('，') || value.endsWith(',') || value.endsWith('，')) {
+				return callback(new Error('开头或结尾不能是逗号'))
+			}
+			callback()
+		}
 		return {
 			goodTypeList: [
 				{ value: 1, label: '家具' },
@@ -473,7 +482,7 @@ export default {
 					{ required: true, message: '请输入商品规格名称' }
 				],
 				value: [
-					{ required: true, message: '请输入商品规格值' }
+					{ required: true, trigger: 'change', validator: valueCheck }
 				],
 				picUrl: [
 					// { required: true, message: '请上传商品规格图片' }
@@ -706,10 +715,16 @@ export default {
 					index = i
 				}
 			}
-
-			this.specifications.splice(index + 1, 0, this.specForm)
+			if (this.specForm.value.includes(',') || this.specForm.value.includes('，')) {
+				this.specForm.value.replaceAll('，', ',').split(',')
+					.forEach((item) => {
+						this.specifications.splice(index + 1, 0, { ...this.specForm, value: item })
+						index++
+					})
+			} else {
+				this.specifications.splice(index + 1, 0, this.specForm)
+			}
 			this.specVisiable = false
-
 			this.specToProduct()
 		},
 		handleSpecificationDelete(row) {

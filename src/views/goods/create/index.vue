@@ -8,8 +8,8 @@
 						<el-input v-model="formData.goodsSn" placeholder="商品编号，不填则自动生成" maxlength="30" show-word-limit />
 					</el-form-item>
 
-					<el-form-item label="商品描述" prop="name">
-						<el-input v-model="formData.name" placeholder="请输入商品描述" maxlength="30" show-word-limit />
+					<el-form-item label="商品名称" prop="name">
+						<el-input v-model="formData.name" placeholder="请输入商品名称" maxlength="30" show-word-limit />
 					</el-form-item>
 
 					<el-form-item label="商品简介" prop="brief">
@@ -200,7 +200,7 @@
 							<el-input v-model="specForm.specification" placeholder="请输入商品规格名称" />
 						</el-form-item>
 						<el-form-item label="规格值" prop="value">
-							<el-input v-model="specForm.value" placeholder="请输入商品规格值" />
+							<el-input v-model="specForm.value" placeholder="请输入商品规格值，可以使用 逗号 进行批量添加操作" />
 						</el-form-item>
 						<el-form-item label="规格图片" prop="picUrl">
 							<MyUpload v-model="specForm.picUrl" />
@@ -334,6 +334,15 @@ export default {
 		Editor
 	},
 	data() {
+		const valueCheck = (rule, value, callback) => {
+			if (!value) {
+				return callback(new Error('请输入商品规格值'))
+			}
+			if (value.startsWith(',') || value.startsWith('，') || value.endsWith(',') || value.endsWith('，')) {
+				return callback(new Error('开头或结尾不能是逗号'))
+			}
+			callback()
+		}
 		return {
 			goodTypeList: [
 				{
@@ -473,7 +482,7 @@ export default {
 					{ required: true, message: '请输入商品规格名称' }
 				],
 				value: [
-					{ required: true, message: '请输入商品规格值' }
+					{ required: true, trigger: 'change', validator: valueCheck }
 				],
 				picUrl: [
 					// { required: true, message: '请上传商品规格图片' }
@@ -546,6 +555,8 @@ export default {
 			this.getGoodsTagList()
 			this.getGoodsProductPlaceList()
 			this.getcategoryList()
+			const { brandId } = this.$route.query
+			this.formData.brandId = brandId
 		},
 		// 品类列表
 		async getcategoryList() {
@@ -685,10 +696,16 @@ export default {
 					index = i
 				}
 			}
-
-			this.specifications.splice(index + 1, 0, this.specForm)
+			if (this.specForm.value.includes(',') || this.specForm.value.includes('，')) {
+				this.specForm.value.replaceAll('，', ',').split(',')
+					.forEach((item) => {
+						this.specifications.splice(index + 1, 0, { ...this.specForm, value: item })
+						index++
+					})
+			} else {
+				this.specifications.splice(index + 1, 0, this.specForm)
+			}
 			this.specVisiable = false
-
 			this.specToProduct()
 		},
 		handleSpecificationDelete(row) {
