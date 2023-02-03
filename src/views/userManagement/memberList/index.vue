@@ -24,10 +24,10 @@
 				style="width: 200px;"
 				placeholder="选择层级"
 			>
-				<el-option label="会员" :value="5" />
-				<el-option label="门店" :value="1" />
+				<el-option label="普通会员" :value="5" />
 				<el-option label="合伙人" :value="6" />
-				<el-option label="超级合伙人" :value="7" />
+				<el-option label="超级合伙人（个人）" :value="7" />
+				<el-option label="超级合伙人（门店）" :value="1" />
 			</el-select>
 			<el-cascader
 				v-model="listQuery.region_arr"
@@ -205,7 +205,7 @@
 			<div class="card-container">
 				<el-card>
 					<div slot="header"><span>平台角色统计</span></div>
-					<div class="el-table el-table--enable-row-hover el-table--medium">
+					<div class="card-table" style="overflow: auto;">
 						<table cellspacing="0" style="width: 100%;">
 							<thead>
 								<tr>
@@ -214,17 +214,9 @@
 								</tr>
 							</thead>
 							<tbody>
-								<tr>
-									<td><div class="cell">普通会员</div></td>
-									<td><div class="cell">{{ '666假数据等接口' || '--' }}</div></td>
-								</tr>
-								<tr>
-									<td><div class="cell">合伙人</div></td>
-									<td><div class="cell">{{ 2 || '--' }}</div></td>
-								</tr>
-								<tr>
-									<td><div class="cell">超级合伙人</div></td>
-									<td><div class="cell">{{ 3 || '--' }}</div></td>
+								<tr v-for="item in RoleCountList" :key="item.userLevel">
+									<td><div class="cell">{{ item.userLevelDesc }}</div></td>
+									<td><div class="cell">{{ item.count }}</div></td>
 								</tr>
 							</tbody>
 						</table>
@@ -257,7 +249,8 @@ import {
 	api,
 	userList,
 	bdUserDeleted,
-	orderSVsDeleted
+	orderSVsDeleted,
+	getRoleCount
 } from '@/api/userManagement/memberList'
 import XeUtils from 'xe-utils'
 import Pagination from '@/components/Pagination'
@@ -287,6 +280,24 @@ export default {
 			}[val] || '--'
 		}
 	},
+	data() {
+		return {
+			api,
+			list: undefined,
+			total: 0,
+			listLoading: true,
+			listQuery: {
+				page: 1,
+				limit: 20,
+				nickname: '',
+				mobile: '',
+				userLevel: '',
+				region_arr: []
+			},
+			multipleSelection: [],
+			RoleCountList: []
+		}
+	},
 	computed: {
 		...mapGetters([
 			'roles',
@@ -311,25 +322,9 @@ export default {
 			return !(this.multipleSelection.length && this.multipleSelection.every((v) => v.principalId))
 		}
 	},
-	data() {
-		return {
-			api,
-			list: undefined,
-			total: 0,
-			listLoading: true,
-			listQuery: {
-				page: 1,
-				limit: 20,
-				nickname: '',
-				mobile: '',
-				userLevel: '',
-				region_arr: []
-			},
-			multipleSelection: []
-		}
-	},
 	created() {
 		this.getList()
+		this.getRoleCount()
 	},
 	methods: {
 		// 勾选
@@ -353,6 +348,34 @@ export default {
 				this.total = res.data.total
 				this.multipleSelection = []
 				this.$refs.elTable.clearSelection()
+			} finally {
+				this.listLoading = false
+			}
+		},
+		async getRoleCount() {
+			this.listLoading = true
+			try {
+				const res = await getRoleCount()
+				this.RoleCountList = res.data.map((item) => {
+					switch (item.userLevel) {
+						case 5:
+							item.order = 1
+							break
+						case 6:
+							item.order = 2
+							break
+						case 7:
+							item.order = 3
+							break
+						case 1:
+							item.order = 4
+							break
+						default:
+							break
+					}
+					return item
+				}).sort((a, b) => a.order - b.order)
+				console.log(this.RoleCountList)
 			} finally {
 				this.listLoading = false
 			}
@@ -406,6 +429,7 @@ export default {
 <style lang="scss" scoped>
 .cell {
 	text-align: center;
+	white-space: nowrap;
 }
 .app-container {
 	height: 100%;
@@ -417,10 +441,21 @@ export default {
 .statistics-container {
 	display: flex;
 	justify-content: space-between;
+	flex-wrap: wrap;
+	max-height: 175px;
+	white-space: nowrap;
 }
 .card-container {
 	flex: 1;
 	width: 0;
 	word-break:break-all;
+}
+.card-table {
+	box-sizing: border-box;
+	width: 100%;
+  max-width: 100%;
+	background-color: #FFFFFF;
+  font-size: 14px;
+  color: #606266;
 }
 </style>

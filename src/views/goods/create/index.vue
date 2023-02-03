@@ -3,158 +3,234 @@
 		<div class="body-container">
 			<el-card class="box-card">
 				<h3 slot="header">商品介绍</h3>
-				<el-form ref="formData" :rules="formRules" :model="formData" size="mini" label-suffix=":" label-width="150px">
-					<el-form-item label="商品编号" prop="goodsSn">
-						<el-input v-model="formData.goodsSn" placeholder="商品编号，不填则自动生成" maxlength="30" show-word-limit />
-					</el-form-item>
-
-					<el-form-item label="商品名称" prop="name">
-						<el-input v-model="formData.name" placeholder="请输入商品名称" maxlength="30" show-word-limit />
-					</el-form-item>
-
-					<el-form-item label="商品简介" prop="brief">
-						<el-input
-							v-model="formData.brief" type="textarea" placeholder="请输入商品简介" maxlength="300"
-							:rows="3"
-							show-word-limit
-						/>
-					</el-form-item>
-
-					<el-form-item label="商品单位" prop="unit">
-						<el-input v-model="formData.unit" placeholder="件 / 个 / 盒" />
-					</el-form-item>
-
-					<el-form-item label="商品图片" prop="picUrl">
-						<MyUpload v-model="formData.picUrl" />
-					</el-form-item>
-
-					<el-form-item label="商品宣传图片" prop="gallery">
-						<MyUpload v-model="formData.gallery" :limit="3" multiple />
-					</el-form-item>
-
-					<el-form-item label="搜索关键字" prop="keywords">
-						<el-tag
-							v-for="(tag, idx) in formData.keywords" :key="tag" closable size="medium"
-							type="primary"
-							@close="handleClose(idx)"
+				<div class="box-card-container">
+					<div class="box-card-form">
+						<el-form
+							ref="formData" :rules="formRules" :model="formData" size="mini"
+							label-suffix=":"
+							label-width="150px"
 						>
-							{{ tag }}
-						</el-tag>
-						<el-input
-							v-if="newKeywordVisible" ref="newKeywordInput" v-model="newKeyword" class="input-new-keyword"
-							@keyup.enter.native="handleInputConfirm" @blur="handleInputConfirm"
-						/>
-						<el-button v-else icon="el-icon-plus" plain @click="showInput">
-							添加
-						</el-button>
-					</el-form-item>
+							<el-form-item label="商品编号" prop="goodsSn">
+								<!-- <el-input v-model="formData.goodsSn" placeholder="商品编号，不填则自动生成" maxlength="30" show-word-limit suffix-icon="el-icon-question" /> -->
+								<el-input v-model="formData.goodsSn" placeholder="商品编号，不填则自动生成" maxlength="30" show-word-limit />
+								<el-tooltip content="可以填写商品的编号，也可以不填写，不填写则系统自动生成" placement="top-start">
+									<i class="el-icon-question body-form-icon"></i>
+								</el-tooltip>
+							</el-form-item>
 
-					<el-form-item label="所属分类" prop="category_arr">
-						<el-cascader v-model="formData.category_arr" :options="categoryList" expand-trigger="hover" />
-					</el-form-item>
-					<el-form-item label="类目名">
-						<span v-if="!!formData.category_arr.length">{{ getCategoryItem() && getCategoryItem().label }}</span>
-					</el-form-item>
+							<el-form-item label="商品名称" prop="name">
+								<el-input v-model="formData.name" placeholder="请输入商品名称" maxlength="30" show-word-limit />
+								<el-tooltip content="填写该商品名称，用于商品展示" placement="top-start">
+									<i class="el-icon-question  body-form-icon"></i>
+								</el-tooltip>
+							</el-form-item>
 
-					<el-form-item label="零售价格" prop="counterPrice">
-						<el-input v-model="formData.counterPrice" clearable placeholder="请输入零售价格" />
-					</el-form-item>
-					<el-form-item label="会员价格" prop="vipPrice">
-						<el-input v-model="formData.vipPrice" clearable placeholder="请输入会员价格" />
-					</el-form-item>
-					<el-form-item label="优惠价格" prop="retailPrice">
-						<el-input v-model="formData.retailPrice" clearable placeholder="请输入优惠价格" />
-					</el-form-item>
+							<el-form-item label="商品简介" prop="brief">
+								<el-input
+									v-model="formData.brief" type="textarea" placeholder="请输入商品简介" maxlength="300"
+									:rows="3"
+									show-word-limit
+								/>
+								<el-tooltip content="填写该商品的简单信息介绍，功能介绍等" placement="top-start">
+									<i class="el-icon-question  body-form-icon"></i>
+								</el-tooltip>
+							</el-form-item>
 
-					<el-form-item label="是否上架" prop="isOnSale">
-						<el-switch v-model="formData.isOnSale" />
-					</el-form-item>
-					<el-form-item label="支持代金券" prop="supportVoucher">
-						<el-switch v-model="formData.supportVoucher" />
-					</el-form-item>
-					<el-form-item label="在售状态" prop="saleType">
-						<el-radio-group v-model="formData.saleType">
-							<el-radio :label="0">在售</el-radio>
-							<el-radio :label="1">预售</el-radio>
-							<el-radio :label="2">售罄</el-radio>
-						</el-radio-group>
-					</el-form-item>
+							<el-form-item label="商品单位" prop="unit">
+								<el-input v-model="formData.unit" placeholder="件 / 个 / 盒" />
+								<el-tooltip content="填写商品的单位（例如沙发，就填写：套）" placement="top-start">
+									<i class="el-icon-question  body-form-icon"></i>
+								</el-tooltip>
+							</el-form-item>
 
-					<!-- 预售时间 -->
-					<template v-if="formData.saleType == 1">
-						<el-form-item label="开售时间" prop="startTime">
-							<el-date-picker
-								v-model="formData.startTime" type="date" value-format="yyyy-MM-dd HH:mm:ss"
-								placeholder="选择开售时间"
-							/>
-						</el-form-item>
-						<el-form-item label="时间限制" prop="timeType">
-							<el-radio-group v-model="formData.timeType">
-								<el-radio :label="0">结束天数</el-radio>
-								<el-radio :label="1">结束时间</el-radio>
-							</el-radio-group>
-						</el-form-item>
-						<el-form-item v-if="formData.timeType == 0" label="开售时间开始" prop="limitDays">
-							<el-input v-model="formData.limitDays" clearable placeholder="请输入" style="width:100px" /> 天结束
-						</el-form-item>
-						<el-form-item v-if="formData.timeType == 1" label="结束时间" prop="endTime">
-							<el-date-picker
-								v-model="formData.endTime" type="date" value-format="yyyy-MM-dd HH:mm:ss"
-								placeholder="选择结束时间"
-							/>
-						</el-form-item>
-					</template>
+							<el-form-item label="商品图片" prop="picUrl">
+								<MyUpload v-model="formData.picUrl" />
+								<el-tooltip content="只能上传一张，用于外部展示" placement="top-start">
+									<i class="el-icon-question  body-form-icon"></i>
+								</el-tooltip>
+							</el-form-item>
 
-					<el-form-item label="产品标签" prop="productTag">
-						<el-radio-group v-model="formData.productTag">
-							<el-radio :label="0">常规</el-radio>
-							<el-radio :label="1">热卖</el-radio>
-							<el-radio :label="2">爆款</el-radio>
-							<el-radio :label="3">新品</el-radio>
-							<el-radio :label="4">原创</el-radio>
-						</el-radio-group>
-					</el-form-item>
-					<el-row type="flex">
-						<el-form-item label="商品状态" prop="is_deliveryDay">
-							<el-radio-group v-model="formData.is_deliveryDay">
-								<el-radio :label="true">现货</el-radio>
-								<el-radio :label="false">其它</el-radio>
-							</el-radio-group>
-						</el-form-item>
-						<el-form-item v-if="!formData.is_deliveryDay" label-width="10px" prop="deliveryDay">
-							<el-input v-model="formData.deliveryDay" clearable placeholder="请输入" style="width:100px" /> 天内能发出
-						</el-form-item>
-					</el-row>
+							<el-form-item label="商品宣传图片" prop="gallery">
+								<MyUpload v-model="formData.gallery" :limit="3" multiple />
+								<el-tooltip content="可以上传多张，在查看商品详情页面使用" placement="top-start">
+									<i class="el-icon-question  body-form-icon"></i>
+								</el-tooltip>
+							</el-form-item>
 
-					<el-form-item label="门店" prop="brandId">
-						<el-select v-model="formData.brandId" placeholder="请选择门店">
-							<el-option v-for="item in brandList" :key="item.value" :label="item.label" :value="item.value" />
-						</el-select>
-					</el-form-item>
-					<el-form-item label="商品风格" prop="styleId">
-						<el-select v-model="formData.styleId" placeholder="请选择商品风格">
-							<el-option v-for="item in goodsStyleList" :key="item.id" :label="item.value" :value="item.id" />
-						</el-select>
-					</el-form-item>
-					<el-form-item label="大类标签" prop="tagId">
-						<el-select v-model="formData.tagId" placeholder="请选择大类标签">
-							<el-option v-for="item in goodsTagList" :key="item.id" :label="item.value" :value="item.id" />
-						</el-select>
-					</el-form-item>
-					<el-form-item label="商品产地" prop="productPlace">
-						<el-select v-model="formData.productPlace" placeholder="请选择商品产地">
-							<el-option v-for="item in goodsProductPlaceList" :key="item.code" :label="item.desc" :value="item.code" />
-						</el-select>
-					</el-form-item>
-					<el-form-item label="商品排序" prop="sortOrder">
-						<el-input v-model="formData.sortOrder" clearable placeholder="请输入商品排序" />
-					</el-form-item>
+							<el-form-item label="搜索关键字" prop="keywords">
+								<el-tag
+									v-for="(tag, idx) in formData.keywords" :key="tag" closable size="medium"
+									type="primary"
+									@close="handleClose(idx)"
+								>
+									{{ tag }}
+								</el-tag>
+								<el-input
+									v-if="newKeywordVisible" ref="newKeywordInput" v-model="newKeyword" class="input-new-keyword"
+									@keyup.enter.native="handleInputConfirm" @blur="handleInputConfirm"
+								/>
+								<el-button v-else icon="el-icon-plus" plain @click="showInput">
+									添加
+								</el-button>
+								<el-tooltip content="填写该商品的搜索关键字，用户在搜索的时候就是搜索该名称" placement="top-start">
+									<i class="el-icon-question  body-form-icon"></i>
+								</el-tooltip>
+							</el-form-item>
 
-					<el-form-item label="商品详情" prop="detail">
-						<Editor v-model="formData.detail" :init="editorInit" />
-						<el-input v-model="formData.detail" style="display:none" />
-					</el-form-item>
-				</el-form>
+							<el-form-item label="所属分类" prop="category_arr">
+								<el-cascader v-model="formData.category_arr" :options="categoryList" expand-trigger="hover" />
+								<el-tooltip content="选择该商品的所属分类" placement="top-start">
+									<i class="el-icon-question  body-form-icon"></i>
+								</el-tooltip>
+							</el-form-item>
+							<el-form-item label="类目名">
+								<span v-if="!!formData.category_arr.length">{{ getCategoryItem() && getCategoryItem().label }}</span>
+								<el-tooltip content="会在选择所属分类后自动回填" placement="top-start">
+									<i class="el-icon-question  body-form-icon"></i>
+								</el-tooltip>
+							</el-form-item>
+
+							<el-form-item label="零售价格" prop="counterPrice">
+								<el-input v-model="formData.counterPrice" clearable placeholder="请输入零售价格" />
+								<el-tooltip content="普通用户对应的价格，同时也是支付价格" placement="top-start">
+									<i class="el-icon-question  body-form-icon"></i>
+								</el-tooltip>
+							</el-form-item>
+							<el-form-item label="会员价格" prop="vipPrice">
+								<el-input v-model="formData.vipPrice" clearable placeholder="请输入会员价格" />
+								<el-tooltip content="门店vip会员、合伙人、超级合伙人所支付的价格（如果会员会员价格小于其它价格，那么支付的就是会员价格）" placement="top-start">
+									<i class="el-icon-question  body-form-icon"></i>
+								</el-tooltip>
+							</el-form-item>
+							<el-form-item label="优惠价格" prop="retailPrice">
+								<el-input v-model="formData.retailPrice" clearable placeholder="请输入优惠价格" />
+								<el-tooltip content="对产品做了优惠价、折扣价等" placement="top-start">
+									<i class="el-icon-question  body-form-icon"></i>
+								</el-tooltip>
+							</el-form-item>
+
+							<el-form-item label="是否上架" prop="isOnSale">
+								<el-switch v-model="formData.isOnSale" />
+								<el-tooltip content="默认上架（系统商城只展示状态为上架的产品）" placement="top-start">
+									<i class="el-icon-question  body-form-icon"></i>
+								</el-tooltip>
+							</el-form-item>
+							<el-form-item label="支持代金券" prop="supportVoucher">
+								<el-switch v-model="formData.supportVoucher" />
+								<el-tooltip content="该商品的支付是否允许使用代金券进行抵扣" placement="top-start">
+									<i class="el-icon-question  body-form-icon"></i>
+								</el-tooltip>
+							</el-form-item>
+							<el-form-item label="在售状态" prop="saleType">
+								<el-radio-group v-model="formData.saleType">
+									<el-radio :label="0">在售</el-radio>
+									<el-radio :label="1">预售</el-radio>
+									<el-radio :label="2">售罄</el-radio>
+								</el-radio-group>
+								<el-tooltip content="分为在售、预售、售空三种，根据商品实际情况选择" placement="top-start">
+									<i class="el-icon-question  body-form-icon"></i>
+								</el-tooltip>
+							</el-form-item>
+
+							<!-- 预售时间 -->
+							<template v-if="formData.saleType == 1">
+								<el-form-item label="开售时间" prop="startTime">
+									<el-date-picker
+										v-model="formData.startTime" type="date" value-format="yyyy-MM-dd HH:mm:ss"
+										placeholder="选择开售时间"
+									/>
+								</el-form-item>
+								<el-form-item label="时间限制" prop="timeType">
+									<el-radio-group v-model="formData.timeType">
+										<el-radio :label="0">结束天数</el-radio>
+										<el-radio :label="1">结束时间</el-radio>
+									</el-radio-group>
+								</el-form-item>
+								<el-form-item v-if="formData.timeType == 0" label="开售时间开始" prop="limitDays">
+									<el-input v-model="formData.limitDays" clearable placeholder="请输入" style="width:100px" /> 天结束
+								</el-form-item>
+								<el-form-item v-if="formData.timeType == 1" label="结束时间" prop="endTime">
+									<el-date-picker
+										v-model="formData.endTime" type="date" value-format="yyyy-MM-dd HH:mm:ss"
+										placeholder="选择结束时间"
+									/>
+								</el-form-item>
+							</template>
+
+							<el-form-item label="产品标签" prop="productTag">
+								<el-radio-group v-model="formData.productTag">
+									<el-radio :label="0">常规</el-radio>
+									<el-radio :label="1">热卖</el-radio>
+									<el-radio :label="2">爆款</el-radio>
+									<el-radio :label="3">新品</el-radio>
+									<el-radio :label="4">原创</el-radio>
+								</el-radio-group>
+								<el-tooltip content="用来标注这个商品，分为：常规、热卖、爆款、新品、原创，系统会根据这个标签来自动的进行筛选和展示" placement="top-start">
+									<i class="el-icon-question  body-form-icon"></i>
+								</el-tooltip>
+							</el-form-item>
+							<el-row type="flex">
+								<el-form-item label="商品状态" prop="is_deliveryDay">
+									<el-radio-group v-model="formData.is_deliveryDay">
+										<el-radio :label="true">现货</el-radio>
+										<el-radio :label="false">其它</el-radio>
+									</el-radio-group>
+								</el-form-item>
+								<el-form-item v-if="!formData.is_deliveryDay" label-width="10px" prop="deliveryDay">
+									<el-input v-model="formData.deliveryDay" clearable placeholder="请输入" style="width:100px" /> 天内能发出
+								</el-form-item>
+							</el-row>
+
+							<el-form-item label="门店" prop="brandId">
+								<el-select v-model="formData.brandId" placeholder="请选择门店">
+									<el-option v-for="item in brandList" :key="item.value" :label="item.label" :value="item.value" />
+								</el-select>
+								<el-tooltip content="自动回填门店ID，不需要填写" placement="top-start">
+									<i class="el-icon-question  body-form-icon"></i>
+								</el-tooltip>
+							</el-form-item>
+							<el-form-item label="商品风格" prop="styleId">
+								<el-select v-model="formData.styleId" placeholder="请选择商品风格">
+									<el-option v-for="item in goodsStyleList" :key="item.id" :label="item.value" :value="item.id" />
+								</el-select>
+								<el-tooltip content="根据商品选择对应风格" placement="top-start">
+									<i class="el-icon-question  body-form-icon"></i>
+								</el-tooltip>
+							</el-form-item>
+							<el-form-item label="大类标签" prop="tagId">
+								<el-select v-model="formData.tagId" placeholder="请选择大类标签">
+									<el-option v-for="item in goodsTagList" :key="item.id" :label="item.value" :value="item.id" />
+								</el-select>
+								<el-tooltip content="只有智能选配、全屋定制、品牌工厂、搜家具这四种，系统会根据这个大类标签在不同的页面进行展示" placement="top-start">
+									<i class="el-icon-question  body-form-icon"></i>
+								</el-tooltip>
+							</el-form-item>
+							<el-form-item label="商品产地" prop="productPlace">
+								<el-select v-model="formData.productPlace" placeholder="请选择商品产地">
+									<el-option
+										v-for="item in goodsProductPlaceList" :key="item.code" :label="item.desc"
+										:value="item.code"
+									/>
+								</el-select>
+							</el-form-item>
+							<el-form-item label="商品排序" prop="sortOrder">
+								<el-input v-model="formData.sortOrder" clearable placeholder="请输入商品排序" />
+								<el-tooltip content="默认100，在商品列表的排序" placement="top-start">
+									<i class="el-icon-question  body-form-icon"></i>
+								</el-tooltip>
+							</el-form-item>
+
+							<el-form-item label="商品详情" prop="detail">
+								<Editor v-model="formData.detail" :init="editorInit" />
+								<el-input v-model="formData.detail" style="display:none" />
+							</el-form-item>
+							<el-tooltip content="对这个商品的详细介绍和介绍图片，一般用来放商品介绍图片" placement="top-start">
+								<i class="el-icon-question  body-form-icon"></i>
+							</el-tooltip>
+						</el-form>
+					</div>
+					<GoodsDetail :form-data="formData"></GoodsDetail>
+				</div>
 			</el-card>
 
 			<el-card>
@@ -270,10 +346,7 @@
 
 			<el-card class="box-card">
 				<h3 slot="header">商品参数</h3>
-				<el-button
-					type="primary" icon="el-icon-plus" style="margin-bottom:10px"
-					@click="handleAttributeShow"
-				>
+				<el-button type="primary" icon="el-icon-plus" style="margin-bottom:10px" @click="handleAttributeShow">
 					添加
 				</el-button>
 				<el-table :data="attributes">
@@ -316,6 +389,7 @@
 <script>
 import dayjs from 'dayjs'
 import MyUpload from '@/components/MyUpload'
+import GoodsDetail from '@/components/goodsDetail'
 import Editor from '@tinymce/tinymce-vue'
 import { goodsCreate, goodsCatAndBrand, goodsProductPlaceList } from '@/api/goods/goodsList'
 import { createStorage } from '@/api/business/storage'
@@ -331,7 +405,8 @@ export default {
 	name: 'GoodsCreate',
 	components: {
 		MyUpload,
-		Editor
+		Editor,
+		GoodsDetail
 	},
 	data() {
 		const valueCheck = (rule, value, callback) => {
@@ -521,6 +596,7 @@ export default {
 				]
 			},
 			editorInit: {
+				width: 580,
 				language: 'zh_CN',
 				convert_urls: false,
 				plugins: [ 'advlist anchor autolink autosave code codesample colorpicker colorpicker contextmenu directionality emoticons fullscreen hr image imagetools importcss insertdatetime link lists media nonbreaking noneditable pagebreak paste preview print save searchreplace spellchecker tabfocus table template textcolor textpattern visualblocks visualchars wordcount' ],
@@ -835,6 +911,18 @@ export default {
 	flex: 1;
 	overflow-y: auto;
 
+	.box-card-container {
+		min-width: 1200px;
+
+		// display: flex;
+		// justify-content: space-between;
+		.box-card-form {
+			// flex:1;
+			// width:0;
+			display: inline-block;
+		}
+	}
+
 	.el-card {
 		margin: 20px;
 	}
@@ -849,5 +937,9 @@ export default {
 	display: flex;
 	justify-content: center;
 	box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1)
+}
+
+.body-form-icon {
+	opacity: .4;
 }
 </style>

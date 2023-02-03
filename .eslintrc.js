@@ -905,7 +905,7 @@ module.exports = {
 			}
 		],
 		'line-comment-position': 0, // 强制行注释的位置。（字符串或对象）选项："position"：above (默认) 强制行注释只在代码上方单独成行，beside 强制行注释只在代码行后面。
-		'linebreak-style': [2, 'windows'], // -强制使用一致的换行风格。选项："unix" (默认)，"windows"
+		'linebreak-style': [0, 'windows'], // -强制使用一致的换行风格。选项："unix" (默认)，"windows"
 		'lines-around-comment': [
 			// -要求在注释周围有空行。行前和行后备注
 			2,
