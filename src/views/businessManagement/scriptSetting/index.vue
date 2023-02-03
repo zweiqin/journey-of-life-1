@@ -136,7 +136,7 @@ export default {
     onDownload () {
       this.$refs.vxeTable && this.$refs.vxeTable.handleVxeTableMethod('exportData', {
         type: 'csv',
-        filename: '信息哨兵',
+        filename: '话术列表',
         columnFilterMethod ({ column }) {
           return !['$index', 'operate'].includes(column.property)
         }
