@@ -17,6 +17,7 @@ import App from './App'
 import router from './router'
 import store from './store'
 import * as echarts from 'echarts'
+import VueStorage from 'vue-ls'
 
 import i18n from './lang' // Internationalization
 import './icons' // icon
@@ -28,11 +29,14 @@ import permission from '@/directive/permission/index.js' // 权限判断指令
 
 import 'default-passive-events'// 解决警告
 
+import '@/components/VxeTable/core/lazy'
+
 // elem通用项
 import './config/element-config.js'
 import './directive/tableHeight'
 
 Vue.prototype.$echarts = echarts
+Vue.use(VueStorage)
 
 Vue.mixin(tableMixin)
 // Vue.use(Element, {

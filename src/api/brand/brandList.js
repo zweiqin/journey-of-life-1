@@ -6,6 +6,7 @@ export const api = {
   brandCreate: '/brand/create',
   brandUpdate: '/brand/update',
   brandDelete: '/brand/delete',
+  todo: '/brand/??',
   brandCatAndAdmin: '/brand/catAndAdmin',
   brandLabelList: '/brand/labelList',
 }
@@ -50,6 +51,15 @@ export function brandUpdate (data) {
 export function brandDelete (data) {
   return request({
     url: api.brandDelete,
+    method: 'POST',
+    data
+  })
+}
+
+// 冻结门店
+export function todo (data) {
+  return request({
+    url: api.todo,
     method: 'POST',
     data
   })
