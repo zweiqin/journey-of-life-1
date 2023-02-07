@@ -197,6 +197,14 @@
 									<i class="el-icon-question  body-form-icon"></i>
 								</el-tooltip>
 							</el-form-item>
+							<el-form-item label="商品材质" prop="textureId">
+								<el-select v-model="formData.textureId" placeholder="请选择商品材质">
+									<el-option v-for="item in goodsTextureList" :key="item.code" :label="item.desc" :value="item.code" />
+								</el-select>
+								<el-tooltip content="根据商品选择对应材质" placement="top-start">
+									<i class="el-icon-question  body-form-icon"></i>
+								</el-tooltip>
+							</el-form-item>
 							<el-form-item label="大类标签" prop="tagId">
 								<el-select v-model="formData.tagId" placeholder="请选择大类标签">
 									<el-option v-for="item in goodsTagList" :key="item.id" :label="item.value" :value="item.id" />
@@ -396,6 +404,7 @@ import { createStorage } from '@/api/business/storage'
 import { MessageBox } from 'element-ui'
 import { getToken } from '@/utils/auth'
 import { goodsStyleList } from '@/api/goods/goodsStyle'
+import { goodsTextureList } from '@/api/goods/goodsTexture'
 import { goodsTagList } from '@/api/goods/goodsTag'
 import { parseTime } from '@/utils'
 import { regZero, regFloat } from '@/utils/reg'
@@ -429,6 +438,7 @@ export default {
 				}
 			],
 			goodsStyleList: [],
+			goodsTextureList: [],
 			goodsTagList: [],
 			goodsProductPlaceList: [],
 			newKeywordVisible: false,
@@ -468,6 +478,7 @@ export default {
 				deliveryDay: '',
 				brandId: '',
 				styleId: '',
+				textureId: '',
 				tagId: '',
 				productPlace: '',
 				sortOrder: '100',
@@ -480,7 +491,7 @@ export default {
 			},
 			formRules: {
 				name: [
-					{ required: true, message: '请输入商品描述' }
+					{ required: true, message: '请输入商品名称' }
 				],
 				brief: [
 					{ required: true, message: '请输入商品简介' }
@@ -524,6 +535,9 @@ export default {
 				],
 				styleId: [
 					{ required: true, message: '请选择商品风格' }
+				],
+				textureId: [
+					{ required: true, message: '请选择商品材质' }
 				],
 				tagId: [
 					{ required: true, message: '请选择大类标签' }
@@ -628,6 +642,7 @@ export default {
 	methods: {
 		init() {
 			this.getGoodsStyleList()
+			this.getGoodsTextureList()
 			this.getGoodsTagList()
 			this.getGoodsProductPlaceList()
 			this.getcategoryList()
@@ -648,6 +663,14 @@ export default {
 				limit: 9999
 			})
 			this.goodsStyleList = res.data.items
+		},
+		// 商品材质
+		async getGoodsTextureList() {
+			const res = await goodsTextureList({
+				page: 1,
+				limit: 9999
+			})
+			this.goodsTextureList = res.data.items
 		},
 		// 商品标签
 		async getGoodsTagList() {
@@ -719,7 +742,7 @@ export default {
 				}
 				await goodsCreate(finalGoods)
 				loading.close()
-				this.$elMessage('保存成功！')
+				this.$elMessage('上传成功！')
 				this.$router.back()
 			} catch (e) {
 				loading.close()

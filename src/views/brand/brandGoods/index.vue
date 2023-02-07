@@ -17,7 +17,7 @@
 				size="mini"
 				class="filter-item"
 				style="width: 200px;"
-				placeholder="请输入商品描述"
+				placeholder="请输入商品名称"
 			/>
 			<el-select
 				v-model="listQuery.styleId"
@@ -89,7 +89,7 @@
 			>
 				<el-table-column align="center" width="100" label="商品编号" prop="goodsSn" fixed="left" />
 				<el-table-column align="center" width="150" label="品类名称" prop="categoryName" fixed="left" show-overflow-tooltip />
-				<el-table-column align="center" min-width="200" label="商品描述" prop="name" fixed="left" show-overflow-tooltip />
+				<el-table-column align="center" min-width="200" label="商品名称" prop="name" fixed="left" show-overflow-tooltip />
 				<el-table-column align="center" width="80" prop="picUrl" label="商品图片">
 					<template slot-scope="{ row }">
 						<el-image v-if="row.picUrl" :src="row.picUrl" style="width:40px; height:40px" fit="cover" :preview-src-list="[ row.picUrl ]" />

@@ -166,7 +166,7 @@
 				<el-table-column align="center" min-width="150" label="更新时间" prop="updateTime" />
 				<el-table-column
 					label="操作"
-					width="300"
+					:width="isShopRole ? 200 : 300"
 					fixed="right"
 					class-name="small-padding fixed-width"
 				>
@@ -301,7 +301,7 @@ export default {
 			return {
 				0: '未冻结',
 				1: '客户投诉',
-				1: '平台冻结'
+				2: '平台冻结'
 			}[val] || '--'
 		}
 	},
@@ -337,6 +337,7 @@ export default {
 	methods: {
 		async getList() {
 			const { brandId = '' } = this.$route.query
+			// console.log(brandId)
 			this.listLoading = true
 			try {
 				const { region_arr, ...other } = this.listQuery

@@ -480,7 +480,7 @@ export default {
 			},
 			formRules: {
 				name: [
-					{ required: true, message: '请输名称' }
+					{ required: true, message: '请输入商品名称' }
 				],
 				brief: [
 					{ required: true, message: '请输入商品简介' }

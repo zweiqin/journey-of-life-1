@@ -237,7 +237,7 @@ export default {
 			return {
 				0: '未冻结',
 				1: '客户投诉',
-				1: '平台冻结'
+				2: '平台冻结'
 			}[val] || '--'
 		},
 		orderStatusFilter(val) {
