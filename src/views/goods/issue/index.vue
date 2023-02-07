@@ -69,7 +69,7 @@
 				:data="list"
 				v-bind="$tableCommonOptions"
 			>
-        <el-table-column align="center" width="50" label="序号" type="index" :index="tableMixin_indexMethod" fixed="left" />
+				<el-table-column align="center" width="50" label="序号" type="index" :index="tableMixin_indexMethod" fixed="left" />
 				<el-table-column align="center" width="100" label="ID" prop="id" fixed="left" />
 				<el-table-column align="center" width="150" label="问题范围" prop="type" show-overflow-tooltip>
 					<template slot-scope="{ row }">
@@ -220,6 +220,7 @@ export default {
 			this.$refs.EditModal && this.$refs.EditModal.handleOpen({ id, type, question, answer })
 		},
 		async handleUpdate({ id, isEnable }) {
+			await this.$elConfirm(`确认${isEnable ? '下架' : '上架'}?`)
 			await issueChangeEnable({
 				id,
 				isEnable: !isEnable

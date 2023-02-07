@@ -53,7 +53,7 @@
 									<el-form-item prop="password">
 										<el-input
 											v-model="loginForm.password" type="password" auto-complete="off" placeholder="密码"
-											@keyup.enter.native="handleLogin"
+											show-password @keyup.enter.native="handleLogin"
 										>
 											<svg-icon slot="prefix" icon-class="password" class="el-input__icon input-icon" />
 										</el-input>

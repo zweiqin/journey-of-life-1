@@ -203,7 +203,7 @@
 							v-permission="[ `POST /admin${api.goodsDelete}` ]"
 							type="danger"
 							size="mini"
-							@click="handleDelete(scope.row)"
+							@click="handleDelete(row)"
 						>
 							删除
 						</el-button>
@@ -337,6 +337,7 @@ export default {
 			this.handleSearch()
 		},
 		async handleUpdate({ id, isOnSale }) {
+			await this.$elConfirm(`确认${isOnSale ? '下架' : '上架'}?`)
 			const loading = this.$elLoading()
 			await goodsUpOnSale({
 				idList: [ id ],
