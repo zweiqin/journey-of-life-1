@@ -1,74 +1,84 @@
 <template>
-  <div
-    :style="{height:50*$root.dw+'px'}"
-    class="navbar"
-  >
-    <div class="left-menu">
-      <hamburger
-        :toggle-click="toggleSideBar"
-        :is-active="sidebar.opened"
-        class="hamburger-container"
-      />
-      <breadcrumb class="breadcrumb-container" />
-    </div>
-    <div class="title">{{ title }}</div>
+	<div
+		:style="{ height: 50 * $root.dw + 'px' }"
+		class="navbar"
+	>
+		<div class="left-menu">
+			<Hamburger
+				:toggle-click="toggleSideBar"
+				:is-active="sidebar.opened"
+				class="hamburger-container"
+			/>
+			<Breadcrumb class="breadcrumb-container" />
+		</div>
+		<div class="title">{{ title }}</div>
 
-    <div class="right-menu">
-      <template v-if="device!=='mobile'">
+		<div class="right-menu">
+			<template v-if="isAdminRole">
+				<el-tooltip content="超级管理员" placement="bottom">
+					<i class="el-icon-s-custom right-menu-icon right-menu-item"></i>
+				</el-tooltip>
+			</template>
+			<template v-if="isShopRole">
+				<el-tooltip content="门店" placement="bottom">
+					<i class="el-icon-s-shop right-menu-icon right-menu-item"></i>
+				</el-tooltip>
+			</template>
+			<template v-if="device !== 'mobile'">
+				<el-tooltip
+					:content="$t('navbar.screenfull')"
+					effect="dark"
+					placement="bottom"
+				>
+					<Screenfull class="screenfull right-menu-item" />
+				</el-tooltip>
+			</template>
 
-        <el-tooltip
-          :content="$t('navbar.screenfull')"
-          effect="dark"
-          placement="bottom"
-        >
-          <screenfull class="screenfull right-menu-item" />
-        </el-tooltip>
-
-      </template>
-
-      <el-dropdown
-        class="avatar-container right-menu-item"
-        trigger="click"
-      >
-        <div class="avatar-wrapper">
-          <img
-            :src="avatar+'?imageView2/1/w/80/h/80'"
-            class="user-avatar"
-          >
-          <!-- <img :src="img" class="user-avatar"> -->
-          <i class="el-icon-caret-bottom" />
-        </div>
-        <el-dropdown-menu slot="dropdown">
-          <router-link to="/">
-            <el-dropdown-item>
-              {{ $t('navbar.dashboard') }}
-            </el-dropdown-item>
-          </router-link>
-          <!-- <el-dropdown-item divided>
-            <a target="_blank" href="https://github.com/qiguliuxing/dts-shop">
-              GitHub
-            </a>
-          </el-dropdown-item>
-          <el-dropdown-item>
-            <a target="_blank" href="https://gitee.com/qiguliuxing/dts-shop">
-              码云
-            </a>
-          </el-dropdown-item> -->
-          <el-dropdown-item divided>
-            <router-link to="/profile/password">
-              密码修改
-            </router-link>
-          </el-dropdown-item>
-          <el-dropdown-item divided>
-            <span
-              style="display:block;"
-              @click="logout"
-            >{{ $t('navbar.logOut') }}</span>
-          </el-dropdown-item>
-        </el-dropdown-menu>
-      </el-dropdown>
-    </div>
-  </div>
+			<el-dropdown
+				class="avatar-container right-menu-item"
+				trigger="click"
+			>
+				<div class="avatar-wrapper">
+					<img
+						:src="avatar + '?imageView2/1/w/80/h/80'"
+						class="user-avatar"
+					>
+					<!-- <img :src="img" class="user-avatar"> -->
+					<i class="el-icon-caret-bottom" />
+				</div>
+				<el-dropdown-menu slot="dropdown">
+					<router-link to="/">
+						<el-dropdown-item>
+							{{ $t('navbar.dashboard') }}
+						</el-dropdown-item>
+					</router-link>
+					<!-- <el-dropdown-item divided>
+						<a target="_blank" href="https://github.com/qiguliuxing/dts-shop">
+						GitHub
+						</a>
+						</el-dropdown-item>
+						<el-dropdown-item>
+						<a target="_blank" href="https://gitee.com/qiguliuxing/dts-shop">
+						码云
+						</a>
+						</el-dropdown-item> -->
+					<el-dropdown-item divided>
+						<router-link to="/profile/password">
+							密码修改
+						</router-link>
+					</el-dropdown-item>
+					<el-dropdown-item divided>
+						<span
+							style="display:block;"
+							@click="logout"
+						>
+							{{ $t('navbar.logOut') }}
+						</span>
+					</el-dropdown-item>
+				</el-dropdown-menu>
+			</el-dropdown>
+		</div>
+	</div>
 </template>
 
 <script>
@@ -81,38 +91,45 @@ import LangSelect from '@/components/LangSelect'
 import ThemePicker from '@/components/ThemePicker'
 
 export default {
-  components: {
-    Breadcrumb,
-    Hamburger,
-    Screenfull,
-    SizeSelect,
-    LangSelect,
-    ThemePicker
-  },
-  data () {
-    return {
-      // img: `url(require('@/assets/logo/logo.png'))`
-      title: ''
-    }
-  },
-  computed: {
-    ...mapGetters([
-      'sidebar',
-      'name',
-      'avatar',
-      'device'
-    ])
-  },
-  methods: {
-    toggleSideBar () {
-      this.$store.dispatch('toggleSideBar')
-    },
-    logout () {
-      this.$store.dispatch('LogOut').then(() => {
-        location.reload()// In order to re-instantiate the vue-router object to avoid bugs
-      })
-    }
-  }
+	components: {
+		Breadcrumb,
+		Hamburger,
+		Screenfull,
+		SizeSelect,
+		LangSelect,
+		ThemePicker
+	},
+	data() {
+		return {
+			// img: `url(require('@/assets/logo/logo.png'))`
+			title: ''
+		}
+	},
+	computed: {
+		...mapGetters([
+			'roles',
+			'sidebar',
+			'name',
+			'avatar',
+			'device'
+		]),
+		isAdminRole() {
+			return this.roles.includes('超级管理员')
+		},
+		isShopRole() {
+			return this.roles.includes('门店')
+		}
+	},
+	methods: {
+		toggleSideBar() {
+			this.$store.dispatch('toggleSideBar')
+		},
+		logout() {
+			this.$store.dispatch('LogOut').then(() => {
+				location.reload()// In order to re-instantiate the vue-router object to avoid bugs
+			})
+		}
+	}
 }
 </script>
 
@@ -165,6 +182,9 @@ export default {
     width: 25%;
     &:focus {
       outline: none;
+    }
+    .right-menu-icon {
+      font-size: 20px;
     }
     .right-menu-item {
       display: inline-block;

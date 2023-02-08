@@ -26,13 +26,13 @@
 				<div class="item">
 					<i class="el-icon-film"></i>
 					<span>材质</span>
-					<span>无</span>
+					<span>{{ goodsTexture }}</span>
 				</div>
 				<div class="item">
 
 					<i class="el-icon-house"></i>
 					<span>风格</span>
-					<span>无</span>
+					<span>{{ goodsStyle }}</span>
 				</div>
 				<div class="item">
 
@@ -102,11 +102,37 @@ export default {
 		formData: {
 			type: Object,
 			required: true
+		},
+		goodsTextureList: {
+			type: Array,
+			required: true
+		},
+		goodsProductPlaceList: {
+			type: Array,
+			required: false
+		},
+		goodsStyleList: {
+			type: Array,
+			required: true
 		}
 	},
 	data() {
 		return {
-			img: require('@/assets/image/tuanfeng.png')
+			img: require('@/assets/image/tuanfeng.png'),
+			goodsTexture: '未知',
+			goodsStyle: '未知'
+		}
+	},
+	watch: {
+		formData: {
+			handler(newV, oldV) {
+				const texture = this.goodsTextureList.find((element) => element.id === newV.textureId)
+				texture ? this.goodsTexture = texture.value : this.goodsTexture = '未知'
+				const style = this.goodsStyleList.find((element) => element.id === newV.styleId)
+				style ? this.goodsStyle = style.value : this.goodsStyle = '未知'
+			},
+			deep: true,
+			immediate: true
 		}
 	}
 }

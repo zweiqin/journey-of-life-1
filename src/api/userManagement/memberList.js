@@ -35,7 +35,7 @@ export function businessList(params) {
 	})
 }
 
-// 业务责任人列表
+// 平台角色数量列表
 export function getRoleCount(params) {
 	return request({
 		url: api.getRoleCount,

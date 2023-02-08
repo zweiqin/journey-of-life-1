@@ -26,7 +26,7 @@
 			>
 				<el-option label="普通会员" :value="5" />
 				<el-option label="合伙人" :value="6" />
-				<el-option label="超级合伙人（个人）" :value="7" />
+				<el-option label="超级合伙人" :value="7" />
 				<el-option label="超级合伙人（门店）" :value="1" />
 			</el-select>
 			<el-cascader
@@ -112,10 +112,10 @@
 				v-bind="$tableCommonOptions"
 				@selection-change="handleSelectionChange"
 			>
-				<el-table-column type="selection" width="55" :selectable="checkSelectable" fixed="left" />
+				<el-table-column type="selection" width="40" :selectable="checkSelectable" fixed="left" />
 				<el-table-column align="center" width="50" label="序号" type="index" :index="tableMixin_indexMethod" fixed="left" />
-				<el-table-column align="center" width="100" label="ID" prop="id" fixed="left" />
-				<el-table-column align="center" min-width="150" label="用户名" prop="username" show-overflow-tooltip fixed="left" />
+				<el-table-column align="center" width="65" label="ID" prop="id" fixed="left" />
+				<el-table-column align="center" min-width="120" label="用户名" prop="username" show-overflow-tooltip fixed="left" />
 				<el-table-column align="center" min-width="100" label="性别" prop="gender">
 					<template slot-scope="{ row }">
 						{{ row.gender | genderFilter }}
@@ -156,7 +156,7 @@
 				<el-table-column align="center" min-width="150" label="更新时间" prop="updateTime" />
 				<el-table-column
 					label="操作"
-					:width="isAdminRole ? 360 : 100"
+					:width="isAdminRole ? 330 : 100"
 					fixed="right"
 					class-name="small-padding fixed-width"
 				>
@@ -172,7 +172,7 @@
 						<template v-if="isAdminRole">
 							<el-button
 								v-permission="[ `POST /admin${api.userupSaveAndSignin}` ]"
-								:disabled="row.userLevel !== 5"
+								:disabled="row.userLevel !== 7"
 								type="primary"
 								size="mini"
 								@click="handleShopApply(row)"
@@ -185,7 +185,7 @@
 								type="warning"
 								@click="handlePartnerApply(row, 6)"
 							>
-								合伙人申请
+								会员升级
 							</el-button>
 							<el-button
 								v-permission="[ `POST /admin${api.partnerApplySaveAndSignin}` ]"
@@ -193,7 +193,7 @@
 								type="warning"
 								@click="handlePartnerApply(row, 7)"
 							>
-								超级合伙人申请
+								合伙人升级
 							</el-button>
 						</template>
 					</template>
@@ -329,7 +329,7 @@ export default {
 	methods: {
 		// 勾选
 		checkSelectable(row) {
-			return this.isAdminRole ? row.userLevel === 5 : true
+			return this.isAdminRole ? row.userLevel === 5 || row.userLevel === 6 || row.userLevel === 7 || row.userLevel === 1 : true
 		},
 		handleSelectionChange(val) {
 			this.multipleSelection = val
@@ -375,7 +375,6 @@ export default {
 					}
 					return item
 				}).sort((a, b) => a.order - b.order)
-				console.log(this.RoleCountList)
 			} finally {
 				this.listLoading = false
 			}
@@ -387,13 +386,13 @@ export default {
 		async handleEdit({ id, birthday, regionCode, brandRemark, platformRemark }) {
 			this.$refs.EditModal && this.$refs.EditModal.handleOpen({ id, birthday, regionCode, brandRemark, platformRemark })
 		},
-		async handleBind({ id, regionCode = '' }, flag) {
+		async handleBind(flag) {
 			if (!this.multipleSelection.length) {
 				return this.$elMessage('请勾选', 'warning')
 			}
 			const userIds = this.multipleSelection.map((v) => v.id)
 			if (flag) {
-				this.$refs.BindUserModal && this.$refs.BindUserModal.handleOpen({ userIds, region: regionCode })
+				this.$refs.BindUserModal && this.$refs.BindUserModal.handleOpen({ userIds })
 			} else {
 				await bdUserDeleted({ userIds })
 				this.$elMessage('解除绑定成功!')
@@ -403,13 +402,15 @@ export default {
 		handleShopApply({ id }) {
 			this.$refs.ShopApplyModal && this.$refs.ShopApplyModal.handleOpen({ userId: id })
 		},
-		handlePartnerApply({ id, regionCode }, applicationType) {
+		handlePartnerApply({ id, regionCode, principalId, principalName }, applicationType) {
 			this.$refs.PartnerApplyModal && this.$refs.PartnerApplyModal.handleOpen({
 				userId: id,
-				applicationType
+				applicationType,
+				principalId,
+				principalName
 			}, regionCode)
 		},
-		async handleAssign({ id }, flag) {
+		async handleAssign(flag) {
 			if (!this.multipleSelection.length) {
 				return this.$elMessage('请勾选', 'warning')
 			}
@@ -417,7 +418,7 @@ export default {
 			if (flag) {
 				this.$refs.AssignModal && this.$refs.AssignModal.handleOpen({ userIds })
 			} else {
-				await bdUserDeleted({ userIds })
+				await orderSVsDeleted({ userIds })
 				this.$elMessage('取消指派成功!')
 				this.getList()
 			}

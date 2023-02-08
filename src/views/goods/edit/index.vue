@@ -10,6 +10,19 @@
 							label-suffix=":"
 							label-width="150px"
 						>
+							<el-form-item label="所属分类" prop="category_arr">
+								<el-cascader v-model="formData.category_arr" :options="categoryList" expand-trigger="hover" />
+								<el-tooltip content="选择该商品的所属分类" placement="top-start">
+									<i class="el-icon-question  body-form-icon"></i>
+								</el-tooltip>
+							</el-form-item>
+							<el-form-item label="类目名">
+								<span v-if="!!formData.category_arr.length">{{ getCategoryItem() && getCategoryItem().label }}</span>
+								<el-tooltip content="会在选择所属分类后自动回填" placement="top-start">
+									<i class="el-icon-question  body-form-icon"></i>
+								</el-tooltip>
+							</el-form-item>
+
 							<el-form-item label="商品编号" prop="goodsSn">
 								<!-- <el-input v-model="formData.goodsSn" placeholder="商品编号，不填则自动生成" maxlength="30" show-word-limit suffix-icon="el-icon-question" /> -->
 								<el-input v-model="formData.goodsSn" placeholder="商品编号，不填则自动生成" maxlength="30" show-word-limit />
@@ -37,8 +50,10 @@
 							</el-form-item>
 
 							<el-form-item label="商品单位" prop="unit">
-								<el-input v-model="formData.unit" placeholder="件 / 个 / 盒" />
-								<el-tooltip content="填写商品的单位（例如沙发，就填写：套）" placement="top-start">
+								<el-select v-model="formData.unit" placeholder="请选择商品材质" filterable allow-create>
+									<el-option v-for="item in unitList" :key="item.id" :label="item.value" :value="item.value" />
+								</el-select>
+								<el-tooltip content="填写商品的单位（例如沙发，可填写：套）" placement="top-start">
 									<i class="el-icon-question  body-form-icon"></i>
 								</el-tooltip>
 							</el-form-item>
@@ -73,19 +88,6 @@
 									添加
 								</el-button>
 								<el-tooltip content="填写该商品的搜索关键字，用户在搜索的时候就是搜索该名称" placement="top-start">
-									<i class="el-icon-question  body-form-icon"></i>
-								</el-tooltip>
-							</el-form-item>
-
-							<el-form-item label="所属分类" prop="category_arr">
-								<el-cascader v-model="formData.category_arr" :options="categoryList" expand-trigger="hover" />
-								<el-tooltip content="选择该商品的所属分类" placement="top-start">
-									<i class="el-icon-question  body-form-icon"></i>
-								</el-tooltip>
-							</el-form-item>
-							<el-form-item label="类目名">
-								<span v-if="!!formData.category_arr.length">{{ getCategoryItem() && getCategoryItem().label }}</span>
-								<el-tooltip content="会在选择所属分类后自动回填" placement="top-start">
 									<i class="el-icon-question  body-form-icon"></i>
 								</el-tooltip>
 							</el-form-item>
@@ -189,6 +191,22 @@
 									<i class="el-icon-question  body-form-icon"></i>
 								</el-tooltip>
 							</el-form-item>
+							<el-form-item label="商品材质" prop="textureId">
+								<el-select v-model="formData.textureId" placeholder="请选择商品材质">
+									<el-option v-for="item in goodsTextureList" :key="item.id" :label="item.value" :value="item.id" />
+								</el-select>
+								<el-tooltip content="根据商品选择对应材质" placement="top-start">
+									<i class="el-icon-question  body-form-icon"></i>
+								</el-tooltip>
+							</el-form-item>
+							<el-form-item label="商品产地" prop="productPlace">
+								<el-select v-model="formData.productPlace" placeholder="请选择商品产地">
+									<el-option
+										v-for="item in goodsProductPlaceList" :key="item.code" :label="item.desc"
+										:value="item.code"
+									/>
+								</el-select>
+							</el-form-item>
 							<el-form-item label="商品风格" prop="styleId">
 								<el-select v-model="formData.styleId" placeholder="请选择商品风格">
 									<el-option v-for="item in goodsStyleList" :key="item.id" :label="item.value" :value="item.id" />
@@ -204,14 +222,6 @@
 								<el-tooltip content="只有智能选配、全屋定制、品牌工厂、搜家具这四种，系统会根据这个大类标签在不同的页面进行展示" placement="top-start">
 									<i class="el-icon-question  body-form-icon"></i>
 								</el-tooltip>
-							</el-form-item>
-							<el-form-item label="商品产地" prop="productPlace">
-								<el-select v-model="formData.productPlace" placeholder="请选择商品产地">
-									<el-option
-										v-for="item in goodsProductPlaceList" :key="item.code" :label="item.desc"
-										:value="item.code"
-									/>
-								</el-select>
 							</el-form-item>
 							<el-form-item label="商品排序" prop="sortOrder">
 								<el-input v-model="formData.sortOrder" clearable placeholder="请输入商品排序" />
@@ -229,7 +239,7 @@
 							</el-tooltip>
 						</el-form>
 					</div>
-					<GoodsDetail :form-data="formData"></GoodsDetail>
+					<GoodsDetail :form-data="formData" :goods-texture-list="goodsTextureList" :goods-product-place-list="goodsProductPlaceList" :goods-style-list="goodsStyleList"></GoodsDetail>
 				</div>
 			</el-card>
 
@@ -401,10 +411,12 @@ import { createStorage } from '@/api/business/storage'
 import { MessageBox } from 'element-ui'
 import { getToken } from '@/utils/auth'
 import { goodsStyleList } from '@/api/goods/goodsStyle'
+import { goodsTextureList } from '@/api/goods/goodsTexture'
 import { goodsTagList } from '@/api/goods/goodsTag'
 import { parseTime } from '@/utils'
 import { regZero, regFloat } from '@/utils/reg'
 import XeUtils from 'xe-utils'
+import { unitList } from '@/utils/unitList'
 
 export default {
 	name: 'GoodsEdit',
@@ -424,11 +436,13 @@ export default {
 			callback()
 		}
 		return {
+			unitList,
 			goodTypeList: [
 				{ value: 1, label: '家具' },
 				{ value: 2, label: '材料' }
 			],
 			goodsStyleList: [],
+			goodsTextureList: [],
 			goodsTagList: [],
 			goodsProductPlaceList: [],
 			newKeywordVisible: false,
@@ -468,6 +482,7 @@ export default {
 				deliveryDay: '',
 				brandId: '',
 				styleId: '',
+				textureId: '',
 				tagId: '',
 				productPlace: '',
 				sortOrder: '100',
@@ -524,6 +539,9 @@ export default {
 				],
 				styleId: [
 					{ required: true, message: '请选择商品风格' }
+				],
+				textureId: [
+					{ required: true, message: '请选择商品材质' }
 				],
 				tagId: [
 					{ required: true, message: '请选择大类标签' }
@@ -628,6 +646,7 @@ export default {
 	methods: {
 		init() {
 			this.getGoodsStyleList()
+			this.getGoodsTextureList()
 			this.getGoodsTagList()
 			this.getGoodsProductPlaceList()
 			this.getcategoryList()
@@ -649,6 +668,14 @@ export default {
 				limit: 9999
 			})
 			this.goodsStyleList = res.data.items
+		},
+		// 商品材质
+		async getGoodsTextureList() {
+			const res = await goodsTextureList({
+				page: 1,
+				limit: 9999
+			})
+			this.goodsTextureList = res.data.items
 		},
 		// 商品标签
 		async getGoodsTagList() {

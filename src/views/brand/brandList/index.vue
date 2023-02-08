@@ -163,7 +163,7 @@
 							订单
 						</el-button>
 						<el-button
-							v-permission="[ `POST /admin${api.todo}` ]"
+							v-permission="[ `POST /admin${api.freezeBrand}` ]"
 							type="warning"
 							size="mini"
 							@click="handleFreeze(row)"
@@ -206,7 +206,7 @@ import {
 	api,
 	brandList,
 	brandDelete,
-	todo
+	freezeBrand
 } from '@/api/brand/brandList'
 import { brandLabelList } from '@/api/brand/brandList'
 import { brandStyleList } from '@/api/brand/brandStyle'
@@ -311,7 +311,7 @@ export default {
 		},
 		async handleFreeze({ id }) {
 			await this.$elConfirm('确认冻结?')
-			await todo({ id })
+			await freezeBrand({ id })
 			this.$elMessage('冻结成功!')
 			this.handleSearch()
 		}

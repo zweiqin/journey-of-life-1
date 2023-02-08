@@ -14,7 +14,7 @@
 			<el-form-item label="申请类型" prop="applicationType">
 				<el-radio-group v-model="formData.applicationType">
 					<el-radio v-if="!isPartner" :label="6">合伙人</el-radio>
-					<el-radio :label="7">超级合伙人（个人）</el-radio>
+					<el-radio :label="7">超级合伙人</el-radio>
 				</el-radio-group>
 			</el-form-item>
 			<el-form-item label="区域" prop="region_arr">
@@ -28,16 +28,7 @@
 				/>
 			</el-form-item>
 			<el-form-item label="业务责任人" prop="referrerName">
-				<el-select v-model="formData.referrerName" filterable placeholder="请选择业务责任人">
-					<el-option
-						v-for="item in businessList"
-						:key="item.id"
-						:label="item.userName"
-						:value="item.id"
-					>
-						{{ item.userName }} {{ item.userLevelDesc }}
-					</el-option>
-				</el-select>
+				<el-input v-model="formData.referrerName" size="mini" disabled placeholder="请输入业务责任人" />
 			</el-form-item>
 			<el-form-item
 				v-if="formData.applicationType == 7"
@@ -62,7 +53,7 @@
 </template>
 
 <script>
-import { partnerApplySaveAndSignin, businessList } from '@/api/userManagement/memberList'
+import { partnerApplySaveAndSignin } from '@/api/userManagement/memberList'
 import XeUtils from 'xe-utils'
 import { mapGetters } from 'vuex'
 
@@ -73,13 +64,15 @@ export default {
 			modalOptions: {
 				closeOnClickModal: false,
 				width: '520px',
-				title: '合伙人申请'
+				title: '升级申请'
 			},
 			visible: false,
 			formData: {
 				userId: '',
 				applicationType: '',
 				region_arr: [],
+				referrerName: '',
+				referrerId: '',
 				username: '',
 				password: ''
 			},
@@ -102,8 +95,7 @@ export default {
 					{ min: 6, message: '不得少于6位', trigger: 'blur' }
 				]
 			},
-			isPartner: false,
-			businessList: []
+			isPartner: false
 		}
 	},
 	computed: {
@@ -116,19 +108,16 @@ export default {
 			this.visible = false
 		},
 		handleOpen(params = {}, regionCode = '') {
-			this.getBusinessList()
 			this.formData = Object.assign(this.$options.data().formData, params)
 			this.isPartner = params.applicationType === 7
+			this.isPartner ? this.modalOptions.title = '合伙人升级申请' : this.modalOptions.title = '会员升级申请'
 			regionCode && this.setRegion_arr(regionCode)
+			// this.principalId = params.principalId
+			// this.principalName = params.principalName
+			this.formData.referrerName = params.principalName || '团蜂'
+			this.formData.referrerId = params.principalName || 0
 			this.visible = true
 			this.$refs.formData && this.$refs.formData.resetFields()
-		},
-		// 业务责任人列表
-		async getBusinessList() {
-			const res = await businessList({
-				userName: ''
-			})
-			this.businessList = res.data
 		},
 		setRegion_arr(regionCode) {
 			const regionItem = XeUtils.findTree(this.common_regionList, (item) => item.code === regionCode)
