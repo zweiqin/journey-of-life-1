@@ -84,7 +84,7 @@ module.exports = {
 		// 关于'plugin:vue/recommended'的扩展：
 		// Base Rules
 		'vue/comment-directive': 'off',
-		'vue/jsx-uses-var': 'error',
+		'vue/jsx-uses-var': 'off',
 
 		// Priority A: Essential
 		'vue/multi-word-component-names': 'off', // 这个规则要求组件名总是由多个单词组成，除了根App组件，以及Vue提供的内置组件

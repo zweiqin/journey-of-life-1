@@ -96,6 +96,15 @@
   left: 0;
   position: relative;
   margin: 0 auto;
+  margin-top: 8vh !important;
+  max-height: calc(100vh - 100px);
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+}
+
+.el-dialog > .el-dialog__body {
+  overflow-y: auto;
 }
 
 .upload-container .el-upload {
@@ -113,6 +122,10 @@
 
 .el-range-editor.el-input__inner {
   display: inline-flex !important;
+}
+
+.el-tooltip__popper {
+  max-width: 500px;
 }
 
 #app .main-container {
@@ -565,10 +578,6 @@ aside a:hover {
   position: relative;
 }
 
-.pagination-container {
-  margin-top: 30px;
-}
-
 .text-center {
   text-align: center;
 }
@@ -606,10 +615,6 @@ aside a:hover {
 .link-type:hover,
 .link-type:focus:hover {
   color: #20a0ff;
-}
-
-.filter-container {
-  /* padding-bottom: 10px; */
 }
 
 .filter-container .filter-item {

@@ -30,9 +30,18 @@
         class="filter-item"
         type="primary"
         icon="el-icon-search"
-        @click="handleSearch"
+        @click="getList"
       >查找</el-button>
-      <br />
+    </div>
+
+    <TableTools
+      download
+      customField
+      :customColumnsConfig="customColumnsConfig"
+      @update-fields="updateFields"
+      @refresh="getList"
+      @download="onDownload"
+    >
       <el-button
         v-permission="[`POST ${api.msgsaySaveMsgSay}`]"
         size="mini"
@@ -40,56 +49,34 @@
         icon="el-icon-plus"
         @click="$refs.EditModal && $refs.EditModal.handleOpen({ id: '' })"
       >添加</el-button>
-    </div>
+    </TableTools>
 
-    <!-- 查询结果 -->
-    <div v-tableHeight>
-      <el-table
-        height="100%"
-        v-loading="listLoading"
-        element-loading-text="正在查询中。。。"
-        :data="list"
-        v-bind="$tableCommonOptions"
-      >
-        <el-table-column align="center" width="50" label="序号" type="index" :index="tableMixin_indexMethod" fixed="left" />
-        <el-table-column align="center" width="100" label="ID" prop="id" fixed="left" />
-        <el-table-column align="center" min-width="150" label="话术内容" prop="say" show-overflow-tooltip />
-        <el-table-column align="center" width="150" label="话术类型" prop="userGender">
-          <template slot-scope="{row}">
-            <span>{{ row.type | typeFilter(msgSayTypeList) }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column align="center" width="150" label="创建时间" prop="createTime" />
-        <el-table-column align="center" width="150" label="更新时间" prop="updateTime" />
-        <el-table-column
-          label="操作"
-          width="150"
-          fixed="right"
-          class-name="small-padding fixed-width"
-        >
-          <template slot-scope="{row}">
-            <el-button
-              v-permission="[`PUT ${api.msgsayUpdateSay}`]"
-              size="mini"
-              @click="handleUpdate(row)"
-            >编辑</el-button>
-            <el-button
-              v-permission="[`DELETE ${api.msgsayDeleteById}`]"
-              type="danger"
-              size="mini"
-              @click="handleDelete(row)"
-            >删除</el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-    </div>
-
-    <Pagination
-      :total="total"
-      :page.sync="listQuery.page"
-      :limit.sync="listQuery.size"
-      @pagination="getList"
-    />
+    <VxeTable
+      ref="vxeTable"
+      v-model="listQuery"
+      :localKey="customColumnsConfig.localKey"
+      apiMethod="POST"
+      :apiPath="api.msgsayMsgSayList"
+      sizeAlias="size"
+      :columns="columns"
+    >
+      <template #type="{row}">
+        <span>{{ row.type | typeFilter(msgSayTypeList) }}</span>
+      </template>
+      <template #operate="{row}">
+        <el-button
+          v-permission="[`PUT ${api.msgsayUpdateSay}`]"
+          size="mini"
+          @click="handleUpdate(row)"
+        >编辑</el-button>
+        <el-button
+          v-permission="[`DELETE ${api.msgsayDeleteById}`]"
+          type="danger"
+          size="mini"
+          @click="handleDelete(row)"
+        >删除</el-button>
+      </template>
+    </VxeTable>
 
     <!-- 新增编辑 -->
     <EditModal ref="EditModal" :list="msgSayTypeList" @success="getList" />
@@ -100,16 +87,18 @@
 import {
   api,
   msgsayMsgSayTypeList,
-  msgsayMsgSayList,
   msgsayDeleteById,
 } from '@/api/businessManagement/scriptSetting';
-import Pagination from '@/components/Pagination'; // Secondary package based on el-pagination
+import VxeTable from '@/components/VxeTable'
+import TableTools from '@/components/TableTools'
 import EditModal from './components/EditModal'
+import { columns } from './table'
 
 export default {
   name: 'scriptSetting',
   components: {
-    Pagination,
+    VxeTable,
+    TableTools,
     EditModal,
   },
   filters: {
@@ -121,9 +110,11 @@ export default {
   data() {
     return {
       api,
-      list: undefined,
-      total: 0,
-      listLoading: true,
+      columns,
+      customColumnsConfig: {
+        localKey: 'scriptSetting',
+        columnsOptions: columns,
+      },
       listQuery: {
         page: 1,
         size: 20,
@@ -135,26 +126,31 @@ export default {
   },
   created() {
     this.getMsgSayTypeList();
-    this.getList();
   },
   methods: {
+    // 自定义列
+    updateFields (columns) {
+      this.columns = columns
+    },
+    // 导出
+    onDownload () {
+      this.$refs.vxeTable && this.$refs.vxeTable.handleVxeTableMethod('exportData', {
+        type: 'csv',
+        filename: '话术列表',
+        columnFilterMethod ({ column }) {
+          return !['$index', 'operate'].includes(column.property)
+        }
+      })
+    },
     async getMsgSayTypeList() {
       const res = await msgsayMsgSayTypeList()
       this.msgSayTypeList = res.data
     },
-    async getList() {
-      this.listLoading = true;
-      try {
-        const res = await msgsayMsgSayList(this.listQuery)
-        this.list = res.data.items;
-        this.total = res.data.total;
-      } finally {
-        this.listLoading = false;
+    getList() {
+      this.listQuery = {
+        ...this.listQuery,
+        page: 1
       }
-    },
-    handleSearch() {
-      this.listQuery.page = 1;
-      this.getList();
     },
     async handleUpdate({ id, say, type }) {
       this.$refs.EditModal && this.$refs.EditModal.handleOpen({ id, say, type })
@@ -163,7 +159,7 @@ export default {
       await this.$elConfirm('确认删除?')
       await msgsayDeleteById({ id })
       this.$elMessage('删除成功!')
-      this.handleSearch()
+      this.getList()
     }
   }
 };
