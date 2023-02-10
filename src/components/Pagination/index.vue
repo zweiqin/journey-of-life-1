@@ -89,11 +89,22 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .pagination-container {
+	position: relative;
+	// height: 25px;
+	// margin-bottom: 10px;
+	// margin-top: 15px;
+	padding: 20px 20px 0 20px !important;
   background: #fff;
 }
 .pagination-container.hidden {
   display: none;
+}
+
+.pagination-container .el-pagination {
+	float: right;
+	// right: 0;
+	// position: absolute;
 }
 </style>

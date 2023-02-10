@@ -37,7 +37,7 @@ const slotDefault = ({ row, column }, h) => {
 		return [
 			<el-tooltip placement={_params.placement || 'top'}>
 				<span slot="content" domPropsInnerHTML={val} />
-				<div class="text-overflow_ellipsis_line_2" style={`width: fit-content;-webkit-line-clamp: ${ellipsis_line}`}>{ val || '--'}</div>
+				<div class="text-overflow_ellipsis_line_2" style={`width: fit-content;-webkit-line-clamp: ${ellipsis_line}`}>{val || '--'}</div>
 			</el-tooltip>
 		]
 	}
@@ -118,6 +118,17 @@ export default {
 			type: String,
 			default: ''
 		},
+		// // 请求函数
+		// apiFn: {
+		// 	type: Function,
+		// 	default(params) {
+		// 		return request({
+		// 			url: '',
+		// 			method: 'GET',
+		// 			params
+		// 		})
+		// 	}
+		// },
 		// res别名
 		resAlias: {
 			type: String,
@@ -172,6 +183,7 @@ export default {
 			pagination: {
 				// currentPage: 1,
 				// pageSize: 20,
+				background: true,
 				pageSizes: [10, 20, 30, 40, 50, 100],
 				layout: 'total, sizes, prev, pager, next, jumper',
 				total: 0
@@ -243,18 +255,21 @@ export default {
 			if (!this.isRequest) return
 			try {
 				this.isDataLoading = true
-				const { apiPath, apiMethod } = this
-				const page = this.searchParams[this.pageAlias]
-				const pageSize = this.searchParams[this.sizeAlias]
 
+				const { apiPath, apiMethod } = this
 				const res = await request({
 					url: apiPath,
 					method: apiMethod,
 					[apiMethod.toUpperCase() === 'GET' ? 'params' : 'data']: this.searchParams
 				})
+
+				// const { apiFn } = this
+				// const res = await apiFn(this.searchParams)
+
 				const { data } = res
 				let postData = this.resAlias ? data[this.resAlias] : data.items
-
+				const page = this.searchParams[this.pageAlias]
+				const pageSize = this.searchParams[this.sizeAlias]
 				this.showIndex && (postData = postData.map((v, i) => ({
 					...v,
 					$index: (page - 1) * pageSize + (i + 1)
@@ -293,9 +308,9 @@ export default {
 		},
 
 		/**
-     * 记录列宽
-     * @param {*} event
-     */
+		 * 记录列宽
+		 * @param {*} event
+		 */
 
 		resizableChange(event) {
 			const { field, resizeWidth } = event.column
@@ -323,11 +338,19 @@ export default {
 			this.$emit('select-change', ...arg)
 		},
 		calcTableHeight() {
-			const pagerHeight = this.isPager ? 56 : 0
-			const qiankunHeight = window.__POWERED_BY_QIANKUN__ ? 10 : 0
+			// const pagerHeight = this.isPager ? 55 : 0
+			// const qiankunHeight = window.__POWERED_BY_QIANKUN__ ? 10 : 0
 			this.$nextTick(() => {
-				const tableTop = document.querySelector('.jufeng-vxe-table') && document.querySelector('.jufeng-vxe-table').getBoundingClientRect().top
-				this.tableHeight = window.innerHeight - tableTop - pagerHeight - qiankunHeight - this.diffHeight
+				// const tableTop = document.querySelector('.jufeng-vxe-table') && document.querySelector('.jufeng-vxe-table').getBoundingClientRect().top
+				// this.tableHeight = window.innerHeight - tableTop - pagerHeight - qiankunHeight - this.diffHeight
+				const navbarHeight = 46
+				const tabsHeight = 62
+				const searchHeight = document.querySelector('.app-container>.filter-container') ? document.querySelector('.app-container>.filter-container').offsetHeight : 0
+				const pageHeight = this.isPager ? 55 : 20
+				const otherHeight = document.querySelector('.app-container>.other-container') ? document.querySelector('.app-container>.other-container').offsetHeight : 0
+				const toolsHeight = document.querySelector('.app-container>.table-tools') ? document.querySelector('.app-container>.table-tools').offsetHeight : 0
+				const height = navbarHeight + tabsHeight + searchHeight + pageHeight + otherHeight + toolsHeight
+				this.tableHeight = window.innerHeight - height
 			})
 		},
 		updateFooter() {
@@ -449,8 +472,11 @@ export default {
 					'checkbox-change': this.checkboxChange,
 					'checkbox-all': this.checkboxAll
 				}
+				// directives: [ { name: 'tableHeight' } ]
 			}, [ emptySlots ]),
-			pager
+			h('div', { class: [ 'pagination-container' ] }, [
+				pager
+			])
 		])
 
 		// wrapper
@@ -460,30 +486,46 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style lang="scss">
+<style lang="scss" scoped>
 .vxe-table__wrapper {
-  position: relative;
-  height: 100%;
-  .spin-wrap {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    z-index: 999;
-    background: rgba(0, 0, 0, 0.02);
-    color: #409EFF;
-    font-size: 14px;
-    .el-icon-loading {
-      margin-right: 4px;
-    }
-    &[style*="display: flex"] + .flexColumnPageWrap  .table-empty {
-      display: none;
-    }
-  }
-  .el-pagination {
-    text-align: right;
-  }
+	position: relative;
+	height: 100%;
+
+	.spin-wrap {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		position: absolute;
+		width: 100%;
+		height: 100%;
+		z-index: 999;
+		background: rgba(0, 0, 0, 0.02);
+		color: #409EFF;
+		font-size: 14px;
+
+		.el-icon-loading {
+			margin-right: 4px;
+		}
+
+		&[style*="display: flex"]+.flexColumnPageWrap .table-empty {
+			display: none;
+		}
+	}
+
+	.pagination-container {
+		position: relative;
+		// height: 25px;
+		padding: 20px 20px 0 20px !important;
+		// margin-bottom: 10px;
+		// margin-top: 15px;
+		background: #fff;
+	}
+
+	.el-pagination {
+		text-align: right;
+		// float: right;
+		// right: 0;
+		// position: absolute;
+	}
 }
 </style>

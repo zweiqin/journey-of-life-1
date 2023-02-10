@@ -22,7 +22,8 @@ import {
 
 	// 列表
 	List,
-	Export
+	Export,
+	Modal
 	// Pager,
 	// Select
 } from 'vxe-table'
@@ -60,6 +61,7 @@ Vue.use(Icon)
 // 可选组件
 	.use(Grid)
 	.use(Checkbox)
+	.use(Modal)
 	.use(Tooltip)
 	.use(Column)
 	.use(List)

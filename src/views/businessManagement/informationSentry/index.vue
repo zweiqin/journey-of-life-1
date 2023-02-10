@@ -25,7 +25,7 @@
 
 		<TableTools
 			:custom-columns-config="customColumnsConfig" download custom-field @update-fields="updateFields"
-			@refresh="getList" @download="onDownload"
+			@refresh="getList" @download="toolsMixin_exportMethod($refs.vxeTable, '信息哨兵')"
 		>
 			<el-button
 				v-permission="[ `POST ${api.messagesentrySaveMsgSentry}` ]" size="mini" type="primary"
@@ -35,6 +35,7 @@
 			</el-button>
 		</TableTools>
 
+		<!-- 信息哨兵列表 -->
 		<VxeTable
 			ref="vxeTable" v-model="listQuery" :local-key="customColumnsConfig.localKey" api-method="POST"
 			:api-path="api.messagesentryQueryMsgSentryList" size-alias="size" :columns="columns"
@@ -59,20 +60,14 @@
 					报警时间
 				</el-button>
 				<el-button
-					v-if="row.status == 1" v-permission="[ `POST ${api.messagesentryConversion}` ]" type="success"
+					v-permission="[ `POST ${api.messagesentryConversion}` ]" :disabled="row.status != 1" type="success"
 					size="mini" @click="handleUpdateStatus(row, 1)"
 				>
 					转化
 				</el-button>
 				<el-button
-					v-if="row.status == 2" v-permission="[ `POST ${api.messagesentryIsConversion}` ]" type="warning"
-					size="mini" @click="handleUpdateStatus(row, 3)"
-				>
-					回访
-				</el-button>
-				<el-button
-					v-if="row.status == 3" v-permission="[ `POST ${api.messagesentryIsConversion}` ]" type="warning"
-					size="mini" @click="handleUpdateStatus(row, 4)"
+					v-permission="[ `POST ${api.messagesentryIsConversion}` ]" :disabled="row.status != 2 && row.status != 3" type="warning"
+					size="mini" @click="handleUpdateStatus(row, Number(row.status) + 1)"
 				>
 					回访
 				</el-button>
@@ -153,16 +148,6 @@ export default {
 		// 自定义列
 		updateFields(columns) {
 			this.columns = columns
-		},
-		// 导出
-		onDownload() {
-			this.$refs.vxeTable && this.$refs.vxeTable.handleVxeTableMethod('exportData', {
-				type: 'csv',
-				filename: '信息哨兵',
-				columnFilterMethod({ column }) {
-					return !['$index', 'operate'].includes(column.property)
-				}
-			})
 		},
 		getList() {
 			this.listQuery = {
