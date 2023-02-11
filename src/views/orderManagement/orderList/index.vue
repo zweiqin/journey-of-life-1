@@ -134,7 +134,7 @@
 				<el-table-column align="center" min-width="100" label="提货码" prop="fetchCode" show-overflow-tooltip />
 				<el-table-column align="center" min-width="100" label="原始创建人" prop="createUserId" show-overflow-tooltip />
 				<el-table-column align="center" min-width="150" label="转赠发送时间" prop="giftSendTime" show-overflow-tooltip />
-				<el-table-column align="center" min-width="150" label="转增接收时间" prop="giftReceiveTime" show-overflow-tooltip />
+				<el-table-column align="center" min-width="150" label="转赠接收时间" prop="giftReceiveTime" show-overflow-tooltip />
 				<el-table-column align="center" min-width="150" label="使用代金券" prop="useVoucher">
 					<template slot-scope="{ row }">
 						<template v-if="row.useVoucher">

@@ -9,6 +9,7 @@ import request from '@/utils/request'
 import client from '@/utils/request.js'
 import XEUtils from 'xe-utils'
 import { objDeepMerge } from '@/utils'
+import { cloneDeep } from 'lodash'
 
 const slotHeader_titleHelp = function ($titleHelp = {}, props, h) {
 	const { title } = props.column
@@ -68,7 +69,7 @@ const baseOption = {
 	// 排序
 	sortConfig: {
 		trigger: 'cell',
-		remote: true // 所有列是否使用服务端排序，如果设置为 true 则不会对数据进行处理
+		remote: false // 所有列是否使用服务端排序，如果设置为 true 则不会对数据进行处理
 	},
 	rowConfig: {
 		isHover: true,
@@ -219,7 +220,7 @@ export default {
 		}
 	},
 	mounted() {
-		if (!this.gridOptions.height) {
+		if (!this.gridOptions.height && this.gridOptions.height !== '') {
 			this.calcTableHeight()
 			window.addEventListener('resize', XEUtils.debounce(this.calcTableHeight, 300), true)
 			this.$once('hook:beforeDestroy', () => {
@@ -231,6 +232,7 @@ export default {
 		/* ----------------------------------------- 绑定方法 ----------------------------------------- */
 
 		sortChange({ column, property, order }) {
+			this.$emit('sortChange', order)
 			const params = {
 				// column: property,
 				// order: order,
@@ -244,9 +246,7 @@ export default {
 			} else {
 				this.descParams = this.$options.data.call(this).descParams
 			}
-
-			this.$emit('sortChange', params)
-			this.getData(params)
+			// this.getData(params)
 		},
 
 		/* ----------------------------------------- 自定义方法 ----------------------------------------- */
@@ -267,6 +267,7 @@ export default {
 				// const res = await apiFn(this.searchParams)
 
 				const { data } = res
+				this.$emit('fetch-data', res)
 				let postData = this.resAlias ? data[this.resAlias] : data.items
 				const page = this.searchParams[this.pageAlias]
 				const pageSize = this.searchParams[this.sizeAlias]
@@ -276,8 +277,8 @@ export default {
 				})))
 				this.postData = postData
 				this.pagination.total = data.total
+				this.$emit('post-data', cloneDeep(this.postData))
 				this.isDataLoading = false
-				this.$emit('fetch-data', res)
 			} catch (e) {
 				this.postData = []
 				this.isDataLoading = false
@@ -457,23 +458,25 @@ export default {
 		const emptySlots = this.showEmptyImage ? h('div', { class: 'table-empty', slot: 'empty' }, [h('img', { attrs: { src: empty } }), h('div', '暂无数据')]) : undefined
 		// vxe-table
 		const el = h('div', { class: [ 'flexColumnPageWrap ' + className ] }, [
-			h('vxe-grid', {
-				style: { 'z-index': 50 },
-				ref: 'erpVxeTable',
-				class: 'jufeng-vxe-table',
-				props,
-				scopedSlots: $scopedSlots,
-				slots: $slots,
-				attrs: $attrs,
-				on: {
-					...$listeners,
-					'sort-change': this.sortChange,
-					'resizable-change': this.resizableChange,
-					'checkbox-change': this.checkboxChange,
-					'checkbox-all': this.checkboxAll
-				}
+			h('div', { }, [
+				h('vxe-grid', {
+					style: { 'z-index': 50 },
+					ref: 'erpVxeTable',
+					class: 'jufeng-vxe-table',
+					props,
+					scopedSlots: $scopedSlots,
+					slots: $slots,
+					attrs: $attrs,
+					on: {
+						...$listeners,
+						'sort-change': this.sortChange,
+						'resizable-change': this.resizableChange,
+						'checkbox-change': this.checkboxChange,
+						'checkbox-all': this.checkboxAll
+					}
 				// directives: [ { name: 'tableHeight' } ]
-			}, [ emptySlots ]),
+				}, [ emptySlots ])
+			]),
 			h('div', { class: [ 'pagination-container' ] }, [
 				pager
 			])

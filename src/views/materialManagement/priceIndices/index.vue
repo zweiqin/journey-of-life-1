@@ -164,7 +164,34 @@ export default {
 		// 		.then((response) => {
 		// 			this.getList()
 		// 		})
-		// 		.catch()
+		// 		.catch().then((response) => {
+		// 	this.isAdmin = response.data.roles[0] === '超级管理员'
+		// 	this.userId = response.data.userId
+		// 	if (this.isAdmin) {
+		// 		this.getList()
+		// 	} else if (this.userId === undefined) {
+		// 		this.$notify.error({
+		// 			title: '异常',
+		// 			message: '没有权限'
+		// 		})
+		// 		this.listLoading = false
+		// 	} else {
+		// 		this.listQuery.holdId = this.userId
+		// 		this.getList()
+		// 	}
+		// })
+		// },
+		// uploadPicUrl(response) {
+		// 	this.dataForm.picUrl = response.data.url
+		// },
+		// uploadLicenseUrl(response) {
+		// 	this.dataForm.licenseUrl = response.data.url
+		// },
+		// uploadIdcardProsUrl(response) {
+		// 	this.dataForm.idcardProsUrl = response.data.url
+		// },
+		// uploadIdcardConsUrl(response) {
+		// 	this.dataForm.idcardConsUrl = response.data.url
 		// },
 		// 自定义列
 		updateFields(columns) {

@@ -538,16 +538,16 @@ export default {
 					{ required: true, message: '请选择门店' }
 				],
 				styleId: [
-					{ required: true, message: '请选择商品风格' }
+					{ required: false, message: '请选择商品风格' }
 				],
 				textureId: [
-					{ required: true, message: '请选择商品材质' }
+					{ required: false, message: '请选择商品材质' }
 				],
 				tagId: [
 					{ required: true, message: '请选择大类标签' }
 				],
 				productPlace: [
-					{ required: true, message: '请选择商品产地' }
+					{ required: false, message: '请选择商品产地' }
 				],
 				sortOrder: [
 					{ required: true, message: '请输入商品排序' }
