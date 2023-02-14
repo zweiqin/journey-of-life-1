@@ -31,7 +31,7 @@
 		<!-- 价格指数图表列表 -->
 		<VxeTable
 			ref="vxeTable" v-model="listQuery" :local-key="customColumnsConfig.localKey" api-method="GET"
-			:api-path="api.pricesViewList" size-alias="size" :columns="columns"
+			:api-path="api.pricesViewList" :columns="columns" @post-data="handlePostData"
 		>
 			<template #status="{ row }">
 				<span>{{ row.status === 1 ? '涨' : '降' }}</span>
@@ -112,12 +112,13 @@ export default {
 			},
 			listQuery: {
 				page: 1,
-				size: 20,
+				limit: 20,
 				id: undefined,
 				materialsCategory: undefined,
 				sort: 'add_time',
 				order: 'desc'
 			},
+			list: undefined,
 			// uploadPath,
 			// list: undefined,
 			// total: 0,
@@ -197,7 +198,7 @@ export default {
 		updateFields(columns) {
 			this.columns = columns
 		},
-		getList() {
+		getList(meaning) {
 			// this.listLoading = true
 			// listGet(this.listQuery)
 			// 	.then((response) => {
@@ -210,10 +211,10 @@ export default {
 			// 		this.total = 0
 			// 		this.listLoading = false
 			// 	})
-			this.listQuery = {
-				...this.listQuery,
-				page: 1
-			}
+			meaning === 'keepPage' ? this.listQuery = { ...this.listQuery } : this.listQuery = { ...this.listQuery, page: 1 }
+		},
+		handlePostData(postData) {
+			this.list = postData
 		},
 		resetForm() {
 			this.dataForm = {
@@ -278,7 +279,7 @@ export default {
 								title: '成功',
 								message: '更新成功'
 							})
-							this.getList()
+							this.getList('keepPage')
 						})
 						.catch((response) => {
 							this.$notify.error({

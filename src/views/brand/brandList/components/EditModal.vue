@@ -28,8 +28,7 @@
 					v-model="formData.region_arr"
 					placeholder="请选择区域"
 					:options="common_regionList"
-					:props="{ label: 'name', value: 'code' }"
-					expand-trigger="hover"
+					:props="{ label: 'name', value: 'code', expandTrigger: 'hover' }"
 					clearable
 				/>
 			</el-form-item>
@@ -104,7 +103,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import MyUpload from '@/components/MyUpload'
-import { brandRead, brandCreate, brandLabelList } from '@/api/brand/brandList'
+import { brandRead, brandCreate, brandUpdate, brandLabelList } from '@/api/brand/brandList'
 import { roleList } from '@/api/enterprise/role'
 import { brandStyleList } from '@/api/brand/brandStyle'
 import XeUtils from 'xe-utils'
@@ -225,10 +224,10 @@ export default {
 				this.$refs.formData && this.$refs.formData.resetFields()
 			}
 		},
-		async getInfo() {
+		async getInfo(id) {
 			const loading = this.$elLoading('加载中')
 			try {
-				const res = await brandRead()
+				const res = await brandRead({ id })
 				this.formData = Object.assign(this.$options.data().formData, res.data, {
 					picUrl: res.data.picUrl || '',
 					picUrls: res.data.picUrls || [],
@@ -236,7 +235,9 @@ export default {
 					licenseUrl: res.data.licenseUrl || ''
 				})
 				res.data.regionCode && this.setRegion_arr(res.data.regionCode)
-				this.$refs.formData && this.$refs.formData.resetFields()
+				this.$nextTick(() => { // 之所以用nextTick，是因为要validate且region_arr是个数组（对象），element内部有处理
+					this.$refs.formData && this.$refs.formData.validate()
+				})
 			} finally {
 				loading.close()
 			}
@@ -251,17 +252,20 @@ export default {
 			await this.$validatorForm('formData')
 			const loading = this.$elLoading()
 			try {
-				const { region_arr, ...opts } = this.formData
+				const { region_arr, picUrls, ...opts } = this.formData
 				const params = {
 					...opts,
-					regionCode: region_arr[region_arr.length - 1]
+					regionCode: region_arr[region_arr.length - 1],
+					picUrls: picUrls.map((pic) => (typeof pic === 'string' ? pic : pic.resData))
 				}
-				const res = await brandCreate(params)
+				this.formData.id ? await brandUpdate(params) : await brandCreate(params)
 				loading.close()
-				this.$elMessage(`添加成功!`)
+				this.$elMessage(`${this.formData.id ? '编辑' : '添加'}成功!`)
 				this.$emit('success')
 				this.visible = false
 			} catch (e) {
+				loading.close()
+			} finally {
 				loading.close()
 			}
 		}

@@ -38,8 +38,7 @@
 				v-model="listQuery.category_arr"
 				placeholder="请选择商品类型"
 				:options="categoryList"
-				:props="{ checkStrictly: true }"
-				expand-trigger="hover"
+				:props="{ checkStrictly: true, expandTrigger: 'hover' }"
 				clearable
 				size="mini"
 				class="filter-item"
@@ -231,7 +230,7 @@ import Pagination from '@/components/Pagination' // Secondary package based on e
 import DetailModal from './components/DetailModal'
 
 export default {
-	name: 'GoodsList',
+	name: 'BrandGoods',
 	components: {
 		Pagination,
 		DetailModal
@@ -282,6 +281,13 @@ export default {
 		this.getList()
 		this.getCategoryTreeList()
 		this.getGoodsStyleList()
+	},
+	mounted() {},
+	activated() {
+		console.log('1激活activated钩子函数')
+	},
+	deactivated() {
+		console.log('1激活deactivated钩子函数')
 	},
 	methods: {
 		async getList() {

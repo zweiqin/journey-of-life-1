@@ -33,8 +33,7 @@
 				v-model="listQuery.region_arr"
 				placeholder="选择区域"
 				:options="common_regionList"
-				:props="{ checkStrictly: true, label: 'name', value: 'code' }"
-				expand-trigger="hover"
+				:props="{ checkStrictly: true, label: 'name', value: 'code', expandTrigger: 'hover' }"
 				clearable
 				size="mini"
 				class="filter-item"

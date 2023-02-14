@@ -59,7 +59,7 @@
 		<!-- 优惠券详情列表 -->
 		<VxeTable
 			ref="vxeTable" v-model="listQuery" :local-key="customColumnsConfig.localKey" api-method="GET"
-			:api-path="api.couponListuser" size-alias="size" :columns="columns" :grid-options="{ height: '' }"
+			:api-path="api.couponListuser" :columns="columns" :grid-options="{ height: '' }"
 		>
 			<template #status="{ row }">
 				<span>{{ row.status | formatUseStatus }}</span>
@@ -190,11 +190,8 @@ export default {
 		updateFields(columns) {
 			this.columns = columns
 		},
-		getList() {
-			this.listQuery = {
-				...this.listQuery,
-				page: 1
-			}
+		getList(meaning) {
+			meaning === 'keepPage' ? this.listQuery = { ...this.listQuery } : this.listQuery = { ...this.listQuery, page: 1 }
 		},
 		getTimeScope() {
 			if (this.coupon.timeType === 0) {

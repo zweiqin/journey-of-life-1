@@ -38,7 +38,7 @@
 		<!-- 信息哨兵列表 -->
 		<VxeTable
 			ref="vxeTable" v-model="listQuery" :local-key="customColumnsConfig.localKey" api-method="POST"
-			:api-path="api.messagesentryQueryMsgSentryList" size-alias="size" :columns="columns"
+			:api-path="api.messagesentryQueryMsgSentryList" :columns="columns"
 		>
 			<template #userAvatar="{ row }">
 				<el-image
@@ -128,7 +128,7 @@ export default {
 			},
 			listQuery: {
 				page: 1,
-				size: 20,
+				limit: 20,
 				search: '',
 				status: undefined
 			},
@@ -149,11 +149,8 @@ export default {
 		updateFields(columns) {
 			this.columns = columns
 		},
-		getList() {
-			this.listQuery = {
-				...this.listQuery,
-				page: 1
-			}
+		getList(meaning) {
+			meaning === 'keepPage' ? this.listQuery = { ...this.listQuery } : this.listQuery = { ...this.listQuery, page: 1 }
 		},
 		async handleUpdateStatus({ id }, status) {
 			const res = status == 1 ? await messagesentryConversion({ id }) : await messagesentryIsConversion({ id, status })

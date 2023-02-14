@@ -11,7 +11,10 @@
 							label-width="150px"
 						>
 							<el-form-item label="所属分类" prop="category_arr">
-								<el-cascader v-model="formData.category_arr" :options="categoryList" expand-trigger="hover" />
+								<el-cascader
+									v-model="formData.category_arr" :options="categoryList"
+									:props="{ expandTrigger: 'hover' }"
+								/>
 								<el-tooltip content="选择该商品的所属分类" placement="top-start">
 									<i class="el-icon-question  body-form-icon"></i>
 								</el-tooltip>
@@ -239,7 +242,10 @@
 							</el-tooltip>
 						</el-form>
 					</div>
-					<GoodsDetail :form-data="formData" :goods-texture-list="goodsTextureList" :goods-product-place-list="goodsProductPlaceList" :goods-style-list="goodsStyleList"></GoodsDetail>
+					<GoodsDetail
+						:form-data="formData" :goods-texture-list="goodsTextureList"
+						:goods-product-place-list="goodsProductPlaceList" :goods-style-list="goodsStyleList"
+					></GoodsDetail>
 				</div>
 			</el-card>
 

@@ -31,7 +31,7 @@
 		<!-- 供求信息列表 -->
 		<VxeTable
 			ref="vxeTable" v-model="listQuery" :local-key="customColumnsConfig.localKey" api-method="GET"
-			:api-path="api.tradeLeadsList" size-alias="size" :columns="columns"
+			:api-path="api.tradeLeadsList" :columns="columns" @post-data="handlePostData"
 		>
 			<template #status="{ row }">
 				<span>{{ row.status === 0 ? '采购' : row.status === 1 ? '供应' : '未知' }}</span>
@@ -136,13 +136,14 @@ export default {
 			},
 			listQuery: {
 				page: 1,
-				size: 20,
+				limit: 20,
 				id: undefined,
 				materialsCategory: undefined,
 				materialsName: undefined,
 				sort: 'add_time',
 				order: 'desc'
 			},
+			list: undefined,
 			dataForm: {
 				id: undefined,
 				materialsCategory: undefined,
@@ -208,11 +209,11 @@ export default {
 		updateFields(columns) {
 			this.columns = columns
 		},
-		getList() {
-			this.listQuery = {
-				...this.listQuery,
-				page: 1
-			}
+		getList(meaning) {
+			meaning === 'keepPage' ? this.listQuery = { ...this.listQuery } : this.listQuery = { ...this.listQuery, page: 1 }
+		},
+		handlePostData(postData) {
+			this.list = postData
 		},
 		resetForm() {
 			this.dataForm = {
@@ -287,7 +288,7 @@ export default {
 								title: '成功',
 								message: '更新成功'
 							})
-							this.getList()
+							this.getList('keepPage')
 						})
 						.catch((response) => {
 							this.$notify.error({

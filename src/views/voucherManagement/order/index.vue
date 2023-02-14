@@ -23,7 +23,7 @@
 		<!-- 订单记录列表 -->
 		<VxeTable
 			ref="vxeTable" v-model="listQuery" :local-key="customColumnsConfig.localKey" api-method="GET"
-			:api-path="api.voucherRecordList" size-alias="size" :columns="columns" @post-data="handlePostData"
+			:api-path="api.voucherRecordList" :columns="columns" @post-data="handlePostData"
 		>
 			<template #status="{ row }">
 				<el-tag v-if="row.status === 0">未付款</el-tag>
@@ -74,7 +74,7 @@ export default {
 			},
 			listQuery: {
 				page: 1,
-				size: 20,
+				limit: 20,
 				orderId: undefined,
 				userId: undefined,
 				status: undefined
@@ -116,11 +116,8 @@ export default {
 		updateFields(columns) {
 			this.columns = columns
 		},
-		getList() {
-			this.listQuery = {
-				...this.listQuery,
-				page: 1
-			}
+		getList(meaning) {
+			meaning === 'keepPage' ? this.listQuery = { ...this.listQuery } : this.listQuery = { ...this.listQuery, page: 1 }
 		},
 		handlePostData(postData) {
 			for (const i in postData) {

@@ -33,7 +33,7 @@
 		<!-- 话术类型列表 -->
 		<VxeTable
 			ref="vxeTable" v-model="listQuery" :local-key="customColumnsConfig.localKey" api-method="POST"
-			:api-path="api.msgsayMsgSayList" size-alias="size" :columns="columns"
+			:api-path="api.msgsayMsgSayList" :columns="columns"
 		>
 			<template #type="{ row }">
 				<span>{{ row.type | typeFilter(msgSayTypeList) }}</span>
@@ -88,7 +88,7 @@ export default {
 			},
 			listQuery: {
 				page: 1,
-				size: 20,
+				limit: 20,
 				msgSay: '',
 				msgSayType: undefined
 			},
@@ -107,11 +107,8 @@ export default {
 			const res = await msgsayMsgSayTypeList()
 			this.msgSayTypeList = res.data
 		},
-		getList() {
-			this.listQuery = {
-				...this.listQuery,
-				page: 1
-			}
+		getList(meaning) {
+			meaning === 'keepPage' ? this.listQuery = { ...this.listQuery } : this.listQuery = { ...this.listQuery, page: 1 }
 		},
 		async handleUpdate({ id, say, type }) {
 			this.$refs.EditModal && this.$refs.EditModal.handleOpen({ id, say, type })

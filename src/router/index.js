@@ -225,12 +225,12 @@ export const asyncRouterMap = [
 			{
 				path: 'brand',
 				component: () => import('@/views/children'),
+				name: 'Children',
 				redirect: 'noredirect',
 				alwaysShow: true,
 				_ROLES: [ 'ADMIN' ],
 				meta: {
-					title: '门店管理',
-					noCache: true
+					title: '门店管理'
 				},
 				children: [
 					{
@@ -251,7 +251,7 @@ export const asyncRouterMap = [
 						meta: {
 							perms: [ 'GET /admin/goods/list' ],
 							title: '门店-商品',
-							noCache: true
+							noCache: false
 						},
 						hidden: true
 					},

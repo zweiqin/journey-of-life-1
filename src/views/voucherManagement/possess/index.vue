@@ -21,10 +21,10 @@
 		>
 		</TableTools>
 
-		<!-- 信息哨兵列表 -->
+		<!-- 持有管理列表 -->
 		<VxeTable
 			ref="vxeTable" v-model="listQuery" :local-key="customColumnsConfig.localKey" api-method="GET"
-			:api-path="api.holdList" size-alias="size" :columns="columns"
+			:api-path="api.holdList" :columns="columns"
 		>
 		</VxeTable>
 
@@ -53,7 +53,7 @@ export default {
 			},
 			listQuery: {
 				page: 1,
-				size: 20,
+				limit: 20,
 				userId: undefined
 			}
 		}
@@ -65,11 +65,8 @@ export default {
 		updateFields(columns) {
 			this.columns = columns
 		},
-		getList() {
-			this.listQuery = {
-				...this.listQuery,
-				page: 1
-			}
+		getList(meaning) {
+			meaning === 'keepPage' ? this.listQuery = { ...this.listQuery } : this.listQuery = { ...this.listQuery, page: 1 }
 		}
 	}
 }

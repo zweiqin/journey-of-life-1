@@ -4,75 +4,42 @@
 		<!-- 查询和其他操作 -->
 		<div class="filter-container">
 			<el-input
-				v-model="listQuery.goodsSn"
-				clearable
-				size="mini"
-				class="filter-item"
+				v-model="listQuery.goodsSn" clearable size="mini" class="filter-item"
 				style="width: 200px;"
 				placeholder="请输入商品编号"
 			/>
 			<el-input
-				v-model="listQuery.name"
-				clearable
-				size="mini"
-				class="filter-item"
+				v-model="listQuery.name" clearable size="mini" class="filter-item"
 				style="width: 200px;"
 				placeholder="请输入商品名称"
 			/>
 			<el-select
-				v-model="listQuery.styleId"
-				clearable
-				size="mini"
-				class="filter-item"
+				v-model="listQuery.styleId" clearable size="mini" class="filter-item"
 				style="width: 200px;"
 				placeholder="选择商品风格"
 			>
-				<el-option
-					v-for="item in goodsStyleList"
-					:key="item.id"
-					:label="item.value"
-					:value="item.id"
-				/>
+				<el-option v-for="item in goodsStyleList" :key="item.id" :label="item.value" :value="item.id" />
 			</el-select>
 			<el-cascader
-				v-model="listQuery.category_arr"
-				placeholder="请选择商品类型"
-				:options="categoryList"
-				:props="{ checkStrictly: true }"
-				expand-trigger="hover"
-				clearable
-				size="mini"
-				class="filter-item"
-				style="width: 200px;"
+				v-model="listQuery.category_arr" placeholder="请选择商品类型" :options="categoryList"
+				:props="{ checkStrictly: true, expandTrigger: 'hover' }" clearable size="mini"
+				class="filter-item" style="width: 200px;"
 			/>
 			<el-button
-				v-permission="[ `GET /admin${api.goodsList}` ]"
-				size="mini"
-				class="filter-item"
-				type="primary"
-				icon="el-icon-search"
-				@click="handleSearch"
+				v-permission="[ `GET /admin${api.goodsList}` ]" size="mini" class="filter-item" type="primary"
+				icon="el-icon-search" @click="handleSearch"
 			>
 				查找
 			</el-button>
 			<el-button
-				v-permission="[ `POST /admin${api.goodsCreate}` ]"
-				size="mini"
-				class="filter-item"
-				type="primary"
-				icon="el-icon-plus"
-				@click="handleCreate"
+				v-permission="[ `POST /admin${api.goodsCreate}` ]" size="mini" class="filter-item" type="primary"
+				icon="el-icon-plus" @click="handleCreate"
 			>
 				添加
 			</el-button>
 			<el-button
-				v-permission="[ `GET /admin${api.goodsList}` ]"
-				:loading="downloadLoading"
-				size="mini"
-				class="filter-item"
-				type="warning"
-				icon="el-icon-download"
-				@click="handleDownload"
+				v-permission="[ `GET /admin${api.goodsList}` ]" :loading="downloadLoading" size="mini"
+				class="filter-item" type="warning" icon="el-icon-download" @click="handleDownload"
 			>
 				导出
 			</el-button>
@@ -81,24 +48,31 @@
 		<!-- 查询结果 -->
 		<div v-tableHeight>
 			<el-table
-				v-loading="listLoading"
-				height="100%"
-				element-loading-text="正在查询中。。。"
-				:data="list"
+				v-loading="listLoading" height="100%" element-loading-text="正在查询中。。。" :data="list"
 				v-bind="$tableCommonOptions"
 			>
 				<el-table-column align="center" width="100" label="商品编号" prop="goodsSn" fixed="left" />
-				<el-table-column align="center" width="150" label="品类名称" prop="categoryName" fixed="left" show-overflow-tooltip />
+				<el-table-column
+					align="center" width="150" label="品类名称" prop="categoryName"
+					fixed="left"
+					show-overflow-tooltip
+				/>
 				<el-table-column align="center" min-width="200" label="商品名称" prop="name" fixed="left" show-overflow-tooltip />
 				<el-table-column align="center" width="80" prop="picUrl" label="商品图片">
 					<template slot-scope="{ row }">
-						<el-image v-if="row.picUrl" :src="row.picUrl" style="width:40px; height:40px" fit="cover" :preview-src-list="[ row.picUrl ]" />
+						<el-image
+							v-if="row.picUrl" :src="row.picUrl" style="width:40px; height:40px" fit="cover"
+							:preview-src-list="[ row.picUrl ]"
+						/>
 					</template>
 				</el-table-column>
 				<el-table-column align="center" min-width="150" label="宣传图片" prop="gallery">
 					<template slot-scope="{ row }">
 						<div v-if="row.gallery && row.gallery.length">
-							<el-image :src="row.gallery[0]" style="width:40px; height:40px" fit="cover" :preview-src-list="row.gallery" />
+							<el-image
+								:src="row.gallery[0]" style="width:40px; height:40px" fit="cover"
+								:preview-src-list="row.gallery"
+							/>
 							<span v-if="row.gallery.length > 1" style="margin-left:8px;">+{{ row.gallery.length }}</span>
 						</div>
 					</template>
@@ -159,50 +133,28 @@
 				<el-table-column align="center" width="150" label="创建时间" prop="addTime" show-overflow-tooltip />
 				<el-table-column align="center" width="150" label="更新时间" prop="updateTime" show-overflow-tooltip />
 
-				<el-table-column
-					align="center"
-					label="操作"
-					width="300"
-					fixed="right"
-					class-name="small-padding fixed-width"
-				>
+				<el-table-column align="center" label="操作" width="300" fixed="right" class-name="small-padding fixed-width">
 					<template slot-scope="{ row }">
-						<el-button
-							type="warning"
-							size="mini"
-							@click="handleDetail(row)"
-						>
+						<el-button type="warning" size="mini" @click="handleDetail(row)">
 							详情
 						</el-button>
-						<el-button
-							v-permission="[ `POST /admin${api.goodsUpdate}` ]"
-							size="mini"
-							@click="handleEdit(row)"
-						>
+						<el-button v-permission="[ `POST /admin${api.goodsUpdate}` ]" size="mini" @click="handleEdit(row)">
 							编辑
 						</el-button>
 						<el-button
-							v-permission="[ `POST /admin${api.goodsUpOnSale}` ]"
-							:disabled="!row.isOnSale"
-							type="info"
-							size="mini"
-							@click="handleUpdate(row)"
+							v-permission="[ `POST /admin${api.goodsUpOnSale}` ]" :disabled="!row.isOnSale" type="info"
+							size="mini" @click="handleUpdate(row)"
 						>
 							下架
 						</el-button>
 						<el-button
-							v-permission="[ `POST /admin${api.goodsUpOnSale}` ]"
-							:disabled="row.isOnSale"
-							type="warning"
-							size="mini"
-							@click="handleUpdate(row)"
+							v-permission="[ `POST /admin${api.goodsUpOnSale}` ]" :disabled="row.isOnSale" type="warning"
+							size="mini" @click="handleUpdate(row)"
 						>
 							上架
 						</el-button>
 						<el-button
-							v-permission="[ `POST /admin${api.goodsDelete}` ]"
-							type="danger"
-							size="mini"
+							v-permission="[ `POST /admin${api.goodsDelete}` ]" type="danger" size="mini"
 							@click="handleDelete(row)"
 						>
 							删除
@@ -212,12 +164,7 @@
 			</el-table>
 		</div>
 
-		<Pagination
-			:total="total"
-			:page.sync="listQuery.page"
-			:limit.sync="listQuery.limit"
-			@pagination="getList"
-		/>
+		<Pagination :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
 
 		<!-- 查看详情 -->
 		<DetailModal ref="DetailModal" />

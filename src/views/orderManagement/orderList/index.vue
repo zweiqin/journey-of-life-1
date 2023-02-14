@@ -21,8 +21,7 @@
 				v-model="listQuery.region_arr"
 				placeholder="选择区域"
 				:options="common_regionList"
-				:props="{ checkStrictly: true, label: 'name', value: 'code' }"
-				expand-trigger="hover"
+				:props="{ checkStrictly: true, label: 'name', value: 'code', expandTrigger: 'hover' }"
 				clearable
 				size="mini"
 				class="filter-item"
@@ -232,7 +231,7 @@
 		<Pagination
 			:total="total"
 			:page.sync="listQuery.page"
-			:limit.sync="listQuery.size"
+			:limit.sync="listQuery.limit"
 			@pagination="getList"
 		/>
 
@@ -322,7 +321,7 @@ export default {
 			listLoading: true,
 			listQuery: {
 				page: 1,
-				size: 20,
+				limit: 20,
 				orderSn: '',
 				consignee: '',
 				region_arr: [],

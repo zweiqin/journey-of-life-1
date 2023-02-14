@@ -206,7 +206,8 @@ export default {
 		searchParams: {
 			handler(val) {
 				if (!this.isRequest) return
-				this.$emit('update:searchParams', Object.assign(val, { [this.pageAlias]: 1 }))
+				// this.$emit('update:searchParams', Object.assign(val, { [this.pageAlias]: 1 }))
+				this.$emit('update:searchParams', Object.assign(val, { [this.pageAlias]: val[this.pageAlias] || 1 }))
 				this.getData()
 			},
 			immediate: true

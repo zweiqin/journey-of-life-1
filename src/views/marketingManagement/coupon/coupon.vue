@@ -52,7 +52,7 @@
 		<!-- 优惠券列表 -->
 		<VxeTable
 			ref="vxeTable" v-model="listQuery" :local-key="customColumnsConfig.localKey" api-method="GET"
-			:api-path="api.couponList" size-alias="size" :columns="columns"
+			:api-path="api.couponList" :columns="columns" @post-data="handlePostData"
 		>
 			<template #min="{ row }">
 				<span>满{{ row.min }}元可用</span>
@@ -267,13 +267,14 @@ export default {
 			statusOptions: Object.assign({}, defaultStatusOptions),
 			listQuery: {
 				page: 1,
-				size: 20,
+				limit: 20,
 				name: undefined,
 				type: undefined,
 				status: undefined,
 				sort: 'add_time',
 				order: 'desc'
 			},
+			list: undefined,
 			dataForm: {
 				id: undefined,
 				name: undefined,
@@ -311,11 +312,11 @@ export default {
 		updateFields(columns) {
 			this.columns = columns
 		},
-		getList() {
-			this.listQuery = {
-				...this.listQuery,
-				page: 1
-			}
+		getList(meaning) {
+			meaning === 'keepPage' ? this.listQuery = { ...this.listQuery } : this.listQuery = { ...this.listQuery, page: 1 }
+		},
+		handlePostData(postData) {
+			this.list = postData
 		},
 		resetForm() {
 			this.dataForm = {
@@ -396,6 +397,7 @@ export default {
 								title: '成功',
 								message: '更新优惠券成功'
 							})
+							this.getList('keepPage')
 						})
 						.catch((response) => {
 							this.$notify.error({

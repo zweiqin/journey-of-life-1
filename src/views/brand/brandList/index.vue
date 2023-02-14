@@ -27,8 +27,7 @@
 				v-model="listQuery.region_arr"
 				placeholder="选择区域"
 				:options="common_regionList"
-				:props="{ checkStrictly: true, label: 'name', value: 'code' }"
-				expand-trigger="hover"
+				:props="{ checkStrictly: true, label: 'name', value: 'code', expandTrigger: 'hover' }"
 				clearable
 				size="mini"
 				class="filter-item"
@@ -114,9 +113,9 @@
 				v-bind="$tableCommonOptions"
 			>
 				<el-table-column align="center" width="50" label="序号" type="index" :index="tableMixin_indexMethod" fixed="left" />
-				<el-table-column align="center" width="100" label="ID" prop="id" fixed="left" />
-				<el-table-column align="center" width="150" label="公司名称" prop="name" fixed="left" show-overflow-tooltip />
-				<el-table-column align="center" width="150" label="店主名称" prop="keeperName" fixed="left" show-overflow-tooltip />
+				<el-table-column align="center" width="80" label="ID" prop="id" fixed="left" />
+				<el-table-column align="center" width="120" label="公司名称" prop="name" fixed="left" show-overflow-tooltip />
+				<el-table-column align="center" width="150" label="店主名称" prop="keeperName" show-overflow-tooltip />
 				<el-table-column align="center" width="200" label="简介" prop="desc" show-overflow-tooltip />
 				<el-table-column align="center" width="150" label="电话" prop="phone" show-overflow-tooltip />
 				<el-table-column align="center" width="100" label="公司图片" prop="picUrl">
@@ -137,7 +136,7 @@
 				<el-table-column
 					align="center"
 					label="操作"
-					width="300"
+					width="370"
 					fixed="right"
 					class-name="small-padding fixed-width"
 				>
@@ -147,6 +146,12 @@
 							@click="handleDetail(row)"
 						>
 							查看
+						</el-button>
+						<el-button
+							size="mini"
+							@click="handleUpdate(row)"
+						>
+							编辑
 						</el-button>
 						<el-button
 							size="mini"
@@ -296,6 +301,9 @@ export default {
 		},
 		handleDetail(row) {
 			this.$refs.DetailModal && this.$refs.DetailModal.handleOpen(row)
+		},
+		handleUpdate(row) {
+			this.$refs.EditModal && this.$refs.EditModal.handleOpen(row)
 		},
 		handleGoods(row) {
 			this.$router.push({ name: 'BrandGoods', query: { brandId: row.id } })
