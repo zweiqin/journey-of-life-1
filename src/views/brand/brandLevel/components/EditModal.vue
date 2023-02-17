@@ -157,10 +157,10 @@ export default {
           goodIdCriterion: goodIdCriterion || '',
           isAdjustUserLevel: id ? isAdjustUserLevel : undefined
         }
-        const res = this.formData.id ? await brandLevelUpdate(params) : await brandLevelCreate(params)
+        this.formData.id ? await brandLevelUpdate(params) : await brandLevelCreate(params)
         loading.close()
         this.$elMessage(`${this.formData.id ? '编辑' : '添加'}成功!`)
-        this.$emit('success')
+        this.$emit('success', 'keepPage')
         this.visible = false
       } catch(e) {
         loading.close()

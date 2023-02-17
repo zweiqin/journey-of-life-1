@@ -50,6 +50,11 @@ export default {
 			})
 		}
 	},
+	data() {
+		return {
+			has_checkbox: false
+		}
+	},
 	mounted() {
 		this.customField && this.getFields()
 	},
@@ -69,11 +74,13 @@ export default {
 					item.system = !!item.fixed
 					return item
 				})
+				const newData = cloneDeep(data.filter(v => v.type !== 'checkbox'))
+				this.has_checkbox = newData.length !== data.length
 				const newFields = {
 					localKey,
-					columns: cloneDeep(data),
+					columns: cloneDeep(newData),
 					defaultFields: Array.isArray(defaultFields) && defaultFields.length ? defaultFields : columnsOptions.map((v) => v.field),
-					sourceColumns: cloneDeep(data)
+					sourceColumns: cloneDeep(newData)
 				}
 				this.$refs.customColumn.createFields(newFields)
 				resolve()
@@ -83,6 +90,15 @@ export default {
 		updateFields(newColumns) {
 			const { localKey } = this.customColumnsConfig
 			this.columns = resizableRegain(localKey, newColumns) // resizableRegain 会读取用户拖拽过表格的列宽的记录
+			if (this.has_checkbox) {
+				this.columns.unshift({
+					type: 'checkbox',
+					width: 50,
+					fixed: 'left',
+					align: 'right',
+					resizable: false
+				})
+			}
 			this.$emit('update-fields', this.columns)
 		},
 		// 提交自定义字段

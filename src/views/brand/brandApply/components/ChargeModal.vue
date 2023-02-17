@@ -138,10 +138,10 @@ export default {
 			await this.$validatorForm('formData')
 			const loading = this.$elLoading()
 			try {
-				const res = await userupSetCharge(this.formData)
+				await userupSetCharge(this.formData)
 				loading.close()
 				this.$elMessage(`添加成功!`)
-				this.$emit('success')
+				this.$emit('success', 'keepPage')
 				this.visible = false
 			} catch (e) {
 				loading.close()

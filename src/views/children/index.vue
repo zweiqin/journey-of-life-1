@@ -15,16 +15,15 @@ export default {
 			return this.$store.state.tagsView.cachedViews
 		},
 		key() {
-			console.log(this.$route)
 			return this.$route.fullPath
 		}
 	},
-	activated() {
-		console.log('激活a')
-	},
-	deactivated() {
-		console.log('激活d')
-	}
+	// activated() {
+	// 	console.log('激活a')
+	// },
+	// deactivated() {
+	// 	console.log('激活d')
+	// }
 }
 </script>
 

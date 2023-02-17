@@ -144,9 +144,9 @@ export default {
 			type: Boolean,
 			default: false
 		},
-		page: {
-			type: Object,
-			default: () => ({})
+		pageTotal: {
+			type: Number,
+			default: 0
 		},
 		// 需要减去的高度
 		diffHeight: {
@@ -286,23 +286,27 @@ export default {
 			}
 		},
 		onPageChange(val) {
+			const params = {
+				[this.pageAlias]: val,
+				[this.sizeAlias]: this.searchParams[this.sizeAlias]
+			}
 			if (this.isRequest) {
-				this.$emit('update:searchParams', Object.assign(this.searchParams, { [this.pageAlias]: val }))
+				this.$emit('update:searchParams', Object.assign(this.searchParams, params))
 				this.getData()
 			} else {
-				this.$emit('pageChange', val)
+				this.$emit('pageChange', params)
 			}
 		},
 		onSizeChange(val) {
-			console.log('onSizeChange')
+			const params = {
+				[this.pageAlias]: 1,
+				[this.sizeAlias]: val
+			}
 			if (this.isRequest) {
-				this.$emit('update:searchParams', Object.assign(this.searchParams, {
-					[this.pageAlias]: 1,
-					[this.sizeAlias]: val
-				}))
+				this.$emit('update:searchParams', Object.assign(this.searchParams, params))
 				this.getData()
 			} else {
-				this.$emit('pageChange', val)
+				this.$emit('pageChange', params)
 			}
 		},
 		setTotal(total = 0) {
@@ -348,7 +352,7 @@ export default {
 				const navbarHeight = 46
 				const tabsHeight = 62
 				const searchHeight = document.querySelector('.app-container>.filter-container') ? document.querySelector('.app-container>.filter-container').offsetHeight : 0
-				const pageHeight = this.isPager ? 55 : 20
+				const pageHeight = this.isPager ? 75 : 20
 				const otherHeight = document.querySelector('.app-container>.other-container') ? document.querySelector('.app-container>.other-container').offsetHeight : 0
 				const toolsHeight = document.querySelector('.app-container>.table-tools') ? document.querySelector('.app-container>.table-tools').offsetHeight : 0
 				const height = navbarHeight + tabsHeight + searchHeight + pageHeight + otherHeight + toolsHeight
@@ -389,18 +393,16 @@ export default {
 		const _this = this
 
 		// 添加序号
-		if (this.showIndex && columns.length && columns[0].field !== '$index') {
+		if (this.showIndex && columns.length && columns[0].field !== '$index' && columns[1].field !== '$index') {
 			columns.unshift({
-				align: 'left',
 				fixed: 'left',
 				field: '$index',
+				resizable: false,
 				title: '序号',
 				width: 50
 			})
 		}
 		XEUtils.eachTree(columns, function (column) {
-			// 添加边框className
-			const className = 'table-border-group'
 
 			// 内置表头
 			if (column.$titleHelp) {
@@ -422,12 +424,12 @@ export default {
 			} else {
 				column.slots = column.slots || {}
 			}
-			Object.keys(column).forEach((key) => {
-				if (key.match(/[A-Z]/g)) {
-					column[key.replace(/([A-Z])/g, (p, m) => `-${m.toLowerCase()}`)] = column[key]
-					delete column[key]
-				}
-			})
+			// Object.keys(column).forEach((key) => {
+			// 	if (key.match(/[A-Z]/g)) {
+			// 		column[key.replace(/([A-Z])/g, (p, m) => `-${m.toLowerCase()}`)] = column[key]
+			// 		delete column[key]
+			// 	}
+			// })
 		})
 
 		const props = { height: option.height || tableHeight, columns, data, ...option }
@@ -447,7 +449,8 @@ export default {
 			props: {
 				currentPage: this.searchParams[this.pageAlias],
 				pageSize: this.searchParams[this.sizeAlias],
-				...pagination
+				...pagination,
+				total: this.pageTotal || pagination.total
 			},
 			on: {
 				'current-change': this.onPageChange,

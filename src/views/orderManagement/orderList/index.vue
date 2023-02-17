@@ -64,7 +64,16 @@
 			>
 				查找
 			</el-button>
-			<br />
+		</div>
+
+		<TableTools
+			:custom-columns-config="customColumnsConfig"
+			download
+			custom-field
+			@update-fields="updateFields"
+			@refresh="getList"
+			@download="toolsMixin_exportMethod($refs.vxeTable, '订单列表')"
+		>
 			<el-button
 				v-if="isShopRole"
 				v-permission="[ `POST /admin${api.orderAddLineOrder}` ]"
@@ -75,165 +84,100 @@
 			>
 				添加线下订单
 			</el-button>
-		</div>
+		</TableTools>
 
-		<!-- 查询结果 -->
-		<div v-tableHeight>
-			<el-table
-				v-loading="listLoading"
-				height="100%"
-				element-loading-text="正在查询中。。。"
-				:data="list"
-				v-bind="$tableCommonOptions"
-			>
-				<el-table-column align="center" width="50" label="序号" type="index" :index="tableMixin_indexMethod" fixed="left" />
-				<el-table-column align="center" width="100" label="ID" prop="id" fixed="left" />
-				<el-table-column align="center" min-width="150" label="订单编号" prop="orderSn" show-overflow-tooltip fixed="left" />
-				<el-table-column align="center" min-width="100" label="用户ID" prop="userId" show-overflow-tooltip fixed="left" />
-				<el-table-column align="center" min-width="100" label="订单类型" prop="orderType">
-					<template slot-scope="{ row }">
-						{{ row.orderType | orderTypeFilter }}
-					</template>
-				</el-table-column>
-				<el-table-column align="center" min-width="100" label="订单状态" prop="orderStatus" show-overflow-tooltip>
-					<template slot-scope="{ row }">
-						{{ row.orderStatus | orderStatusFilter }}
-					</template>
-				</el-table-column>
-				<el-table-column align="center" min-width="100" label="收货人名称" prop="consignee" show-overflow-tooltip />
-				<el-table-column align="center" min-width="150" label="收货人手机号" prop="mobile" show-overflow-tooltip />
-				<el-table-column align="center" min-width="300" label="收货地址" prop="address" show-overflow-tooltip />
-				<el-table-column align="center" min-width="150" label="区域" prop="regionName" show-overflow-tooltip />
-				<el-table-column align="center" min-width="200" label="订单留言" prop="message" show-overflow-tooltip />
-				<el-table-column align="center" min-width="100" label="商品总价" prop="goodsPrice" show-overflow-tooltip />
-				<el-table-column align="center" min-width="100" label="快递费用" prop="freightPrice" show-overflow-tooltip />
-				<el-table-column align="center" min-width="100" label="优惠券减免" prop="couponPrice" show-overflow-tooltip />
-				<el-table-column align="center" min-width="100" label="用户积分减免" prop="integralPrice" show-overflow-tooltip />
-				<el-table-column align="center" min-width="100" label="代金券减免" prop="voucherPrice" show-overflow-tooltip />
-				<el-table-column align="center" min-width="100" label="团购减免" prop="grouponPrice" show-overflow-tooltip />
-				<el-table-column align="center" min-width="100" label="订单费用" prop="orderPrice" show-overflow-tooltip />
-				<el-table-column align="center" min-width="100" label="实付费用" prop="actualPrice" show-overflow-tooltip />
-				<el-table-column align="center" min-width="200" label="微信付款编号" prop="payId" show-overflow-tooltip />
-				<el-table-column align="center" min-width="150" label="付款时间" prop="payTime" show-overflow-tooltip />
-				<el-table-column align="center" min-width="150" label="快递单号" prop="shipSn" show-overflow-tooltip />
-				<el-table-column align="center" min-width="150" label="发货快递" prop="shipChannel" show-overflow-tooltip />
-				<el-table-column align="center" min-width="150" label="发货时间" prop="shipTime" show-overflow-tooltip />
-				<el-table-column align="center" min-width="150" label="业务员名称" prop="salesman" show-overflow-tooltip />
-				<el-table-column align="center" min-width="150" label="确认收货时间" prop="confirmTime" show-overflow-tooltip />
-				<el-table-column align="center" min-width="100" label="待评价商品数" prop="comments" show-overflow-tooltip />
-				<el-table-column align="center" min-width="150" label="订单关闭时间" prop="endTime" show-overflow-tooltip />
-				<el-table-column align="center" min-width="100" label="代理结算金额" prop="settlementMoney" show-overflow-tooltip />
-				<el-table-column align="center" min-width="100" label="结算状态" prop="settlementStatus" show-overflow-tooltip />
-				<el-table-column align="center" min-width="100" label="配送方式" prop="freightType">
-					<template slot-scope="{ row }">
-						{{ row.freightType | freightTypeFilter }}
-					</template>
-				</el-table-column>
-				<el-table-column align="center" min-width="100" label="推广用户" prop="shareUserId" show-overflow-tooltip />
-				<el-table-column align="center" min-width="100" label="提货码" prop="fetchCode" show-overflow-tooltip />
-				<el-table-column align="center" min-width="100" label="原始创建人" prop="createUserId" show-overflow-tooltip />
-				<el-table-column align="center" min-width="150" label="转赠发送时间" prop="giftSendTime" show-overflow-tooltip />
-				<el-table-column align="center" min-width="150" label="转赠接收时间" prop="giftReceiveTime" show-overflow-tooltip />
-				<el-table-column align="center" min-width="150" label="使用代金券" prop="useVoucher">
-					<template slot-scope="{ row }">
-						<template v-if="row.useVoucher">
-							<el-tag type="success" effect="plain" style="margin-right:4px">是</el-tag>
-							<span>ID：{{ row.voucherId }}</span>
-						</template>
-						<el-tag v-else type="danger" effect="plain">否</el-tag>
-					</template>
-				</el-table-column>
-				<el-table-column align="center" min-width="100" label="是否冻结" prop="isFreeze">
-					<template slot-scope="{ row }">
-						<el-tag v-if="row.isFreeze" type="success" effect="plain">是</el-tag>
-						<el-tag v-else type="danger" effect="plain">否</el-tag>
-					</template>
-				</el-table-column>
-				<el-table-column align="center" min-width="100" label="冻结类型" prop="freezeType">
-					<template slot-scope="{ row }">
-						{{ row.freezeType | freezeTypeFilter }}
-					</template>
-				</el-table-column>
-				<el-table-column align="center" min-width="200" label="投诉原因" prop="complainReason" show-overflow-tooltip>
-					<template slot-scope="{ row }">
-						<span v-if="row.freezeType == 1">{{ row.complainReason }}</span>
-						<span v-else>--</span>
-					</template>
-				</el-table-column>
+		<VxeTable
+			ref="vxeTable"
+			v-model="listQuery"
+			:localKey="customColumnsConfig.localKey"
+			:page="{ current: listQuery.page }"
+			:isRequest="false"
+			:loading="listLoading"
+			:tableData="tableData"
+			:pageTotal="pageTotal"
+			:columns="columns"
+			@pageChange="pageChange"
+		>
+			<template #orderType="{ row }">
+				{{ row.orderType | orderTypeFilter }}
+			</template>
+			<template #orderStatus="{ row }">
+				{{ row.orderStatus | orderStatusFilter }}
+			</template>
+			<template #freightType="{ row }">
+				{{ row.freightType | freightTypeFilter }}
+			</template>
+			<template #useVoucher="{ row }">
+				<template v-if="row.useVoucher">
+					<el-tag type="success" effect="plain" style="margin-right:4px">是</el-tag>
+					<span>ID：{{ row.voucherId }}</span>
+				</template>
+				<el-tag v-else type="danger" effect="plain">否</el-tag>
+			</template>
+			<template #isFreeze="{ row }">
+				<el-tag v-if="row.isFreeze" type="success" effect="plain">是</el-tag>
+				<el-tag v-else type="danger" effect="plain">否</el-tag>
+			</template>
+			<template #freezeType="{ row }">
+				{{ row.freezeType | freezeTypeFilter }}
+			</template>
 
-				<el-table-column align="center" min-width="150" label="创建时间" prop="addTime" />
-				<el-table-column align="center" min-width="150" label="更新时间" prop="updateTime" />
-				<el-table-column
-					label="操作"
-					:width="isShopRole ? 200 : 300"
-					fixed="right"
-					class-name="small-padding fixed-width"
+			<template #operate="{ row }">
+				<el-button
+					v-permission="[ `GET /admin${api.orderDetail}` ]"
+					size="mini"
+					@click="handleDetail(row)"
 				>
-					<template slot-scope="{ row }">
-						<el-button
-							v-permission="[ `GET /admin${api.orderDetail}` ]"
-							size="mini"
-							@click="handleDetail(row)"
-						>
-							查看
-						</el-button>
-						<el-button
-							v-if="isShopRole"
-							v-permission="[ `POST /admin${api.orderChangePrice}` ]"
-							:disabled="row.orderStatus != 101"
-							size="mini"
-							type="warning"
-							@click="handleChangePrice(row)"
-						>
-							改价
-						</el-button>
-						<el-button
-							v-permission="[ `POST /admin${api.orderShip}` ]"
-							:disabled="row.orderStatus != 201"
-							size="mini"
-							type="primary"
-							@click="handleDeliver(row)"
-						>
-							发货
-						</el-button>
-						<el-button
-							v-permission="[ `POST /admin${api.orderRefund}` ]"
-							:disabled="row.orderStatus != 202"
-							size="mini"
-							type="warning"
-							@click="handleRefund(row)"
-						>
-							退款
-						</el-button>
-						<el-button
-							v-permission="[ `POST /admin${api.orderIsFreeze}` ]"
-							:disabled="row.isFreeze"
-							size="mini"
-							type="danger"
-							@click="handleFreeze(row, true)"
-						>
-							冻结
-						</el-button>
-						<el-button
-							v-permission="[ `POST /admin${api.orderIsFreeze}` ]"
-							:disabled="!row.isFreeze"
-							size="mini"
-							type="success"
-							@click="handleFreeze(row, false)"
-						>
-							解冻
-						</el-button>
-					</template>
-				</el-table-column>
-			</el-table>
-		</div>
-
-		<Pagination
-			:total="total"
-			:page.sync="listQuery.page"
-			:limit.sync="listQuery.limit"
-			@pagination="getList"
-		/>
+					查看
+				</el-button>
+				<el-button
+					v-if="isShopRole"
+					v-permission="[ `POST /admin${api.orderChangePrice}` ]"
+					:disabled="row.orderStatus != 101"
+					size="mini"
+					type="warning"
+					@click="handleChangePrice(row)"
+				>
+					改价
+				</el-button>
+				<el-button
+					v-permission="[ `POST /admin${api.orderShip}` ]"
+					:disabled="row.orderStatus != 201"
+					size="mini"
+					type="primary"
+					@click="handleDeliver(row)"
+				>
+					发货
+				</el-button>
+				<el-button
+					v-permission="[ `POST /admin${api.orderRefund}` ]"
+					:disabled="row.orderStatus != 202"
+					size="mini"
+					type="warning"
+					@click="handleRefund(row)"
+				>
+					退款
+				</el-button>
+				<el-button
+					v-permission="[ `POST /admin${api.orderIsFreeze}` ]"
+					:disabled="row.isFreeze"
+					size="mini"
+					type="danger"
+					@click="handleFreeze(row, true)"
+				>
+					冻结
+				</el-button>
+				<el-button
+					v-permission="[ `POST /admin${api.orderIsFreeze}` ]"
+					:disabled="!row.isFreeze"
+					size="mini"
+					type="success"
+					@click="handleFreeze(row, false)"
+				>
+					解冻
+				</el-button>
+			</template>
+		</VxeTable>
 
 		<!-- 发货 -->
 		<DeliverModal ref="DeliverModal" @success="getList" />
@@ -252,12 +196,15 @@ import {
 	orderList,
 	orderIsFreeze
 } from '@/api/orderManagement/order'
-import Pagination from '@/components/Pagination'
+import VxeTable from '@/components/VxeTable'
+import TableTools from '@/components/TableTools'
+// import Pagination from '@/components/Pagination'
 import DeliverModal from './components/DeliverModal'
 import ChangePriceModal from './components/ChangePriceModal'
 import RefundModal from './components/RefundModal'
 import CreateOrderModal from './components/CreateOrderModal'
 import { mapGetters } from 'vuex'
+import { columns } from './table'
 
 const statusList = {
 	101: '未付款',
@@ -274,7 +221,8 @@ const statusList = {
 export default {
 	name: 'OrderList',
 	components: {
-		Pagination,
+		VxeTable,
+		TableTools,
 		DeliverModal,
 		ChangePriceModal,
 		RefundModal,
@@ -315,9 +263,14 @@ export default {
 	},
 	data() {
 		return {
+			customColumnsConfig: {
+				localKey: 'OrderList',
+				columnsOptions: columns
+			},
 			api,
-			list: undefined,
-			total: 0,
+			columns,
+			tableData: [],
+			pageTotal: 0,
 			listLoading: true,
 			listQuery: {
 				page: 1,
@@ -327,13 +280,24 @@ export default {
 				region_arr: [],
 				orderStatusArray: []
 			},
-			statusList
+			statusList,
 		}
 	},
 	created() {
 		this.getList()
 	},
 	methods: {
+		// 自定义列
+		updateFields(columns) {
+			this.columns = columns
+		},
+		pageChange(params) {
+			this.listQuery = {
+				...this.listQuery,
+				...params
+			}
+			this.getList()
+		},
 		async getList() {
 			const { brandId = '' } = this.$route.query
 			// console.log(brandId)
@@ -347,8 +311,12 @@ export default {
 					regionId
 				}
 				const res = await orderList(params)
-				this.list = res.data.items
-				this.total = res.data.total
+				const { page, limit } = this.listQuery
+				this.tableData = res.data.items.map((item, index) => ({
+					...item,
+					$index: (page - 1) * limit + (index + 1)
+				}))
+				this.pageTotal = res.data.total
 			} finally {
 				this.listLoading = false
 			}

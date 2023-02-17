@@ -1,15 +1,14 @@
 <template>
 	<div class="app-container">
 
-		<!-- 查询和其他操作 -->
-		<div class="filter-container">
-			<!-- <el-input
-				v-model="listQuery.userId"
-				clearable
-				class="filter-item"
-				style="width: 200px;"
-				placeholder="请输入会员ID"
-				/> -->
+		<TableTools
+			:custom-columns-config="customColumnsConfig"
+			download
+      custom-field
+			@update-fields="updateFields"
+			@refresh="getList"
+			@download="toolsMixin_exportMethod($refs.vxeTable, '门店申请')"
+		>
 			<el-select
 				v-model="listQuery.status"
 				clearable
@@ -31,14 +30,54 @@
 				type="primary"
 				icon="el-icon-search"
 				style="margin-left:10px;"
-				@click="handleSearch"
+				@click="getList"
 			>
 				查找
 			</el-button>
-		</div>
+		</TableTools>
+
+		<VxeTable
+		  ref="vxeTable"
+      v-model="listQuery"
+      :local-key="customColumnsConfig.localKey"
+      api-method="GET"
+			:api-path="api.userupList"
+      :columns="columns"
+		>
+      <template #status="{ row }">
+				{{ row.status | typeFilter(statusList) }}
+			</template>
+			<template #operate="{ row }">
+				<el-button
+					v-permission="[ `POST /admin${api.userupManage}` ]"
+					:disabled="row.status !== 0"
+					size="mini"
+					@click="handleUpdate(row.id, 5)"
+				>
+					开始审核
+				</el-button>
+				<el-button
+					v-permission="[ `POST /admin${api.userupSetCharge}` ]"
+					size="mini"
+					type="primary"
+					@click="handleSetCharge(row)"
+				>
+					负责人设置
+				</el-button>
+				<el-button
+					v-permission="[ `POST /admin${api.userupManage}` ]"
+					:disabled="row.status != 1"
+					type="warning"
+					size="mini"
+					@click="handleExamine(row)"
+				>
+					门店审核
+				</el-button>
+      </template>
+		</VxeTable>
 
 		<!-- 查询结果 -->
-		<div v-tableHeight>
+		<!-- <div v-tableHeight>
 			<el-table
 				v-loading="listLoading"
 				height="100%"
@@ -100,14 +139,7 @@
 					</template>
 				</el-table-column>
 			</el-table>
-		</div>
-
-		<Pagination
-			:total="total"
-			:page.sync="listQuery.page"
-			:limit.sync="listQuery.limit"
-			@pagination="getList"
-		/>
+		</div> -->
 
 		<!-- 审核 -->
 		<ExamineModal ref="ExamineModal" @success="getList" />
@@ -123,14 +155,17 @@ import {
 	userupManage,
 	userupSignin
 } from '@/api/brand/brandApply'
-import Pagination from '@/components/Pagination'
+import VxeTable from '@/components/VxeTable'
+import TableTools from '@/components/TableTools'
 import ExamineModal from './components/ExamineModal'
 import ChargeModal from './components/ChargeModal'
+import { columns } from './table'
 
 export default {
 	name: 'BrandApply',
 	components: {
-		Pagination,
+		VxeTable,
+		TableTools,
 		ExamineModal,
 		ChargeModal
 	},
@@ -143,9 +178,11 @@ export default {
 	data() {
 		return {
 			api,
-			list: undefined,
-			total: 0,
-			listLoading: true,
+      columns,
+			customColumnsConfig: {
+				localKey: 'BrandApply',
+				columnsOptions: columns
+			},
 			listQuery: {
 				page: 1,
 				limit: 20,
@@ -161,23 +198,13 @@ export default {
 			]
 		}
 	},
-	created() {
-		this.getList()
-	},
 	methods: {
-		async getList() {
-			this.listLoading = true
-			try {
-				const res = await userupList(this.listQuery)
-				this.list = res.data.items
-				this.total = res.data.total
-			} finally {
-				this.listLoading = false
-			}
+		// 自定义列
+		updateFields(columns) {
+			this.columns = columns
 		},
-		handleSearch() {
-			this.listQuery.page = 1
-			this.getList()
+    getList(meaning) {
+			this.listQuery = { ...this.listQuery, ...(meaning === 'keepPage' ? {} : { page : 1 }) }
 		},
 		async handleUpdate(id, stateEnum) {
 			await userupManage({
@@ -185,7 +212,7 @@ export default {
 				stateEnum
 			})
 			this.$elMessage('操作成功!')
-			this.getList()
+			this.getList('keepPage')
 		},
 		handleSetCharge({ id }) {
 			this.$refs.ChargeModal && this.$refs.ChargeModal.handleOpen({ id })
