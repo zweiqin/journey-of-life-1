@@ -47,20 +47,20 @@ export default {
         userId: '',
         applicationType: 1,
         username: '',
-        password: '',
+        password: ''
       },
       formRules: {
         applicationType: [
-          { required: true, message: '请选择申请类型' },
+          { required: true, message: '请选择申请类型' }
         ],
         username: [
           { required: true, message: '请输入账号' },
-          { min: 4, message: '不得少于4位', trigger: 'blur' },
+          { min: 6, message: '不得少于6位', trigger: 'blur' }
         ],
         password: [
           { required: true, message: '请输入密码' },
-          { min: 6, message: '不得少于6位', trigger: 'blur' },
-        ],
+          { min: 6, message: '不得少于6位', trigger: 'blur' }
+        ]
       }
     }
   },
@@ -82,7 +82,7 @@ export default {
         this.$elMessage()
         this.$emit('success')
         this.visible = false
-      } catch(e) {
+      } catch (e) {
         loading.close()
       }
     }

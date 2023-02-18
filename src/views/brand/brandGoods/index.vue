@@ -273,7 +273,9 @@ export default {
 			downloadLoading: false
 		}
 	},
-	created() {
+	created() {},
+	mounted() {},
+	activated() {
 		const { brandId = '' } = this.$route.query
 		if (brandId) {
 			this.listQuery.brandId = brandId
@@ -281,10 +283,6 @@ export default {
 		this.getList()
 		this.getCategoryTreeList()
 		this.getGoodsStyleList()
-	},
-	mounted() {},
-	activated() {
-		console.log('1激活activated钩子函数')
 	},
 	deactivated() {
 		console.log('1激活deactivated钩子函数')
