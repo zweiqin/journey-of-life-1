@@ -91,7 +91,16 @@
 			>
 				查找
 			</el-button>
-			<br />
+		</div>
+
+		<TableTools
+			:custom-columns-config="customColumnsConfig"
+			download
+			custom-field
+			@update-fields="updateFields"
+			@refresh="getList"
+			@download="toolsMixin_exportMethod($refs.vxeTable, '门店列表')"
+		>
 			<el-button
 				v-permission="[ `POST /admin${api.brandCreate}` ]"
 				size="mini"
@@ -101,99 +110,68 @@
 			>
 				添加
 			</el-button>
-		</div>
+		</TableTools>
 
-		<!-- 查询结果 -->
-		<div v-tableHeight>
-			<el-table
-				v-loading="listLoading"
-				height="100%"
-				element-loading-text="正在查询中。。。"
-				:data="list"
-				v-bind="$tableCommonOptions"
-			>
-				<el-table-column align="center" width="50" label="序号" type="index" :index="tableMixin_indexMethod" fixed="left" />
-				<el-table-column align="center" width="80" label="ID" prop="id" fixed="left" />
-				<el-table-column align="center" width="120" label="公司名称" prop="name" fixed="left" show-overflow-tooltip />
-				<el-table-column align="center" width="150" label="店主名称" prop="keeperName" show-overflow-tooltip />
-				<el-table-column align="center" width="200" label="简介" prop="desc" show-overflow-tooltip />
-				<el-table-column align="center" width="150" label="电话" prop="phone" show-overflow-tooltip />
-				<el-table-column align="center" width="100" label="公司图片" prop="picUrl">
-					<template slot-scope="{ row }">
-						<el-image v-if="row.picUrl" :src="row.picUrl" style="width:40px; height:40px" fit="cover" :preview-src-list="[ row.picUrl ]" />
-					</template>
-				</el-table-column>
-				<el-table-column align="center" min-width="150" label="区域" prop="regionList" show-overflow-tooltip />
-				<!-- <el-table-column align="center" min-width="150" label="门店类型" prop="brandgenreName" show-overflow-tooltip /> -->
-				<el-table-column align="center" min-width="150" label="门店风格" prop="styleName" show-overflow-tooltip />
-				<el-table-column align="center" width="100" label="产品数量" prop="productAmount" show-overflow-tooltip />
-				<el-table-column align="center" width="100" label="员工数量" prop="employeeAmount" show-overflow-tooltip />
-				<!-- <el-table-column align="center" width="150" label="负责人" prop="chargeName" show-overflow-tooltip /> -->
-				<el-table-column align="center" width="150" label="业务负责人" prop="businessChargeName" show-overflow-tooltip />
-				<el-table-column align="center" width="150" label="交付负责人" prop="deliveryChargeName" show-overflow-tooltip />
-				<el-table-column align="center" width="150" label="创建时间" prop="addTime" />
-				<el-table-column align="center" width="150" label="更新时间" prop="updateTime" />
-				<el-table-column
-					align="center"
-					label="操作"
-					width="370"
-					fixed="right"
-					class-name="small-padding fixed-width"
+		<VxeTable
+		 	ref="vxeTable"
+			v-model="listQuery"
+			:localKey="customColumnsConfig.localKey"
+			:page="{ current: listQuery.page }"
+			:isRequest="false"
+			:loading="listLoading"
+			:tableData="tableData"
+			:pageTotal="pageTotal"
+			:columns="columns"
+			@pageChange="pageChange"
+		>
+			<template #picUrl="{ row }">
+				<el-image v-if="row.picUrl" :src="row.picUrl" style="width:40px; height:40px" fit="cover" :preview-src-list="[ row.picUrl ]" />
+			</template>
+			<template #operate="{ row }">
+        <el-button
+					size="mini"
+					@click="handleDetail(row)"
 				>
-					<template slot-scope="{ row }">
-						<el-button
-							size="mini"
-							@click="handleDetail(row)"
-						>
-							查看
-						</el-button>
-						<el-button
-							size="mini"
-							@click="handleUpdate(row)"
-						>
-							编辑
-						</el-button>
-						<el-button
-							size="mini"
-							type="success"
-							@click="handleGoods(row)"
-						>
-							商品
-						</el-button>
-						<el-button
-							size="mini"
-							type="success"
-							@click="handleOrder(row)"
-						>
-							订单
-						</el-button>
-						<el-button
-							v-permission="[ `POST /admin${api.freezeBrand}` ]"
-							type="warning"
-							size="mini"
-							@click="handleFreeze(row)"
-						>
-							冻结
-						</el-button>
-						<el-button
-							v-permission="[ `POST /admin${api.brandDelete}` ]"
-							type="danger"
-							size="mini"
-							@click="handleDelete(row)"
-						>
-							删除
-						</el-button>
-					</template>
-				</el-table-column>
-			</el-table>
-		</div>
-
-		<Pagination
-			:total="total"
-			:page.sync="listQuery.page"
-			:limit.sync="listQuery.limit"
-			@pagination="getList"
-		/>
+					查看
+				</el-button>
+				<el-button
+					size="mini"
+					@click="handleUpdate(row)"
+				>
+					编辑
+				</el-button>
+				<el-button
+					size="mini"
+					type="success"
+					@click="handleGoods(row)"
+				>
+					商品
+				</el-button>
+				<el-button
+					size="mini"
+					type="success"
+					@click="handleOrder(row)"
+				>
+					订单
+				</el-button>
+				<el-button
+					v-permission="[ `POST /admin${api.freezeBrand}` ]"
+					type="warning"
+					size="mini"
+					@click="handleFreeze(row)"
+				>
+					冻结
+				</el-button>
+				<el-button
+					v-permission="[ `POST /admin${api.brandDelete}` ]"
+					type="danger"
+					size="mini"
+					@click="handleDelete(row)"
+				>
+					删除
+				</el-button>
+      </template>
+		</VxeTable>
 
 		<!-- 新增编辑 -->
 		<EditModal ref="EditModal" @success="getList" />
@@ -204,7 +182,8 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import Pagination from '@/components/Pagination'
+import VxeTable from '@/components/VxeTable'
+import TableTools from '@/components/TableTools'
 import EditModal from './components/EditModal'
 import DetailModal from './components/DetailModal'
 import {
@@ -216,11 +195,13 @@ import {
 import { brandLabelList } from '@/api/brand/brandList'
 import { brandStyleList } from '@/api/brand/brandStyle'
 import { staffList } from '@/api/enterprise/staff'
+import { columns } from './table'
 
 export default {
 	name: 'BrandList',
 	components: {
-		Pagination,
+		VxeTable,
+		TableTools,
 		EditModal,
 		DetailModal
 	},
@@ -231,10 +212,14 @@ export default {
 	},
 	data() {
 		return {
+			customColumnsConfig: {
+				localKey: 'BrandList',
+				columnsOptions: columns
+			},
 			api,
-			list: undefined,
-			total: 0,
-			listLoading: true,
+			columns,
+			tableData: [],
+			pageTotal: 0,
 			listQuery: {
 				page: 1,
 				limit: 20,
@@ -258,6 +243,17 @@ export default {
 		this.getList()
 	},
 	methods: {
+		// 自定义列
+		updateFields(columns) {
+			this.columns = columns
+		},
+		pageChange(params) {
+			this.listQuery = {
+				...this.listQuery,
+				...params
+			}
+			this.getList()
+		},
 		// 商品标签
 		async getBrandLabelList() {
 			const res = await brandLabelList()
@@ -289,8 +285,12 @@ export default {
 					regionCode
 				}
 				const res = await brandList(params)
-				this.list = res.data.items
-				this.total = res.data.total
+				const { page, limit } = this.listQuery
+				this.tableData = res.data.items.map((item, index) => ({
+					...item,
+					$index: (page - 1) * limit + (index + 1)
+				}))
+				this.pageTotal = res.data.total
 			} finally {
 				this.listLoading = false
 			}

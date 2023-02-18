@@ -63,7 +63,7 @@ export default {
         const res = await commissionGrant(this.formData)
         loading.close()
         this.$elMessage()
-        this.$emit('success')
+        this.$emit('success', 'keepPage')
         this.visible = false
       } catch(e) {
         loading.close()

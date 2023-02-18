@@ -77,10 +77,10 @@ export default {
       await this.$validatorForm('formData')
       const loading = this.$elLoading()
       try {
-        const res = this.formData.id ? await brandStyleUpdate(this.formData) : await brandStyleCreate(this.formData)
+        this.formData.id ? await brandStyleUpdate(this.formData) : await brandStyleCreate(this.formData)
         loading.close()
         this.$elMessage(`${this.formData.id ? '编辑' : '添加'}成功!`)
-        this.$emit('success')
+        this.$emit('success', 'keepPage')
         this.visible = false
       } catch(e) {
         loading.close()

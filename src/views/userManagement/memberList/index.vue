@@ -49,8 +49,16 @@
 			>
 				查找
 			</el-button>
-			<br />
+		</div>
 
+		<TableTools
+			:custom-columns-config="customColumnsConfig"
+			download
+			custom-field
+			@update-fields="updateFields"
+			@refresh="getList"
+			@download="toolsMixin_exportMethod($refs.vxeTable, '会员管理')"
+		>
 			<!-- 超管专属 -->
 			<template v-if="isAdminRole">
 				<el-button
@@ -98,109 +106,75 @@
 					解除业务员
 				</el-button>
 			</template>
-		</div>
+		</TableTools>
 
-		<!-- 查询结果 -->
-		<div class="table-container">
-			<el-table
-				ref="elTable"
-				v-loading="listLoading"
-				height="100%"
-				element-loading-text="正在查询中。。。"
-				:data="list"
-				v-bind="$tableCommonOptions"
-				@selection-change="handleSelectionChange"
-			>
-				<el-table-column type="selection" width="40" :selectable="checkSelectable" fixed="left" />
-				<el-table-column align="center" width="50" label="序号" type="index" :index="tableMixin_indexMethod" fixed="left" />
-				<el-table-column align="center" width="65" label="ID" prop="id" fixed="left" />
-				<el-table-column align="center" min-width="120" label="用户名" prop="username" show-overflow-tooltip fixed="left" />
-				<el-table-column align="center" min-width="100" label="性别" prop="gender">
-					<template slot-scope="{ row }">
-						{{ row.gender | genderFilter }}
-					</template>
-				</el-table-column>
-				<el-table-column align="center" min-width="150" label="生日" prop="birthday" show-overflow-tooltip />
-				<el-table-column align="center" min-width="160" label="平台角色" prop="userLevelDesc" show-overflow-tooltip />
-				<el-table-column align="center" min-width="100" label="昵称" prop="nickname" show-overflow-tooltip />
-				<el-table-column align="center" min-width="100" label="电话" prop="mobile" show-overflow-tooltip />
-				<el-table-column align="center" width="100" label="头像" prop="avatar">
-					<template slot-scope="{ row }">
-						<el-image v-if="row.avatar" :src="row.avatar" style="width:40px; height:40px" fit="cover" :preview-src-list="[ row.avatar ]" />
-					</template>
-				</el-table-column>
-				<el-table-column align="center" min-width="150" label="区域" prop="regionList" show-overflow-tooltip />
-				<el-table-column align="center" min-width="200" label="门店备注" prop="brandRemark" show-overflow-tooltip />
-				<el-table-column align="center" min-width="200" label="平台备注" prop="platformRemark" show-overflow-tooltip />
-				<el-table-column v-if="isAdminRole" align="center" min-width="150" label="用户在门店中的等级" prop="brandLevelDesc" show-overflow-tooltip />
-				<el-table-column v-if="isAdminRole || isShopRole" align="center" min-width="150" label="推荐人" prop="principalName" show-overflow-tooltip>
-					<template slot-scope="{ row }">
-						{{ row.principalName || '团蜂' }}
-					</template>
-				</el-table-column>
-				<el-table-column align="center" min-width="150" label="绑定合伙人数量" prop="todo1" show-overflow-tooltip>
-					<template slot-scope="{ row }">
-						<span v-if="row.userLevel === 7">{{ row.todo1 }}</span>
-						<span v-else>-</span>
-					</template>
-				</el-table-column>
-				<el-table-column align="center" min-width="150" label="绑定普通会员数量" prop="todo2" show-overflow-tooltip>
-					<template slot-scope="{ row }">
-						<span v-if="row.userLevel === 7">{{ row.todo2 }}</span>
-						<span v-else-if="row.userLevel === 6">{{ row.todo2 }}</span>
-						<span v-else>-</span>
-					</template>
-				</el-table-column>
-				<el-table-column align="center" min-width="150" label="创建时间" prop="addTime" />
-				<el-table-column align="center" min-width="150" label="更新时间" prop="updateTime" />
-				<el-table-column
-					label="操作"
-					:width="isAdminRole ? 330 : 100"
-					fixed="right"
-					class-name="small-padding fixed-width"
+		<VxeTable
+			ref="vxeTable"
+			v-model="listQuery"
+			:localKey="customColumnsConfig.localKey"
+			:isRequest="false"
+			:loading="listLoading"
+			:tableData="tableData"
+			:pageTotal="pageTotal"
+			:columns="columns"
+			:gridOptions="gridOptions"
+			@pageChange="pageChange"
+			@select-change="handleSelectionChange"
+		>
+			<template #gender="{ row }">
+				{{ row.gender | genderFilter }}
+			</template>
+			<template #avatar="{ row }">
+				<el-image v-if="row.avatar" :src="row.avatar" style="width:40px; height:40px" fit="cover" :preview-src-list="[ row.avatar ]" />
+			</template>
+			<template #brandLevelDesc="{ row }">
+				<span v-if="isAdminRole">{{ row.brandLevelDesc || '--' }}</span>
+				<span v-else>--</span>
+			</template>
+			<template #principalName="{ row }">
+				<span v-if="isAdminRole || isShopRole">{{ row.principalName || '团蜂' }}</span>
+				<span v-else>--</span>
+			</template>
+			<template #operate="{ row }">
+				<el-button
+					v-permission="[ `POST /admin${api.userUpdate}` ]"
+					size="mini"
+					@click="handleEdit(row)"
 				>
-					<template slot-scope="{ row }">
-						<el-button
-							v-permission="[ `POST /admin${api.userUpdate}` ]"
-							size="mini"
-							@click="handleEdit(row)"
-						>
-							编辑
-						</el-button>
-						<!-- 超管专属 -->
-						<template v-if="isAdminRole">
-							<el-button
-								v-permission="[ `POST /admin${api.userupSaveAndSignin}` ]"
-								:disabled="row.userLevel !== 7"
-								type="primary"
-								size="mini"
-								@click="handleShopApply(row)"
-							>
-								门店申请
-							</el-button>
-							<el-button
-								v-permission="[ `POST /admin${api.partnerApplySaveAndSignin}` ]"
-								:disabled="row.userLevel !== 5"
-								type="warning"
-								@click="handlePartnerApply(row, 6)"
-							>
-								会员升级
-							</el-button>
-							<el-button
-								v-permission="[ `POST /admin${api.partnerApplySaveAndSignin}` ]"
-								:disabled="row.userLevel !== 6"
-								type="warning"
-								@click="handlePartnerApply(row, 7)"
-							>
-								合伙人升级
-							</el-button>
-						</template>
-					</template>
-				</el-table-column>
-			</el-table>
-		</div>
+					编辑
+				</el-button>
+				<!-- 超管专属 -->
+				<template v-if="isAdminRole">
+					<el-button
+						v-permission="[ `POST /admin${api.userupSaveAndSignin}` ]"
+						:disabled="row.userLevel !== 7"
+						type="primary"
+						size="mini"
+						@click="handleShopApply(row)"
+					>
+						门店申请
+					</el-button>
+					<el-button
+						v-permission="[ `POST /admin${api.partnerApplySaveAndSignin}` ]"
+						:disabled="row.userLevel !== 5"
+						type="warning"
+						@click="handlePartnerApply(row, 6)"
+					>
+						会员升级
+					</el-button>
+					<el-button
+						v-permission="[ `POST /admin${api.partnerApplySaveAndSignin}` ]"
+						:disabled="row.userLevel !== 6"
+						type="warning"
+						@click="handlePartnerApply(row, 7)"
+					>
+						合伙人升级
+					</el-button>
+				</template>
+			</template>
+		</VxeTable>
 
-		<div v-show="!!total" class="statistics-container">
+		<!-- <div v-show="!!total" class="statistics-container">
 			<div class="card-container">
 				<el-card>
 					<div slot="header"><span>平台角色统计</span></div>
@@ -228,7 +202,7 @@
 				:limit.sync="listQuery.limit"
 				@pagination="getList"
 			/>
-		</div>
+		</div> -->
 
 		<!-- 新增编辑 -->
 		<EditModal ref="EditModal" @success="getList" />
@@ -251,19 +225,21 @@ import {
 	orderSVsDeleted,
 	getRoleCount
 } from '@/api/userManagement/memberList'
-import XeUtils from 'xe-utils'
-import Pagination from '@/components/Pagination'
 import EditModal from './components/EditModal'
 import BindUserModal from './components/BindUserModal'
 import ShopApplyModal from './components/ShopApplyModal'
 import PartnerApplyModal from './components/PartnerApplyModal'
 import AssignModal from './components/AssignModal'
 import { mapGetters } from 'vuex'
+import { columns } from './table'
+import VxeTable from '@/components/VxeTable'
+import TableTools from '@/components/TableTools'
 
 export default {
 	name: 'MemberList',
 	components: {
-		Pagination,
+		VxeTable,
+		TableTools,
 		EditModal,
 		BindUserModal,
 		ShopApplyModal,
@@ -281,9 +257,19 @@ export default {
 	},
 	data() {
 		return {
+			customColumnsConfig: {
+				localKey: 'MemberList',
+				columnsOptions: columns
+			},
 			api,
-			list: undefined,
-			total: 0,
+			columns,
+			gridOptions: {
+				checkboxConfig: {
+					checkMethod: this.checCheckboxkMethod
+				}
+			},
+			tableData: [],
+			pageTotal: 0,
 			listLoading: true,
 			listQuery: {
 				page: 1,
@@ -327,11 +313,23 @@ export default {
 	},
 	methods: {
 		// 勾选
-		checkSelectable(row) {
+		checCheckboxkMethod({ row }) {
 			return this.isAdminRole ? row.userLevel === 5 || row.userLevel === 6 || row.userLevel === 7 || row.userLevel === 1 : true
 		},
-		handleSelectionChange(val) {
-			this.multipleSelection = val
+		handleSelectionChange({ $table }) {
+			const records = $table.getCheckboxRecords()
+			this.multipleSelection = records
+		},
+		// 自定义列
+		updateFields(columns) {
+			this.columns = columns
+		},
+		pageChange(params) {
+			this.listQuery = {
+				...this.listQuery,
+				...params
+			}
+			this.getList()
 		},
 		async getList() {
 			this.listLoading = true
@@ -343,10 +341,13 @@ export default {
 					region
 				}
 				const res = await userList(params)
-				this.list = res.data.items
-				this.total = res.data.total
+				const { page, limit } = this.listQuery
+				this.tableData = res.data.items.map((item, index) => ({
+					...item,
+					$index: (page - 1) * limit + (index + 1)
+				}))
+				this.pageTotal = res.data.total
 				this.multipleSelection = []
-				this.$refs.elTable.clearSelection()
 			} finally {
 				this.listLoading = false
 			}

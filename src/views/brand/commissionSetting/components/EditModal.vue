@@ -169,7 +169,7 @@ export default {
         const res = this.formData.id ? await comModuleUpdate(params) : await comModuleAdd(params)
         loading.close()
         this.$elMessage(`${this.formData.id ? '编辑' : '添加'}成功!`)
-        this.$emit('success')
+        this.$emit('success', 'keepPage')
         this.visible = false
       } catch(e) {
         loading.close()

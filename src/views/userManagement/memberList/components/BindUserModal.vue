@@ -78,7 +78,7 @@ export default {
 			await this.$validatorForm('formData')
 			const loading = this.$elLoading()
 			try {
-				const res = await orderSVsAdd({
+				await orderSVsAdd({
 					salesmanId: this.formData.salesmanId,
 					userIds: this.formData.userIds
 				})
@@ -103,5 +103,8 @@ export default {
     flex: 1;
     margin-right: 4px;
   }
+}
+.el-select {
+	width: 100%;
 }
 </style>

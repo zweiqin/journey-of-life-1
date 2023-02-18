@@ -139,7 +139,7 @@ export default {
         comment
       })
       this.$elMessage('操作成功!')
-      this.$emit('success')
+      this.$emit('success', 'keepPage')
       this.visible = false
     },
     async handleUpgrade() {
@@ -148,7 +148,7 @@ export default {
         userId: this.formData.userId,
       })
       this.$elMessage('操作成功!')
-      this.$emit('success')
+      this.$emit('success', 'keepPage')
       this.visible = false
     },
   }
