@@ -20,11 +20,14 @@
           placeholder="选择生日"
         />
       </el-form-item>
-      <el-form-item label="区域编号" prop="regionCode">
-        <el-input
-          v-model="formData.regionCode"
+      <el-form-item label="区域" prop="region_arr">
+        <el-cascader
+          v-model="formData.region_arr"
+          placeholder="请选择区域"
           :disabled="!isAdmin"
-          placeholder="请输入区域编号"
+          :options="common_regionList"
+          :props="{ label: 'name', value: 'code', expandTrigger: 'hover' }"
+          clearable
         />
       </el-form-item>
       <el-form-item label="门店备注" prop="brandRemark">
@@ -48,7 +51,7 @@
           placeholder="请输入平台备注"
         />
       </el-form-item>
-    
+
     </el-form>
     <span slot="footer" class="dialog-footer">
       <el-button size="mini" @click="handleClose">取 消</el-button>
@@ -58,19 +61,11 @@
 </template>
 
 <script>
-import { userUpdate, brandStyleUpdate } from '@/api/userManagement/memberList';
+import { userUpdate, brandStyleUpdate } from '@/api/userManagement/memberList'
 import { mapGetters } from 'vuex'
 
 export default {
   name: 'EditModal',
-  computed: {
-    ...mapGetters([
-      'roles',
-    ]),
-    isAdmin() {
-      return this.roles.includes('超级管理员')
-    },
-  },
   data() {
     return {
       modalOptions: {
@@ -83,16 +78,26 @@ export default {
         id: '',
         birthday: '',
         regionCode: '',
+        region_arr: [],
         brandRemark: '',
-        platformRemark: '',
+        platformRemark: ''
       },
       formRules: {
       },
       pickerOptions: {
         disabledDate(time) {
-          return time.getTime() > Date.now();
-        },
+          return time.getTime() > Date.now()
+        }
       }
+    }
+  },
+  computed: {
+    ...mapGetters([
+      'roles',
+      'common_regionList'
+    ]),
+    isAdmin() {
+      return this.roles.includes('超级管理员')
     }
   },
   methods: {
@@ -109,12 +114,17 @@ export default {
       await this.$validatorForm('formData')
       const loading = this.$elLoading()
       try {
-        const res = await userUpdate(this.formData)
+        const { region_arr, ...opts } = this.formData
+        const params = {
+          ...opts,
+          regionCode: region_arr[region_arr.length - 1]
+        }
+        const res = await userUpdate(params)
         loading.close()
         this.$elMessage(`编辑成功!`)
         this.$emit('success')
         this.visible = false
-      } catch(e) {
+      } catch (e) {
         loading.close()
       }
     }

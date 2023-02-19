@@ -416,7 +416,7 @@ module.exports = {
     'vue/html-comment-content-spacing': ['error', 'always', {
       'exceptions': []
     }], // This rule will enforce consistency of spacing after the <!-- and before the --> of comment. It also provides several exceptions for various documentation styles。1字符串选项"always" (default)，"never"。2对象选项"exceptions" exceptions to the rule。
-    'vue/html-comment-indent': ['error', 'tab'], // 在HTML注释中强制一致的缩进。选项有type (number | "tab")缩进的类型，默认值为2。如果这是一个数字，那就是一次缩进的空格数，如果这是"tab"，它使用一个制表符对应一个缩进。
+    'vue/html-comment-indent': ['error', 2], // 在HTML注释中强制一致的缩进。选项有type (number | "tab")缩进的类型，默认值为2。如果这是一个数字，那就是一次缩进的空格数，如果这是"tab"，它使用一个制表符对应一个缩进。
     'vue/match-component-file-name': ['error', {
       'extensions': ['jsx', 'vue'],
       'shouldMatchCase': false

@@ -9,41 +9,37 @@ export const columns = [
   {
     align: 'center',
     fixed: 'left',
-    field: 'adminId',
-    title: '系统账户id',
+    field: 'keyword',
+    title: '搜索关键字',
     width: 100
   },
   {
     align: 'center',
-    field: 'roleName',
-    title: '部门名称',
-    width: 150
-  },
-  {
-    align: 'center',
-    field: 'name',
-    title: '员工姓名',
-    width: 150
-  },
-  {
-    align: 'center',
-    field: 'phone',
-    title: '员工电话',
-    width: 150
-  },
-  {
-    align: 'center',
-    field: 'address',
-    title: '员工地址',
-    minWidth: 200
-  },
-  {
-    align: 'left',
-    field: 'status',
-    title: '在职状态',
+    field: 'url',
+    title: '跳转链接',
     showOverflow: false,
     slots: {
-      default: 'status'
+      default: 'url'
+    },
+    width: 250
+  },
+  {
+    align: 'center',
+    field: 'isHot',
+    title: '是否推荐',
+    showOverflow: false,
+    slots: {
+      default: 'isHot'
+    },
+    width: 100
+  },
+  {
+    align: 'center',
+    field: 'isDefault',
+    title: '是否默认',
+    showOverflow: false,
+    slots: {
+      default: 'isDefault'
     },
     width: 100
   },
@@ -60,12 +56,12 @@ export const columns = [
     width: 150
   },
   {
-    align: 'left',
+    align: 'center',
     field: 'operate',
     fixed: 'right',
     title: '操作',
-    showOverflow: false,
     className: 'small-padding fixed-width',
+    showOverflow: false,
     slots: {
       default: 'operate'
     },

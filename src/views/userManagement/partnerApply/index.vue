@@ -2,13 +2,13 @@
   <div class="app-container">
 
     <TableTools
-			:custom-columns-config="customColumnsConfig"
-			download
+      :custom-columns-config="customColumnsConfig"
+      download
       custom-field
-			@update-fields="updateFields"
-			@refresh="getList"
-			@download="toolsMixin_exportMethod($refs.vxeTable, '合伙人申请')"
-		>
+      @update-fields="updateFields"
+      @refresh="getList"
+      @download="toolsMixin_exportMethod($refs.vxeTable, '合伙人申请')"
+    >
       <el-input
         v-model="listQuery.userId"
         clearable
@@ -31,57 +31,67 @@
         />
       </el-select>
       <el-button
-        v-permission="[`GET /admin${api.partnerApplyList}`]"
+        v-permission="[ `GET /admin${api.partnerApplyList}` ]"
         size="mini"
         class="filter-item"
         type="primary"
         icon="el-icon-search"
         style="margin-left:10px;"
         @click="getList"
-      >查找</el-button>
-		</TableTools>
+      >
+        查找
+      </el-button>
+    </TableTools>
 
-		<VxeTable
-		  ref="vxeTable"
+    <VxeTable
+      ref="vxeTable"
       v-model="listQuery"
       :local-key="customColumnsConfig.localKey"
       api-method="GET"
-			:api-path="api.partnerApplyList"
+      :api-path="api.partnerApplyList"
       :columns="columns"
-		>
-      <template #status="{row}">
+    >
+      <template #status="{ row }">
         {{ row.status | typeFilter(statusList) }}
       </template>
-			<template #operate="{ row }">
+      <template #operate="{ row }">
         <el-button
-          v-permission="[`POST /admin${api.partnerApplyManage}`]"
+          v-permission="[ `POST /admin${api.partnerApplyManage}` ]"
           :disabled="row.status !== 0"
           size="mini"
           @click="handleUpdate(row.id, 5)"
-        >开始审核</el-button>
+        >
+          开始审核
+        </el-button>
         <el-button
-          v-permission="[`POST /admin${api.partnerApplyManage}`]"
+          v-permission="[ `POST /admin${api.partnerApplyManage}` ]"
           :disabled="row.status !== 1"
           type="danger"
           size="mini"
           @click="handleReject(row.id, 2)"
-        >驳回</el-button>
+        >
+          驳回
+        </el-button>
         <el-button
-          v-permission="[`POST /admin${api.partnerApplyManage}`]"
+          v-permission="[ `POST /admin${api.partnerApplyManage}` ]"
           :disabled="row.status !== 1"
           type="success"
           size="mini"
           @click="handleUpdate(row.id, 7)"
-        >通过</el-button>
+        >
+          通过
+        </el-button>
         <el-button
-          v-permission="[`POST /admin${api.partnerApplySignin}`]"
+          v-permission="[ `POST /admin${api.partnerApplySignin}` ]"
           :disabled="row.status !== 5"
           type="warning"
           size="mini"
           @click="handleUpgrade(row)"
-        >手动升级</el-button>
+        >
+          手动升级
+        </el-button>
       </template>
-		</VxeTable>
+    </VxeTable>
 
   </div>
 </template>
@@ -90,7 +100,7 @@
 import {
   api,
   partnerApplyManage,
-  partnerApplySignin,
+  partnerApplySignin
 } from '@/api/userManagement/partnerApply'
 import VxeTable from '@/components/VxeTable'
 import TableTools from '@/components/TableTools'
@@ -100,11 +110,11 @@ export default {
   name: 'PartnerApply',
   components: {
     VxeTable,
-		TableTools,
+    TableTools
   },
   filters: {
     typeFilter(val, list = []) {
-      const obj = list.find(item => item.value === +val)
+      const obj = list.find((item) => item.value === +val)
       return obj ? obj.label : '--'
     }
   },
@@ -112,15 +122,15 @@ export default {
     return {
       api,
       columns,
-			customColumnsConfig: {
-				localKey: 'PartnerApply',
-				columnsOptions: columns
-			},
+      customColumnsConfig: {
+        localKey: 'PartnerApply',
+        columnsOptions: columns
+      },
       listQuery: {
         page: 1,
         limit: 20,
         userId: '',
-        status: '',
+        status: ''
       },
       statusList: [
         { label: '用户主动撤销', value: -2 },
@@ -130,18 +140,18 @@ export default {
         { label: '已通过,待付款', value: 2 },
         { label: '已付款', value: 4 },
         { label: '未升级', value: 5 },
-        { label: '已升级', value: 6 },
+        { label: '已升级', value: 6 }
       ]
-    };
+    }
   },
   methods: {
     // 自定义列
-		updateFields(columns) {
-			this.columns = columns
-		},
+    updateFields(columns) {
+      this.columns = columns
+    },
     getList(meaning) {
-			this.listQuery = { ...this.listQuery, ...(meaning === 'keepPage' ? {} : { page : 1 }) }
-		},
+      meaning === 'keepPage' ? this.listQuery = { ...this.listQuery } : this.listQuery = { ...this.listQuery, page: 1 }
+    },
     async handleUpdate(id, stateEnum) {
       await partnerApplyManage({
         id,
@@ -156,7 +166,7 @@ export default {
       await partnerApplyManage({
         id,
         comment,
-        stateEnum: 2,
+        stateEnum: 2
       })
       this.$elMessage('操作成功!')
       this.getList('keepPage')
@@ -169,7 +179,7 @@ export default {
       })
       this.$elMessage('操作成功!')
       this.getList('keepPage')
-    },
+    }
   }
-};
+}
 </script>

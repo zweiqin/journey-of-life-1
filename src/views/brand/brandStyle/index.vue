@@ -10,58 +10,66 @@
         placeholder="请输入风格名称"
       />
       <el-button
-        v-permission="[`GET /admin${api.brandStyleList}`]"
+        v-permission="[ `GET /admin${api.brandStyleList}` ]"
         size="mini"
         class="filter-item"
         type="primary"
         icon="el-icon-search"
         style="margin-left:10px;"
         @click="getList"
-      >查找</el-button>
+      >
+        查找
+      </el-button>
     </div>
 
     <TableTools
-			:custom-columns-config="customColumnsConfig"
-			download
+      :custom-columns-config="customColumnsConfig"
+      download
       custom-field
-			@update-fields="updateFields"
-			@refresh="getList"
-			@download="toolsMixin_exportMethod($refs.vxeTable, '门店风格')"
-		>
-		  <el-button
-        v-permission="[`POST /admin${api.brandStyleCreate}`]"
+      @update-fields="updateFields"
+      @refresh="getList"
+      @download="toolsMixin_exportMethod($refs.vxeTable, '门店风格')"
+    >
+      <el-button
+        v-permission="[ `POST /admin${api.brandStyleCreate}` ]"
         size="mini"
         type="primary"
         icon="el-icon-plus"
         @click="$refs.EditModal && $refs.EditModal.handleOpen({ id: '' })"
-      >添加</el-button>
-		</TableTools>
+      >
+        添加
+      </el-button>
+    </TableTools>
 
-		<VxeTable
-		  ref="vxeTable"
+    <VxeTable
+      ref="vxeTable"
       v-model="listQuery"
       :local-key="customColumnsConfig.localKey"
       api-method="GET"
-			:api-path="api.brandStyleList"
+      :api-path="api.brandStyleList"
       :columns="columns"
-		>
-      <template #picUrl="{row}">
-        <el-image v-if="row.picUrl" :src="row.picUrl" style="width:40px; height:40px" fit="cover" :preview-src-list="[row.picUrl]" />
+    >
+      <template #picUrl="{ row }">
+        <el-image v-if="row.picUrl" :src="row.picUrl" style="width:40px; height:40px" fit="cover" :preview-src-list="[ row.picUrl ]" />
       </template>
-			<template #operate="{ row }">
+      <template #operate="{ row }">
         <el-button
-          v-permission="[`POST /admin${api.brandStyleUpdate}`]"
+          v-permission="[ `POST /admin${api.brandStyleUpdate}` ]"
           size="mini"
           @click="handleUpdate(row)"
-        >编辑</el-button>
+        >
+          编辑
+        </el-button>
         <el-button
-          v-permission="[`POST /admin${api.brandStyleDelete}`]"
+          v-permission="[ `POST /admin${api.brandStyleDelete}` ]"
           type="danger"
           size="mini"
           @click="handleDelete(row)"
-        >删除</el-button>
+        >
+          删除
+        </el-button>
       </template>
-		</VxeTable>
+    </VxeTable>
 
     <!-- 新增编辑 -->
     <EditModal ref="EditModal" @success="getList" />
@@ -82,32 +90,32 @@ export default {
   name: 'BrandStyle',
   components: {
     VxeTable,
-		TableTools,
-    EditModal,
+    TableTools,
+    EditModal
   },
   data() {
     return {
       api,
       columns,
-			customColumnsConfig: {
-				localKey: 'BrandStyle',
-				columnsOptions: columns
-			},
+      customColumnsConfig: {
+        localKey: 'BrandStyle',
+        columnsOptions: columns
+      },
       listQuery: {
         page: 1,
         limit: 20,
-        name: '',
-      },
-    };
+        name: ''
+      }
+    }
   },
   methods: {
     // 自定义列
-		updateFields(columns) {
-			this.columns = columns
-		},
+    updateFields(columns) {
+      this.columns = columns
+    },
     getList(meaning) {
-			this.listQuery = { ...this.listQuery, ...(meaning === 'keepPage' ? {} : { page : 1 }) }
-		},
+      meaning === 'keepPage' ? this.listQuery = { ...this.listQuery } : this.listQuery = { ...this.listQuery, page: 1 }
+    },
     async handleUpdate({ id, value, sortOrder }) {
       this.$refs.EditModal && this.$refs.EditModal.handleOpen({ id, value, sortOrder })
     },
@@ -118,5 +126,5 @@ export default {
       this.getList('keepPage')
     }
   }
-};
+}
 </script>

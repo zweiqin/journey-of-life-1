@@ -1,45 +1,51 @@
 <template>
   <div class="app-container">
     <TableTools
-			:custom-columns-config="customColumnsConfig"
-			download
+      :custom-columns-config="customColumnsConfig"
+      download
       custom-field
-			@update-fields="updateFields"
-			@refresh="getList"
-			@download="toolsMixin_exportMethod($refs.vxeTable, '等级列表')"
-		>
-			<el-button
-        v-permission="[`POST /admin${api.brandLevelCreate}`]"
+      @update-fields="updateFields"
+      @refresh="getList"
+      @download="toolsMixin_exportMethod($refs.vxeTable, '等级列表')"
+    >
+      <el-button
+        v-permission="[ `POST /admin${api.brandLevelCreate}` ]"
         size="mini"
         class="filter-item"
         type="primary"
         icon="el-icon-plus"
         @click="$refs.EditModal && $refs.EditModal.handleOpen({ id: '' })"
-      >添加</el-button>
-		</TableTools>
+      >
+        添加
+      </el-button>
+    </TableTools>
 
-		<VxeTable
-		  ref="vxeTable"
+    <VxeTable
+      ref="vxeTable"
       v-model="listQuery"
       :local-key="customColumnsConfig.localKey"
       api-method="GET"
-			:api-path="api.brandLevelList"
+      :api-path="api.brandLevelList"
       :columns="columns"
-		>
-			<template #operate="{ row }">
+    >
+      <template #operate="{ row }">
         <el-button
-          v-permission="[`POST /admin${api.brandLevelUpdate}`]"
+          v-permission="[ `POST /admin${api.brandLevelUpdate}` ]"
           size="mini"
           @click="handleUpdate(row)"
-        >编辑</el-button>
+        >
+          编辑
+        </el-button>
         <el-button
-          v-permission="[`POST /admin${api.brandLevelDelete}`]"
+          v-permission="[ `POST /admin${api.brandLevelDelete}` ]"
           type="danger"
           size="mini"
           @click="handleDelete(row)"
-        >删除</el-button>
+        >
+          删除
+        </el-button>
       </template>
-		</VxeTable>
+    </VxeTable>
     <!-- 新增编辑 -->
     <EditModal ref="EditModal" @success="getList" />
   </div>
@@ -59,32 +65,32 @@ export default {
   name: 'BrandLevel',
   components: {
     VxeTable,
-		TableTools,
-    EditModal,
+    TableTools,
+    EditModal
   },
   data() {
     return {
       api,
       columns,
-			customColumnsConfig: {
-				localKey: 'BrandLevel',
-				columnsOptions: columns
-			},
+      customColumnsConfig: {
+        localKey: 'BrandLevel',
+        columnsOptions: columns
+      },
       listQuery: {
         page: 1,
         limit: 20,
-        name: '',
-      },
-    };
+        name: ''
+      }
+    }
   },
   methods: {
     // 自定义列
-		updateFields(columns) {
-			this.columns = columns
-		},
+    updateFields(columns) {
+      this.columns = columns
+    },
     getList(meaning) {
-			this.listQuery = { ...this.listQuery, ...(meaning === 'keepPage' ? {} : { page : 1 }) }
-		},
+      meaning === 'keepPage' ? this.listQuery = { ...this.listQuery } : this.listQuery = { ...this.listQuery, page: 1 }
+    },
     async handleUpdate({ id, levelTier, name, discount, description, moneyCriterion, countCriterion, goodIdCriterion }) {
       this.$refs.EditModal && this.$refs.EditModal.handleOpen({ id, levelTier, name, discount, description, moneyCriterion, countCriterion, goodIdCriterion })
     },
@@ -95,5 +101,5 @@ export default {
       this.getList('keepPage')
     }
   }
-};
+}
 </script>

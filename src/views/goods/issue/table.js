@@ -8,31 +8,50 @@ export const columns = [
   },
   {
     align: 'center',
-    fixed: 'left',
-    field: 'name',
-    title: '部门名称',
-    minWidth: 100
+    field: 'type',
+    title: '问题范围',
+    showOverflow: false,
+    slots: {
+      default: 'type'
+    },
+    width: 150
   },
   {
     align: 'center',
-    field: 'desc',
-    title: '说明',
-    minWidth: 200
+    field: 'question',
+    title: '问题内容',
+    width: 150
+  },
+  {
+    align: 'center',
+    field: 'answer',
+    title: '问题回复',
+    width: 300
+  },
+  {
+    align: 'center',
+    field: 'isEnable',
+    title: '状态',
+    showOverflow: false,
+    slots: {
+      default: 'isEnable'
+    },
+    width: 100
   },
   {
     align: 'center',
     field: 'addTime',
     title: '创建时间',
-    minWidth: 150
+    width: 150
   },
   {
     align: 'center',
     field: 'updateTime',
     title: '更新时间',
-    minWidth: 150
+    width: 150
   },
   {
-    align: 'left',
+    align: 'center',
     field: 'operate',
     fixed: 'right',
     title: '操作',
