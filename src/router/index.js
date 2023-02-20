@@ -466,96 +466,96 @@ export const asyncRouterMap = [
       }
     ]
   },
-  {
-    path: '/dataStatisticsDashboard',
-    component: Layout,
-    redirect: 'noredirect',
-    // alwaysShow: true,
-    name: 'dataStatisticsDashboard',
-    meta: {
-      title: '情报数据看板',
-      icon: 'server'
-    },
-    hidden: true,
-    children: [
-      // {
-      //   path: '',
-      //   component: () => import('@/views/digitalDashboard/informationSentry'),
-      //   name: 'informationSentry',
-      //   meta: {
-      //     perms: ['POST /admin/messagesentry/queryMsgSentryList'],
-      //     title: '信息哨兵',
-      //     noCache: true
-      //   }
-      // },
-      {
-        path: '/performanceControlDashboard',
-        component: () => import('@/views/digitalDashboard/performanceControlDashboard'),
-        name: 'performanceControlDashboard',
-        meta: {
-          title: '业绩看板'
-        }
-      },
-      {
-        path: '/marketingToolsDashboard',
-        component: () => import('@/views/digitalDashboard/marketingToolsDashboard'),
-        name: 'marketingToolsDashboard',
-        meta: {
-          title: '营销看板'
-        }
-      },
-      {
-        path: '/userPortraitDashboard',
-        component: () => import('@/views/digitalDashboard/userPortraitDashboard'),
-        name: 'userPortraitDashboard',
-        meta: {
-          title: '用户看板'
-        }
-      },
-      {
-        path: 'stat',
-        component: () => import('@/views/children'),
-        redirect: 'noredirect',
-        alwaysShow: true,
-        name: 'statManage',
-        meta: {
-          title: '统计'
-        },
-        children: [
-          {
-            path: 'user',
-            component: () => import('@/views/stat/user'),
-            name: 'statUser',
-            meta: {
-              perms: [ 'GET /admin/stat/user' ],
-              title: '用户统计',
-              noCache: true
-            }
-          },
-          {
-            path: 'order',
-            component: () => import('@/views/stat/order'),
-            name: 'statOrder',
-            meta: {
-              perms: [ 'GET /admin/stat/order' ],
-              title: '订单统计',
-              noCache: true
-            }
-          },
-          {
-            path: 'goods',
-            component: () => import('@/views/stat/goods'),
-            name: 'statGoods',
-            meta: {
-              perms: [ 'GET /admin/stat/goods' ],
-              title: '商品统计',
-              noCache: true
-            }
-          }
-        ]
-      }
-    ]
-  },
+  // {
+  //   path: '/dataStatisticsDashboard',
+  //   component: Layout,
+  //   redirect: 'noredirect',
+  //   // alwaysShow: true,
+  //   name: 'dataStatisticsDashboard',
+  //   meta: {
+  //     title: '情报数据看板',
+  //     icon: 'server'
+  //   },
+  //   // hidden: true,
+  //   children: [
+  //     {
+  //       path: '',
+  //       component: () => import('@/views/digitalDashboard/informationSentry'),
+  //       name: 'informationSentry',
+  //       meta: {
+  //         perms: [ 'POST /admin/messagesentry/queryMsgSentryList' ],
+  //         title: '信息哨兵',
+  //         noCache: true
+  //       }
+  //     },
+  //     {
+  //       path: '/performanceControlDashboard',
+  //       component: () => import('@/views/digitalDashboard/performanceControlDashboard'),
+  //       name: 'performanceControlDashboard',
+  //       meta: {
+  //         title: '业绩看板'
+  //       }
+  //     },
+  //     {
+  //       path: '/marketingToolsDashboard',
+  //       component: () => import('@/views/digitalDashboard/marketingToolsDashboard'),
+  //       name: 'marketingToolsDashboard',
+  //       meta: {
+  //         title: '营销看板'
+  //       }
+  //     },
+  //     {
+  //       path: '/userPortraitDashboard',
+  //       component: () => import('@/views/digitalDashboard/userPortraitDashboard'),
+  //       name: 'userPortraitDashboard',
+  //       meta: {
+  //         title: '用户看板'
+  //       }
+  //     }
+  //     // {
+  //     //   path: 'stat',
+  //     //   component: () => import('@/views/children'),
+  //     //   redirect: 'noredirect',
+  //     //   alwaysShow: true,
+  //     //   name: 'statManage',
+  //     //   meta: {
+  //     //     title: '统计'
+  //     //   },
+  //     //   children: [
+  //     //     {
+  //     //       path: 'user',
+  //     //       component: () => import('@/views/stat/user'),
+  //     //       name: 'statUser',
+  //     //       meta: {
+  //     //         perms: [ 'GET /admin/stat/user' ],
+  //     //         title: '用户统计',
+  //     //         noCache: true
+  //     //       }
+  //     //     },
+  //     //     {
+  //     //       path: 'order',
+  //     //       component: () => import('@/views/stat/order'),
+  //     //       name: 'statOrder',
+  //     //       meta: {
+  //     //         perms: [ 'GET /admin/stat/order' ],
+  //     //         title: '订单统计',
+  //     //         noCache: true
+  //     //       }
+  //     //     },
+  //     //     {
+  //     //       path: 'goods',
+  //     //       component: () => import('@/views/stat/goods'),
+  //     //       name: 'statGoods',
+  //     //       meta: {
+  //     //         perms: [ 'GET /admin/stat/goods' ],
+  //     //         title: '商品统计',
+  //     //         noCache: true
+  //     //       }
+  //     //     }
+  //     //   ]
+  //     // }
+  //   ]
+  // },
   {
     path: '/promotion',
     component: Layout,

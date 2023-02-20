@@ -1,12 +1,20 @@
 import request from '@/utils/request'
 
-export function listArticle(query) {
-  return request({
-    url: '/article/list',
-    method: 'get',
-    params: query
-  })
+export const api = {
+  listArticle: '/article/list',
+  deleteArticle: '/article/delete',
+  publishArticle: '/article/create',
+  detailArticle: '/article/detail',
+  editArticle: '/article/update'
 }
+
+// export function listArticle(query) {
+//   return request({
+//     url: '/article/list',
+//     method: 'get',
+//     params: query
+//   })
+// }
 
 export function deleteArticle(data) {
   return request({

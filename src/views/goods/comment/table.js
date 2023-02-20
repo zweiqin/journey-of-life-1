@@ -20,7 +20,7 @@ export const columns = [
     align: 'center',
     field: 'content',
     title: '评论内容',
-    minwidth: 200
+    minWidth: 200
   },
   {
     align: 'center',
@@ -42,7 +42,7 @@ export const columns = [
     align: 'center',
     field: 'userName',
     title: '用户名称',
-    minwidth: 100
+    minWidth: 100
   },
   {
     align: 'center',
