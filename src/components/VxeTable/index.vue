@@ -335,7 +335,7 @@ export default {
     },
     // 调用vxe-table方法
     handleVxeTableMethod(method, ...params) {
-      this.$refs.erpVxeTable[method](...params)
+      return this.$refs.erpVxeTable[method](...params)
     },
     checkboxChange(...arg) {
       this.$emit('select-change', ...arg)
