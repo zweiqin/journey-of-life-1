@@ -8,7 +8,7 @@
 
 <script>
 export default {
-  data () {
+  data() {
     return {
       showwebh: {
         width: '100%',
@@ -22,8 +22,8 @@ export default {
     }
   },
   methods: {
-    bigImage () {
-      this.$router.push({ name: 'Dashboard' })
+    bigImage() {
+      this.$router.push({ name: 'Homepage' })
       document.exitFullscreen()
     }
   }

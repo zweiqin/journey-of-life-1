@@ -43,25 +43,25 @@ export const constantRouterMap = [
     component: () => import('@/views/login/index'),
     hidden: true
   },
-  {
-    path: '/dashboardBig',
-    component: () => import('@/views/dashboardBig/index'),
-    hidden: true
-  },
-  {
-    path: '/paintingshow_out',
-    alwaysShow: true,
-    name: 'paintingshow_out',
-    component: () => import('@/views/painting/show'),
-    hidden: true
-  },
-  {
-    path: '/pictureShow_out',
-    alwaysShow: true,
-    name: 'pictureShow_out',
-    component: () => import('@/views/painting/pictureShow'),
-    hidden: true
-  },
+  // {
+  //   path: '/dashboardBig',
+  //   component: () => import('@/views/dashboardBig/index'),
+  //   hidden: true
+  // },
+  // {
+  //   path: '/paintingshow_out',
+  //   alwaysShow: true,
+  //   name: 'paintingshow_out',
+  //   component: () => import('@/views/painting/show'),
+  //   hidden: true
+  // },
+  // {
+  //   path: '/pictureShow_out',
+  //   alwaysShow: true,
+  //   name: 'pictureShow_out',
+  //   component: () => import('@/views/painting/pictureShow'),
+  //   hidden: true
+  // },
   {
     path: '/auth-redirect',
     component: () => import('@/views/login/authredirect'),
@@ -86,24 +86,24 @@ export const constantRouterMap = [
   {
     path: '',
     component: Layout,
-    redirect: 'dashboard',
+    redirect: 'homepage',
     children: [
       {
-        path: 'dashboard',
-        // component: () => import('@/views/dashboard/index'),
+        path: 'homepage',
+        // component: () => import('@/views/homepage/index'),
         component: () => import('@/views/homepage/index'),
-        name: 'Dashboard',
-        meta: { title: 'dashboard', icon: 'home', noCache: true }
+        name: 'Homepage',
+        meta: { title: 'homepage', icon: 'home', noCache: true }
       }
     ]
-  },
-  {
-    path: '/dashboard_out',
-    alwaysShow: true,
-    name: 'dashboard_out',
-    component: () => import('@/views/dashboard/index'),
-    hidden: true
   }
+  // {
+  //   path: '/dashboard_out',
+  //   alwaysShow: true,
+  //   name: 'dashboard_out',
+  //   component: () => import('@/views/dashboard/index'),
+  //   hidden: true
+  // }
   // {
   //   path: '/dataStatisticsDashboard',
   //   component: Layout,
@@ -380,17 +380,17 @@ export const asyncRouterMap = [
         },
         hidden: true
       },
-      {
-        path: 'brandListShow',
-        component: () => import('@/views/goods/brandListShow'),
-        name: 'brandGoodsListShow',
-        meta: {
-          perms: [ 'GET /admin/goods/list' ],
-          title: '门店商品展示',
-          noCache: true
-        },
-        hidden: true
-      },
+      // {
+      //   path: 'brandListShow',
+      //   component: () => import('@/views/goods/brandListShow'),
+      //   name: 'brandGoodsListShow',
+      //   meta: {
+      //     perms: [ 'GET /admin/goods/list' ],
+      //     title: '门店商品展示',
+      //     noCache: true
+      //   },
+      //   hidden: true
+      // },
       {
         path: 'category',
         component: () => import('@/views/goods/category'),
@@ -569,7 +569,7 @@ export const asyncRouterMap = [
     children: [
       {
         path: 'teachArticleList',
-        component: () => import('@/views/articleManagement/articleList'),
+        component: () => import('@/views/promotion/articleManagement/articleList'),
         name: 'teachArticleList',
         meta: {
           perms: ['POST /admin/richText/update', 'POST /admin/richText/delete', 'POST /admin/richText/create', 'GET /admin/richText/list', 'GET /admin/richText/detail'],
@@ -579,7 +579,7 @@ export const asyncRouterMap = [
       },
       {
         path: 'teachArticleCreate',
-        component: () => import('@/views/articleManagement/articleCreate'),
+        component: () => import('@/views/promotion/articleManagement/components/articleCreate'),
         name: 'teachArticleCreate',
         meta: {
           perms: ['POST /admin/richText/update', 'POST /admin/richText/delete', 'POST /admin/richText/create', 'GET /admin/richText/list', 'GET /admin/richText/detail'],
@@ -590,7 +590,7 @@ export const asyncRouterMap = [
       },
       {
         path: 'teachArticleEdit',
-        component: () => import('@/views/articleManagement/articleEdit'),
+        component: () => import('@/views/promotion/articleManagement/components/articleEdit'),
         name: 'teachArticleEdit',
         meta: {
           perms: ['POST /admin/richText/update', 'POST /admin/richText/delete', 'POST /admin/richText/create', 'GET /admin/richText/list', 'GET /admin/richText/detail'],
@@ -600,9 +600,9 @@ export const asyncRouterMap = [
         hidden: true
       },
       {
-        path: 'articleList',
-        component: () => import('@/views/promotion/articleList'),
-        name: 'articleList',
+        path: 'announcementList',
+        component: () => import('@/views/promotion/announcementManagement'),
+        name: 'announcementList',
         meta: {
           perms: ['POST /admin/article/update', 'POST /admin/article/delete', 'POST /admin/article/create', 'GET /admin/article/list', 'GET /admin/article/detail'],
           title: '公告列表',
@@ -610,9 +610,9 @@ export const asyncRouterMap = [
         }
       },
       {
-        path: 'articleCreate',
-        component: () => import('@/views/promotion/articleCreate'),
-        name: 'articleCreate',
+        path: 'announcementCreate',
+        component: () => import('@/views/promotion/announcementManagement/components/announcementCreate'),
+        name: 'announcementCreate',
         meta: {
           perms: ['POST /admin/article/update', 'POST /admin/article/delete', 'POST /admin/article/create', 'GET /admin/article/list', 'GET /admin/article/detail'],
           title: '发布公告',
@@ -621,9 +621,9 @@ export const asyncRouterMap = [
         hidden: true
       },
       {
-        path: 'articleEdit',
-        component: () => import('@/views/promotion/articleEdit'),
-        name: 'articleEdit',
+        path: 'announcementEdit',
+        component: () => import('@/views/promotion/announcementManagement/components/announcementEdit'),
+        name: 'announcementEdit',
         meta: {
           perms: ['POST /admin/article/update', 'POST /admin/article/delete', 'POST /admin/article/create', 'GET /admin/article/list', 'GET /admin/article/detail'],
           title: '公告通知编辑',

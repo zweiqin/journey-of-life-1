@@ -10,10 +10,10 @@
         <ul class="list-unstyled">
           <li>或者你可以去:</li>
           <li class="link-type">
-            <router-link to="/dashboard">回首页</router-link>
+            <router-link to="/homepage">回首页</router-link>
           </li>
           <li class="link-type"><a href="https://www.taobao.com/">随便看看</a></li>
-          <li><a href="#" @click.prevent="dialogVisible=true">点我看图</a></li>
+          <li><a href="#" @click.prevent="dialogVisible = true">点我看图</a></li>
         </ul>
       </el-col>
       <el-col :span="12">
@@ -31,7 +31,7 @@ import errGif from '@/assets/401_images/401.gif'
 
 export default {
   name: 'Page401',
-  data () {
+  data() {
     return {
       errGif: errGif + '?' + +new Date(),
       ewizardClap: 'https://wpimg.wallstcn.com/007ef517-bafd-4066-aae4-6883632d9646',
@@ -39,9 +39,9 @@ export default {
     }
   },
   methods: {
-    back () {
+    back() {
       if (this.$route.query.noGoBack) {
-        this.$router.push({ path: '/dashboard' })
+        this.$router.push({ path: '/homepage' })
       } else {
         this.$router.go(-1)
       }
@@ -51,41 +51,49 @@ export default {
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
-  .errPage-container {
-    width: 800px;
-    max-width: 100%;
-    margin: 100px auto;
-    .pan-back-btn {
-      background: #008489;
-      color: #fff;
-      border: none!important;
-    }
-    .pan-gif {
-      margin: 0 auto;
-      display: block;
-    }
-    .pan-img {
-      display: block;
-      margin: 0 auto;
-      width: 100%;
-    }
-    .text-jumbo {
-      font-size: 60px;
-      font-weight: 700;
-      color: #484848;
-    }
-    .list-unstyled {
-      font-size: 14px;
-      li {
-        padding-bottom: 5px;
-      }
-      a {
-        color: #008489;
-        text-decoration: none;
-        &:hover {
-          text-decoration: underline;
-        }
-      }
-    }
-  }
+.errPage-container {
+	width: 800px;
+	max-width: 100%;
+	margin: 100px auto;
+
+	.pan-back-btn {
+		background: #008489;
+		color: #fff;
+		border: none !important;
+	}
+
+	.pan-gif {
+		margin: 0 auto;
+		display: block;
+	}
+
+	.pan-img {
+		display: block;
+		margin: 0 auto;
+		width: 100%;
+	}
+
+	.text-jumbo {
+		font-size: 60px;
+		font-weight: 700;
+		color: #484848;
+	}
+
+	.list-unstyled {
+		font-size: 14px;
+
+		li {
+			padding-bottom: 5px;
+		}
+
+		a {
+			color: #008489;
+			text-decoration: none;
+
+			&:hover {
+				text-decoration: underline;
+			}
+		}
+	}
+}
 </style>
