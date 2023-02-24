@@ -6,6 +6,7 @@ import tagsView from './modules/tagsView'
 import user from './modules/user'
 import common from './modules/common'
 import getters from './getters'
+import chat from './modules/chat'
 
 Vue.use(Vuex)
 
@@ -15,7 +16,8 @@ const store = new Vuex.Store({
     permission,
     tagsView,
     user,
-    common
+    common,
+    chat
   },
   getters
 })
