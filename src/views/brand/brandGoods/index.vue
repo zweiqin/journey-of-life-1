@@ -3,6 +3,13 @@
 
     <!-- 查询和其他操作 -->
     <div class="filter-container">
+      <el-select
+        v-model="listQuery.brandId" clearable size="mini" class="filter-item"
+        style="width: 200px;"
+        placeholder="选择门店"
+      >
+        <el-option v-for="item in brandList" :key="item.id" :label="(item.name || '') + '-' + (item.keeperName || '')" :value="item.id" />
+      </el-select>
       <el-input
         v-model="listQuery.goodsSn" clearable size="mini" class="filter-item"
         style="width: 200px;"
@@ -136,6 +143,7 @@ import {
 } from '@/api/goods/goodsList'
 import VxeTable from '@/components/VxeTable'
 import TableTools from '@/components/TableTools'
+import { brandList } from '@/api/brand/brandList'
 import { goodsStyleList } from '@/api/goods/goodsStyle'
 import { categoryTreeList } from '@/api/goods/goodsCategory'
 import DetailModal from './components/DetailModal'
@@ -183,24 +191,23 @@ export default {
         sort: 'add_time',
         order: 'desc'
       },
+      brandList: [], // 门店列表
       goodsStyleList: [], // 商品风格
       categoryList: [], // 商品类目-树结构
       downloadLoading: false
     }
   },
-  created() { },
-  mounted() { },
+  created() {
+    this.getBrandList()
+    this.getCategoryTreeList()
+    this.getGoodsStyleList()
+  },
   activated() {
     const { brandId = '' } = this.$route.query
     if (brandId) {
       this.listQuery.brandId = brandId
     }
     this.getList()
-    this.getCategoryTreeList()
-    this.getGoodsStyleList()
-  },
-  deactivated() {
-    console.log('1激活deactivated钩子函数')
   },
   methods: {
     // 自定义列
@@ -219,6 +226,14 @@ export default {
         limit: 9999
       })
       this.goodsStyleList = res.data.items
+    },
+    // 门店列表
+    async getBrandList() {
+      const res = await brandList({
+        page: 1,
+        limit: 9999
+      })
+      this.brandList = res.data.items
     },
     // 商品类目
     async getCategoryTreeList() {

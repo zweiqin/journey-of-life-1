@@ -253,7 +253,7 @@ export const asyncRouterMap = [
               title: '门店商品',
               noCache: false
             },
-            hidden: true
+            // hidden: true
           },
           {
             path: 'brandStyle',
