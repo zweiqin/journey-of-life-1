@@ -179,6 +179,7 @@ export const columns = [
     field: 'operate',
     fixed: 'right',
     title: '操作',
+    className: 'small-padding fixed-width',
     showOverflow: false,
     slots: {
       default: 'operate'

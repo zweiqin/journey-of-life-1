@@ -1,4 +1,4 @@
-import { queryChatList } from '@/api/laboratory/chat_module/chat'
+import { queryChatList, queryChatMessage } from '@/api/laboratory/chat_module/chat'
 export default {
   methods: {
 
@@ -67,9 +67,17 @@ export default {
     },
 
     open(contact) {
-      return () => {
+      return async () => {
+        const res = await queryChatMessage({
+          chatId: contact.id,
+          limit: 30,
+          endTime: '',
+          order: 'desc'
+        })
+        console.log(res)
         this.messages = {
           group_history_message: [
+            ...res.data.items.map((item) => JSON.parse(item.message).message).reverse(),
             {
               id: Date.parse(new Date()),
               status: 'succeed',
@@ -79,7 +87,12 @@ export default {
               toContactId: contact.id,
               fileSize: 0,
               fileName: '',
-              isGroup: true
+              isGroup: true,
+              fromUser: {
+                id: '',
+                avatar: '',
+                displayName: ''
+              }
             }
           ],
           event: 'group_history_message'

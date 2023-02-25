@@ -8,6 +8,8 @@ export const api = {
   queryChatMessage: '/ws/queryChatMessage' // 查消息
 }
 
+// 创建房间：https://www.tuanfengkeji.cn:8098/dts-admin-api/admin/ws/createChat?userType=APP&userId=5&chatName=牛牛牛&chatId=&friendId=8&friendUserType=ADMIN
+
 // 聊天列表
 export function queryChatList(query) {
   return request({

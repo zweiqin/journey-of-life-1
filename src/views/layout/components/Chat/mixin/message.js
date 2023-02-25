@@ -295,6 +295,7 @@ export default {
       //   uri
       // }
       // this.socket.send(JSON.stringify(data))
+      // console.log(contact)
       this.next = next
       this.initSocket(contact)
     },
@@ -352,11 +353,13 @@ export default {
         // this.send(message, uri)
         this.send({
           id: message.sendTime,
-          status: message.status,
+          status: 'succeed',
           type: message.type,
           sendTime: message.sendTime,
           content: message.content,
           toContactId: message.toContactId,
+          fileSize: 0,
+          fileName: '',
           fromUser: {
             id: message.fromUser.id,
             displayName: message.fromUser.displayName,

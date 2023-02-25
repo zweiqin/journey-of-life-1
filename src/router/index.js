@@ -252,7 +252,7 @@ export const asyncRouterMap = [
               perms: [ 'GET /admin/goods/list' ],
               title: '门店商品',
               noCache: false
-            },
+            }
             // hidden: true
           },
           {
@@ -296,6 +296,29 @@ export const asyncRouterMap = [
             meta: {
               perms: [ 'GET /admin/brandLevel/list' ],
               title: '等级列表',
+              noCache: true
+            }
+          }
+        ]
+      },
+      {
+        path: 'regionalAgent',
+        component: () => import('@/views/children'),
+        redirect: 'noredirect',
+        alwaysShow: true,
+        _ROLES: [ 'ADMIN' ],
+        meta: {
+          title: '区域代理',
+          noCache: true
+        },
+        children: [
+          {
+            path: 'regionalAgentList',
+            component: () => import('@/views/regionalAgent/regionalAgentList'),
+            name: 'RegionalAgentList',
+            meta: {
+              perms: ['POST /admin/regionagent/getRegionAgentList', 'POST /admin/regionagent/updaetRegionAgentStatus', 'POST /admin/regionagent/updaetRegionAgent', 'GET /admin/regionagent/getRegionAgentInfo'],
+              title: '区域代理列表',
               noCache: true
             }
           }
