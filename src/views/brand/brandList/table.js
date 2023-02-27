@@ -35,7 +35,7 @@ export const columns = [
     align: 'left',
     field: 'picUrl',
     title: '公司图片',
-    showOverflow: false,
+    showOverflow: 'tooltip',
     slots: {
       default: 'picUrl'
     },
@@ -95,7 +95,7 @@ export const columns = [
     fixed: 'right',
     title: '操作',
     className: 'small-padding fixed-width',
-    showOverflow: false,
+    showOverflow: 'tooltip',
     slots: {
       default: 'operate'
     },

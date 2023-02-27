@@ -40,7 +40,7 @@ export const columns = [
     fixed: 'right',
     title: '操作',
     className: 'small-padding fixed-width',
-    showOverflow: false,
+    showOverflow: 'tooltip',
     slots: {
       default: 'operate'
     },

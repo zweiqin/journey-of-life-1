@@ -22,7 +22,7 @@ export const columns = [
     align: 'center',
     field: 'supplierLogo',
     title: '供应商Logo',
-    showOverflow: false,
+    showOverflow: 'tooltip',
     slots: {
       default: 'supplierLogo'
     },
@@ -38,7 +38,7 @@ export const columns = [
     align: 'center',
     field: 'supplierRegion',
     title: '供应商所在区域',
-    showOverflow: false,
+    showOverflow: 'tooltip',
     slots: {
       default: 'supplierRegion'
     },
@@ -86,7 +86,7 @@ export const columns = [
     fixed: 'right',
     title: '操作',
     className: 'small-padding fixed-width',
-    showOverflow: false,
+    showOverflow: 'tooltip',
     slots: {
       default: 'operate'
     },

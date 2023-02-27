@@ -24,7 +24,7 @@ export const columns = [
     align: 'center',
     field: 'picUrl',
     title: '商品图片',
-    showOverflow: false,
+    showOverflow: 'tooltip',
     slots: {
       default: 'picUrl'
     },
@@ -34,7 +34,7 @@ export const columns = [
     align: 'center',
     field: 'gallery',
     title: '宣传图片',
-    showOverflow: false,
+    showOverflow: 'tooltip',
     slots: {
       default: 'gallery'
     },
@@ -80,7 +80,7 @@ export const columns = [
     align: 'center',
     field: 'isOnSale',
     title: '上架状态',
-    showOverflow: false,
+    showOverflow: 'tooltip',
     slots: {
       default: 'isOnSale'
     },
@@ -90,7 +90,7 @@ export const columns = [
     align: 'center',
     field: 'supportVoucher',
     title: '支持代金券',
-    showOverflow: false,
+    showOverflow: 'tooltip',
     slots: {
       default: 'supportVoucher'
     },
@@ -100,7 +100,7 @@ export const columns = [
     align: 'center',
     field: 'saleType',
     title: '在售状态',
-    showOverflow: false,
+    showOverflow: 'tooltip',
     slots: {
       default: 'saleType'
     },
@@ -110,7 +110,7 @@ export const columns = [
     align: 'center',
     field: 'productTag',
     title: '产品标签',
-    showOverflow: false,
+    showOverflow: 'tooltip',
     slots: {
       default: 'productTag'
     },
@@ -120,7 +120,7 @@ export const columns = [
     align: 'center',
     field: 'deliveryDay',
     title: '商品状态',
-    showOverflow: false,
+    showOverflow: 'tooltip',
     slots: {
       default: 'deliveryDay'
     },
@@ -180,7 +180,7 @@ export const columns = [
     fixed: 'right',
     title: '操作',
     className: 'small-padding fixed-width',
-    showOverflow: false,
+    showOverflow: 'tooltip',
     slots: {
       default: 'operate'
     },

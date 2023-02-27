@@ -10,7 +10,7 @@ export const columns = [
     align: 'center',
     field: 'type',
     title: '问题范围',
-    showOverflow: false,
+    showOverflow: 'tooltip',
     slots: {
       default: 'type'
     },
@@ -32,7 +32,7 @@ export const columns = [
     align: 'center',
     field: 'isEnable',
     title: '状态',
-    showOverflow: false,
+    showOverflow: 'tooltip',
     slots: {
       default: 'isEnable'
     },
@@ -56,7 +56,7 @@ export const columns = [
     fixed: 'right',
     title: '操作',
     className: 'small-padding fixed-width',
-    showOverflow: false,
+    showOverflow: 'tooltip',
     slots: {
       default: 'operate'
     },

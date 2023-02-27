@@ -17,7 +17,7 @@ export const columns = [
     align: 'center',
     field: 'url',
     title: '跳转链接',
-    showOverflow: false,
+    showOverflow: 'tooltip',
     slots: {
       default: 'url'
     },
@@ -27,7 +27,7 @@ export const columns = [
     align: 'center',
     field: 'isHot',
     title: '是否推荐',
-    showOverflow: false,
+    showOverflow: 'tooltip',
     slots: {
       default: 'isHot'
     },
@@ -37,7 +37,7 @@ export const columns = [
     align: 'center',
     field: 'isDefault',
     title: '是否默认',
-    showOverflow: false,
+    showOverflow: 'tooltip',
     slots: {
       default: 'isDefault'
     },
@@ -61,7 +61,7 @@ export const columns = [
     fixed: 'right',
     title: '操作',
     className: 'small-padding fixed-width',
-    showOverflow: false,
+    showOverflow: 'tooltip',
     slots: {
       default: 'operate'
     },

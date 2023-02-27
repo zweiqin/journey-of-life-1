@@ -27,6 +27,15 @@ export const columns = [
   },
   {
     align: 'center',
+    field: 'agentRegion',
+    title: '代理商区域',
+    slots: {
+      default: 'agentRegion'
+    },
+    minWidth: 150
+  },
+  {
+    align: 'center',
     field: 'companyAddress',
     title: '公司地址',
     minWidth: 150
@@ -97,7 +106,7 @@ export const columns = [
     fixed: 'right',
     title: '操作',
     className: 'small-padding fixed-width',
-    showOverflow: false,
+    showOverflow: 'tooltip',
     slots: {
       default: 'operate'
     },

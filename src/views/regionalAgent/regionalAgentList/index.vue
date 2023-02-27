@@ -33,6 +33,9 @@
       ref="vxeTable" v-model="listQuery" :local-key="customColumnsConfig.localKey" api-method="POST"
       :api-path="api.getRegionAgentList" :columns="columns"
     >
+      <template #agentRegion="{ row }">
+        <span>{{ setRegion(row.agentCode) || '--' }}</span>
+      </template>
       <template #businessLicense="{ row }">
         <el-image
           v-if="row.businessLicense" :src="row.businessLicense" style="width:40px; height:40px" fit="cover"
@@ -97,6 +100,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import {
   api,
   updaetRegionAgentStatus
@@ -106,6 +110,7 @@ import TableTools from '@/components/TableTools'
 import EditModal from './components/EditModal'
 import DetailModal from './components/DetailModal'
 import { columns } from './table'
+import XeUtils from 'xe-utils'
 
 export default {
   name: 'RegionalAgentList',
@@ -130,6 +135,11 @@ export default {
       }
     }
   },
+  computed: {
+    ...mapGetters([
+      'common_regionList'
+    ])
+  },
   methods: {
     // 自定义列
     updateFields(columns) {
@@ -149,8 +159,14 @@ export default {
     handleDetail(row) {
       this.$refs.DetailModal && this.$refs.DetailModal.handleOpen(row)
     },
-    async handleUpdate(row) {
+    handleUpdate(row) {
       this.$refs.EditModal && this.$refs.EditModal.handleOpen(row)
+    },
+    setRegion(regionCode) {
+      const regionItem = XeUtils.findTree(this.common_regionList, (item) => item.code === Number(regionCode))
+      if (regionItem && Array.isArray(regionItem.nodes)) {
+        return regionItem.nodes.map((v) => v.name).join('，')
+      }
     }
   }
 }

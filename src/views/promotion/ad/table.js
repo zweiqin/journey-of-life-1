@@ -22,7 +22,7 @@ export const columns = [
     align: 'center',
     field: 'url',
     title: '广告图片',
-    showOverflow: false,
+    showOverflow: 'tooltip',
     slots: {
       default: 'url'
     },
@@ -44,7 +44,7 @@ export const columns = [
     align: 'center',
     field: 'enabled',
     title: '是否启用',
-    showOverflow: false,
+    showOverflow: 'tooltip',
     slots: {
       default: 'enabled'
     },
@@ -56,7 +56,7 @@ export const columns = [
     fixed: 'right',
     title: '操作',
     className: 'small-padding fixed-width',
-    showOverflow: false,
+    showOverflow: 'tooltip',
     slots: {
       default: 'operate'
     },

@@ -36,11 +36,11 @@
         {{ formData.regionList || '--' }}
       </el-form-item>
       <el-form-item label="公司图片" prop="picUrl">
-        <el-image v-if="formData.picUrl" :src="formData.picUrl" style="width:80px; height:80px" fit="cover" :preview-src-list="[formData.picUrl]" />
+        <el-image v-if="formData.picUrl" :src="formData.picUrl" style="width:80px; height:80px" fit="cover" :preview-src-list="[ formData.picUrl ]" />
         <span v-else>--</span>
       </el-form-item>
       <el-form-item label="Logo" prop="logoUrl">
-        <el-image v-if="formData.logoUrl" :src="formData.logoUrl" style="width:80px; height:80px" fit="cover" :preview-src-list="[formData.logoUrl]" />
+        <el-image v-if="formData.logoUrl" :src="formData.logoUrl" style="width:80px; height:80px" fit="cover" :preview-src-list="[ formData.logoUrl ]" />
         <span v-else>--</span>
       </el-form-item>
       <el-form-item label="店铺图片" prop="picUrls">
@@ -48,7 +48,7 @@
         <span v-if="!formData.picUrls || !formData.picUrls.length">--</span>
       </el-form-item>
       <el-form-item label="营业执照" prop="licenseUrl">
-        <el-image v-if="formData.licenseUrl" :src="formData.licenseUrl" style="width:80px; height:80px" fit="cover" :preview-src-list="[formData.licenseUrl]" />
+        <el-image v-if="formData.licenseUrl" :src="formData.licenseUrl" style="width:80px; height:80px" fit="cover" :preview-src-list="[ formData.licenseUrl ]" />
         <span v-else>--</span>
       </el-form-item>
       <el-form-item label="开始营业时间" prop="startTime">
@@ -71,6 +71,7 @@
 </template>
 
 <script>
+import { brandRead } from '@/api/brand/brandList'
 
 export default {
   name: 'DetailModal',
@@ -84,8 +85,8 @@ export default {
       visible: false,
       formData: {
         id: '',
-        picUrls: [],
-      },
+        picUrls: []
+      }
     }
   },
   methods: {
@@ -95,7 +96,7 @@ export default {
     handleOpen(params = {}) {
       this.formData = Object.assign(this.$options.data().formData, params)
       this.visible = true
-    },
+    }
   }
 }
 </script>

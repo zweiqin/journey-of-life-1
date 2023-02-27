@@ -17,7 +17,7 @@ export const columns = [
     align: 'left',
     field: 'userAvatar',
     title: '会员头像',
-    showOverflow: false,
+    showOverflow: 'tooltip',
     slots: {
       default: 'userAvatar'
     },
@@ -56,7 +56,7 @@ export const columns = [
     align: 'left',
     field: 'status',
     title: '状态',
-    showOverflow: false,
+    showOverflow: 'tooltip',
     slots: {
       default: 'status'
     },
@@ -129,7 +129,7 @@ export const columns = [
     fixed: 'right',
     title: '操作',
     className: 'small-padding fixed-width',
-    showOverflow: false,
+    showOverflow: 'tooltip',
     slots: {
       default: 'operate'
     },

@@ -16,7 +16,7 @@ export const columns = [
     align: 'left',
     field: 'type',
     title: '话术类型',
-    showOverflow: false,
+    showOverflow: 'tooltip',
     slots: {
       default: 'type'
     },
@@ -25,13 +25,13 @@ export const columns = [
   {
     align: 'left',
     field: 'createTime',
-		title: '创建时间',
+    title: '创建时间',
     minWidth: 150
   },
   {
     align: 'left',
     field: 'updateTime',
-		title: '更新时间',
+    title: '更新时间',
     minWidth: 150
   },
   {
@@ -39,10 +39,10 @@ export const columns = [
     field: 'operate',
     fixed: 'right',
     title: '操作',
-    showOverflow: false,
+    showOverflow: 'tooltip',
     slots: {
       default: 'operate'
     },
     width: 150
-  },
+  }
 ]

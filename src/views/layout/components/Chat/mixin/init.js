@@ -54,8 +54,10 @@ export default {
         }
       }, IMUI)
     },
-    initSocket(contact) {
-      this.socket = new WebSocket(`${this.path}/ADMIN/${this.$store.getters.personId}?chat=${contact.id}`)
+    initSocket(contact, isReconnection = false) {
+      if (!isReconnection) {
+        this.socket = new WebSocket(`${this.path}/ADMIN/${this.$store.getters.personId}?chat=${contact.id}`)
+      }
       // 监听socket连接
       this.socket.onopen = this.open(contact)
       // 监听socket错误信息
@@ -63,7 +65,7 @@ export default {
       // 监听socket消息
       this.socket.onmessage = this.onmessage
       // 监听socket 关闭
-      this.socket.onclose = this.close
+      this.socket.onclose = this.close(contact)
     },
 
     open(contact) {
@@ -173,6 +175,15 @@ export default {
           break
       }
     },
+    close(contact) {
+      return async () => {
+        console.log('连接关闭, 正在重连...')
+        setTimeout(() => {
+          this.socket = new WebSocket(`${this.path}/ADMIN/${this.$store.getters.personId}?chat=${contact.id}`)
+          this.initSocket(contact, true)
+        }, 2000)
+      }
+    },
     // send(message, uri, method = 'GET') {
     send(message, event, method = 'GET') {
       const data = {
@@ -182,15 +193,6 @@ export default {
         // method
       }
       this.socket.send(JSON.stringify(data))
-    },
-    close() {
-      console.log('连接关闭, 正在重连...')
-      setTimeout(() => {
-        this.socket = new WebSocket(this.path + '?is_reconnection=true', [
-          this.$store.getters.token
-        ])
-        this.init(this.socket)
-      }, 2000)
     }
   }
 }

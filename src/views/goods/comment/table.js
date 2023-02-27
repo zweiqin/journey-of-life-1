@@ -10,7 +10,7 @@ export const columns = [
     align: 'center',
     field: 'type',
     title: '评论类型',
-    showOverflow: false,
+    showOverflow: 'tooltip',
     slots: {
       default: 'type'
     },
@@ -26,7 +26,7 @@ export const columns = [
     align: 'center',
     field: 'userImg',
     title: '用户头像',
-    showOverflow: false,
+    showOverflow: 'tooltip',
     slots: {
       default: 'userImg'
     },
@@ -48,7 +48,7 @@ export const columns = [
     align: 'center',
     field: 'picUrls',
     title: '图片',
-    showOverflow: false,
+    showOverflow: 'tooltip',
     slots: {
       default: 'picUrls'
     },
@@ -58,7 +58,7 @@ export const columns = [
     align: 'center',
     field: 'goodsStar',
     title: '商品评分',
-    showOverflow: false,
+    showOverflow: 'tooltip',
     slots: {
       default: 'goodsStar'
     },
@@ -68,7 +68,7 @@ export const columns = [
     align: 'center',
     field: 'logisticsStar',
     title: '物流评价',
-    showOverflow: false,
+    showOverflow: 'tooltip',
     slots: {
       default: 'logisticsStar'
     },
@@ -78,7 +78,7 @@ export const columns = [
     align: 'center',
     field: 'serverStar',
     title: '服务态度',
-    showOverflow: false,
+    showOverflow: 'tooltip',
     slots: {
       default: 'serverStar'
     },
@@ -102,7 +102,7 @@ export const columns = [
     fixed: 'right',
     title: '操作',
     className: 'small-padding fixed-width',
-    showOverflow: false,
+    showOverflow: 'tooltip',
     slots: {
       default: 'operate'
     },

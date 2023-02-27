@@ -194,6 +194,14 @@
                   <i class="el-icon-question  body-form-icon"></i>
                 </el-tooltip>
               </el-form-item>
+              <el-form-item label="供应商" prop="supplierId">
+                <el-select v-model="formData.supplierId" placeholder="请选择供应商">
+                  <el-option v-for="item in supplierList" :key="item.id" :label="item.supplierName" :value="item.id" />
+                </el-select>
+                <el-tooltip content="根据商品选择对应材质" placement="top-start">
+                  <i class="el-icon-question  body-form-icon"></i>
+                </el-tooltip>
+              </el-form-item>
               <el-form-item label="商品材质" prop="textureId">
                 <el-select v-model="formData.textureId" placeholder="请选择商品材质">
                   <el-option v-for="item in goodsTextureList" :key="item.id" :label="item.materialName" :value="item.id" />
@@ -413,6 +421,7 @@ import { MessageBox } from 'element-ui'
 import { getToken } from '@/utils/auth'
 import { goodsStyleList } from '@/api/goods/goodsStyle'
 import { getNewMaterialList } from '@/api/goods/goodsMaterial'
+import { getNewSupplierList } from '@/api/enterprise/supplier'
 import { goodsTagList } from '@/api/goods/goodsTag'
 import { parseTime } from '@/utils'
 import { regZero, regFloat } from '@/utils/reg'
@@ -439,14 +448,10 @@ export default {
     return {
       unitList,
       goodTypeList: [
-        {
-          value: 1,
-          label: '家具'
-        }, {
-          value: 2,
-          label: '材料'
-        }
+        { value: 1, label: '家具' },
+        { value: 2, label: '材料' }
       ],
+      supplierList: [],
       goodsStyleList: [],
       goodsTextureList: [],
       goodsTagList: [],
@@ -487,6 +492,7 @@ export default {
         is_deliveryDay: true,
         deliveryDay: '',
         brandId: '',
+        supplierId: '',
         styleId: '',
         textureId: '',
         tagId: '',
@@ -542,6 +548,9 @@ export default {
         ],
         brandId: [
           { required: true, message: '请选择门店' }
+        ],
+        supplierId: [
+          { required: true, message: '请选择供应商' }
         ],
         styleId: [
           { required: false, message: '请选择商品风格' }
@@ -651,6 +660,7 @@ export default {
 
   methods: {
     init() {
+      this.getNewSupplierList()
       this.getGoodsStyleList()
       this.getNewMaterialList()
       this.getGoodsTagList()
@@ -665,6 +675,14 @@ export default {
         this.categoryList = response.data.categoryList
         this.brandList = response.data.brandList
       })
+    },
+    // 供应商
+    async getNewSupplierList() {
+      const res = await getNewSupplierList({
+        page: 1,
+        limit: 9999
+      })
+      this.supplierList = res.data.items
     },
     // 商品风格
     async getGoodsStyleList() {

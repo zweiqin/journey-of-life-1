@@ -41,7 +41,7 @@ export const columns = [
     align: 'left',
     field: 'status',
     title: '在职状态',
-    showOverflow: false,
+    showOverflow: 'tooltip',
     slots: {
       default: 'status'
     },
@@ -64,7 +64,7 @@ export const columns = [
     field: 'operate',
     fixed: 'right',
     title: '操作',
-    showOverflow: false,
+    showOverflow: 'tooltip',
     className: 'small-padding fixed-width',
     slots: {
       default: 'operate'

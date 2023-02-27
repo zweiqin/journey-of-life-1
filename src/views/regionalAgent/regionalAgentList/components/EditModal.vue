@@ -19,10 +19,19 @@
           placeholder="请输入公司名称（代理商名称）"
         />
       </el-form-item>
-      <el-form-item label="代理商区域编码" prop="agentCode">
+      <!-- <el-form-item label="代理商区域编码" prop="agentCode">
         <el-input
-          v-model="formData.agentCode"
-          placeholder="请输入代理商区域编码"
+        v-model="formData.agentCode"
+        placeholder="请输入代理商区域编码"
+        />
+        </el-form-item> -->
+      <el-form-item label="区域" prop="region_arr">
+        <el-cascader
+          v-model="formData.region_arr"
+          placeholder="请选择区域"
+          :options="common_regionList"
+          :props="{ label: 'name', value: 'code', expandTrigger: 'hover' }"
+          clearable
         />
       </el-form-item>
       <el-form-item label="公司地址" prop="companyAddress">
@@ -55,8 +64,10 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import MyUpload from '@/components/MyUpload'
 import { updaetRegionAgent, getRegionAgentInfo } from '@/api/regionalAgent/regionalAgentList'
+import XeUtils from 'xe-utils'
 
 export default {
   name: 'EditModal',
@@ -76,25 +87,25 @@ export default {
         userId: '',
         agentName: '',
         agentCode: '',
+        region_arr: '',
         companyAddress: '',
         businessLicense: '',
         legalPerson: '',
         legalP: '',
         idcardProsUrl: '',
         idcardConsUrl: '',
-        status: 2,
-        remarks: '',
-        isDelete: false,
-        createTime: '',
-        updateTime: ''
+        remarks: ''
       },
       formRules: {
         agentName: [
           { required: true, message: '请输入公司名称（代理商名称）' },
           { max: 30, message: '30字以内' }
         ],
-        agentCode: [
-          { required: true, message: '请输入代理商区域编码' }
+        // agentCode: [
+        //   { required: true, message: '请输入代理商区域编码' }
+        // ],
+        region_arr: [
+          { required: true, type: 'array', message: '请选择区域' }
         ],
         companyAddress: [
           { required: true, message: '请输入公司地址' },
@@ -123,6 +134,11 @@ export default {
       }
     }
   },
+  computed: {
+    ...mapGetters([
+      'common_regionList'
+    ])
+  },
   methods: {
     handleClose() {
       this.visible = false
@@ -149,25 +165,33 @@ export default {
         legalP: res.data.legalP || '',
         idcardProsUrl: res.data.idcardProsUrl || '',
         idcardConsUrl: res.data.idcardConsUrl || '',
-        status: res.data.status || '',
-        remarks: res.data.remarks || '',
-        isDelete: res.data.isDelete || '',
-        createTime: res.data.createTime || '',
-        updateTime: res.data.updateTime || ''
+        remarks: res.data.remarks || ''
       })
       this.$refs.formData && this.$refs.formData.resetFields()
+      this.setRegion_arr(this.formData.agentCode)
     },
     async handleSubmit() {
       await this.$validatorForm('formData')
       const loading = this.$elLoading()
       try {
-        const res = this.formData.id ? await updaetRegionAgent(this.formData) : await updaetRegionAgent(this.formData)
+        const { region_arr, ...opts } = this.formData
+        const params = {
+          ...opts,
+          agentCode: region_arr[region_arr.length - 1]
+        }
+        const res = this.formData.id ? await updaetRegionAgent(params) : await updaetRegionAgent(params)
         loading.close()
         this.$elMessage(`${this.formData.id ? '编辑' : '添加'}成功!`)
         this.$emit('success')
         this.visible = false
       } catch (e) {
         loading.close()
+      }
+    },
+    setRegion_arr(regionCode) {
+      const regionItem = XeUtils.findTree(this.common_regionList, (item) => item.code === Number(regionCode))
+      if (regionItem && Array.isArray(regionItem.nodes)) {
+        this.formData.region_arr = regionItem.nodes.map((v) => v.code)
       }
     }
   }
