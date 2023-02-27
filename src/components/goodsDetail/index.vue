@@ -1,140 +1,140 @@
 <template>
 
-	<div class="goods-detail-container">
-		<div class="carousel-wrapper">
-			<div class="" style="height:100%;width:100%;">
-				<el-carousel v-if="formData.gallery && formData.gallery.length" trigger="click" height="390px">
-					<el-carousel-item v-for="item in formData.gallery" :key="item.uid">
-						<div class="carousel-wrapper-images"><el-image :src="item.resData || item" fit="contain"></el-image></div>
-					</el-carousel-item>
-				</el-carousel>
-				<el-image v-else :src="img" fit="fill" style="height:100%;width:100%;"></el-image>
-			</div>
-			<div class="header-top">
-				<div></div>
-				<div></div>
-			</div>
-		</div>
-		<div class="goods-info">
-			<div class="detail-price">￥<span>{{ formData.counterPrice || 8888 }}</span>起</div>
-			<div class="goods-name">{{ formData.name || '商品名称' }}</div>
-			<div class="salsed">
-				<span>月销999+</span>
-				<i class="el-icon-share"></i>
-			</div>
-			<div class="sub-info">
-				<div class="item">
-					<i class="el-icon-film"></i>
-					<span>材质</span>
-					<span>{{ goodsTexture }}</span>
-				</div>
-				<div class="item">
+  <div class="goods-detail-container">
+    <div class="carousel-wrapper">
+      <div class="" style="height:100%;width:100%;">
+        <el-carousel v-if="formData.gallery && formData.gallery.length" trigger="click" height="390px">
+          <el-carousel-item v-for="item in formData.gallery" :key="item.uid">
+            <div class="carousel-wrapper-images"><el-image :src="item.resData || item" fit="contain"></el-image></div>
+          </el-carousel-item>
+        </el-carousel>
+        <el-image v-else :src="img" fit="fill" style="height:100%;width:100%;"></el-image>
+      </div>
+      <div class="header-top">
+        <div></div>
+        <div></div>
+      </div>
+    </div>
+    <div class="goods-info">
+      <div class="detail-price">￥<span>{{ formData.counterPrice || 8888 }}</span>起</div>
+      <div class="goods-name">{{ formData.name || '商品名称' }}</div>
+      <div class="salsed">
+        <span>月销999+</span>
+        <i class="el-icon-share"></i>
+      </div>
+      <div class="sub-info">
+        <div class="item">
+          <i class="el-icon-film"></i>
+          <span>材质</span>
+          <span>{{ goodsTexture }}</span>
+        </div>
+        <div class="item">
 
-					<i class="el-icon-house"></i>
-					<span>风格</span>
-					<span>{{ goodsStyle }}</span>
-				</div>
-				<div class="item">
+          <i class="el-icon-house"></i>
+          <span>风格</span>
+          <span>{{ goodsStyle }}</span>
+        </div>
+        <div class="item">
 
-					<i class="el-icon-news"></i>
-					<span>源头好货</span>
-					<span>工厂直销</span>
-				</div>
-			</div>
-			<div class="buy-info">
-				<div class="item">
-					<i class="el-icon-truck"></i>
-					<div>
-						<div>广东佛山</div>
-						<div>快递：免运费</div>
-					</div>
-				</div>
-				<div class="item">
-					<i class="el-icon-help"></i>
-					<div>
-						<div>七天无理由退货·1次破损补寄</div>
-					</div>
-				</div>
-				<div class="item">
-					<i class="el-icon-menu"></i>
-					<div>
-						<div>规格·颜色·尺寸选择...</div>
-					</div>
-				</div>
-			</div>
-			<div class="eval">
-				<span>评价（99999）</span>
-				<i class="el-icon-question"></i>
-			</div>
-		</div>
-		<div class="goods-detail">
-			<span>宝贝详情</span>
-		</div>
-		<div v-if="formData.detail" style="width:100%" v-html="formData.detail"></div>
-		<div v-else class="goods-parse"></div>
-		<div class="goods-footer">
-			<div class="icon-wrapper">
-				<div class="item">
-					<i class="el-icon-shopping-cart-2"></i>
-					<span>购物车</span>
-				</div>
-				<div class="item">
-					<i class="el-icon-service"></i>
-					<span>客服</span>
-				</div>
-				<div class="item">
-					<i class="el-icon-star-off"></i>
-					<span>收藏</span>
-				</div>
-			</div>
-			<div class="buttons">
-				<div>加入购物车</div>
-				<div>立即购买</div>
-			</div>
-		</div>
-	</div>
+          <i class="el-icon-news"></i>
+          <span>源头好货</span>
+          <span>工厂直销</span>
+        </div>
+      </div>
+      <div class="buy-info">
+        <div class="item">
+          <i class="el-icon-truck"></i>
+          <div>
+            <div>广东佛山</div>
+            <div>快递：免运费</div>
+          </div>
+        </div>
+        <div class="item">
+          <i class="el-icon-help"></i>
+          <div>
+            <div>七天无理由退货·1次破损补寄</div>
+          </div>
+        </div>
+        <div class="item">
+          <i class="el-icon-menu"></i>
+          <div>
+            <div>规格·颜色·尺寸选择...</div>
+          </div>
+        </div>
+      </div>
+      <div class="eval">
+        <span>评价（99999）</span>
+        <i class="el-icon-question"></i>
+      </div>
+    </div>
+    <div class="goods-detail">
+      <span>宝贝详情</span>
+    </div>
+    <div v-if="formData.detail" style="width:100%" v-html="formData.detail"></div>
+    <div v-else class="goods-parse"></div>
+    <div class="goods-footer">
+      <div class="icon-wrapper">
+        <div class="item">
+          <i class="el-icon-shopping-cart-2"></i>
+          <span>购物车</span>
+        </div>
+        <div class="item">
+          <i class="el-icon-service"></i>
+          <span>客服</span>
+        </div>
+        <div class="item">
+          <i class="el-icon-star-off"></i>
+          <span>收藏</span>
+        </div>
+      </div>
+      <div class="buttons">
+        <div>加入购物车</div>
+        <div>立即购买</div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
 export default {
-	name: 'GoodsDetail',
-	props: {
-		formData: {
-			type: Object,
-			required: true
-		},
-		goodsTextureList: {
-			type: Array,
-			required: true
-		},
-		goodsProductPlaceList: {
-			type: Array,
-			required: false
-		},
-		goodsStyleList: {
-			type: Array,
-			required: true
-		}
-	},
-	data() {
-		return {
-			img: require('@/assets/image/tuanfeng.png'),
-			goodsTexture: '未知',
-			goodsStyle: '未知'
-		}
-	},
-	watch: {
-		formData: {
-			handler(newV, oldV) {
-				const texture = this.goodsTextureList.find((element) => element.id === newV.textureId)
-				texture ? this.goodsTexture = texture.value : this.goodsTexture = '未知'
-				const style = this.goodsStyleList.find((element) => element.id === newV.styleId)
-				style ? this.goodsStyle = style.value : this.goodsStyle = '未知'
-			},
-			deep: true,
-			immediate: true
-		}
-	}
+  name: 'GoodsDetail',
+  props: {
+    formData: {
+      type: Object,
+      required: true
+    },
+    goodsTextureList: {
+      type: Array,
+      required: true
+    },
+    goodsProductPlaceList: {
+      type: Array,
+      required: false
+    },
+    goodsStyleList: {
+      type: Array,
+      required: true
+    }
+  },
+  data() {
+    return {
+      img: require('@/assets/image/tuanfeng.png'),
+      goodsTexture: '未知',
+      goodsStyle: '未知'
+    }
+  },
+  watch: {
+    formData: {
+      handler(newV, oldV) {
+        const texture = this.goodsTextureList.find((element) => element.id === newV.textureId)
+        texture ? this.goodsTexture = texture.materialName : this.goodsTexture = '未知'
+        const style = this.goodsStyleList.find((element) => element.id === newV.styleId)
+        style ? this.goodsStyle = style.value : this.goodsStyle = '未知'
+      },
+      deep: true,
+      immediate: true
+    }
+  }
 }
 </script>
 
@@ -149,6 +149,8 @@ export default {
 	display: inline-block;
 	border: 2px solid #000;
 	vertical-align: top;
+	box-sizing: content-box;
+	overflow: hidden;
 
 	.carousel-wrapper {
 		position: relative;
@@ -353,7 +355,7 @@ export default {
 		box-sizing: border-box;
 		display: flex;
 		align-items: center;
-		z-index: 10000000;
+		z-index: 1;
 
 		.icon-wrapper {
 			display: flex;

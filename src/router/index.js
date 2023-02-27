@@ -467,6 +467,17 @@ export const asyncRouterMap = [
         }
       },
       {
+        path: 'goodsMaterial',
+        component: () => import('@/views/goods/goodsMaterial/index'),
+        name: 'GoodsMaterial',
+        _ROLES: [ 'ADMIN' ],
+        meta: {
+          perms: [ 'GET /newmaterial/getNewMaterialList' ],
+          title: '商品材质',
+          noCache: true
+        }
+      },
+      {
         path: 'goodsStyle',
         component: () => import('@/views/goods/goodsStyle/index'),
         name: 'GoodsStyle',
@@ -779,6 +790,17 @@ export const asyncRouterMap = [
         meta: {
           perms: [ 'GET /admin/brand/read' ],
           title: '基本信息',
+          noCache: true
+        }
+      },
+      {
+        path: 'supplier',
+        component: () => import('@/views/enterprise/supplier'),
+        name: 'Supplier',
+        _ROLES: [ 'ADMIN' ],
+        meta: {
+          perms: [ 'GET /admin/newsupplier/getNewSupplierList' ],
+          title: '供应商管理',
           noCache: true
         }
       },

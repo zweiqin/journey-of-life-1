@@ -1,11 +1,11 @@
-
 /* ---------------------------------------------------------------------------------------
 about：处理自定义字段
 * ---------------------------------------------------------------------------------------- */
+
 import Vue from 'vue'
 import TreeSelection from '../TreeSelection/tree-selection'
 class CustomColumn extends TreeSelection {
-  constructor (fields) {
+  constructor(fields) {
     super()
 
     const { localKey, fieldKey, columns, sourceColumns, defaultFields } = fields
@@ -28,25 +28,28 @@ class CustomColumn extends TreeSelection {
 
     this.initData() // 初始化init
   }
+
   /**
-   * @description 生成勾选结构
-   * @param Array [columns @type => Array, source @type => Array]
-   * @return Array
-   **/
-  initData () {
+	 * @description 生成勾选结构
+	 * @param Array [columns @type => Array, source @type => Array]
+	 * @return Array
+	 **/
+
+  initData() {
     this.sourceColumns = this.localKey ? this.getLocalConfig() : this.sourceColumns
     const selectData = this.sourceColumns.length ? this.sourceColumns : this.defaultFields
     this.columns = super.addListenerChange(this.change(this.columns, selectData))
     this.lastColumns = this.sort(super._c(this.columns))
     this.tableColumns = this.createdColumn(super._c(this.lastColumns))
   }
-  /**
-   * @description 合并公共字段
-   * @param Array { columns, defaultFields, newDefaultFields } @param Number deep
-   * @return Array
-   **/
 
-  setBaseFields (deep = 0, columns, defaultFields, newDefaultFields = []) {
+  /**
+	 * @description 合并公共字段
+	 * @param Array { columns, defaultFields, newDefaultFields } @param Number deep
+	 * @return Array
+	 **/
+
+  setBaseFields(deep = 0, columns, defaultFields, newDefaultFields = []) {
     deep++
     for (let i = 0, len = columns.length; i < len; i++) {
       const child = columns[i].children
@@ -80,7 +83,8 @@ class CustomColumn extends TreeSelection {
   }
 
   /** @description resetDefault 恢复默认字段 */
-  resetDefault () {
+
+  resetDefault() {
     const defaultFields = this._c(this.defaultFields)
     this.columns = super.addListenerChange(this.change(this.columns, defaultFields))
     this.lastColumns = this.sort(super._c(this.columns))
@@ -89,8 +93,10 @@ class CustomColumn extends TreeSelection {
       lastColumns: this.lastColumns
     }
   }
+
   /** @description 生成表头列 */
-  createdColumn (columns) {
+
+  createdColumn(columns) {
     for (let i = 0; i < columns.length; i++) {
       const child = columns[i].children
       if (child.length) {
@@ -102,15 +108,16 @@ class CustomColumn extends TreeSelection {
     }
     return columns
   }
-  /**
-   * @description 找出已选中字段, 改变回显
-   * @param Array
-   * @return Array
-   **/
 
-  change (columns, sourceData) {
+  /**
+	 * @description 找出已选中字段, 改变回显
+	 * @param Array
+	 * @return Array
+	 **/
+
+  change(columns, sourceData) {
     for (const i of columns) {
-      const index = sourceData.findIndex(row => row.field === i.field)
+      const index = sourceData.findIndex((row) => row.field === i.field)
       if (index > -1) {
         Object.assign(i, sourceData[index])
       } else {
@@ -124,10 +131,11 @@ class CustomColumn extends TreeSelection {
   }
 
   /** @description target 发生改变 更新 */
-  update (item) {
+
+  update(item) {
     const listData = this._c(this.lastColumns)
     // 找到原元素删除 把改变后的元素插入至末尾
-    function insert (list, target) {
+    function insert(list, target) {
       for (let i = 0, len = list.length; i < len; i++) {
         if (list[i].field === target.field) {
           if (target.fixed) {
@@ -147,22 +155,27 @@ class CustomColumn extends TreeSelection {
     }
     const newLastColumns = super.addListenerChange(insert(listData, item))
     this.get(newLastColumns)
+    // console.log(item, listData, newLastColumns, listData === newLastColumns)
+    // return item.fixed ? listData : newLastColumns
     return newLastColumns
   }
 
   /** @description 取消选中 */
-  unCheck (item) {
+
+  unCheck(item) {
     return super._unCheck(this.columns, item)
   }
 
   /** @description SET => 全选 (all) | 取消全选（unCheck）| 反选(invert) */
-  setChecked (flag, type) {
+
+  setChecked(flag, type) {
     this.lastColumns = super._setChecked(this.columns, flag, type)
     return this.lastColumns
   }
 
   /** @description 保存 */
-  save () {
+
+  save() {
     const params = []
     const mapTree = (list, checkList) => {
       list.forEach((element, index) => {
@@ -189,7 +202,7 @@ class CustomColumn extends TreeSelection {
 
   /** @description 排序 */
 
-  sort (list) {
+  sort(list) {
     list = list.sort((a, b) => a.sort - b.sort)
     for (const i of list) {
       if (i.children.length) this.sort(i.children)
@@ -198,18 +211,21 @@ class CustomColumn extends TreeSelection {
   }
 
   /** @description 监听行为 */
-  get (list) {
+
+  get(list) {
     this.lastColumns = list
   }
 
   /** @description  获取本地配置 */
-  getLocalConfig () {
+
+  getLocalConfig() {
     const local = Vue.ls.get(this.localKey) || []
     return local
   }
 
   /** @description 设置本地配置 */
-  setLocalConfig (list) {
+
+  setLocalConfig(list) {
     Vue.ls.set(this.localKey, list)
   }
 }
