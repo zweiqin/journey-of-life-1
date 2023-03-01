@@ -6,21 +6,28 @@
 </template>
 
 <script>
-// import '../../../public/static/tinymce4.7.5/langs/zh_CN'
-import './zh_CN'
-import { uploadPic } from '@/api/common/upload'
+// import '../../../public/static/tinymce4.7.5/langs/zh_CN' // 无需引入，init的时候会自动找tinymce下的langs下的该文件
+// import './zh_CN'
+// import { uploadPic } from '@/api/common/upload'
+import { createStorage } from '@/api/business/storage'
 
+// const plugins = [
+//   `advlist anchor autolink autosave code codesample colorpicker colorpicker
+//   contextmenu directionality emoticons fullscreen hr image imagetools importcss insertdatetime
+//   legacyoutput link lists media nonbreaking noneditable pagebreak paste preview print save searchreplace
+//   spellchecker tabfocus table template textcolor textpattern visualblocks visualchars wordcount`
+// ]
 const plugins = [
-  `advlist anchor autolink autosave code codesample colorpicker colorpicker
-  contextmenu directionality emoticons fullscreen hr image imagetools importcss insertdatetime
-  legacyoutput link lists media nonbreaking noneditable pagebreak paste preview print save searchreplace
-  spellchecker tabfocus table template textcolor textpattern visualblocks visualchars wordcount`
+  `advlist anchor autolink autosave code codesample colorpicker colorpicker contextmenu directionality emoticons fullscreen hr image imagetools importcss insertdatetime link lists media nonbreaking noneditable pagebreak paste preview print save searchreplace spellchecker tabfocus table template textcolor textpattern visualblocks visualchars wordcount`
 ]
+// const toolbar = [
+//   `bold italic underline strikethrough alignleft aligncenter
+//   alignright outdent indent  blockquote undo redo removeformat`,
+//   `hr bullist numlist link image charmap	 preview anchor pagebreak
+//     fullscreen insertdatetime media table forecolor backcolor`
+// ]
 const toolbar = [
-  `bold italic underline strikethrough alignleft aligncenter
-  alignright outdent indent  blockquote undo redo removeformat`,
-  `hr bullist numlist link image charmap	 preview anchor pagebreak
-    fullscreen insertdatetime media table forecolor backcolor`
+  'searchreplace bold italic underline strikethrough alignleft aligncenter alignright outdent indent  blockquote undo redo removeformat subscript superscript code codesample', 'hr bullist numlist link image charmap preview anchor pagebreak insertdatetime media table emoticons forecolor backcolor fullscreen'
 ]
 export default {
   name: 'Tinymce',
@@ -32,6 +39,10 @@ export default {
     value: {
       type: String,
       default: ''
+    },
+    hasMenubar: {
+      type: Boolean,
+      default: false
     },
     toolbar: {
       type: Array,
@@ -71,12 +82,12 @@ export default {
   mounted() {
     this.initTinymce()
   },
-  activated() {
-    this.initTinymce()
-  },
-  deactivated() {
-    this.destroyTinymce()
-  },
+  // activated() {
+  //   this.initTinymce()
+  // },
+  // deactivated() {
+  //   this.destroyTinymce()
+  // },
   unmounted() {
     this.destroyTinymce()
   },
@@ -88,30 +99,35 @@ export default {
         width: this.width,
         height: this.height,
         language: 'zh_CN',
+        convert_urls: false, // 为false则不会自动处理URL
         body_class: 'panel-body ',
         object_resizing: true,
         toolbar: this.toolbar.length > 0 ? this.toolbar : toolbar,
-        menubar: false,
+        menubar: this.hasMenubar,
         plugins,
-        end_container_on_empty_block: true,
+        end_container_on_empty_block: false, // 如果设为true，在空的元素中按下回车键将拆分该元素
         powerpaste_word_import: 'clean',
         code_dialog_height: 450,
         code_dialog_width: 1000,
         advlist_bullet_styles: 'square',
         advlist_number_styles: 'default',
-        imagetools_cors_hosts: ['www.tinymce.com', 'codepen.io'],
+        // imagetools_cors_hosts: ['www.tinymce.com', 'codepen.io'],
         default_link_target: '_blank',
-        images_upload_url:
-          'http://laravel-admin.linyiyuan.top/common/upload_pic',
+        // images_upload_url: 'http://xxx',
+        // 使用 images_upload_handler 可自定义上传处理逻辑。使用该配置，则无需使用其他上传配置选项。
         images_upload_handler: (blobInfo, success, failure) => {
           const fd = new FormData()
           fd.append('file', blobInfo.blob())
-          uploadPic(fd)
+          createStorage(fd)
+            // uploadPic(fd)
             .then((res) => {
               const result = res.data
               success(result.url)
             })
-            .catch((err) => {})
+            // .catch((err) => {})
+            .catch(() => {
+              failure('上传失败，请重新上传')
+            })
         },
         link_title: false,
         init_instance_callback: (editor) => {

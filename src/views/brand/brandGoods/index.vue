@@ -39,11 +39,11 @@
         查找
       </el-button>
       <!-- <el-button
-      	v-permission="[ `GET /admin${api.goodsList}` ]" :loading="downloadLoading" size="mini"
-      	class="filter-item" type="warning" icon="el-icon-download" @click="handleDownload"
-      	>
-      	导出
-      	</el-button> -->
+        v-permission="[ `GET /admin${api.goodsList}` ]" :loading="downloadLoading" size="mini"
+        class="filter-item" type="warning" icon="el-icon-download" @click="handleDownload"
+        >
+        导出
+        </el-button> -->
     </div>
 
     <TableTools
@@ -261,7 +261,7 @@ export default {
       })
       loading.close()
       this.$elMessage()
-      this.getList()
+      this.getList('keepPage')
     },
     typeFilterFn(val, list) {
       const obj = list.find((item) => +item.value === +val)

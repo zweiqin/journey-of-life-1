@@ -3,7 +3,7 @@
     :visible.sync="visible"
     v-bind="modalOptions"
   >
-   <el-form
+    <el-form
       ref="formData"
       :model="formData"
       :rules="formRules"
@@ -15,7 +15,7 @@
         <el-input
           v-model="formData.say"
           type="textarea"
-          :autosize="{ minRows: 3, maxRows: 5}"
+          :autosize="{ minRows: 3, maxRows: 5 }"
           maxlength="520"
           show-word-limit
           placeholder="请输入话术内容"
@@ -40,14 +40,14 @@
 </template>
 
 <script>
-import { msgsayUpdateSay, msgsaySaveMsgSay } from '@/api/businessManagement/scriptSetting';
+import { msgsayUpdateSay, msgsaySaveMsgSay } from '@/api/businessManagement/scriptSetting'
 
 export default {
   name: 'EditModal',
   props: {
     list: {
       type: Array,
-      default: () => ([])
+      default: () => []
     }
   },
   data() {
@@ -61,12 +61,12 @@ export default {
       formData: {
         id: '',
         say: '',
-        type: '',
+        type: ''
       },
       formRules: {
         say: [
           { required: true, message: '请输入客户名称' },
-          { max: 520, message: '520字以内' },
+          { max: 520, message: '520字以内' }
         ],
         type: [
           { required: true, message: '请选择话术类型' }
@@ -74,7 +74,7 @@ export default {
         userTel: [
           { required: true, message: '请输入客户电话' }
         ]
-      },
+      }
     }
   },
   methods: {
@@ -93,13 +93,13 @@ export default {
       try {
         const res = this.formData.id ? await msgsayUpdateSay(this.formData) : await msgsaySaveMsgSay(this.formData)
         loading.close()
-        this.$message.success(`${this.formData.id ? '编辑' : '添加'}成功!`)
+        this.$elMessage(`${this.formData.id ? '编辑' : '添加'}成功!`)
         this.$emit('success')
         this.visible = false
-      } catch(e) {
+      } catch (e) {
         loading.close()
       }
-    },
+    }
   }
 }
 </script>

@@ -485,43 +485,72 @@ export default {
         {
           click: (e, instance, hide) => {
             const { IMUI, message } = instance
-            $('.lemon-editor')
-              .find('*')
-              .each(function (i, o) {
-                if ($(o).hasClass('lemon-editor__tool')) $(this).hide()
-                if ($(o).hasClass('lemon-editor__inner')) $(this).hide()
-                if ($(o).hasClass('lemon-editor__footer')) $(this).hide()
-                if ($(o).hasClass('multi')) $(this).show()
-              })
 
-            $('.lemon-container')
-              .find('*')
-              .each(function (i, o) {
-                if (
-                  $(o).hasClass('lemon-message-text') ||
-                  $(o).hasClass('lemon-message-file') ||
-                  $(o).hasClass('lemon-message-image') ||
-                  $(o).hasClass('lemon-message-forward') ||
-                  $(o).hasClass('lemon-message-video')
-                ) {
-                  $(this).css('border', '1px dashed #409EFF')
-                  $(this).css('margin-top', '5px')
+            function getChildNode(node, allNodes = []) {
+              const nodeList = node.childNodes
+              for (let i = 0; i < nodeList.length; i++) {
+                const childNode = nodeList[i]
+                if (childNode.nodeType == 1) {
+                  allNodes.push(childNode)
+                  getChildNode(childNode, allNodes)
                 }
-              })
-            $('.lemon-container')
-              .find('*')
-              .each(function (i, o) {
-                if (
-                  ($(o).hasClass('lemon-message-text') ||
-                    $(o).hasClass('lemon-message-file') ||
-                    $(o).hasClass('lemon-message-image') ||
-                    $(o).hasClass('lemon-message-forward') ||
-                    $(o).hasClass('lemon-message-video')) &&
-                  !$(o).hasClass('lemon-message--reverse')
-                ) {
-                  $(this).css('padding-left', '30px')
-                }
-              })
+              }
+              return allNodes
+            }
+            // $('.lemon-editor')
+            //   .find('*')
+            //   .each(function (i, o) {
+            //     // 调用.find()需要选择器表达式参数。如果我们需要检索所有的后代元素，我们可以通过在普遍选择器'*'来完成。
+            //     // .each() 方法用来让DOM循环结构更简单更不易出错。它会迭代jQuery对象中的每一个DOM元素。每次回调函数执行时，会传递当前循环次数作为参数(从0开始计数)。更重要的是，回调函数是在当前DOM元素为上下文的语境中触发的。因此关键字 this 总是指向这个元素。
+            //     // hasClass，如果匹配元素上有指定的样式，那么.hasClass() 方法将返回 true ， 即使元素上可能还有其他样式。
+            //     // jQuery( element ) 一个用于封装成jQuery对象的DOM元素。
+            //     // .hide()如果没有参数，.hide()方法是最简单的方法来隐藏一个元素。匹配的元素将被立即隐藏，没有动画。这大致相当于调用.css('display', 'none')，但display属性值保存在jQuery的数据缓存中，所以display可以方便以后可以恢复到其初始值。如果一个元素的display属性值为inline，那么隐藏再显示时，这个元素将再次显示inline。
+            //     if ($(o).hasClass('lemon-editor__tool')) $(this).hide() // 原flex,none
+            //     if ($(o).hasClass('lemon-editor__inner')) $(this).hide() // 原block,none
+            //     if ($(o).hasClass('lemon-editor__footer')) $(this).hide() // 原flex,none
+            //     if ($(o).hasClass('multi')) $(this).show() // 原none,flex
+            //   })
+            // console.log($('.lemon-editor').find('*'), '--', document.getElementsByClassName('lemon-editor')[0].childNodes,getChildNode(document.getElementsByClassName('lemon-editor')[0]))
+            getChildNode(document.getElementsByClassName('lemon-editor')[0]).forEach((item, index) => {
+              // console.log(typeof item.className === 'string' ? item.classList.includes('lemon-editor__tool') : item.className, index)
+              // if (typeof item.className === 'string' ? item.className.includes('lemon-editor__tool') || item.className.includes('lemon-editor__inner') || item.className.includes('lemon-editor__footer') : false) item.style.display = 'none'
+              if (item.classList.contains('lemon-editor__tool') || item.classList.contains('lemon-editor__inner') || item.classList.contains('lemon-editor__footer')) item.style.display = 'none'
+              if (item.classList.contains('multi')) item.style.display = 'flex'
+            })
+            // $('.lemon-container')
+            //   .find('*')
+            //   .each(function (i, o) {
+            //     if (
+            //       $(o).hasClass('lemon-message-text') ||
+            //       $(o).hasClass('lemon-message-file') ||
+            //       $(o).hasClass('lemon-message-image') ||
+            //       $(o).hasClass('lemon-message-forward') ||
+            //       $(o).hasClass('lemon-message-video')
+            //     ) {
+            //       $(this).css('border', '1px dashed #409EFF')
+            //       $(this).css('margin-top', '5px')
+            //     }
+            //   })
+            getChildNode(document.getElementsByClassName('lemon-container')[0]).forEach((item, index) => {
+              if (item.classList.contains('lemon-message-text') || item.classList.contains('lemon-message-file') || item.classList.contains('lemon-message-image') || item.classList.contains('lemon-message-forward') || item.classList.contains('lemon-message-video')) (item.style.border = '1px dashed #409EFF') && (item.style.marginTop = '5px')
+            })
+            // $('.lemon-container')
+            //   .find('*')
+            //   .each(function (i, o) {
+            //     if (
+            //       ($(o).hasClass('lemon-message-text') ||
+            //         $(o).hasClass('lemon-message-file') ||
+            //         $(o).hasClass('lemon-message-image') ||
+            //         $(o).hasClass('lemon-message-forward') ||
+            //         $(o).hasClass('lemon-message-video')) &&
+            //       !$(o).hasClass('lemon-message--reverse')
+            //     ) {
+            //       $(this).css('padding-left', '30px')
+            //     }
+            //   })
+            getChildNode(document.getElementsByClassName('lemon-container')[0]).forEach((item, index) => {
+              if ((item.classList.contains('lemon-message-text') || item.classList.contains('lemon-message-file') || item.classList.contains('lemon-message-image') || item.classList.contains('lemon-message-forward') || item.classList.contains('lemon-message-video')) && !item.classList.contains('lemon-message--reverse')) item.style.paddingLeft = '30px'
+            })
             this.multi = true
             hide()
           },
@@ -596,7 +625,9 @@ export default {
   },
   watch: {
     multiMessage(val) {
-      $('#checkMessage').html('<span>' + val.length + '</span>')
+      // .html( htmlString ) 用来设置每个匹配元素的一个HTML 字符串
+      document.getElementById('checkMessage').innerHTML = `<span>${val.length}</span>`
+      // $('#checkMessage').html('<span>' + val.length + '</span>')
     }
   },
   created() {

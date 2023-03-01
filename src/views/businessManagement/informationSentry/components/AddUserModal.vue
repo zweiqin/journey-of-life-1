@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import { messagesentrySaveMsgSentry } from '@/api/businessManagement/informationSentry';
+import { messagesentrySaveMsgSentry } from '@/api/businessManagement/informationSentry'
 
 export default {
   name: 'AddSalesmanModal',
@@ -48,7 +48,7 @@ export default {
       formData: {
         userName: '',
         userGender: '0',
-        userTel: '',
+        userTel: ''
       },
       formRules: {
         userName: [
@@ -77,13 +77,13 @@ export default {
       this.$refs.formData.validate(async (valid) => {
         if (valid) {
           const res = await messagesentrySaveMsgSentry(this.formData)
-          this.$message.success('添加成功!')
+          this.$elMessage('添加成功!')
           this.$emit('success')
           this.visible = false
         } else {
-          return false;
+          return false
         }
-      });
+      })
     }
   }
 }

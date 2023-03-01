@@ -6,13 +6,13 @@ export const columns = [
     title: 'ID',
     width: 100
   },
-  {
-    align: 'center',
-    fixed: 'left',
-    field: 'adminId',
-    title: '系统账户id',
-    width: 100
-  },
+  // {
+  //   align: 'center',
+  //   fixed: 'left',
+  //   field: 'adminId',
+  //   title: '系统账户id',
+  //   width: 100
+  // },
   {
     align: 'center',
     field: 'roleName',

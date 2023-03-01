@@ -104,6 +104,74 @@ export function timestampToTime(timestamp) {
 // console.log(timestampToTime(1670145353)); //2022-12-04 17:15:53
 }
 
+// 时间戳转时间
+export function setStringDate(time) {
+  if (time === undefined || time === '') {
+    return ''
+  }
+  const date = new Date(time)
+  const y = date.getFullYear()
+  const m = date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1
+  const d = date.getDate()
+  const H = date.getHours()
+  const M = date.getMinutes()
+  const S = date.getSeconds()
+  return `${y}-${m}-${d} ${H}:${M}:${S}`
+}
+
+// 拼接时间字符串
+export function splicingDate(time) {
+  if (time === undefined || time === null || time.length !== 14) {
+    return ''
+  }
+  return time.substring(0, 4) + '-' +
+    time.substring(4, 6) + '-' +
+    time.substring(6, 8) + ' ' +
+    time.substring(8, 10) + ':' +
+    time.substring(10, 12) + ':' +
+    time.substring(12, 14)
+}
+
+function pluralize(time, label) {
+  if (time === 1) {
+    return time + label
+  }
+  return time + label + 's'
+}
+
+export function timeAgo(time) {
+  const between = Date.now() / 1000 - Number(time)
+  if (between < 3600) {
+    return pluralize(~~(between / 60), ' minute')
+  } else if (between < 86400) {
+    return pluralize(~~(between / 3600), ' hour')
+  }
+  return pluralize(~~(between / 86400), ' day')
+}
+
+/* 数字 格式化*/
+
+export function numberFormatter(num, digits) {
+  const si = [
+    { value: 1E18, symbol: 'E' },
+    { value: 1E15, symbol: 'P' },
+    { value: 1E12, symbol: 'T' },
+    { value: 1E9, symbol: 'G' },
+    { value: 1E6, symbol: 'M' },
+    { value: 1E3, symbol: 'k' }
+  ]
+  for (let i = 0; i < si.length; i++) {
+    if (num >= si[i].value) {
+      return (num / si[i].value + 0.1).toFixed(digits).replace(/\.0+$|(\.[0-9]*[1-9])0+$/, '$1') + si[i].symbol
+    }
+  }
+  return num.toString()
+}
+
+export function toThousandFilter(num) {
+  return (+num || 0).toString().replace(/^-?\d+/g, (m) => m.replace(/(?=(?!\b)(\d{3})+$)/g, ','))
+}
+
 /**
  *get getByteLen
  * @param {Sting} val input value
@@ -298,8 +366,23 @@ export function deepClone(source) {
   return targetObj
 }
 
+/**
+ * @param {Array} arr
+ * @returns {Array}
+ */
+
 export function uniqueArr(arr) {
   return Array.from(new Set(arr))
+}
+
+/**
+ * @returns {string}
+ */
+
+export function createUniqueString() {
+  const timestamp = +new Date() + ''
+  const randomNum = parseInt((1 + Math.random()) * 65536) + ''
+  return (+(randomNum + timestamp)).toString(32)
 }
 
 export function isExternal(path) {

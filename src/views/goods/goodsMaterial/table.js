@@ -6,12 +6,12 @@ export const columns = [
     title: 'ID',
     width: 100
   },
-  {
-    align: 'center',
-    field: 'value',
-    title: '所属adminId',
-    minWidth: 150
-  },
+  // {
+  //   align: 'center',
+  //   field: 'value',
+  //   title: '所属adminId',
+  //   minWidth: 150
+  // },
   {
     align: 'center',
     field: 'materialName',

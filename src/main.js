@@ -27,7 +27,7 @@ import i18n from './lang' // Internationalization
 import './icons' // icon
 import './permission' // permission control
 
-import * as filters from './filters' // global filters
+// import * as filters from './filters' // global filters
 
 import permission from '@/directive/permission/index.js' // 权限判断指令
 
@@ -55,10 +55,10 @@ Vue.use(ElementUI, {
 Vue.use(LemonIMUI)
 Vue.directive('permission', permission)
 
-// register global utility filters.
-Object.keys(filters).forEach((key) => {
-  Vue.filter(key, filters[key])
-})
+// // register global utility filters.
+// Object.keys(filters).forEach((key) => {
+//   Vue.filter(key, filters[key])
+// })
 
 Vue.config.productionTip = false
 

@@ -1056,9 +1056,18 @@ export const asyncRouterMap = [
     },
     children: [
       {
+        path: 'materialCity',
+        component: () => import('@/views/materialManagement/materialCity'),
+        name: 'MaterialCity',
+        // perms: [],
+        meta: {
+          title: '材料城管理'
+        }
+      },
+      {
         path: 'priceIndices',
         component: () => import('@/views/materialManagement/priceIndices'),
-        name: 'priceIndices',
+        name: 'PriceIndices',
         // perms: [],
         meta: {
           title: '价格指数图表'
@@ -1067,7 +1076,7 @@ export const asyncRouterMap = [
       {
         path: 'priceIndicesInfo',
         component: () => import('@/views/materialManagement/priceIndicesInfo'),
-        name: 'priceIndicesInfo',
+        name: 'PriceIndicesInfo',
         // perms: [],
         meta: {
           title: '价格指数'
@@ -1076,7 +1085,7 @@ export const asyncRouterMap = [
       {
         path: 'tradeLeads',
         component: () => import('@/views/materialManagement/tradeLeads'),
-        name: 'tradeLeads',
+        name: 'TradeLeads',
         // perms: [],
         meta: {
           title: '供求信息'

@@ -5,10 +5,10 @@
     <div class="filter-container">
       <el-input
         v-model="listQuery.search" clearable class="filter-item" style="width: 400px;"
-        placeholder="请输入供应商名称、供应商所在区域、供应商详细地址、供应商联系人、供应商联系电话、供应商介绍或备注"
+        placeholder="请输入材料城名称、材料城所在区域、材料城详细地址、材料城联系人、材料城联系电话、材料城介绍或备注"
       />
       <el-button
-        v-permission="[ `GET /admin${api.getNewSupplierList}` ]" size="mini" class="filter-item" type="primary"
+        v-permission="[ `GET /admin${api.getNewMaterialCityList}` ]" size="mini" class="filter-item" type="primary"
         icon="el-icon-search" style="margin-left:10px;" @click="getList"
       >
         查找
@@ -17,10 +17,10 @@
 
     <TableTools
       :custom-columns-config="customColumnsConfig" download custom-field @update-fields="updateFields"
-      @refresh="getList" @download="toolsMixin_exportMethod($refs.vxeTable, '供应商管理')"
+      @refresh="getList" @download="toolsMixin_exportMethod($refs.vxeTable, '材料城管理')"
     >
       <el-button
-        v-permission="[ `POST /admin${api.newsupplierSave}` ]" size="mini" type="primary" icon="el-icon-plus"
+        v-permission="[ `POST /admin${api.newaterialcitySave}` ]" size="mini" type="primary" icon="el-icon-plus"
         @click="$refs.EditModal && $refs.EditModal.handleOpen({ id: '' })"
       >
         添加
@@ -30,24 +30,24 @@
     <!-- 查询结果 -->
     <VxeTable
       ref="vxeTable" v-model="listQuery" :local-key="customColumnsConfig.localKey" api-method="POST"
-      :api-path="api.getNewSupplierList" :columns="columns"
+      :api-path="api.getNewMaterialCityList" :columns="columns"
     >
-      <template #supplierLogo="{ row }">
-        <el-image v-if="row.supplierLogo" :src="row.supplierLogo" style="width:40px; height:40px" fit="cover" :preview-src-list="[ row.supplierLogo ]" />
+      <template #materialCityLogo="{ row }">
+        <el-image v-if="row.materialCityLogo" :src="row.materialCityLogo" style="width:40px; height:40px" fit="cover" :preview-src-list="[ row.materialCityLogo ]" />
         <span v-else>--</span>
       </template>
-      <template #supplierRegion="{ row }">
-        <span>{{ setRegion(row.supplierCode) || '--' }}</span>
+      <template #materialCityRegion="{ row }">
+        <span>{{ setRegion(row.materialCityCode) || '--' }}</span>
       </template>
       <template #operate="{ row }">
-        <el-button v-permission="[ `GET /admin${api.getNewSupplierInfo}` ]" size="mini" @click="handleDetail(row)">
+        <el-button v-permission="[ `GET /admin${api.getNewMaterialCityInfo}` ]" size="mini" @click="handleDetail(row)">
           查看
         </el-button>
-        <el-button v-permission="[ `POST /admin${api.newsupplierDeleteById}` ]" size="mini" @click="handleUpdate(row)">
+        <el-button v-permission="[ `POST /admin${api.newaterialcityUpdateById}` ]" size="mini" @click="handleUpdate(row)">
           编辑
         </el-button>
         <el-button
-          v-permission="[ `POST /admin${api.newsupplierDeleteById}` ]" type="danger" size="mini"
+          v-permission="[ `POST /admin${api.newaterialcityDeleteById}` ]" type="danger" size="mini"
           @click="handleDelete(row)"
         >
           删除
@@ -66,8 +66,8 @@
 import { mapGetters } from 'vuex'
 import {
   api,
-  newsupplierDeleteById
-} from '@/api/enterprise/supplier'
+  newaterialcityDeleteById
+} from '@/api/materialManagement/materialCity'
 import VxeTable from '@/components/VxeTable'
 import TableTools from '@/components/TableTools'
 import EditModal from './components/EditModal'
@@ -76,7 +76,7 @@ import { columns } from './table'
 import XeUtils from 'xe-utils'
 
 export default {
-  name: 'Supplier',
+  name: 'MaterialCity',
   components: {
     VxeTable,
     TableTools,
@@ -88,7 +88,7 @@ export default {
       api,
       columns,
       customColumnsConfig: {
-        localKey: 'supplier',
+        localKey: 'materialCity',
         columnsOptions: columns
       },
       listQuery: {
@@ -119,7 +119,7 @@ export default {
     },
     async handleDelete({ id }) {
       await this.$elConfirm('确认删除?')
-      await newsupplierDeleteById({ id })
+      await newaterialcityDeleteById({ id })
       this.$elMessage('删除成功!')
       this.getList()
     },

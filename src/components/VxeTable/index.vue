@@ -269,15 +269,25 @@ export default {
 
         const { data } = res
         this.$emit('fetch-data', res)
-        let postData = this.resAlias ? data[this.resAlias] : data.items
-        const page = this.searchParams[this.pageAlias]
-        const pageSize = this.searchParams[this.sizeAlias]
+        let postData
+        let page
+        let pageSize
+        if (this.isPager) {
+          postData = this.resAlias ? data[this.resAlias] : data.items
+          page = this.searchParams[this.pageAlias]
+          pageSize = this.searchParams[this.sizeAlias]
+          this.pagination.total = data.total
+        } else {
+          postData = data
+          page = this.searchParams[this.pageAlias] || 1
+          pageSize = this.searchParams[this.sizeAlias] || (data ? data.length : 0)
+          this.pagination.total = data ? data.length : 0
+        }
         this.showIndex && (postData = postData.map((v, i) => ({
           ...v,
           $index: (page - 1) * pageSize + (i + 1)
         })))
         this.postData = postData
-        this.pagination.total = data.total
         this.$emit('post-data', cloneDeep(this.postData))
         this.isDataLoading = false
       } catch (e) {

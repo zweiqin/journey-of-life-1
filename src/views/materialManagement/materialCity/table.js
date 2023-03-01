@@ -14,63 +14,63 @@ export const columns = [
   // },
   {
     align: 'center',
-    field: 'supplierName',
-    title: '供应商名称',
+    field: 'materialCityName',
+    title: '材料城名称',
     minWidth: 100
   },
   {
     align: 'center',
-    field: 'supplierLogo',
-    title: '供应商Logo',
+    field: 'materialCityLogo',
+    title: '材料城Logo',
     showOverflow: 'tooltip',
     slots: {
-      default: 'supplierLogo'
+      default: 'materialCityLogo'
     },
     minWidth: 100
   },
   {
     align: 'center',
-    field: 'supplierCode',
-    title: '供应商所在区域编码',
+    field: 'materialCityCode',
+    title: '材料城所在区域编码',
     minWidth: 150
   },
   {
     align: 'center',
-    field: 'supplierRegion',
-    title: '供应商所在区域',
+    field: 'materialCityRegion',
+    title: '材料城所在区域',
     showOverflow: 'tooltip',
     slots: {
-      default: 'supplierRegion'
+      default: 'materialCityRegion'
     },
     minWidth: 200
   },
   {
     align: 'center',
-    field: 'supplierAddress',
+    field: 'materialCityAddress',
     title: '详细地址',
     minWidth: 200
   },
   {
     align: 'center',
-    field: 'supplierContactPerson',
+    field: 'materialCityContactPerson',
     title: '联系人',
     minWidth: 100
   },
   {
     align: 'center',
-    field: 'supplierTel',
+    field: 'materialCityTel',
     title: '联系电话',
     minWidth: 100
   },
   {
     align: 'center',
-    field: 'supplierIntroduce',
-    title: '供应商介绍',
+    field: 'materialCityIntroduce',
+    title: '材料城介绍',
     minWidth: 100
   },
   {
     align: 'center',
-    field: 'supplierRemarks',
+    field: 'materialCityRemarks',
     title: '备注',
     minWidth: 100
   },

@@ -242,7 +242,10 @@
               </el-form-item>
 
               <el-form-item label="商品详情" prop="detail">
-                <div style="display:inline-block;"><Editor v-model="formData.detail" :init="editorInit" /></div>
+                <div style="display:inline-block;">
+                  <!-- <Editor v-model="formData.detail" :init="editorInit" /> -->
+                  <Tinymce v-model="formData.detail" has-menubar :width="580" :height="300"></Tinymce>
+                </div>
                 <el-input v-model="formData.detail" style="display:none" />
                 <el-tooltip content="对这个商品的详细介绍和介绍图片，一般用来放商品介绍图片" placement="top-start">
                   <i class="el-icon-question  body-form-icon"></i>
@@ -414,7 +417,8 @@
 import dayjs from 'dayjs'
 import MyUpload from '@/components/MyUpload'
 import GoodsDetail from '@/components/goodsDetail'
-import Editor from '@tinymce/tinymce-vue'
+// import Editor from '@tinymce/tinymce-vue'
+import Tinymce from '@/components/Tinymce'
 import { goodsCreate, goodsCatAndBrand, goodsProductPlaceList } from '@/api/goods/goodsList'
 import { createStorage } from '@/api/business/storage'
 import { MessageBox } from 'element-ui'
@@ -432,7 +436,8 @@ export default {
   name: 'GoodsCreate',
   components: {
     MyUpload,
-    Editor,
+    // Editor,
+    Tinymce,
     GoodsDetail
   },
   data() {
@@ -550,7 +555,7 @@ export default {
           { required: true, message: '请选择门店' }
         ],
         supplierId: [
-          { required: true, message: '请选择供应商' }
+          { required: false, message: '请选择供应商' }
         ],
         styleId: [
           { required: false, message: '请选择商品风格' }
@@ -627,24 +632,24 @@ export default {
         value: [
           { required: true, message: '请输入商品参数值' }
         ]
-      },
-      editorInit: {
-        width: 580,
-        language: 'zh_CN',
-        convert_urls: false,
-        plugins: [ 'advlist anchor autolink autosave code codesample colorpicker colorpicker contextmenu directionality emoticons fullscreen hr image imagetools importcss insertdatetime link lists media nonbreaking noneditable pagebreak paste preview print save searchreplace spellchecker tabfocus table template textcolor textpattern visualblocks visualchars wordcount' ],
-        toolbar: ['searchreplace bold italic underline strikethrough alignleft aligncenter alignright outdent indent  blockquote undo redo removeformat subscript superscript code codesample', 'hr bullist numlist link image charmap preview anchor pagebreak insertdatetime media table emoticons forecolor backcolor fullscreen'],
-        images_upload_handler(blobInfo, success, failure) {
-          const formData = new FormData()
-          formData.append('file', blobInfo.blob())
-          createStorage(formData).then((res) => {
-            success(res.data.url)
-          })
-            .catch(() => {
-              failure('上传失败，请重新上传')
-            })
-        }
       }
+      // editorInit: {
+      //   width: 580,
+      //   language: 'zh_CN',
+      //   convert_urls: false,
+      //   plugins: [ 'advlist anchor autolink autosave code codesample colorpicker colorpicker contextmenu directionality emoticons fullscreen hr image imagetools importcss insertdatetime link lists media nonbreaking noneditable pagebreak paste preview print save searchreplace spellchecker tabfocus table template textcolor textpattern visualblocks visualchars wordcount' ],
+      //   toolbar: ['searchreplace bold italic underline strikethrough alignleft aligncenter alignright outdent indent  blockquote undo redo removeformat subscript superscript code codesample', 'hr bullist numlist link image charmap preview anchor pagebreak insertdatetime media table emoticons forecolor backcolor fullscreen'],
+      //   images_upload_handler(blobInfo, success, failure) {
+      //     const formData = new FormData()
+      //     formData.append('file', blobInfo.blob())
+      //     createStorage(formData).then((res) => {
+      //       success(res.data.url)
+      //     })
+      //       .catch(() => {
+      //         failure('上传失败，请重新上传')
+      //       })
+      //   }
+      // }
     }
   },
   computed: {
@@ -709,7 +714,6 @@ export default {
     async getGoodsProductPlaceList() {
       const res = await goodsProductPlaceList()
       this.goodsProductPlaceList = res.data.data
-      console.log('goodsProductPlaceList', res)
     },
     handleCancel() {
       this.$router.back()

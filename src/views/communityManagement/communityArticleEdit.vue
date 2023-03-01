@@ -6,14 +6,14 @@
       <el-form ref="article" :rules="rules" :model="article" label-width="150px">
         <el-form-item label="类型" prop="type">
           <el-select v-model="article.type" size="mini" class="filter-item">
-            <el-option v-for="item in typeList" :key="item.value" :label="item.label" :value="item.value"/>
+            <el-option v-for="item in typeList" :key="item.value" :label="item.label" :value="item.value" />
           </el-select>
         </el-form-item>
         <el-form-item label="标题" prop="title">
-          <el-input v-model="article.title"/>
+          <el-input v-model="article.title" />
         </el-form-item>
         <el-form-item label="作者" prop="author">
-          <el-input v-model="article.author"/>
+          <el-input v-model="article.author" />
         </el-form-item>
         <el-form-item label="是否收费" prop="isVip">
           <el-radio-group v-model="article.isVip">
@@ -23,18 +23,15 @@
         </el-form-item>
         <el-form-item label="文章封面" prop="imgUrl">
           <el-upload
-            :action="uploadPath"
-            :show-file-list="false"
-            :headers="headers"
-            :on-success="uploadPicUrl"
-            class="avatar-uploader"
-            accept=".jpg,.jpeg,.png,.gif">
+            :action="uploadPath" :show-file-list="false" :headers="headers" :on-success="uploadPicUrl"
+            class="avatar-uploader" accept=".jpg,.jpeg,.png,.gif"
+          >
             <img v-if="article.imgUrl" :src="article.imgUrl" class="avatar">
-            <i v-else class="el-icon-plus avatar-uploader-icon"/>
+            <i v-else class="el-icon-plus avatar-uploader-icon" />
           </el-upload>
         </el-form-item>
         <el-form-item label="内容" prop="content">
-          <editor :init="editorInit" v-model="article.content"/>
+          <Tinymce v-model="article.content" has-menubar :width="580" :height="300"></Tinymce>
         </el-form-item>
 
       </el-form>
@@ -48,54 +45,17 @@
   </div>
 </template>
 
-<style>
-.el-card {
-  margin-bottom: 10px;
-}
-.el-tag + .el-tag {
-  margin-left: 10px;
-}
-.input-new-keyword {
-  width: 90px;
-  margin-left: 10px;
-  vertical-align: bottom;
-}
-.avatar-uploader .el-upload {
-  border: 1px dashed #d9d9d9;
-  border-radius: 6px;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-}
-.avatar-uploader .el-upload:hover {
-  border-color: #20a0ff;
-}
-.avatar-uploader-icon {
-  font-size: 28px;
-  color: #8c939d;
-  width: 120px;
-  height: 120px;
-  line-height: 120px;
-  text-align: center;
-}
-.avatar {
-  width: 145px;
-  height: 145px;
-  display: block;
-}
-</style>
-
 <script>
 import { detailArticle, editArticle } from '@/api/communityManagement/community'
 import { createStorage, uploadPath } from '@/api/business/storage'
-import Editor from '@tinymce/tinymce-vue'
+import Tinymce from '@/components/Tinymce'
 import { MessageBox } from 'element-ui'
 import { getToken } from '@/utils/auth'
 
 export default {
   name: '',
-  components: { Editor },
-  data () {
+  components: { Tinymce },
+  data() {
     return {
       uploadPath,
       typeList: [{
@@ -137,82 +97,102 @@ export default {
       }, {
         value: 13,
         label: '购买协议'
-      }
-      ],
+      }],
       article: { id: '', type: '', title: '', imgUrl: '', author: '', isVip: '', content: '' },
       rules: {
         /* type: [{ required: true, message: '类型不能为空', trigger: 'blur' }],
-        title: [{ required: true, message: '标题不能为空', trigger: 'blur' }],
-        author: [{ required: true, message: '作者不能为空', trigger: 'blur' }],
-        imgUrl: [{ required: true, message: '文章封面不能为空', trigger: 'blur' }],
-        content: [{ required: true, message: '内容不能为空', trigger: 'blur' }]*/
-      },
-      editorInit: {
-        language: 'zh_CN',
-        convert_urls: false,
-        plugins: [
-          'advlist anchor autolink autosave code codesample colorpicker colorpicker contextmenu directionality emoticons fullscreen hr image imagetools importcss insertdatetime link lists media nonbreaking noneditable pagebreak paste preview print save searchreplace spellchecker tabfocus table template textcolor textpattern visualblocks visualchars wordcount'
-        ],
-        toolbar: [
-          'searchreplace bold italic underline strikethrough alignleft aligncenter alignright outdent indent  blockquote undo redo removeformat subscript superscript code codesample',
-          'hr bullist numlist link image charmap preview anchor pagebreak insertdatetime media table emoticons forecolor backcolor fullscreen'
-        ],
-        images_upload_handler: function (blobInfo, success, failure) {
-          const formData = new FormData()
-          formData.append('file', blobInfo.blob())
-          createStorage(formData)
-            .then(res => {
-              success(res.data.url)
-            })
-            .catch(() => {
-              failure('上传失败，请重新上传')
-            })
-        }
+				title: [{ required: true, message: '标题不能为空', trigger: 'blur' }],
+				author: [{ required: true, message: '作者不能为空', trigger: 'blur' }],
+				imgUrl: [{ required: true, message: '文章封面不能为空', trigger: 'blur' }],
+				content: [{ required: true, message: '内容不能为空', trigger: 'blur' }]*/
       }
     }
   },
   computed: {
-    headers () {
+    headers() {
       return {
         'X-Dts-Admin-Token': getToken()
       }
     }
   },
-  created () {
+  created() {
     this.init()
   },
   methods: {
-    init: function () {
+    init() {
       if (this.$route.query.id == null) {
         return
       }
       const articleId = this.$route.query.id
-      detailArticle(articleId).then(response => {
+      detailArticle(articleId).then((response) => {
         this.article = response.data
       })
     },
-    handleCancel: function () {
+    handleCancel() {
       this.$router.push({ name: 'communityArticleList' })
     },
-    handleEdit: function () {
+    handleEdit() {
       editArticle(this.article)
-        .then(response => {
+        .then((response) => {
           this.$notify.success({
             title: '成功',
             message: '修改成功'
           })
           this.$router.push({ name: 'communityArticleList' })
         })
-        .catch(response => {
+        .catch((response) => {
           MessageBox.alert('业务错误：' + response.errmsg, '警告', {
             confirmButtonText: '确定',
             type: 'error'
           })
         })
     },
-    uploadPicUrl: function (response) {
+    uploadPicUrl(response) {
       this.article.imgUrl = response.data.url
     }
   }
 }
 </script>
+
+<style>
+.el-card {
+	margin-bottom: 10px;
+}
+
+.el-tag+.el-tag {
+	margin-left: 10px;
+}
+
+.input-new-keyword {
+	width: 90px;
+	margin-left: 10px;
+	vertical-align: bottom;
+}
+
+.avatar-uploader .el-upload {
+	border: 1px dashed #d9d9d9;
+	border-radius: 6px;
+	cursor: pointer;
+	position: relative;
+	overflow: hidden;
+}
+
+.avatar-uploader .el-upload:hover {
+	border-color: #20a0ff;
+}
+
+.avatar-uploader-icon {
+	font-size: 28px;
+	color: #8c939d;
+	width: 120px;
+	height: 120px;
+	line-height: 120px;
+	text-align: center;
+}
+
+.avatar {
+	width: 145px;
+	height: 145px;
+	display: block;
+}
+</style>

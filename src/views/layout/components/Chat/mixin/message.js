@@ -52,45 +52,68 @@ export default {
       document.querySelector('.lemon-editor').appendChild(dom)
     },
     closeMulti() {
-      $('.lemon-editor')
-        .find('*')
-        .each(function (i, o) {
-          if ($(o).hasClass('lemon-editor__tool')) $(this).show()
-          if ($(o).hasClass('lemon-editor__inner')) $(this).show()
-          if ($(o).hasClass('lemon-editor__footer')) $(this).show()
-          if ($(o).hasClass('multi')) $(this).hide()
-        })
-      $('.lemon-container')
-        .find('*')
-        .each(function (i, o) {
-          if (
-            $(o).hasClass('lemon-message-text') ||
-            $(o).hasClass('lemon-message-file') ||
-            $(o).hasClass('lemon-message-image') ||
-            $(o).hasClass('lemon-message-forward') ||
-            $(o).hasClass('lemon-message-video')
-          ) {
-            $(this).css('border', '')
-            $(this).css('margin-top', '')
+      function getChildNode(node, allNodes = []) {
+        const nodeList = node.childNodes
+        for (let i = 0; i < nodeList.length; i++) {
+          const childNode = nodeList[i]
+          if (childNode.nodeType == 1) {
+            allNodes.push(childNode)
+            getChildNode(childNode, allNodes)
           }
-        })
-      $('.lemon-container')
-        .find('*')
-        .each(function (i, o) {
-          if (
-            ($(o).hasClass('lemon-message-text') ||
-              $(o).hasClass('lemon-message-file') ||
-              $(o).hasClass('lemon-message-image') ||
-              $(o).hasClass('lemon-message-forward') ||
-              $(o).hasClass('lemon-message-video')) &&
-            !$(o).hasClass('lemon-message--reverse')
-          ) {
-            $(this).css('padding-left', '')
-          }
-        })
+        }
+        return allNodes
+      }
+      // $('.lemon-editor')
+      //   .find('*')
+      //   .each(function (i, o) {
+      //     if ($(o).hasClass('lemon-editor__tool')) $(this).show()
+      //     if ($(o).hasClass('lemon-editor__inner')) $(this).show()
+      //     if ($(o).hasClass('lemon-editor__footer')) $(this).show()
+      //     if ($(o).hasClass('multi')) $(this).hide()
+      //   })
+      getChildNode(document.getElementsByClassName('lemon-editor')[0]).forEach((item, index) => {
+        if (item.classList.contains('lemon-editor__tool') || item.classList.contains('lemon-editor__footer')) item.style.display = 'flex'
+        if (item.classList.contains('lemon-editor__inner')) item.style.display = 'block'
+        if (item.classList.contains('multi')) item.style.display = 'none'
+      })
+      // $('.lemon-container')
+      //   .find('*')
+      //   .each(function (i, o) {
+      //     if (
+      //       $(o).hasClass('lemon-message-text') ||
+      //       $(o).hasClass('lemon-message-file') ||
+      //       $(o).hasClass('lemon-message-image') ||
+      //       $(o).hasClass('lemon-message-forward') ||
+      //       $(o).hasClass('lemon-message-video')
+      //     ) {
+      //       $(this).css('border', '')
+      //       $(this).css('margin-top', '')
+      //     }
+      //   })
+      getChildNode(document.getElementsByClassName('lemon-container')[0]).forEach((item, index) => {
+        if (item.classList.contains('lemon-message-text') || item.classList.contains('lemon-message-file') || item.classList.contains('lemon-message-image') || item.classList.contains('lemon-message-forward') || item.classList.contains('lemon-message-video')) (item.style.border = '') && (item.style.marginTop = '')
+      })
+      // $('.lemon-container')
+      //   .find('*')
+      //   .each(function (i, o) {
+      //     if (
+      //       ($(o).hasClass('lemon-message-text') ||
+      //         $(o).hasClass('lemon-message-file') ||
+      //         $(o).hasClass('lemon-message-image') ||
+      //         $(o).hasClass('lemon-message-forward') ||
+      //         $(o).hasClass('lemon-message-video')) &&
+      //       !$(o).hasClass('lemon-message--reverse')
+      //     ) {
+      //       $(this).css('padding-left', '')
+      //     }
+      //   })
+      getChildNode(document.getElementsByClassName('lemon-container')[0]).forEach((item, index) => {
+        if ((item.classList.contains('lemon-message-text') || item.classList.contains('lemon-message-file') || item.classList.contains('lemon-message-image') || item.classList.contains('lemon-message-forward') || item.classList.contains('lemon-message-video')) && !item.classList.contains('lemon-message--reverse')) item.style.paddingLeft = ''
+      })
       this.multiMessage = []
       this.multi = false
-      $('#checkMessage').html(0)
+      // $('#checkMessage').html(0)
+      document.getElementById('checkMessage').innerHTML = 0
     },
     messageInitEvent(data, IMUI) {
       this.user = data.user_info

@@ -42,9 +42,6 @@
       <el-form-item label="备注" prop="supplierRemarks">
         {{ formData.supplierRemarks || '--' }}
       </el-form-item>
-      <el-form-item label="备注" prop="supplierRemarks">
-        {{ formData.supplierRemarks || '--' }}
-      </el-form-item>
       <el-form-item label="创建时间" prop="createTime">
         {{ formData.createTime || '--' }}
       </el-form-item>

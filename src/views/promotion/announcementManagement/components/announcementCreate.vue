@@ -15,7 +15,7 @@
         </el-form-item>
 
         <el-form-item label="内容">
-          <Editor v-model="article.content" :init="editorInit" />
+          <Tinymce v-model="article.content" has-menubar :width="580" :height="300"></Tinymce>
         </el-form-item>
       </el-form>
     </el-card>
@@ -31,13 +31,13 @@
 <script>
 import { publishArticle } from '@/api/business/article'
 import { createStorage, uploadPath } from '@/api/business/storage'
-import Editor from '@tinymce/tinymce-vue'
+import Tinymce from '@/components/Tinymce'
 import { MessageBox } from 'element-ui'
 import { getToken } from '@/utils/auth'
 
 export default {
   name: 'AnnouncementCreate',
-  components: { Editor },
+  components: { Tinymce },
 
   data() {
     return {
@@ -46,22 +46,6 @@ export default {
       rules: {
         title: [ { required: true, message: '标题不能为空', trigger: 'blur' } ],
         content: [ { required: true, message: '信息内容不能为空', trigger: 'blur' } ]
-      },
-      editorInit: {
-        language: 'zh_CN',
-        convert_urls: false,
-        plugins: [ 'advlist anchor autolink autosave code codesample colorpicker colorpicker contextmenu directionality emoticons fullscreen hr image imagetools importcss insertdatetime link lists media nonbreaking noneditable pagebreak paste preview print save searchreplace spellchecker tabfocus table template textcolor textpattern visualblocks visualchars wordcount' ],
-        toolbar: ['searchreplace bold italic underline strikethrough alignleft aligncenter alignright outdent indent  blockquote undo redo removeformat subscript superscript code codesample', 'hr bullist numlist link image charmap preview anchor pagebreak insertdatetime media table emoticons forecolor backcolor fullscreen'],
-        images_upload_handler(blobInfo, success, failure) {
-          const formData = new FormData()
-          formData.append('file', blobInfo.blob())
-          createStorage(formData).then((res) => {
-            success(res.data.url)
-          })
-            .catch(() => {
-              failure('上传失败，请重新上传')
-            })
-        }
       }
     }
   },
@@ -102,46 +86,46 @@ export default {
 </script>
 
 <style>
-  .el-card {
-    margin-bottom: 10px;
-  }
+.el-card {
+	margin-bottom: 10px;
+}
 
-  .el-tag + .el-tag {
-    margin-left: 10px;
-  }
+.el-tag+.el-tag {
+	margin-left: 10px;
+}
 
-  .input-new-keyword {
-    width: 90px;
-    margin-left: 10px;
-    vertical-align: bottom;
-  }
+.input-new-keyword {
+	width: 90px;
+	margin-left: 10px;
+	vertical-align: bottom;
+}
 
-  .avatar-uploader .el-upload {
-    width: 145px;
-    height: 145px;
-    border: 1px dashed #d9d9d9;
-    border-radius: 6px;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-  }
+.avatar-uploader .el-upload {
+	width: 145px;
+	height: 145px;
+	border: 1px dashed #d9d9d9;
+	border-radius: 6px;
+	cursor: pointer;
+	position: relative;
+	overflow: hidden;
+}
 
-  .avatar-uploader .el-upload:hover {
-    border-color: #20a0ff;
-  }
+.avatar-uploader .el-upload:hover {
+	border-color: #20a0ff;
+}
 
-  .avatar-uploader-icon {
-    font-size: 28px;
-    color: #8c939d;
-    width: 120px;
-    height: 120px;
-    line-height: 120px;
-    text-align: center;
-  }
+.avatar-uploader-icon {
+	font-size: 28px;
+	color: #8c939d;
+	width: 120px;
+	height: 120px;
+	line-height: 120px;
+	text-align: center;
+}
 
-  .avatar {
-    width: 145px;
-    height: 145px;
-    display: block;
-  }
+.avatar {
+	width: 145px;
+	height: 145px;
+	display: block;
+}
 </style>

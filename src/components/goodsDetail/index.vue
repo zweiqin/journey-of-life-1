@@ -118,7 +118,7 @@ export default {
   },
   data() {
     return {
-      img: require('@/assets/image/tuanfeng.png'),
+      img: require('@/assets/logo/logo.png'),
       goodsTexture: '未知',
       goodsStyle: '未知'
     }
@@ -169,7 +169,7 @@ export default {
 			margin-top: 0px;
 			width: 100%;
 			overflow: hidden;
-			background-image: url('~@/assets/image/tuanfeng.png');
+			background-image: url('~@/assets/logo/logo.png');
 			background-size: cover;
 		}
 
@@ -340,7 +340,7 @@ export default {
 		border-radius: 0px;
 		margin-top: 0px;
 		width: 100%;
-		background-image: url('~@/assets/image/tuanfeng.png');
+		background-image: url('~@/assets/logo/logo.png');
 		background-size: cover;
 	}
 

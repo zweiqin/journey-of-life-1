@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import { messagesentrySalesmanBinding } from '@/api/businessManagement/informationSentry';
+import { messagesentrySalesmanBinding } from '@/api/businessManagement/informationSentry'
 
 export default {
   name: 'AddSalesmanModal',
@@ -41,7 +41,7 @@ export default {
       formData: {
         id: '',
         belongsSalesman: '',
-        belongsDepartment: '',
+        belongsDepartment: ''
       },
       formRules: {
         belongsSalesman: [
@@ -50,7 +50,7 @@ export default {
         belongsDepartment: [
           { required: true, message: '请输入业务员所属部门' }
         ]
-      },
+      }
     }
   },
   methods: {
@@ -66,13 +66,13 @@ export default {
       this.$refs.formData.validate(async (valid) => {
         if (valid) {
           const res = await messagesentrySalesmanBinding(this.formData)
-          this.$message.success('绑定成功!')
+          this.$elMessage('绑定成功!')
           this.$emit('success')
           this.visible = false
         } else {
-          return false;
+          return false
         }
-      });
+      })
     }
   }
 }
