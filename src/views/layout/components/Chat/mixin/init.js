@@ -30,7 +30,7 @@ export default {
         friend_group: [],
         user_contact: [],
         user_group: res.data.items.map((item) => ({
-          id: item.chatId,
+          id: item.chatId, // user_group里面的toContactId用的是双等号（==）匹配，而不是全等，所以会有18=="18"
           is_group: 1,
           displayName: item.name,
           avatar: '',
@@ -55,17 +55,30 @@ export default {
       }, IMUI)
     },
     initSocket(contact, isReconnection = false) {
-      if (!isReconnection) {
-        this.socket = new WebSocket(`${this.path}/ADMIN/${this.$store.getters.personId}?chat=${contact.id}`)
+      // console.log(contact) // contact.id为接口返回给组件后再返回的数值类型
+      // if (!isReconnection) this.socket = new WebSocket(`${this.path}/ADMIN/${this.$store.getters.personId}?chat=${contact.id}`)
+      if (this.socket) {
+        if (Object.keys(this.socket).length) {
+          if (Object.keys(this.socket).includes(String(contact.id))) {
+            this.socket[contact.id] = new WebSocket(`${this.path}/ADMIN/${this.$store.getters.personId}?chat=${contact.id}`)
+          } else {
+            this.socket[contact.id] = new WebSocket(`${this.path}/ADMIN/${this.$store.getters.personId}?chat=${contact.id}`)
+          }
+        } else {
+          this.socket[contact.id] = new WebSocket(`${this.path}/ADMIN/${this.$store.getters.personId}?chat=${contact.id}`)
+        }
+      } else {
+        this.socket = {}
+        this.socket[contact.id] = new WebSocket(`${this.path}/ADMIN/${this.$store.getters.personId}?chat=${contact.id}`)
       }
       // 监听socket连接
-      this.socket.onopen = this.open(contact)
+      this.socket[contact.id].onopen = this.open(contact)
       // 监听socket错误信息
-      this.socket.onerror = this.error
+      this.socket[contact.id].onerror = this.error
       // 监听socket消息
-      this.socket.onmessage = this.onmessage
+      this.socket[contact.id].onmessage = this.onmessage
       // 监听socket 关闭
-      this.socket.onclose = this.close(contact)
+      this.socket[contact.id].onclose = this.close(contact)
     },
 
     open(contact) {
@@ -73,18 +86,19 @@ export default {
         const res = await queryChatMessage({
           chatId: contact.id,
           limit: 30,
-          endTime: '',
-          order: 'desc'
+          endTime: '', // 查这个时间之后的
+          order: 'desc' // 无则从头开始查，有则从最新开始查
         })
         console.log(res)
+        const tempDate = Date.parse(new Date())
         this.messages = {
           group_history_message: [
             ...res.data.items.map((item) => JSON.parse(item.message).message).reverse(),
             {
-              id: Date.parse(new Date()),
+              id: tempDate, // 每一条消息的id
               status: 'succeed',
               type: 'event',
-              sendTime: Date.parse(new Date()),
+              sendTime: tempDate,
               content: '欢迎回来~',
               toContactId: contact.id,
               fileSize: 0,
@@ -167,8 +181,8 @@ export default {
         // default:
         //   this.getSendMessage(data, IMUI)
         //   break
-        case 'start':
-          this.messageInitEvent(data, IMUI)
+        case 'oneByOneForward':
+          this.oneByOneForward(data, IMUI)
           break
         default:
           this.getSendMessage(data, IMUI)
@@ -179,20 +193,25 @@ export default {
       return async () => {
         console.log('连接关闭, 正在重连...')
         setTimeout(() => {
-          this.socket = new WebSocket(`${this.path}/ADMIN/${this.$store.getters.personId}?chat=${contact.id}`)
+          // this.socket = new WebSocket(`${this.path}/ADMIN/${this.$store.getters.personId}?chat=${contact.id}`)
           this.initSocket(contact, true)
         }, 2000)
       }
     },
     // send(message, uri, method = 'GET') {
-    send(message, event, method = 'GET') {
+    send(message, event, contactObj = null) {
       const data = {
-        event,
-        message
+        message,
+        event
         // uri,
         // method
       }
-      this.socket.send(JSON.stringify(data))
+      const { IMUI } = this.$refs
+      if (contactObj) {
+        this.socket[contactObj.id] ? this.socket[contactObj.id].send(JSON.stringify(data)) : this.$message({ message: `发送到 ${contactObj.displayName}（id：${contactObj.id}）失败`, type: 'error' })
+      } else {
+        this.socket[IMUI.getCurrentContact().id].send(JSON.stringify(data))
+      }
     }
   }
 }

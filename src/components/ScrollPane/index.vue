@@ -1,6 +1,6 @@
 <template>
   <el-scrollbar ref="scrollContainer" :vertical="false" class="scroll-container" @wheel.native.prevent="handleScroll">
-    <slot/>
+    <slot />
   </el-scrollbar>
 </template>
 
@@ -76,19 +76,21 @@ export default {
 
 <style rel="stylesheet/scss" lang="scss" scoped>
 .scroll-container {
-  white-space: nowrap;
-  position: relative;
-  overflow: hidden;
-  width: 100%;
-  /deep/ {
-    .el-scrollbar__bar {
-      bottom: 0px;
-    }
-    .el-scrollbar__wrap {
-      height: 49px;
-      display: flex;
-      align-items: center;
-    }
-  }
+	white-space: nowrap;
+	position: relative;
+	overflow: hidden;
+	width: 100%;
+
+	/deep/ {
+		.el-scrollbar__bar {
+			bottom: 0px;
+		}
+
+		.el-scrollbar__wrap {
+			// height: 49px;
+			display: flex;
+			align-items: center;
+		}
+	}
 }
 </style>

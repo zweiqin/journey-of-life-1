@@ -140,8 +140,9 @@ export default {
 		}
 
 		.breadcrumb-container {
-			height: 100%;
-			width: 80%;
+			// height: 100%;
+			// width: 80%;
+			width: 100%;
 			// display: flex;
 			// flex-direction: row;
 			// justify-content: start;

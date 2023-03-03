@@ -165,100 +165,100 @@
             />
           </div>
         </template>
-        <!-- <template #sidebar-message-fixedtop="instance">
+        <template #sidebar-message-fixedtop="instance">
           <div style="margin-bottom:10px">
-          <p style="margin-top:10px;margin-left:10px;">
-          <el-autocomplete
-          v-model="filterContact"
-          size="small"
-          popper-class="my-autocomplete"
-          :fetch-suggestions="querySearch"
-          placeholder="请输入搜索联系人"
-          :popper-append-to-body="false"
-          @select="handleSelect"
-          >
-          <i slot="prefix" class="el-input__icon el-icon-search"></i>
-          <template slot-scope="{ item }">
-          <div :title="item.displayName" class="lemon-contact">
-          <span class="lemon-contact__avatar">
-          <span
-          class="lemon-avatar"
-          style="width: 40px; height: 40px; line-height: 40px; font-size: 20px;"
-          >
-          <img :src="item.avatar" />
-          </span>
-          </span>
-          <div class="lemon-contact__inner">
-          <p class="lemon-contact__label">
-          <span class="lemon-contact__name">{{ item.displayName }}</span>
-          </p>
+            <p style="margin-top:10px;margin-left:10px;">
+              <el-autocomplete
+                v-model="filterContact"
+                size="small"
+                popper-class="my-autocomplete"
+                :fetch-suggestions="querySearch"
+                placeholder="请输入搜索联系人"
+                :popper-append-to-body="false"
+                @select="handleSelect"
+              >
+                <i slot="prefix" class="el-input__icon el-icon-search"></i>
+                <template slot-scope="{ item }">
+                  <div :title="item.displayName" class="lemon-contact">
+                    <span class="lemon-contact__avatar">
+                      <span
+                        class="lemon-avatar"
+                        style="width: 40px; height: 40px; line-height: 40px; font-size: 20px;"
+                      >
+                        <img :src="item.avatar" />
+                      </span>
+                    </span>
+                    <div class="lemon-contact__inner">
+                      <p class="lemon-contact__label">
+                        <span class="lemon-contact__name">{{ item.displayName }}</span>
+                      </p>
+                    </div>
+                  </div>
+                </template>
+              </el-autocomplete>
+              <el-dropdown trigger="click" size="small" style="margin-left:10px">
+                <span class="el-dropdown-link" style="cursor: pointer;">
+                  <i
+                    class="el-icon-plus"
+                    style="font-size:20px;vertical-align: middle; font-weight:bold"
+                  ></i>
+                </span>
+                <el-dropdown-menu slot="dropdown">
+                  <el-dropdown-item divided>
+                    <span style="display: block" @click="handleCreateGroup(instance)">创建聊天室</span>
+                  </el-dropdown-item>
+                </el-dropdown-menu>
+              </el-dropdown>
+            </p>
           </div>
-          </div>
-          </template>
-          </el-autocomplete>
-          <el-dropdown trigger="click" size="small" style="margin-left:10px">
-          <span class="el-dropdown-link" style="cursor: pointer;">
-          <i
-          class="el-icon-plus"
-          style="font-size:20px;vertical-align: middle; font-weight:bold"
-          ></i>
-          </span>
-          <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item divided>
-          <span style="display: block" @click="handleCreateGroup(instance)">创建聊天室</span>
-          </el-dropdown-item>
-          </el-dropdown-menu>
-          </el-dropdown>
-          </p>
-          </div>
-          </template> -->
-        <!-- <template #sidebar-contact-fixedtop="instance">
+        </template>
+        <template #sidebar-contact-fixedtop="instance">
           <div style="margin-bottom:10px">
-          <p style="margin-top:10px;margin-left:10px;">
-          <el-autocomplete
-          v-model="filterContact"
-          size="small"
-          popper-class="my-autocomplete"
-          :fetch-suggestions="querySearch"
-          placeholder="请输入搜索联系人"
-          :popper-append-to-body="false"
-          @select="handleSelect"
-          >
-          <i slot="prefix" class="el-input__icon el-icon-search"></i>
-          <template slot-scope="{ item }">
-          <div :title="item.displayName" class="lemon-contact">
-          <span class="lemon-contact__avatar">
-          <span
-          class="lemon-avatar"
-          style="width: 40px; height: 40px; line-height: 40px; font-size: 20px;"
-          >
-          <img :src="item.avatar" />
-          </span>
-          </span>
-          <div class="lemon-contact__inner">
-          <p class="lemon-contact__label">
-          <span class="lemon-contact__name">{{ item.displayName }}</span>
-          </p>
+            <p style="margin-top:10px;margin-left:10px;">
+              <el-autocomplete
+                v-model="filterContact"
+                size="small"
+                popper-class="my-autocomplete"
+                :fetch-suggestions="querySearch"
+                placeholder="请输入搜索联系人"
+                :popper-append-to-body="false"
+                @select="handleSelect"
+              >
+                <i slot="prefix" class="el-input__icon el-icon-search"></i>
+                <template slot-scope="{ item }">
+                  <div :title="item.displayName" class="lemon-contact">
+                    <span class="lemon-contact__avatar">
+                      <span
+                        class="lemon-avatar"
+                        style="width: 40px; height: 40px; line-height: 40px; font-size: 20px;"
+                      >
+                        <img :src="item.avatar" />
+                      </span>
+                    </span>
+                    <div class="lemon-contact__inner">
+                      <p class="lemon-contact__label">
+                        <span class="lemon-contact__name">{{ item.displayName }}</span>
+                      </p>
+                    </div>
+                  </div>
+                </template>
+              </el-autocomplete>
+              <el-dropdown trigger="click" size="small" style="margin-left:10px">
+                <span class="el-dropdown-link" style="cursor: pointer;">
+                  <i
+                    class="el-icon-plus"
+                    style="font-size:20px;vertical-align: middle; font-weight:bold"
+                  ></i>
+                </span>
+                <el-dropdown-menu slot="dropdown">
+                  <el-dropdown-item divided>
+                    <span style="display: block" @click="handleCreateGroup(instance)">创建聊天室</span>
+                  </el-dropdown-item>
+                </el-dropdown-menu>
+              </el-dropdown>
+            </p>
           </div>
-          </div>
-          </template>
-          </el-autocomplete>
-          <el-dropdown trigger="click" size="small" style="margin-left:10px">
-          <span class="el-dropdown-link" style="cursor: pointer;">
-          <i
-          class="el-icon-plus"
-          style="font-size:20px;vertical-align: middle; font-weight:bold"
-          ></i>
-          </span>
-          <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item divided>
-          <span style="display: block" @click="handleCreateGroup(instance)">创建聊天室</span>
-          </el-dropdown-item>
-          </el-dropdown-menu>
-          </el-dropdown>
-          </p>
-          </div>
-          </template> -->
+        </template>
       </lemon-imui>
       <HistoryMessage ref="historyMessageRef" :history-message-dialog-data="historyMessageDialogData"></HistoryMessage>
       <LinkMessage ref="linkMessageRef" :link-message-dialog-data="linkMessageDialogData"></LinkMessage>
@@ -325,6 +325,9 @@ export default {
       // path: process.env.VUE_APP_WS_API,
       path: process.env.BASE_WS_API,
       recorder: false,
+      menuName: 'messages',
+      isContactsToMessages: false,
+      messagesContact: {},
       IMUI: '',
       filterContact: '',
       user: {},
@@ -392,44 +395,43 @@ export default {
       contextmenu: [
         {
           click: (e, instance, hide) => {
-            const { IMUI, message } = instance
-            if (getTime() - message.sendTime > 120000) {
-              this.$message({
-                message: '发送时间超出两分钟，不允许撤回',
-                type: 'error'
-              })
-            } else {
-              const data = {
-                id: generateRandId(),
-                type: 'event',
-                // 使用 jsx 时 click必须使用箭头函数（使上下文停留在vue内）
-                content: (
-                  <div>
-                    <span>
-                      你撤回了一条消息{' '}
-                      <span
-                        v-show={message.type == 'text'}
-                        style="color:#333;cursor:pointer"
-                        content={message.content}
-                        on-click={(e) => {
-                          IMUI.setEditorValue(e.target.getAttribute('content'))
-                        }}
-                      >
-                        重新编辑
-                      </span>
-                    </span>
-                  </div>
-                ),
-
-                toContactId: message.toContactId,
-                sendTime: getTime()
-              }
-              this.send(message, '/friend/withdraw_message')
-              IMUI.removeMessage(message.id)
-              IMUI.appendMessage(data, true)
-            }
-
-            hide()
+            this.$message({ message: '功能未开放，敬请期待！', type: 'warning' })
+            // const { IMUI, message } = instance
+            // if (getTime() - message.sendTime > 120000) {
+            //   this.$message({
+            //     message: '发送时间超出两分钟，不允许撤回',
+            //     type: 'error'
+            //   })
+            // } else {
+            //   const data = {
+            //     id: generateRandId(),
+            //     type: 'event',
+            //     // 使用 jsx 时 click必须使用箭头函数（使上下文停留在vue内）
+            //     content: (
+            //       <div>
+            //         <span>
+            //           你撤回了一条消息{' '}
+            //           <span
+            //             v-show={message.type == 'text'}
+            //             style="color:#333;cursor:pointer"
+            //             content={message.content}
+            //             on-click={(e) => {
+            //               IMUI.setEditorValue(e.target.getAttribute('content'))
+            //             }}
+            //           >
+            //             重新编辑
+            //           </span>
+            //         </span>
+            //       </div>
+            //     ),
+            //     toContactId: message.toContactId,
+            //     sendTime: getTime()
+            //   }
+            //   this.send(message, '/friend/withdraw_message')
+            //   IMUI.removeMessage(message.id)
+            //   IMUI.appendMessage(data, true)
+            // }
+            // hide()
           },
           visible: (instance) => instance.message.fromUser.id == this.user.id &&
             instance.message.sendTime >=
@@ -476,8 +478,9 @@ export default {
         },
         {
           click: (e, instance, hide) => {
-            const { IMUI, message } = instance
-            hide()
+            this.$message({ message: '功能未开放，敬请期待！', type: 'warning' })
+            // const { IMUI, message } = instance
+            // hide()
           },
           color: '#606266',
           text: "<i class='el-icon-connection' style='margin-right:10px'></i><span>引用</span>"
@@ -563,33 +566,84 @@ export default {
           text: "<i class='el-icon-chat-line-round' style='margin-right:10px'></i><span>好友信息</span>",
           click: (e, instance, hide) => {
             const { IMUI, contact } = instance
-            IMUI.updateContact({
-              id: contact.id,
-              lastContent: null
-            })
             hide()
+            this.$msgbox({
+              title: '好友信息',
+              message: h({
+                data() { return { value: '' } },
+                render(h) {
+                  return h('div', { }, [
+                    h('div', { }, `ID：${contact.id}`),
+                    h('div', { }, `是否聊天室：${contact.is_group == 1 ? '是' : '否'}`),
+                    h('div', { }, `聊天对象展示名字：${contact.displayName}`),
+                    h('div', { }, `聊天对象头像链接：${contact.avatar ? contact.avatar : '无'}`),
+                    h('div', { }, `聊天对象索引：${contact.index}`),
+                    h('div', { }, `未读条数：${contact.unread}`)
+                  ])
+                }
+              }),
+              showCancelButton: true,
+              confirmButtonText: '确定',
+              cancelButtonText: '取消',
+              beforeClose(action, instance, done) {
+                if (action === 'confirm') {
+                  instance.confirmButtonLoading = true
+                  instance.confirmButtonText = '执行中...'
+                  IMUI.updateContact({
+                    id: contact.id,
+                    displayName: this.$children[2].value || this.$children[3].value
+                  })
+                  done()
+                  instance.confirmButtonLoading = false
+                } else { done() }
+              }
+            }).then((action) => { })
           },
           visible: (instance) => instance.contact.is_group == 0
         },
         {
           text: "<i class='el-icon-edit' style='margin-right:10px'></i><span>修改备注</span>",
           click: (e, instance, hide) => {
-            const { IMUI, contact } = instance
-            IMUI.updateContact({
-              id: contact.id,
-              lastContent: null
-            })
             hide()
+            const { IMUI, contact } = instance
+            this.$msgbox({
+              title: '修改备注',
+              message: h({
+                data() { return { value: '' } },
+                render(h) {
+                  return h('el-input', { attrs: { placeholder: '请输入备注' }, props: { value: this.value }, on: { input: (event) => { this.value = event } } }, [])
+                }
+              }),
+              showCancelButton: true,
+              confirmButtonText: '确定',
+              cancelButtonText: '取消',
+              beforeClose(action, instance, done) {
+                if (action === 'confirm') {
+                  instance.confirmButtonLoading = true
+                  instance.confirmButtonText = '执行中...'
+                  IMUI.updateContact({
+                    id: contact.id,
+                    displayName: this.$children[2].value || this.$children[3].value
+                  })
+                  done()
+                  instance.confirmButtonLoading = false
+                } else { done() }
+              }
+            }).then((action) => { })
           },
           visible: (instance) => instance.contact.is_group == 0
         },
         {
           text: "<i class='el-icon-upload2' style='margin-right:10px'></i><span>会话置顶</span>",
           click: (e, instance, hide) => {
+            // console.log(e, instance, hide) // 此instance非IMUI，且IMUI在该instance里
             const { IMUI, contact } = instance
             IMUI.updateContact({
               id: contact.id,
-              lastContent: null
+              // lastContent: null
+              lastContent: '[置顶]',
+              lastContentType: 'event',
+              lastSendTime: Date.parse(new Date())
             })
             hide()
           }
@@ -600,7 +654,9 @@ export default {
             const { IMUI, contact } = instance
             IMUI.updateContact({
               id: contact.id,
-              lastContent: null
+              lastContent: null,
+              lastContentType: '',
+              lastSendTime: 0
             })
             hide()
           }
@@ -608,6 +664,7 @@ export default {
         {
           text: " <el-divider></el-divider><i class='el-icon-circle-close' style='color:#F56C6C' ><span style='padding-left:10px;'>退出聊天室</span></i>",
           click: (e, instance, hide) => {
+            return this.$message({ message: '功能未开放，敬请期待！', type: 'warning' })
             const { IMUI, contact } = instance
             IMUI.updateContact({
               id: contact.id,

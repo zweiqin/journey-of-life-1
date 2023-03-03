@@ -115,10 +115,15 @@ export default {
 }
 .chat {
   position: fixed;
-  right: 30px;
-  bottom: 0px;
+  // right: 30px;
+  // bottom: 0px;
+  right: 200px;
+  top: 0px;
   background-color: #fff;
   cursor: pointer;
   z-index: 10;
+	/deep/ .el-badge__content.is-fixed.is-dot {
+		top: 6px;
+	}
 }
 </style>

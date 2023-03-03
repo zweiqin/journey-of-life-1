@@ -1003,11 +1003,21 @@ export const asyncRouterMap = [
     },
     children: [
       {
+        path: 'customerPool',
+        // component: () => import('@/views/businessManagement/customerPool'),
+        component: () => import('@/views/errorPage/developing'),
+        name: 'CustomerPool',
+        meta: {
+          title: '客户池',
+          noCache: true
+        }
+      },
+      {
         path: 'informationSentry',
         component: () => import('@/views/businessManagement/informationSentry'),
         name: 'InformationSentry',
         meta: {
-          perms: [ 'POST /admin/messagesentry/queryMsgSentryList' ],
+          // perms: [ 'POST /admin/messagesentry/queryMsgSentryList' ],
           title: '信息哨兵',
           noCache: true
         }
@@ -1027,7 +1037,7 @@ export const asyncRouterMap = [
         component: () => import('@/views/businessManagement/scriptSetting'),
         name: 'ScriptSetting',
         meta: {
-          perms: [ 'POST /admin/msgsay/msgSayList' ],
+          // perms: [ 'POST /admin/msgsay/msgSayList' ],
           title: '话术设置',
           noCache: true
         }
@@ -1037,7 +1047,7 @@ export const asyncRouterMap = [
         component: () => import('@/views/businessManagement/marketingPortrait'),
         name: 'MarketingPortrait',
         meta: {
-          perms: [ 'GET /admin/statistical/home' ],
+          // perms: [ 'GET /admin/statistical/home' ],
           title: '营销画像',
           noCache: true
         }

@@ -131,6 +131,36 @@ export default {
         }
       }
       for (let i = 0; i < data.user_group.length; i++) {
+        // user_group里面的toContactId用的是双等号（==）匹配，而不是全等，所以会有18=="18"
+        // {"id": "5AXq8sE8BMPt37FW", // 指聊天室id，对应（收发）消息的toContactId
+        // 	"is_group": 1,
+        // 	"displayName": "啊啊啊",
+        // 	"avatar": "https://hyperf-cms.oss-cn-guangzhou.aliyuncs.com/chat/group/avatar/69344bc3868e000a2136e21fd5761905.jpg",
+        // 	"introduction": "",
+        // 	"validation": 0,
+        // 	"size": 200,
+        // 	"uid": 775,
+        // 	"index": "[0]群聊",
+        // 	"unread": 0,
+        // 	"member_total": 4,
+        // 	"level": 0,
+        // 	"lastContent": "123456 , zero1233276 , guanzhao 加入群聊",
+        // 	"lastContentType": "event",
+        // 	"lastSendTime": 1677039740000,
+        // 	"group_member": [
+        // 		{
+        // 			"id": 775,
+        // 			"desc": "mnb123",
+        // 			"avatar": "https://shmily-album.oss-cn-shenzhen.aliyuncs.com/admin_face/face10.png",
+        // 			"level": 0
+        // 		},
+        // 		{
+        // 			"id": 4,
+        // 			"desc": "123456",
+        // 			"avatar": "https://shmily-album.oss-cn-shenzhen.aliyuncs.com/admin_face/face2.png",
+        // 			"level": 2
+        // 		},
+      	// 	]}
         if (
           data.user_group[i].lastContent != '' &&
           data.user_group[i].lastContentType != ''
@@ -284,6 +314,10 @@ export default {
         avatar: data.message.avatar
       })
     },
+    oneByOneForward(data, IMUI) {
+      IMUI.appendMessage(data.message, true)
+      IMUI.messageViewToBottom()
+    },
     getSendMessage(data, IMUI) {
       if (data.message.fromUser.id === this.$store.getters.personId) return
       IMUI.appendMessage(data.message, true)
@@ -318,17 +352,16 @@ export default {
       //   uri
       // }
       // this.socket.send(JSON.stringify(data))
-      // console.log(contact)
       this.next = next
       this.initSocket(contact)
     },
     handleSend(message, next, file) {
       // {
-      // 	"id": "e2325d99-a706-441b-9c2f-79f25a0d94e1",
+      // 	"id": "e2325d99-a706-441b-9c2f-79f25a0d94e1", // 每一条消息的id
       // 	"type": "text",
       // 	"status": "succeed",
       // 	"sendTime": 1677142011288,
-      // 	"toContactId": 15,
+      // 	"toContactId": 15, // 聊天室的id
       // 	"fromUser": {
       // 		"avatar": "https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/zp7zbhidobolzr8z4b90.png",
       // 		"id": 8,
@@ -394,11 +427,31 @@ export default {
       }
     },
     handleChangeContact(contact, instance) {
-      // console.log(contact, instance)
-      instance.updateContact({
-        id: contact.id,
-        unread: 0
-      })
+      // console.log(contact, instance, instance.getCurrentMessages())
+      // 强制锁死contacts的联系人的点击事件（即使其无效）
+      // if (this.menuName === 'contacts') {
+      //   instance.changeContact(this.messagesContact.id) // 就算用this.$nextTick(()也不行（应该是组件内部问题），就算用setTimeout(()也有bug（因为会切换回来）
+      // } else {
+      //   this.messagesContact = contact
+      //   instance.updateContact({ id: contact.id, unread: 0 })
+      // }
+
+      // // 还是有一点缺陷，即必须点发送消息才行，否则直接切回messages则会有停留bug
+      // if (this.menuName === 'contacts') {
+      //   instance.updateContact({ id: contact.id, unread: 0 })
+      // } else {
+      //   this.messagesContact = contact
+      //   instance.updateContact({ id: contact.id, unread: 0 })
+      // }
+
+      // console.log(JSON.stringify(this.messagesContact))
+      if (this.menuName === 'messages') {
+        this.messagesContact = contact
+        instance.updateContact({ id: contact.id, unread: 0 })
+      }
+      // console.log(JSON.stringify(this.messagesContact))
+      // console.log(this.menuName)
+
       this.historyMessageDialogData.contact_id = contact.id
       instance.closeDrawer()
       instance.messageViewToBottom()
@@ -502,11 +555,13 @@ export default {
     },
     beforeFileUpload(file, dataObj, type) {
       const { IMUI } = this.$refs
+      const tempDate = Date.parse(new Date())
       const message = {
-        id: dataObj.messageId,
+        // id: dataObj.messageId,
+        id: tempDate,
         status: 'going',
         type,
-        sendTime: Date.parse(new Date()),
+        sendTime: tempDate,
         content: '',
         fileSize: file.size,
         fileName: file.name,
@@ -524,10 +579,10 @@ export default {
     },
     afterFileUpload(res, file) {
       const { IMUI } = this.$refs
-      if (res.code != 200) {
+      if (res.errno != 0) {
         this.$message({
           showClose: true,
-          message: res.msg,
+          message: res.errmsg,
           type: 'error'
         })
         IMUI.updateMessage({
@@ -536,19 +591,22 @@ export default {
         })
       } else {
         IMUI.updateMessage({
-          id: res.data.messageId,
+          // id: res.data.messageId,
+          id: this.fileIdToMessageId[file.uid],
           content: res.data.url,
-          fileExt: res.data.fileExt,
+          fileExt: res.data.fileExt || '',
           status: 'succeed'
         })
-        const messageId = res.data.messageId
-        const uri =
-          typeof this.messagesToBeSend[messageId].toContactId === 'number'
-            ? '/friend/send_message'
-            : '/group/send_message'
-        this.send(this.messagesToBeSend[messageId], uri)
+        // const messageId = res.data.messageId
+        // const uri =
+        //   typeof this.messagesToBeSend[messageId].toContactId === 'number'
+        //     ? '/friend/send_message'
+        //     : '/group/send_message'
+        // this.send(this.messagesToBeSend[messageId], uri)
+        this.send(this.messagesToBeSend[this.fileIdToMessageId[file.uid]], '')
       }
-      delete this.messagesToBeSend[res.data.messageId]
+      // delete this.messagesToBeSend[res.data.messageId]
+      delete this.messagesToBeSend[this.fileIdToMessageId[file.uid]]
       delete this.fileIdToMessageId[file.uid]
     },
     querySearch(queryString, cb) {
@@ -570,12 +628,23 @@ export default {
       const { IMUI } = this.$refs
       IMUI.changeContact(item.id)
     },
-    handleChangeMenu() {
+    handleChangeMenu(name) {
       const { IMUI } = this.$refs
+      // console.log(this.menuName)
+      this.menuName === 'contacts' && name === 'messages' ? this.isContactsToMessages = true : this.isContactsToMessages = false
+      this.menuName = name
+      if (this.isContactsToMessages) {
+        IMUI.changeContact(this.messagesContact.id) // 如果该id为假，则不会执行changeContact对应的handleChangeContact
+        // 在contacts选择另一个人点击发送消息（相当于执行handleChangeContact，不过由于组件内部原因，会拖到后面等handleChangeMenu执行完之后再次执行）后：
+        // 先handleChangeMenu->console(contacts)->【menuName为messages成立】->【contact为原来的】changeContact对应的handleChangeContact[console(messages)]->console(messages)
+        // ->【contact为后来的】再次执行handleChangeContact()->console(messages)
+      }
+      // console.log(this.menuName)
       IMUI.closeDrawer()
       this.closeMulti()
     },
     mergeForward() {
+      return this.$message({ message: '功能未开放，敬请期待！', type: 'warning' })
       const { IMUI } = this.$refs
       // 如果选中消息大于两条才显示
       if (this.multiMessage.length >= 2) {
@@ -594,19 +663,19 @@ export default {
         this.forwardTool.contact = IMUI.getContacts()
         this.forwardTool.contactsSource = IMUI.getContacts()
         this.forwardTool.multiMessage = this.multiMessage
-        this.forwardTool.type = 'mergeForward'
+        this.forwardTool.type = 'mergeForward' // 合并转发
         this.forwardTool.user = this.user
       }
     },
     oneByoneForward(message) {
       const { IMUI } = this.$refs
       if (message != '' && message != undefined && message != null) {
-        // 如果选中消息大于两条才显示
+        // 如果选中消息为真才显示
         this.forwardTool.dialogVisible = true
         this.forwardTool.contact = IMUI.getContacts()
         this.forwardTool.contactsSource = IMUI.getContacts()
         this.forwardTool.multiMessage = [ message ]
-        this.forwardTool.type = 'oneByOneForward'
+        this.forwardTool.type = 'oneByOneForward' // 单条转发
         this.forwardTool.user = this.user
       } else {
         // 如果选中消息大于两条才显示
@@ -614,7 +683,7 @@ export default {
           this.forwardTool.dialogVisible = true
           this.forwardTool.contact = IMUI.getContacts()
           this.forwardTool.contactsSource = IMUI.getContacts()
-          this.forwardTool.multiMessage = this.multiMessage
+          this.forwardTool.multiMessage = this.multiMessage // 逐条转发
           this.forwardTool.type = 'oneByOneForward'
           this.forwardTool.user = this.user
         }

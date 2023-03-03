@@ -69,7 +69,7 @@
           </el-select>
         </div>
       </el-tab-pane>
-      <el-tab-pane label="关于IM">
+      <el-tab-pane label="关于聊天">
         <div style="margin-bottom:20px">
           <span style="margin-left:20px; margin-right:20px;font-size:14px">版本信息：</span>
           <span>1.0.0</span>
@@ -145,7 +145,8 @@ export default {
   methods: {
     init() {},
     clickHelp() {
-      location.href = 'http://june000.gitee.io/lemon-im/'
+      // location.href = 'http://june000.gitee.io/lemon-im/'
+      location.href = 'https://www.baidu.com/s?wd=聊天'
     },
     handlePlayAudio(messageToneType) {
       const buttonAudio = document.getElementById('eventAudio')

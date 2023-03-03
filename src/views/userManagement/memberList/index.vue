@@ -174,7 +174,7 @@
       </template>
     </VxeTable>
 
-    <div v-show="isShow" class="other-container">
+    <div v-show="isShow && isAdminRole" class="other-container">
       <div class="card-container">
         <el-card>
           <div slot="header"><span>平台角色统计</span></div>
@@ -304,7 +304,7 @@ export default {
   },
   created() {
     this.getList()
-    this.getRoleCount()
+    if (this.isAdminRole) this.getRoleCount()
   },
   methods: {
     // 勾选

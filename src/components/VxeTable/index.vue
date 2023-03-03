@@ -185,7 +185,7 @@ export default {
         // currentPage: 1,
         // pageSize: 20,
         background: true,
-        pageSizes: [10, 20, 30, 40, 50, 100],
+        pageSizes: [10, 20, 30, 40, 50, 100, 10000],
         layout: 'total, sizes, prev, pager, next, jumper',
         total: 0
       },

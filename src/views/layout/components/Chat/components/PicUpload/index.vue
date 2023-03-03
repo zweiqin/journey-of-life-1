@@ -37,8 +37,9 @@ export default {
       },
       dialogVisible: false,
       action:
-        process.env.VUE_APP_BASE_API + 'laboratory/chat_module/upload_pic',
-      headers: { Authorization: 'Bearer ' + getToken() }
+        // process.env.VUE_APP_BASE_API + 'laboratory/chat_module/upload_pic',
+        process.env.BASE_API + '/storage/create',
+      headers: { 'X-Dts-Admin-Token': getToken() }
     }
   },
   computed: {

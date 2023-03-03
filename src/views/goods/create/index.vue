@@ -202,8 +202,8 @@
                   <i class="el-icon-question  body-form-icon"></i>
                 </el-tooltip>
               </el-form-item>
-              <el-form-item label="商品材质" prop="textureId">
-                <el-select v-model="formData.textureId" placeholder="请选择商品材质">
+              <el-form-item label="商品材质" prop="materialId">
+                <el-select v-model="formData.materialId" placeholder="请选择商品材质">
                   <el-option v-for="item in goodsTextureList" :key="item.id" :label="item.materialName" :value="item.id" />
                 </el-select>
                 <el-tooltip content="根据商品选择对应材质" placement="top-start">
@@ -250,6 +250,15 @@
                 <el-tooltip content="对这个商品的详细介绍和介绍图片，一般用来放商品介绍图片" placement="top-start">
                   <i class="el-icon-question  body-form-icon"></i>
                 </el-tooltip>
+              </el-form-item>
+              <el-form-item v-if="$store.getters.roles.includes('超级管理员')" label="点击量" prop="clickVolume">
+                <el-input v-model="formData.clickVolume" clearable placeholder="请输入点击量" />
+              </el-form-item>
+              <el-form-item v-if="$store.getters.roles.includes('超级管理员')" label="访问量" prop="trafficVolume">
+                <el-input v-model="formData.trafficVolume" clearable placeholder="请输入访问量" />
+              </el-form-item>
+              <el-form-item v-if="$store.getters.roles.includes('超级管理员')" label="收藏量" prop="collectVolume">
+                <el-input v-model="formData.collectVolume" clearable placeholder="请输入收藏量" />
               </el-form-item>
             </el-form>
           </div>
@@ -499,7 +508,7 @@ export default {
         brandId: '',
         supplierId: '',
         styleId: '',
-        textureId: '',
+        materialId: '',
         tagId: '',
         productPlace: '',
         sortOrder: '100',
@@ -508,7 +517,10 @@ export default {
         timeType: 0,
         limitDays: '',
         endTime: '',
-        detail: ''
+        detail: '',
+        clickVolume: '',
+        trafficVolume: '',
+        collectVolume: ''
       },
       formRules: {
         name: [
@@ -560,7 +572,7 @@ export default {
         styleId: [
           { required: false, message: '请选择商品风格' }
         ],
-        textureId: [
+        materialId: [
           { required: false, message: '请选择商品材质' }
         ],
         tagId: [
@@ -583,6 +595,15 @@ export default {
         ],
         detail: [
           { required: true, message: '请输入商品详情' }
+        ],
+        clickVolume: [
+          { required: false, message: '请输入点击量' }
+        ],
+        trafficVolume: [
+          { required: false, message: '请输入访问量' }
+        ],
+        collectVolume: [
+          { required: false, message: '请输入收藏量' }
         ]
       },
       specForm: {

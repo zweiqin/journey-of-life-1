@@ -16,12 +16,13 @@
         size="medium"
         placeholder="输入关键字进行过滤"
       ></el-input>
+      <!-- value-format="timestamp" -->
       <el-date-picker
         v-model="listQuery.date"
         size="medium"
         type="date"
         placeholder="选择日期"
-        value-format="timestamp"
+        value-format="yyyy-MM-dd"
       ></el-date-picker>
       <div class="selected-fields">
         <div ref="selectedBox" class="selected-box">
@@ -53,6 +54,16 @@
                   >
                     <div class="message__content" style="background-color:#f5f5f5">
                       <span v-html="item.content"></span>
+                    </div>
+                  </div>
+
+                  <div
+                    v-if="item.type == 'link'"
+                    class="message__content-flex"
+                    style="background-color:#808080"
+                  >
+                    <div class="message__content" style="background-color:#808080">
+                      <span v-text="'链接：' + item.content"></span>
                     </div>
                   </div>
 
@@ -109,8 +120,9 @@
 </template>
 
 <script>
-import { historyMessage } from '@/api/laboratory/chat_module/friend'
-import { groupHistoryMessage } from '@/api/laboratory/chat_module/group'
+// import { historyMessage } from '@/api/laboratory/chat_module/friend'
+// import { groupHistoryMessage } from '@/api/laboratory/chat_module/group'
+import { queryChatMessage } from '@/api/laboratory/chat_module/chat'
 import { download } from '@/utils/file'
 import Message from '../LemonMessageForward/components/Message'
 import VideoPreview from '../LemonMessageVideo/components/VideoPreview'
@@ -149,7 +161,8 @@ export default {
       this.init()
     },
     'listQuery.content'(val) {
-      this.init()
+      // this.init()
+      val ? this.historyMessageList = this.historyMessageList.filter((item) => item.content.includes(val)) : this.init()
     }
   },
   mounted() {},
@@ -157,21 +170,52 @@ export default {
   methods: {
     init() {
       this.listQuery.contact_id = this.historyMessageDialogData.contact_id
-      if (typeof this.listQuery.contact_id === 'number') {
-        historyMessage(this.listQuery).then((response) => {
-          if (response.code == 200) {
-            this.historyMessageList = response.data.list
-            this.total = response.data.total
-          }
-        })
-      } else {
-        groupHistoryMessage(this.listQuery).then((response) => {
-          if (response.code == 200) {
-            this.historyMessageList = response.data.list
-            this.total = response.data.total
-          }
-        })
+      const tempListQuery = {
+        chatId: this.listQuery.contact_id,
+        limit: this.listQuery.page_size,
+        endTime: this.listQuery.date + ' 00:00:00',
+        order: 'desc',
+        content: this.listQuery.content
       }
+      queryChatMessage(tempListQuery).then((response) => {
+        this.historyMessageList = response.data.items.map((item) => {
+          const tempObj = JSON.parse(item.message)
+          // console.log(tempObj, tempObj.fromUser)
+          return {
+            id: tempObj.message.id,
+            status: tempObj.message.status,
+            type: tempObj.message.type,
+            fileSize: tempObj.message.fileSize,
+            fileName: tempObj.message.fileName,
+            fileExt: tempObj.message.fileExt || '',
+            sendTime: new Date(Number(tempObj.message.sendTime)).toLocaleString(),
+            content: tempObj.message.content,
+            avatar: tempObj.message.fromUser.avatar,
+            displayName: tempObj.message.fromUser.displayName,
+            fromUser: {
+              id: tempObj.message.fromUser.id,
+              avatar: tempObj.message.fromUser.avatar,
+              displayName: tempObj.message.fromUser.displayName
+            }
+          }
+        })
+        this.total = response.data.items.length
+      })
+      // if (typeof this.listQuery.contact_id === 'number') {
+      //   historyMessage(this.listQuery).then((response) => {
+      //     if (response.code == 200) {
+      //       this.historyMessageList = response.data.list
+      //       this.total = response.data.total
+      //     }
+      //   })
+      // } else {
+      //   groupHistoryMessage(this.listQuery).then((response) => {
+      //     if (response.code == 200) {
+      //       this.historyMessageList = response.data.list
+      //       this.total = response.data.total
+      //     }
+      //   })
+      // }
     },
     closeDialog() {
       this.listQuery = Object.assign({}, defaultListQuery)

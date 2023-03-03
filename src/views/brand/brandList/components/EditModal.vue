@@ -59,8 +59,13 @@
           show-word-limit
         />
       </el-form-item>
+      <el-form-item label="门店类型" prop="brandgenre">
+        <el-select v-model="formData.brandgenre" placeholder="请选择门店类型" filterable clearable style="width: 220px;">
+          <el-option v-for="item in storeTypeList" :key="item.id" :label="item.storeName" :value="item.id" />
+        </el-select>
+      </el-form-item>
       <el-form-item label="门店风格" prop="styleId">
-        <el-select v-model="formData.styleId" placeholder="请选择门店风格">
+        <el-select v-model="formData.styleId" placeholder="请选择门店风格" filterable clearable style="width: 220px;">
           <el-option v-for="item in brandStyleList" :key="item.id" :label="item.name" :value="item.id" />
         </el-select>
       </el-form-item>
@@ -77,6 +82,15 @@
       <el-form-item label="门店排序" prop="brandSort">
         <el-input v-model="formData.brandSort" clearable placeholder="请输入门店排序" />
       </el-form-item>
+      <el-form-item v-if="$store.getters.roles.includes('超级管理员')" label="点击量" prop="clickVolume">
+        <el-input v-model="formData.clickVolume" clearable placeholder="请输入点击量" />
+      </el-form-item>
+      <el-form-item v-if="$store.getters.roles.includes('超级管理员')" label="访问量" prop="trafficVolume">
+        <el-input v-model="formData.trafficVolume" clearable placeholder="请输入访问量" />
+      </el-form-item>
+      <el-form-item v-if="$store.getters.roles.includes('超级管理员')" label="收藏量" prop="collectVolume">
+        <el-input v-model="formData.collectVolume" clearable placeholder="请输入收藏量" />
+      </el-form-item>
     </el-form>
     <span slot="footer" class="dialog-footer">
       <el-button size="mini" @click="handleClose">取 消</el-button>
@@ -88,7 +102,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import MyUpload from '@/components/MyUpload'
-import { brandRead, brandCreate, brandUpdate, brandLabelList } from '@/api/brand/brandList'
+import { brandRead, brandCreate, brandUpdate, brandLabelList, storeTypeList } from '@/api/brand/brandList'
 import { roleList } from '@/api/enterprise/role'
 import { brandStyleList } from '@/api/brand/brandStyle'
 import { getNewMaterialCityList } from '@/api/materialManagement/materialCity'
@@ -129,10 +143,14 @@ export default {
         startTime: '',
         endTime: '',
         explain: '',
+        brandgenre: '',
         styleId: '',
         labelId: '',
         materialCityId: '',
-        brandSort: '100'
+        brandSort: '100',
+        clickVolume: '',
+        trafficVolume: '',
+        collectVolume: ''
       },
       formRules: {
         name: [
@@ -165,6 +183,9 @@ export default {
         licenseUrl: [
           { required: false, message: '请上传营业执照' }
         ],
+        brandgenre: [
+          { required: false, message: '请选择门店类型' }
+        ],
         styleId: [
           { required: false, message: '请选择门店风格' }
         ],
@@ -176,11 +197,21 @@ export default {
         ],
         sortOrder: [
           { required: true, message: '请输入商品排序' }
+        ],
+        clickVolume: [
+          { required: false, message: '请输入点击量' }
+        ],
+        trafficVolume: [
+          { required: false, message: '请输入访问量' }
+        ],
+        collectVolume: [
+          { required: false, message: '请输入收藏量' }
         ]
       },
       brandLabelList: [],
       brandStyleList: [],
-      materialCityList: []
+      materialCityList: [],
+      storeTypeList: []
     }
   },
   computed: {
@@ -196,6 +227,7 @@ export default {
       this.getBrandLabelList()
       this.getBrandStyleList()
       this.getNewMaterialCityList()
+      this.getstoreTypeList()
     },
     // 商品标签
     async getBrandLabelList() {
@@ -217,6 +249,18 @@ export default {
         limit: 9999
       })
       this.materialCityList = res.data.items
+    },
+    // 门店类型
+    async getstoreTypeList() {
+      const res = await storeTypeList({
+        storeName: '',
+        pid: '',
+        sort: '',
+        order: '',
+        page: 1,
+        limit: 9999
+      })
+      this.storeTypeList = res.data.items
     },
     handleOpen(params = {}) {
       this.modalOptions.title = params.id ? '编辑门店' : '添加门店'

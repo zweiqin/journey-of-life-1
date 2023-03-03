@@ -22,9 +22,9 @@ export default {
       IMUI.setLastContentRender('link', (message) => <span>[链接]</span>)
       // 初始化工具栏
       IMUI.initEditorTools([
-        // {
-        //   name: 'emoji'
-        // },
+        {
+          name: 'emoji'
+        },
         {
           name: 'voice',
           click: () => this.$message({ showClose: true, message: '暂未支持语音消息，敬请期待', type: 'error' }),
@@ -34,7 +34,7 @@ export default {
         {
           name: 'uploadImage',
           click: () => {
-            return this.$message({ message: '功能未开放，敬请期待！', type: 'warning' })
+            // return this.$message({ message: '功能未开放，敬请期待！', type: 'warning' })
             this.$refs.picUploadCom.$refs.fileUpload.$children[0].$refs.input.click()
           }
         },
@@ -68,7 +68,7 @@ export default {
           isRight: true,
           title: '历史记录',
           click: () => {
-            return this.$message({ message: '功能未开放，敬请期待！', type: 'warning' })
+            // return this.$message({ message: '功能未开放，敬请期待！', type: 'warning' })
             this.historyMessageDialogData.visible = true
             this.$refs.historyMessageRef.init()
           },
@@ -82,15 +82,15 @@ export default {
           name: 'messages'
         },
         {
-          name: 'contacts',
-          click: () => this.$message({ message: '功能未开放，敬请期待！', type: 'warning' })
+          name: 'contacts'
+          // click: () => this.$message({ message: '功能未开放，敬请期待！', type: 'warning' })
         },
         {
           name: 'setting',
           title: '设置',
           unread: 0,
           click: () => {
-            return this.$message({ message: '功能未开放，敬请期待！', type: 'warning' })
+            // return this.$message({ message: '功能未开放，敬请期待！', type: 'warning' })
             this.settingDialogData.visible = true
           },
           render: (menu) => <i class="el-icon-setting"></i>,
@@ -99,8 +99,7 @@ export default {
       ])
       this.initMultiMenu()
 
-      const that = this
-
+      // const that = this
       // $(
       //   "#app > div > div.chatMain > div > div > div.el-dialog__body > div.lemon.lemon-wrapper.lemon-wrapper--theme-blue > div:nth-child(3) div.lemon-sidebar__scroll"
       // ).remove();
