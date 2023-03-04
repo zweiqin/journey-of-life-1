@@ -6,11 +6,11 @@
       <el-input
         v-model="listQuery.search" clearable size="mini" class="filter-item"
         style="width: 200px;"
-        placeholder="请输入名称、地址或电话"
+        placeholder="请输入名称、地址或电话" @keyup.enter.native="getList"
       />
       <el-button
-        v-permission="[ `POST ${api.getRegionAgentList}` ]" size="mini" class="filter-item"
-        type="primary" icon="el-icon-search" @click="getList"
+        v-permission="[ `POST ${api.getRegionAgentList}` ]" size="mini" class="filter-item" type="primary"
+        icon="el-icon-search" @click="getList"
       >
         查找
       </el-button>

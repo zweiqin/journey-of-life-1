@@ -1115,15 +1115,15 @@ export const asyncRouterMap = [
       icon: 'community'
     },
     children: [
-      {
-        path: 'communityArticleList',
-        component: () => import('@/views/communityManagement/communityArticleList'),
-        name: 'communityArticleList',
-        // perms: [],
-        meta: {
-          title: '文章列表'
-        }
-      },
+      // {
+      //   path: 'communityArticleList',
+      //   component: () => import('@/views/communityManagement/communityArticleList'),
+      //   name: 'communityArticleList',
+      //   // perms: [],
+      //   meta: {
+      //     title: '文章列表'
+      //   }
+      // },
       {
         path: 'communityArticleCreate',
         component: () => import('@/views/communityManagement/communityArticleCreate'),

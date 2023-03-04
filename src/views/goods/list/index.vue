@@ -6,12 +6,12 @@
       <el-input
         v-model="listQuery.goodsSn" clearable size="mini" class="filter-item"
         style="width: 200px;"
-        placeholder="请输入商品编号"
+        placeholder="请输入商品编号" @keyup.enter.native="getList"
       />
       <el-input
         v-model="listQuery.name" clearable size="mini" class="filter-item"
         style="width: 200px;"
-        placeholder="请输入商品名称"
+        placeholder="请输入商品名称" @keyup.enter.native="getList"
       />
       <el-select
         v-model="listQuery.styleId" clearable size="mini" class="filter-item"
@@ -58,10 +58,7 @@
       </template>
       <template #gallery="{ row }">
         <div v-if="row.gallery && row.gallery.length">
-          <el-image
-            :src="row.gallery[0]" style="width:40px; height:40px" fit="cover"
-            :preview-src-list="row.gallery"
-          />
+          <el-image :src="row.gallery[0]" style="width:40px; height:40px" fit="cover" :preview-src-list="row.gallery" />
           <span v-if="row.gallery.length > 1" style="margin-left:8px;">+{{ row.gallery.length }}</span>
         </div>
       </template>
@@ -104,8 +101,8 @@
           编辑
         </el-button>
         <el-button
-          v-permission="[ `POST /admin${api.goodsUpOnSale}` ]" :disabled="!row.isOnSale" type="info"
-          size="mini" @click="handleUpdate(row)"
+          v-permission="[ `POST /admin${api.goodsUpOnSale}` ]" :disabled="!row.isOnSale" type="info" size="mini"
+          @click="handleUpdate(row)"
         >
           下架
         </el-button>

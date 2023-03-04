@@ -5,7 +5,7 @@
     <div class="filter-container">
       <el-input
         v-model="listQuery.search" clearable class="filter-item" style="width: 200px;"
-        placeholder="请输入材质名称、材质介绍或材质备注"
+        placeholder="请输入材质名称、材质介绍或材质备注" @keyup.enter.native="getList"
       />
       <el-button
         v-permission="[ `GET /admin${api.getNewMaterialList}` ]" size="mini" class="filter-item" type="primary"

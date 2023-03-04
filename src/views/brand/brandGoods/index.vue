@@ -12,13 +12,13 @@
       </el-select>
       <el-input
         v-model="listQuery.goodsSn" clearable size="mini" class="filter-item"
-        style="width: 200px;"
-        placeholder="请输入商品编号"
+        style="width: 200px;" placeholder="请输入商品编号"
+        @keyup.enter.native="getList"
       />
       <el-input
         v-model="listQuery.name" clearable size="mini" class="filter-item"
-        style="width: 200px;"
-        placeholder="请输入商品名称"
+        style="width: 200px;" placeholder="请输入商品名称"
+        @keyup.enter.native="getList"
       />
       <el-select
         v-model="listQuery.styleId" clearable size="mini" class="filter-item"

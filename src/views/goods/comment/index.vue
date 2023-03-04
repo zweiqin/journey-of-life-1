@@ -3,7 +3,11 @@
 
     <!-- 查询和其他操作 -->
     <div class="filter-container">
-      <el-input v-model="listQuery.userId" clearable class="filter-item" style="width: 200px;" placeholder="请输入用户编号" />
+      <el-input
+        v-model="listQuery.userId" clearable class="filter-item" style="width: 200px;"
+        placeholder="请输入用户编号"
+        @keyup.enter.native="getList"
+      />
       <!-- <el-input
         v-model="listQuery.valueId"
         clearable
@@ -44,10 +48,7 @@
       </template>
       <template #picUrls="{ row }">
         <div v-if="row.picUrls && row.picUrls.length">
-          <el-image
-            :src="row.picUrls[0]" style="width:40px; height:40px" fit="cover"
-            :preview-src-list="row.picUrls"
-          />
+          <el-image :src="row.picUrls[0]" style="width:40px; height:40px" fit="cover" :preview-src-list="row.picUrls" />
           <span v-if="row.picUrls.length > 1" style="margin-left:8px;">+{{ row.picUrls.length }}</span>
         </div>
       </template>

@@ -6,7 +6,7 @@
       <el-input
         v-model="listQuery.title" clearable size="mini" class="filter-item"
         style="width: 200px;"
-        placeholder="请输入文章标题"
+        placeholder="请输入文章标题" @keyup.enter.native="getList"
       />
       <el-select v-model="listQuery.type" size="mini" class="filter-item" clearable placeholder="请选择文章类型">
         <el-option v-for="item in typeList" :key="item.value" :label="item.label" :value="item.value" />
@@ -16,8 +16,7 @@
       </el-select>
       <el-button
         v-permission="[ `GET ${api.listArticle}` ]" class="filter-item" size="mini" type="primary"
-        icon="el-icon-search"
-        @click="getList"
+        icon="el-icon-search" @click="getList"
       >
         查找
       </el-button>
@@ -27,7 +26,12 @@
       :custom-columns-config="customColumnsConfig" download custom-field @update-fields="updateFields"
       @refresh="getList" @download="toolsMixin_exportMethod($refs.vxeTable, '文章列表')"
     >
-      <el-button v-permission="[ `POST ${api.publishArticle}` ]" class="filter-item" size="mini" type="primary" icon="el-icon-plus" @click="handleCreate">添加</el-button>
+      <el-button
+        v-permission="[ `POST ${api.publishArticle}` ]" class="filter-item" size="mini" type="primary"
+        icon="el-icon-plus" @click="handleCreate"
+      >
+        添加
+      </el-button>
     </TableTools>
 
     <!-- 查询结果 -->
@@ -43,7 +47,12 @@
       </template>
       <template #operate="{ row }">
         <el-button v-permission="[ `POST ${api.editArticle}` ]" size="mini" @click="handleUpdate(row)">编辑</el-button>
-        <el-button v-permission="[ `POST ${api.deleteArticle}` ]" type="danger" size="mini" @click="handleDelete(row)">删除</el-button>
+        <el-button
+          v-permission="[ `POST ${api.deleteArticle}` ]" type="danger" size="mini"
+          @click="handleDelete(row)"
+        >
+          删除
+        </el-button>
       </template>
     </VxeTable>
 

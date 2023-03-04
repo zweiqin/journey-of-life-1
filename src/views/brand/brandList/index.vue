@@ -2,9 +2,9 @@
   <div class="app-container">
     <!-- 查询和其他操作 -->
     <div class="filter-container">
-      <el-input v-model="listQuery.name" clearable class="filter-item" style="width: 200px;" placeholder="输入公司名称" />
-      <el-input v-model="listQuery.keeperName" clearable class="filter-item" style="width: 200px;" placeholder="输入店主名称" />
-      <el-input v-model="listQuery.phone" clearable class="filter-item" style="width: 200px;" placeholder="输入电话" />
+      <el-input v-model="listQuery.name" clearable class="filter-item" style="width: 200px;" placeholder="输入公司名称" @keyup.enter.native="getList" />
+      <el-input v-model="listQuery.keeperName" clearable class="filter-item" style="width: 200px;" placeholder="输入店主名称" @keyup.enter.native="getList" />
+      <el-input v-model="listQuery.phone" clearable class="filter-item" style="width: 200px;" placeholder="输入电话" @keyup.enter.native="getList" />
       <el-cascader
         v-model="listQuery.region_arr" placeholder="选择区域" :options="common_regionList"
         :props="{ checkStrictly: true, label: 'name', value: 'code', expandTrigger: 'hover' }" clearable size="mini"

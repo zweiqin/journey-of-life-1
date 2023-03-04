@@ -3,8 +3,8 @@
 
     <!-- 查询和其他操作 -->
     <div class="filter-container">
-      <el-input v-model="listQuery.orderSn" clearable class="filter-item" style="width: 200px;" placeholder="请输入订单编号" />
-      <el-input v-model="listQuery.consignee" clearable class="filter-item" style="width: 200px;" placeholder="请输入收货人" />
+      <el-input v-model="listQuery.orderSn" clearable class="filter-item" style="width: 200px;" placeholder="请输入订单编号" @keyup.enter.native="getList" />
+      <el-input v-model="listQuery.consignee" clearable class="filter-item" style="width: 200px;" placeholder="请输入收货人" @keyup.enter.native="getList" />
       <el-cascader
         v-model="listQuery.region_arr" placeholder="选择区域" :options="common_regionList"
         :props="{ checkStrictly: true, label: 'name', value: 'code', expandTrigger: 'hover' }" clearable size="mini"

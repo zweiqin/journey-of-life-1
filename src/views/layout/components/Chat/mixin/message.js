@@ -470,6 +470,7 @@ export default {
       }
     },
     handleCreateGroup(instance) {
+      return this.$message({ message: '功能未开放，敬请期待！', type: 'warning' })
       this.createGroupDialogData.visible = true
       this.createGroupDialogData.contacts = instance.contacts.filter(function (item) {
         if (item.is_group != 1) return item

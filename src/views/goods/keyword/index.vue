@@ -3,8 +3,16 @@
 
     <!-- 查询和其他操作 -->
     <div class="filter-container">
-      <el-input v-model="listQuery.keyword" clearable class="filter-item" style="width: 200px;" placeholder="输入搜索关键字" />
-      <el-input v-model="listQuery.url" clearable class="filter-item" style="width: 200px;" placeholder="输入链接" />
+      <el-input
+        v-model="listQuery.keyword" clearable class="filter-item" style="width: 200px;"
+        placeholder="输入搜索关键字"
+        @keyup.enter.native="getList"
+      />
+      <el-input
+        v-model="listQuery.url" clearable class="filter-item" style="width: 200px;"
+        placeholder="输入链接"
+        @keyup.enter.native="getList"
+      />
       <el-button
         v-permission="[ `GET /admin${api.keywordList}` ]" size="mini" class="filter-item" type="primary"
         icon="el-icon-search" @click="getList"

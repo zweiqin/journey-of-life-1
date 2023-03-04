@@ -2,91 +2,54 @@
   <div class="app-container">
 
     <TableTools
-      :custom-columns-config="customColumnsConfig"
-      download
-      custom-field
-      @update-fields="updateFields"
-      @refresh="getList"
-      @download="toolsMixin_exportMethod($refs.vxeTable, '合伙人申请')"
+      :custom-columns-config="customColumnsConfig" download custom-field @update-fields="updateFields"
+      @refresh="getList" @download="toolsMixin_exportMethod($refs.vxeTable, '合伙人申请')"
     >
       <el-input
-        v-model="listQuery.userId"
-        clearable
-        class="filter-item"
-        style="width: 200px;"
+        v-model="listQuery.userId" clearable class="filter-item" style="width: 200px;"
         placeholder="请输入用户ID"
+        @keyup.enter.native="getList"
       />
-      <el-select
-        v-model="listQuery.status"
-        clearable
-        class="filter-item"
-        style="width: 200px;"
-        placeholder="选择状态"
-      >
-        <el-option
-          v-for="item in statusList"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value"
-        />
+      <el-select v-model="listQuery.status" clearable class="filter-item" style="width: 200px;" placeholder="选择状态">
+        <el-option v-for="item in statusList" :key="item.value" :label="item.label" :value="item.value" />
       </el-select>
       <el-button
-        v-permission="[ `GET /admin${api.partnerApplyList}` ]"
-        size="mini"
-        class="filter-item"
-        type="primary"
-        icon="el-icon-search"
-        style="margin-left:10px;"
-        @click="getList"
+        v-permission="[ `GET /admin${api.partnerApplyList}` ]" size="mini" class="filter-item" type="primary"
+        icon="el-icon-search" style="margin-left:10px;" @click="getList"
       >
         查找
       </el-button>
     </TableTools>
 
     <VxeTable
-      ref="vxeTable"
-      v-model="listQuery"
-      :local-key="customColumnsConfig.localKey"
-      api-method="GET"
-      :api-path="api.partnerApplyList"
-      :columns="columns"
+      ref="vxeTable" v-model="listQuery" :local-key="customColumnsConfig.localKey" api-method="GET"
+      :api-path="api.partnerApplyList" :columns="columns"
     >
       <template #status="{ row }">
         {{ row.status | typeFilter(statusList) }}
       </template>
       <template #operate="{ row }">
         <el-button
-          v-permission="[ `POST /admin${api.partnerApplyManage}` ]"
-          :disabled="row.status !== 0"
-          size="mini"
+          v-permission="[ `POST /admin${api.partnerApplyManage}` ]" :disabled="row.status !== 0" size="mini"
           @click="handleUpdate(row.id, 5)"
         >
           开始审核
         </el-button>
         <el-button
-          v-permission="[ `POST /admin${api.partnerApplyManage}` ]"
-          :disabled="row.status !== 1"
-          type="danger"
-          size="mini"
-          @click="handleReject(row.id, 2)"
+          v-permission="[ `POST /admin${api.partnerApplyManage}` ]" :disabled="row.status !== 1" type="danger"
+          size="mini" @click="handleReject(row.id, 2)"
         >
           驳回
         </el-button>
         <el-button
-          v-permission="[ `POST /admin${api.partnerApplyManage}` ]"
-          :disabled="row.status !== 1"
-          type="success"
-          size="mini"
-          @click="handleUpdate(row.id, 7)"
+          v-permission="[ `POST /admin${api.partnerApplyManage}` ]" :disabled="row.status !== 1" type="success"
+          size="mini" @click="handleUpdate(row.id, 7)"
         >
           通过
         </el-button>
         <el-button
-          v-permission="[ `POST /admin${api.partnerApplySignin}` ]"
-          :disabled="row.status !== 5"
-          type="warning"
-          size="mini"
-          @click="handleUpgrade(row)"
+          v-permission="[ `POST /admin${api.partnerApplySignin}` ]" :disabled="row.status !== 5" type="warning"
+          size="mini" @click="handleUpgrade(row)"
         >
           手动升级
         </el-button>

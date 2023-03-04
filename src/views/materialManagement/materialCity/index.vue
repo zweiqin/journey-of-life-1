@@ -5,11 +5,11 @@
     <div class="filter-container">
       <el-input
         v-model="listQuery.search" clearable class="filter-item" style="width: 400px;"
-        placeholder="请输入材料城名称、材料城所在区域、材料城详细地址、材料城联系人、材料城联系电话、材料城介绍或备注"
+        placeholder="请输入材料城名称、材料城所在区域、材料城详细地址、材料城联系人、材料城联系电话、材料城介绍或备注" @keyup.enter.native="getList"
       />
       <el-button
-        v-permission="[ `GET /admin${api.getNewMaterialCityList}` ]" size="mini" class="filter-item" type="primary"
-        icon="el-icon-search" style="margin-left:10px;" @click="getList"
+        v-permission="[ `GET /admin${api.getNewMaterialCityList}` ]" size="mini" class="filter-item"
+        type="primary" icon="el-icon-search" style="margin-left:10px;" @click="getList"
       >
         查找
       </el-button>
@@ -33,7 +33,10 @@
       :api-path="api.getNewMaterialCityList" :columns="columns"
     >
       <template #materialCityLogo="{ row }">
-        <el-image v-if="row.materialCityLogo" :src="row.materialCityLogo" style="width:40px; height:40px" fit="cover" :preview-src-list="[ row.materialCityLogo ]" />
+        <el-image
+          v-if="row.materialCityLogo" :src="row.materialCityLogo" style="width:40px; height:40px" fit="cover"
+          :preview-src-list="[ row.materialCityLogo ]"
+        />
         <span v-else>--</span>
       </template>
       <template #materialCityRegion="{ row }">

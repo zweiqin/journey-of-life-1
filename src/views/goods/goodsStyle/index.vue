@@ -3,7 +3,11 @@
 
     <!-- 查询和其他操作 -->
     <div class="filter-container">
-      <el-input v-model="listQuery.value" clearable class="filter-item" style="width: 200px;" placeholder="请输入标签值" />
+      <el-input
+        v-model="listQuery.value" clearable class="filter-item" style="width: 200px;"
+        placeholder="请输入标签值"
+        @keyup.enter.native="getList"
+      />
       <el-button
         v-permission="[ `GET /admin${api.goodsStyleList}` ]" size="mini" class="filter-item" type="primary"
         icon="el-icon-search" style="margin-left:10px;" @click="getList"

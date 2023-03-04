@@ -5,7 +5,7 @@
     <div class="filter-container">
       <el-input
         v-model="listQuery.search" clearable class="filter-item" style="width: 400px;"
-        placeholder="请输入供应商名称、供应商所在区域、供应商详细地址、供应商联系人、供应商联系电话、供应商介绍或备注"
+        placeholder="请输入供应商名称、供应商所在区域、供应商详细地址、供应商联系人、供应商联系电话、供应商介绍或备注" @keyup.enter.native="getList"
       />
       <el-button
         v-permission="[ `GET /admin${api.getNewSupplierList}` ]" size="mini" class="filter-item" type="primary"
@@ -33,7 +33,10 @@
       :api-path="api.getNewSupplierList" :columns="columns"
     >
       <template #supplierLogo="{ row }">
-        <el-image v-if="row.supplierLogo" :src="row.supplierLogo" style="width:40px; height:40px" fit="cover" :preview-src-list="[ row.supplierLogo ]" />
+        <el-image
+          v-if="row.supplierLogo" :src="row.supplierLogo" style="width:40px; height:40px" fit="cover"
+          :preview-src-list="[ row.supplierLogo ]"
+        />
         <span v-else>--</span>
       </template>
       <template #supplierRegion="{ row }">

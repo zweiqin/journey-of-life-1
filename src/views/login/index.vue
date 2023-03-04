@@ -131,7 +131,7 @@
     </div>
     <!--  底部  -->
     <div class="el-login-footer">
-      <span>Copyright © 2020-2030 团蜂科技和聚惠星版权所有.</span>
+      <span>Copyright © 2020-2030 团蜂科技版权所有.</span>
     </div>
   </div>
 </template>

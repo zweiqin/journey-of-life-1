@@ -6,12 +6,12 @@
       <el-input
         v-model="listQuery.name" clearable size="mini" class="filter-item"
         style="width: 200px;"
-        placeholder="请输入广告标题"
+        placeholder="请输入广告标题" @keyup.enter.native="getList"
       />
       <el-input
         v-model="listQuery.content" clearable size="mini" class="filter-item"
         style="width: 200px;"
-        placeholder="请输入广告内容"
+        placeholder="请输入广告内容" @keyup.enter.native="getList"
       />
       <el-button
         v-permission="[ `GET ${api.listAd}` ]" size="mini" class="filter-item" type="primary"
@@ -45,16 +45,10 @@
         <el-tag :type="row.enabled ? 'success' : 'error'">{{ row.enabled ? '启用' : '不启用' }}</el-tag>
       </template>
       <template #operate="{ row }">
-        <el-button
-          v-permission="[ `POST ${api.updateAd}` ]" size="mini"
-          @click="handleUpdate(row)"
-        >
+        <el-button v-permission="[ `POST ${api.updateAd}` ]" size="mini" @click="handleUpdate(row)">
           编辑
         </el-button>
-        <el-button
-          v-permission="[ `POST /${api.deleteAd}` ]" type="danger" size="mini"
-          @click="handleDelete(row)"
-        >
+        <el-button v-permission="[ `POST /${api.deleteAd}` ]" type="danger" size="mini" @click="handleDelete(row)">
           删除
         </el-button>
       </template>

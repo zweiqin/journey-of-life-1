@@ -3,7 +3,11 @@
 
     <!-- 查询和其他操作 -->
     <div class="filter-container">
-      <el-input v-model="listQuery.question" clearable class="filter-item" style="width: 200px;" placeholder="输入问题内容" />
+      <el-input
+        v-model="listQuery.question" clearable class="filter-item" style="width: 200px;"
+        placeholder="输入问题内容"
+        @keyup.enter.native="getList"
+      />
       <el-select v-model="listQuery.type" clearable class="filter-item" style="width: 200px;" placeholder="选择问题范围">
         <el-option v-for="item in issueGetTypeEnumList" :key="item.code" :label="item.value" :value="item.code" />
       </el-select>

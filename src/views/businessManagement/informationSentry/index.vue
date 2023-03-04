@@ -6,7 +6,7 @@
       <el-input
         v-model="listQuery.search" clearable size="mini" class="filter-item"
         style="width: 200px;"
-        placeholder="请输入"
+        placeholder="请输入" @keyup.enter.native="getList"
       />
       <el-select
         v-model="listQuery.status" size="mini" clearable class="filter-item"
