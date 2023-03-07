@@ -2,6 +2,9 @@
   <el-dialog
     :visible.sync="visible"
     v-bind="modalOptions"
+    :close-on-click-modal="true"
+    :append-to-body="true"
+    :close-on-press-escape="false"
   >
     <el-form
       ref="formData"
@@ -109,6 +112,7 @@
 </template>
 
 <script>
+import { goodsDetail } from '@/api/goods/goodsList'
 
 export default {
   name: 'DetailModal',
@@ -122,29 +126,7 @@ export default {
       visible: false,
       formData: {
         id: '',
-        counterPrice: '',
-        vipPrice: '',
-        retailPrice: '',
-        picUrl: '',
-        gallery: '',
-        productTag: '',
-        categoryName: '',
-        unit: '',
-        brief: '',
-        keywords: '',
-        isOnSale: '',
-        supportVoucher: '',
-        saleType: '',
-        deliveryDay: '',
-        styleName: '',
-        tagName: '',
-        placeName: '',
-        browse: '',
-        sales: '',
-        isNew: '',
-        isHot: '',
-        approveStatus: '',
-        brokerageType: ''
+        picUrls: []
       }
     }
   },
@@ -154,7 +136,44 @@ export default {
     },
     handleOpen(params = {}) {
       this.formData = Object.assign(this.$options.data().formData, params)
+      if (params.id) {
+        this.getInfo(params.id)
+      }
       this.visible = true
+    },
+    async getInfo(id) {
+      const loading = this.$elLoading('加载中')
+      try {
+        const res = await goodsDetail({ id })
+        this.formData = Object.assign(this.$options.data().formData, res.data.goods, {
+          // id: res.data.id || '',
+          counterPrice: res.data.goods.counterPrice || '',
+          vipPrice: res.data.goods.vipPrice || '',
+          retailPrice: res.data.goods.retailPrice || '',
+          picUrl: res.data.goods.picUrl || '',
+          gallery: res.data.goods.gallery || '',
+          productTag: res.data.goods.productTag || '',
+          categoryName: res.data.goods.categoryName || '',
+          unit: res.data.goods.unit || '',
+          brief: res.data.goods.brief || '',
+          keywords: res.data.goods.keywords || '',
+          isOnSale: res.data.goods.isOnSale || '',
+          supportVoucher: res.data.goods.supportVoucher || '',
+          saleType: res.data.goods.saleType || '',
+          deliveryDay: res.data.goods.deliveryDay || '',
+          styleName: res.data.goods.styleName || '',
+          tagName: res.data.goods.tagName || '',
+          placeName: res.data.goods.placeName || '',
+          browse: res.data.goods.browse || '',
+          sales: res.data.goods.sales || '',
+          isNew: res.data.goods.isNew || '',
+          isHot: res.data.goods.isHot || '',
+          approveStatus: res.data.goods.approveStatus || '',
+          brokerageType: res.data.goods.brokerageType || ''
+        })
+      } finally {
+        loading.close()
+      }
     }
   }
 }

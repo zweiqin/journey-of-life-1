@@ -181,8 +181,8 @@ export default {
         // default:
         //   this.getSendMessage(data, IMUI)
         //   break
-        case 'oneByOneForward':
-          this.oneByOneForward(data, IMUI)
+        case 'oneByoneSend':
+          this.oneByoneSend(data, IMUI)
           break
         default:
           this.getSendMessage(data, IMUI)

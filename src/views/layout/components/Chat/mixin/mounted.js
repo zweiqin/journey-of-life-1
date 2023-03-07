@@ -20,6 +20,8 @@ export default {
       IMUI.setLastContentRender('forward', (message) => <span>[会话记录]</span>)
       IMUI.setLastContentRender('video', (message) => <span>[视频]</span>)
       IMUI.setLastContentRender('link', (message) => <span>[链接]</span>)
+      IMUI.setLastContentRender('order', (message) => <span>[订单]</span>)
+      IMUI.setLastContentRender('goods', (message) => <span>[商品]</span>)
       // 初始化工具栏
       IMUI.initEditorTools([
         {

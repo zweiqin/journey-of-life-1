@@ -58,7 +58,7 @@
                   </div>
 
                   <div
-                    v-if="item.type == 'link'"
+                    v-else-if="item.type == 'link'"
                     class="message__content-flex"
                     style="background-color:#808080"
                   >
@@ -89,6 +89,9 @@
                     </div>
                     <div v-if="item.type == 'video' " class="lemon-message__content">
                       <VideoPreview :content="item.content"></VideoPreview>
+                    </div>
+                    <div v-else class="lemon-message__content">
+                      <span style="font-weight: 700;color: darkgray;">其它消息</span>
                     </div>
                   </div>
                 </div>

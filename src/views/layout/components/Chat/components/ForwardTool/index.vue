@@ -122,7 +122,7 @@ export default {
                 avatar: this.$store.getters.avatar
               },
               isGroup: true
-            }, 'oneByOneForward', contactItem)
+            }, 'oneByoneSend', contactItem)
             tempDate = tempDate + 1
           })
         })

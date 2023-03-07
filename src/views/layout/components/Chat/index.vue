@@ -535,7 +535,7 @@ export default {
             //     }
             //   })
             getChildNode(document.getElementsByClassName('lemon-container')[0]).forEach((item, index) => {
-              if (item.classList.contains('lemon-message-text') || item.classList.contains('lemon-message-file') || item.classList.contains('lemon-message-image') || item.classList.contains('lemon-message-forward') || item.classList.contains('lemon-message-video')) (item.style.border = '1px dashed #409EFF') && (item.style.marginTop = '5px')
+              if (item.classList.contains('lemon-message-text') || item.classList.contains('lemon-message-file') || item.classList.contains('lemon-message-image') || item.classList.contains('lemon-message-forward') || item.classList.contains('lemon-message-video') || item.classList.contains('lemon-message-order') || item.classList.contains('lemon-message-goods')) (item.style.border = '1px dashed #409EFF') && (item.style.marginTop = '5px')
             })
             // $('.lemon-container')
             //   .find('*')
@@ -552,7 +552,7 @@ export default {
             //     }
             //   })
             getChildNode(document.getElementsByClassName('lemon-container')[0]).forEach((item, index) => {
-              if ((item.classList.contains('lemon-message-text') || item.classList.contains('lemon-message-file') || item.classList.contains('lemon-message-image') || item.classList.contains('lemon-message-forward') || item.classList.contains('lemon-message-video')) && !item.classList.contains('lemon-message--reverse')) item.style.paddingLeft = '30px'
+              if ((item.classList.contains('lemon-message-text') || item.classList.contains('lemon-message-file') || item.classList.contains('lemon-message-image') || item.classList.contains('lemon-message-forward') || item.classList.contains('lemon-message-video') || item.classList.contains('lemon-message-order') || item.classList.contains('lemon-message-goods')) && !item.classList.contains('lemon-message--reverse')) item.style.paddingLeft = '30px'
             })
             this.multi = true
             hide()

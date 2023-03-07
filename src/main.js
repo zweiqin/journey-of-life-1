@@ -19,6 +19,9 @@ import store from './store'
 import * as echarts from 'echarts'
 import VueStorage from 'vue-ls'
 
+import LemonMessageOrder from '@/views/layout/components/Chat/components/LemonMessageOrder'
+import LemonMessageGoods from '@/views/layout/components/Chat/components/LemonMessageGoods'
+
 // import VideoPlayer from "vue-video-player";
 import LemonIMUI from 'lemon-imui'
 import 'lemon-imui/dist/index.css'
@@ -59,6 +62,9 @@ Vue.directive('permission', permission)
 // Object.keys(filters).forEach((key) => {
 //   Vue.filter(key, filters[key])
 // })
+
+Vue.component(LemonMessageOrder.name, LemonMessageOrder)
+Vue.component(LemonMessageGoods.name, LemonMessageGoods)
 
 Vue.config.productionTip = false
 

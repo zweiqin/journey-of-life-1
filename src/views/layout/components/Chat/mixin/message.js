@@ -91,7 +91,7 @@ export default {
       //     }
       //   })
       getChildNode(document.getElementsByClassName('lemon-container')[0]).forEach((item, index) => {
-        if (item.classList.contains('lemon-message-text') || item.classList.contains('lemon-message-file') || item.classList.contains('lemon-message-image') || item.classList.contains('lemon-message-forward') || item.classList.contains('lemon-message-video')) (item.style.border = '') && (item.style.marginTop = '')
+        if (item.classList.contains('lemon-message-text') || item.classList.contains('lemon-message-file') || item.classList.contains('lemon-message-image') || item.classList.contains('lemon-message-forward') || item.classList.contains('lemon-message-video') || item.classList.contains('lemon-message-order') || item.classList.contains('lemon-message-goods')) (item.style.border = '') && (item.style.marginTop = '')
       })
       // $('.lemon-container')
       //   .find('*')
@@ -108,7 +108,7 @@ export default {
       //     }
       //   })
       getChildNode(document.getElementsByClassName('lemon-container')[0]).forEach((item, index) => {
-        if ((item.classList.contains('lemon-message-text') || item.classList.contains('lemon-message-file') || item.classList.contains('lemon-message-image') || item.classList.contains('lemon-message-forward') || item.classList.contains('lemon-message-video')) && !item.classList.contains('lemon-message--reverse')) item.style.paddingLeft = ''
+        if ((item.classList.contains('lemon-message-text') || item.classList.contains('lemon-message-file') || item.classList.contains('lemon-message-image') || item.classList.contains('lemon-message-forward') || item.classList.contains('lemon-message-video') || item.classList.contains('lemon-message-order') || item.classList.contains('lemon-message-goods')) && !item.classList.contains('lemon-message--reverse')) item.style.paddingLeft = ''
       })
       this.multiMessage = []
       this.multi = false
@@ -314,12 +314,31 @@ export default {
         avatar: data.message.avatar
       })
     },
-    oneByOneForward(data, IMUI) {
+    oneByoneSend(data, IMUI) {
       IMUI.appendMessage(data.message, true)
+      if (data.message.fromUser.id != this.$store.getters.personId) {
+      // 判断是否显示消息通知
+        if (this.settingDialogData.messagePagePrompt) {
+          this.$notify.warning({
+            title: '你有一条新的消息',
+            duration: 2000,
+            position: 'bottom-right',
+            offset: 100,
+            message: '来自："' + data.message.fromUser.displayName + '"'
+          })
+        }
+        // 播放收到信息音频
+        if (this.settingDialogData.messageTone) {
+          const messageToneType = this.settingDialogData.messageToneType
+          const buttonAudio = document.getElementById('eventAudio')
+          buttonAudio.setAttribute('src', '../../../../../../static/audio/' + messageToneType)
+          buttonAudio.play()
+        }
+      }
       IMUI.messageViewToBottom()
     },
     getSendMessage(data, IMUI) {
-      if (data.message.fromUser.id === this.$store.getters.personId) return
+      if (data.message.fromUser.id == this.$store.getters.personId) return
       IMUI.appendMessage(data.message, true)
       // 判断是否显示消息通知
       if (this.settingDialogData.messagePagePrompt) {
@@ -671,21 +690,23 @@ export default {
     oneByoneForward(message) {
       const { IMUI } = this.$refs
       if (message != '' && message != undefined && message != null) {
+        if (message.type === 'order' || message.type === 'goods') return this.$message({ message: '不支持转发该消息！', type: 'error' })
         // 如果选中消息为真才显示
         this.forwardTool.dialogVisible = true
         this.forwardTool.contact = IMUI.getContacts()
         this.forwardTool.contactsSource = IMUI.getContacts()
         this.forwardTool.multiMessage = [ message ]
-        this.forwardTool.type = 'oneByOneForward' // 单条转发
+        this.forwardTool.type = 'oneByoneForward' // 单条转发
         this.forwardTool.user = this.user
       } else {
+        if (this.multiMessage.some((item) => item.type === 'order' || item.type === 'goods')) return this.$message({ message: '包含不支持转发的消息，转发失败！', type: 'error' })
         // 如果选中消息大于两条才显示
         if (this.multiMessage.length >= 2) {
           this.forwardTool.dialogVisible = true
           this.forwardTool.contact = IMUI.getContacts()
           this.forwardTool.contactsSource = IMUI.getContacts()
           this.forwardTool.multiMessage = this.multiMessage // 逐条转发
-          this.forwardTool.type = 'oneByOneForward'
+          this.forwardTool.type = 'oneByoneForward'
           this.forwardTool.user = this.user
         }
       }
