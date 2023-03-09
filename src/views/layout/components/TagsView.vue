@@ -1,17 +1,20 @@
 <template>
   <!-- <div :style="{ height: 35 * $root.dw + 'px' }" class="tags-view-container"> -->
   <div class="tags-view-container">
-    <ScrollPane ref="scrollPane" class="tags-view-wrapper">
-      <router-link
-        v-for="tag in visitedViews" ref="tag" :key="tag.path"
-        :class="isActive(tag) ? 'active' : ''" :to="{ path: tag.path, query: tag.query, fullPath: tag.fullPath }" tag="span"
-        class="tags-view-item" @click.middle.native="closeSelectedTag(tag)"
-        @contextmenu.prevent.native="openMenu(tag, $event)"
-      >
-        {{ generateTitle(tag.title) }}
-        <i class="el-icon-close" @click.prevent.stop="closeSelectedTag(tag)" />
-      </router-link>
-    </ScrollPane>
+    <div style="width: 96%;">
+      <ScrollPane ref="scrollPane" class="tags-view-wrapper">
+        <router-link
+          v-for="tag in visitedViews" ref="tag" :key="tag.path"
+          :class="isActive(tag) ? 'active' : ''" :to="{ path: tag.path, query: tag.query, fullPath: tag.fullPath }" tag="span"
+          class="tags-view-item" @click.middle.native="closeSelectedTag(tag)"
+          @contextmenu.prevent.native="openMenu(tag, $event)"
+        >
+          {{ generateTitle(tag.title) }}
+          <i class="el-icon-close" @click.prevent.stop="closeSelectedTag(tag)" />
+        </router-link>
+      </ScrollPane>
+    </div>
+    <i v-if="visitedViews.length" class="el-icon-circle-close" style="position: absolute;font-size: 24px;color: burlywood;top: 3px;right: 6px;cursor: pointer;" @click="closeAllTags"></i>
     <ul
       v-show="visible" :style="{
         fontSize: 12 * $root.dw + 'px',
@@ -20,9 +23,9 @@
         borderRadius: 4 * $root.dw + 'px'
       }" class="contextmenu"
     >
-      <li @click="refreshSelectedTag(selectedTag)">{{ $t('tagsView.refresh') }}</li>
-      <li @click="closeSelectedTag(selectedTag)">{{ $t('tagsView.close') }}</li>
-      <li @click="closeOthersTags">{{ $t('tagsView.closeOthers') }}</li>
+      <li style="margin-right: 10px;" @click="refreshSelectedTag(selectedTag)">{{ $t('tagsView.refresh') }}</li>
+      <li style="margin-right: 10px;" @click="closeSelectedTag(selectedTag)">{{ $t('tagsView.close') }}</li>
+      <li style="margin-right: 10px;" @click="closeOthersTags">{{ $t('tagsView.closeOthers') }}</li>
       <li @click="closeAllTags">{{ $t('tagsView.closeAll') }}</li>
     </ul>
   </div>
@@ -33,6 +36,7 @@ import ScrollPane from '@/components/ScrollPane'
 import { generateTitle } from '@/utils/i18n'
 
 export default {
+  name: 'TagsView',
   components: { ScrollPane },
   data() {
     return {
@@ -150,6 +154,7 @@ export default {
 
 <style rel="stylesheet/scss" lang="scss" scoped>
 .tags-view-container {
+	position: relative;
 	width: 100%;
 	// position: fixed;
 	background: #fff;

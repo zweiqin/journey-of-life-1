@@ -188,7 +188,7 @@ module.exports = {
 
     // Priority A: Essential for Vue.js 3.x
     'vue/no-deprecated-data-object-declaration': 'error', // 不允许对data使用不推荐使用的对象声明，例如不推荐对象的形式
-    'vue/no-deprecated-destroyed-lifecycle': 'error', // Disallow using deprecated destroyed and beforeDestroy lifecycle hooks。而是使用beforeUnmount，unmounted
+    'vue/no-deprecated-destroyed-lifecycle': 'off', // Disallow using deprecated destroyed and beforeDestroy lifecycle hooks。而是使用beforeUnmount，unmounted
     'vue/no-deprecated-dollar-listeners-api': 'error', // 不允许使用已弃用$listeners
     'vue/no-deprecated-dollar-scopedslots-api': 'error', // 不允许使用已弃用$scopedSlots
     'vue/no-deprecated-events-api': 'error', // Disallow using deprecated events api。This rule reports use of deprecated $on, $off $once api.(in Vue.js 3.0.0+).

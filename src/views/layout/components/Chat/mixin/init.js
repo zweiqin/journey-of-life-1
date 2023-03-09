@@ -53,73 +53,26 @@ export default {
           displayName: name
         }
       }, IMUI)
+      this.initSocketInfo()
     },
-    initSocket(contact, isReconnection = false) {
-      // console.log(contact) // contact.id为接口返回给组件后再返回的数值类型
-      // if (!isReconnection) this.socket = new WebSocket(`${this.path}/ADMIN/${this.$store.getters.personId}?chat=${contact.id}`)
-      if (this.socket) {
-        if (Object.keys(this.socket).length) {
-          if (Object.keys(this.socket).includes(String(contact.id))) {
-            this.socket[contact.id] = new WebSocket(`${this.path}/ADMIN/${this.$store.getters.personId}?chat=${contact.id}`)
-          } else {
-            this.socket[contact.id] = new WebSocket(`${this.path}/ADMIN/${this.$store.getters.personId}?chat=${contact.id}`)
-          }
-        } else {
-          this.socket[contact.id] = new WebSocket(`${this.path}/ADMIN/${this.$store.getters.personId}?chat=${contact.id}`)
-        }
-      } else {
-        this.socket = {}
-        this.socket[contact.id] = new WebSocket(`${this.path}/ADMIN/${this.$store.getters.personId}?chat=${contact.id}`)
-      }
+    initSocketInfo() {
+      this.socketInfo = new WebSocket(`${this.path}/ADMIN/${this.$store.getters.personId}`)
       // 监听socket连接
-      this.socket[contact.id].onopen = this.open(contact)
+      this.socketInfo.onopen = this.openInfo
       // 监听socket错误信息
-      this.socket[contact.id].onerror = this.error
+      this.socketInfo.onerror = this.errorInfo
       // 监听socket消息
-      this.socket[contact.id].onmessage = this.onmessage
+      this.socketInfo.onmessage = this.onmessageInfo
       // 监听socket 关闭
-      this.socket[contact.id].onclose = this.close(contact)
+      this.socketInfo.onclose = this.closeInfo
     },
-
-    open(contact) {
-      return async () => {
-        const res = await queryChatMessage({
-          chatId: contact.id,
-          limit: 30,
-          endTime: '', // 查这个时间之后的
-          order: 'desc' // 无则从头开始查，有则从最新开始查
-        })
-        console.log(res)
-        const tempDate = Date.parse(new Date())
-        this.messages = {
-          group_history_message: [
-            ...res.data.items.map((item) => JSON.parse(item.message).message).reverse(),
-            {
-              id: tempDate, // 每一条消息的id
-              status: 'succeed',
-              type: 'event',
-              sendTime: tempDate,
-              content: '欢迎回来~',
-              toContactId: contact.id,
-              fileSize: 0,
-              fileName: '',
-              isGroup: true,
-              fromUser: {
-                id: '',
-                avatar: '',
-                displayName: ''
-              }
-            }
-          ],
-          event: 'group_history_message'
-        }
-        this.next(this.messages.group_history_message, true)
-      }
+    openInfo() {
+      // console.log('socketInfo连接成功')
     },
-    error() {
-      console.log('连接错误')
+    errorInfo() {
+      console.log('socketInfo连接错误')
     },
-    onmessage(msg) {
+    onmessageInfo(msg) {
       // console.log(msg.data) // {"chatId":15,"sendUserId":5,"userType":"APP","message":"{\"event\":\"1234\",\"message\":{\"id\":1677132694342,\"status\":\"succeed\",\"type\":\"text\",\"sendTime\":1677132694342,\"content\":\"公司把这个不hj\",\"toContactId\":15,\"fromUser\":{\"id\":5,\"displayName\":\"哈哈哈\",\"avatar\":\"https://www.tuanfengkeji.cn/tfshop/static/img/logo.024b746.png\"}}}"}
       const { IMUI } = this.$refs
       const dataAll = JSON.parse(msg.data)
@@ -188,6 +141,81 @@ export default {
           this.getSendMessage(data, IMUI)
           break
       }
+    },
+    closeInfo() {
+      console.log('socketInfo连接关闭, 正在重连...')
+      setTimeout(() => {
+        // this.socket = new WebSocket(`${this.path}/ADMIN/${this.$store.getters.personId}?chat=${contact.id}`)
+        this.initSocketInfo()
+      }, 2000)
+    },
+
+    initSocket(contact, isReconnection = false) {
+      // console.log(contact) // contact.id为接口返回给组件后再返回的数值类型
+      // if (!isReconnection) this.socket = new WebSocket(`${this.path}/ADMIN/${this.$store.getters.personId}?chat=${contact.id}`)
+      if (this.socket) {
+        if (Object.keys(this.socket).length) {
+          if (Object.keys(this.socket).includes(String(contact.id))) {
+            this.socket[contact.id] = new WebSocket(`${this.path}/ADMIN/${this.$store.getters.personId}?chat=${contact.id}`)
+          } else {
+            this.socket[contact.id] = new WebSocket(`${this.path}/ADMIN/${this.$store.getters.personId}?chat=${contact.id}`)
+          }
+        } else {
+          this.socket[contact.id] = new WebSocket(`${this.path}/ADMIN/${this.$store.getters.personId}?chat=${contact.id}`)
+        }
+      } else {
+        this.socket = {}
+        this.socket[contact.id] = new WebSocket(`${this.path}/ADMIN/${this.$store.getters.personId}?chat=${contact.id}`)
+      }
+      // 监听socket连接
+      this.socket[contact.id].onopen = this.open(contact)
+      // 监听socket错误信息
+      this.socket[contact.id].onerror = this.error
+      // 监听socket消息
+      this.socket[contact.id].onmessage = this.onmessage
+      // 监听socket 关闭
+      this.socket[contact.id].onclose = this.close(contact)
+    },
+    open(contact) {
+      return async () => {
+        const res = await queryChatMessage({
+          chatId: contact.id,
+          limit: 30,
+          endTime: '', // 查这个时间之后的
+          order: 'desc' // 无则从头开始查，有则从最新开始查
+        })
+        console.log(res)
+        const tempDate = Date.parse(new Date())
+        this.messages = {
+          group_history_message: [
+            ...res.data.items.map((item) => JSON.parse(item.message).message).reverse(),
+            {
+              id: tempDate, // 每一条消息的id
+              status: 'succeed',
+              type: 'event',
+              sendTime: tempDate,
+              content: '欢迎回来~',
+              toContactId: contact.id,
+              fileSize: 0,
+              fileName: '',
+              isGroup: true,
+              fromUser: {
+                id: '',
+                avatar: '',
+                displayName: ''
+              }
+            }
+          ],
+          event: 'group_history_message'
+        }
+        this.next(this.messages.group_history_message, true)
+      }
+    },
+    error() {
+      console.log('连接错误')
+    },
+    onmessage(msg) {
+      console.log('onmessage：', msg.data)
     },
     close(contact) {
       return async () => {

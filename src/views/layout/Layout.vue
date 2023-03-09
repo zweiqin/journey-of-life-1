@@ -117,7 +117,7 @@ export default {
   position: fixed;
   // right: 30px;
   // bottom: 0px;
-  right: 200px;
+  right: 300px;
   top: 0px;
   background-color: #fff;
   cursor: pointer;
