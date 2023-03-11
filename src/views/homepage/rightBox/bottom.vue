@@ -12,37 +12,37 @@
       <div style="height: 9.12%;opacity: 0;">a</div>
       <div style="display: flex;justify-content: space-evenly;height: 7.92%;">
         <el-button
-          :style="{ padding: '5px', fontSize: 16 * $root.dw + 'px' }" class="digit-marketing-button" size="mini"
+          :style="{ margin: '0', padding: '5px', fontSize: 16 * $root.dw + 'px' }" class="digit-marketing-button" size="mini"
           @click="console.log(111)"
         >
           商品预约
         </el-button>
         <el-button
-          :style="{ padding: '5px', fontSize: 16 * $root.dw + 'px' }" class="digit-marketing-button" size="mini"
+          :style="{ margin: '0', padding: '5px', fontSize: 16 * $root.dw + 'px' }" class="digit-marketing-button" size="mini"
           @click="console.log(111)"
         >
           代金券
         </el-button>
         <el-button
-          :style="{ padding: '5px', fontSize: 16 * $root.dw + 'px' }" class="digit-marketing-button" size="mini"
+          :style="{ margin: '0', padding: '5px', fontSize: 16 * $root.dw + 'px' }" class="digit-marketing-button" size="mini"
           @click="console.log(111)"
         >
           拼团
         </el-button>
         <el-button
-          :style="{ padding: '5px', fontSize: 16 * $root.dw + 'px' }" class="digit-marketing-button" size="mini"
+          :style="{ margin: '0', padding: '5px', fontSize: 16 * $root.dw + 'px' }" class="digit-marketing-button" size="mini"
           @click="console.log(111)"
         >
           同城联盟卡
         </el-button>
         <el-button
-          :style="{ padding: '5px', fontSize: 16 * $root.dw + 'px' }" class="digit-marketing-button" size="mini"
+          :style="{ margin: '0', padding: '5px', fontSize: 16 * $root.dw + 'px' }" class="digit-marketing-button" size="mini"
           @click="console.log(111)"
         >
           拓客宝
         </el-button>
         <el-button
-          :style="{ padding: '5px', fontSize: 16 * $root.dw + 'px' }" class="digit-marketing-button" size="mini"
+          :style="{ margin: '0', padding: '5px', fontSize: 16 * $root.dw + 'px' }" class="digit-marketing-button" size="mini"
           @click="console.log(111)"
         >
           区域代理
@@ -51,10 +51,10 @@
       <div style="height: 8.7%;opacity: 0;">a</div>
       <div class="digit-marketing-text" style="display: flex;flex-direction: column;align-items: center;height: 72.26%;overflow-y: auto;">
         <div
-          style="display: flex;justify-content: space-between;width: 94%;padding: 6px 17.5px 6px 21px;;background: #1B1A6A;"
+          style="display: flex;justify-content: space-between;width: 94%;padding: 6px 17.5px 6px 21px;background: #1B1A6A;"
         >
-          <div :style="{ fontSize: 14 * $root.dw + 'px' }">
-            <div style="color: #FFFFFF;"><span>怎样开汽车维修保养加盟店，才能吸引到更多顾客？</span></div>
+          <div :style="{ flex: 1, width: 0, fontSize: 14 * $root.dw + 'px' }">
+            <div style="color: #FFFFFF;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;-o-text-overflow: ellipsis;"><span>怎样开汽车维修保养加盟店，才能吸引到更多顾客？</span></div>
             <div style="color: #2ECFF9;margin-top: 6px;"><span>2022-10-28 18:05:08</span></div>
           </div>
           <div
@@ -65,10 +65,10 @@
           </div>
         </div>
         <div
-          style="display: flex;justify-content: space-between;width: 94%;padding: 6px 17.5px 6px 21px;;background: #1B1A6A;"
+          style="display: flex;justify-content: space-between;width: 94%;padding: 6px 17.5px 6px 21px;background: #1B1A6A;"
         >
-          <div :style="{ fontSize: 14 * $root.dw + 'px' }">
-            <div style="color: #FFFFFF;"><span>怎样开汽车维修保养加盟店，才能吸引到更多顾客？</span></div>
+          <div :style="{ flex: 1, width: 0, fontSize: 14 * $root.dw + 'px' }">
+            <div style="color: #FFFFFF;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;-o-text-overflow: ellipsis;"><span>怎样开汽车维修保养加盟店，才能吸引到更多顾客？</span></div>
             <div style="color: #2ECFF9;margin-top: 6px;"><span>2022-10-28 18:05:08</span></div>
           </div>
           <div
@@ -79,10 +79,10 @@
           </div>
         </div>
         <div
-          style="display: flex;justify-content: space-between;width: 94%;padding: 6px 17.5px 6px 21px;;background: #1B1A6A;"
+          style="display: flex;justify-content: space-between;width: 94%;padding: 6px 17.5px 6px 21px;background: #1B1A6A;"
         >
-          <div :style="{ fontSize: 14 * $root.dw + 'px' }">
-            <div style="color: #FFFFFF;"><span>怎样开汽车维修保养加盟店，才能吸引到更多顾客？</span></div>
+          <div :style="{ flex: 1, width: 0, fontSize: 14 * $root.dw + 'px' }">
+            <div style="color: #FFFFFF;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;-o-text-overflow: ellipsis;"><span>怎样开汽车维修保养加盟店，才能吸引到更多顾客？</span></div>
             <div style="color: #2ECFF9;margin-top: 6px;"><span>2022-10-28 18:05:08</span></div>
           </div>
           <div
@@ -93,10 +93,10 @@
           </div>
         </div>
         <div
-          style="display: flex;justify-content: space-between;width: 94%;padding: 6px 17.5px 6px 21px;;background: #1B1A6A;"
+          style="display: flex;justify-content: space-between;width: 94%;padding: 6px 17.5px 6px 21px;background: #1B1A6A;"
         >
-          <div :style="{ fontSize: 14 * $root.dw + 'px' }">
-            <div style="color: #FFFFFF;"><span>怎样开汽车维修保养加盟店，才能吸引到更多顾客？</span></div>
+          <div :style="{ flex: 1, width: 0, fontSize: 14 * $root.dw + 'px' }">
+            <div style="color: #FFFFFF;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;-o-text-overflow: ellipsis;"><span>怎样开汽车维修保养加盟店，才能吸引到更多顾客？</span></div>
             <div style="color: #2ECFF9;margin-top: 6px;"><span>2022-10-28 18:05:08</span></div>
           </div>
           <div

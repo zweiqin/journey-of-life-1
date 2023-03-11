@@ -9,6 +9,13 @@ export const columns = [
   {
     align: 'left',
     fixed: 'left',
+    field: 'sortOrder',
+    title: '排序',
+    width: 60
+  },
+  {
+    align: 'left',
+    fixed: 'left',
     field: 'name',
     title: '公司名称',
     minWidth: 120

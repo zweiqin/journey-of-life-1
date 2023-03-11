@@ -128,14 +128,15 @@ export default {
       },
       visible: false,
       formData: {
+        id: '',
         name: '',
         keeperName: '',
         desc: '',
         phone: '',
+        region_arr: [],
         address: '',
         longitude: '1000',
         latitude: '1000',
-        region_arr: [],
         picUrl: '',
         logoUrl: '',
         picUrls: [],
@@ -264,6 +265,7 @@ export default {
     },
     handleOpen(params = {}) {
       this.modalOptions.title = params.id ? '编辑门店' : '添加门店'
+      this.formData = Object.assign(this.$options.data().formData, params)
       this.visible = true
       this.initList()
       if (params.id) {

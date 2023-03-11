@@ -13,7 +13,7 @@
         <div style="margin-bottom: 25px;">
           <el-checkbox
             v-for="(item, index) in forwardTool.contactsSource" :key="index" v-model="checkedContacts"
-            :label="item" style="padding: 0 10px;;margin-left:0px" class="checkItem"
+            :label="item" style="padding: 0 10px;margin-left:0px" class="checkItem"
           >
             <img class="avatar" :src="item.avatar" alt />
             {{ item.displayName }}

@@ -128,7 +128,7 @@
               </span>
             </div>
             <div
-              style="display: block;height: 1px;width: 100%;;background-color: #DCDFE6;position: relative;margin-top:5px"
+              style="display: block;height: 1px;width: 100%;background-color: #DCDFE6;position: relative;margin-top:5px"
             ></div>
           </div>
         </template>

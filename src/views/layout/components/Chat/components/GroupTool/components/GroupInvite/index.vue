@@ -33,7 +33,7 @@
             :key="index"
             v-model="checkedContacts"
             :label="item"
-            style="padding: 0 10px;;margin-left:0px"
+            style="padding: 0 10px;margin-left:0px"
             class="checkItem"
           >
             <img class="avatar" :src="item.avatar" alt />

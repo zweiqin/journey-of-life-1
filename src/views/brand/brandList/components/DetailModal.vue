@@ -44,7 +44,7 @@
         <span v-else>--</span>
       </el-form-item>
       <el-form-item label="店铺图片" prop="picUrls">
-        <el-image v-for="item in formData.picUrls" :key="item" :src="item" style="width:80px; height:80px;margin-right:4px" fit="cover" :preview-src-list="picUrls" />
+        <el-image v-for="item in formData.picUrls" :key="item" :src="item" style="width:80px; height:80px;margin-right:4px" fit="cover" :preview-src-list="formData.picUrls" />
         <span v-if="!formData.picUrls || !formData.picUrls.length">--</span>
       </el-form-item>
       <el-form-item label="营业执照" prop="licenseUrl">

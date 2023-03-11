@@ -1,5 +1,5 @@
 <template>
-  <div class="my-upload-wrap" :class="{'my-upload-wrap-active': activeClass}">
+  <div class="my-upload-wrap" :class="{ 'my-upload-wrap-active': activeClass }">
     <el-upload
       ref="myUpload"
       class="my-upload"
@@ -18,18 +18,20 @@
       :disabled="disabled"
       :headers="headers"
       :show-file-list="showFileList"
-      :class="{'disabled-upload':isUpload , 'is-disabled':disabled }"
+      :class="{ 'disabled-upload': isUpload, 'is-disabled': disabled }"
     >
       <el-button
-        v-if="['fileList'].includes(listType)"
+        v-if="[ 'fileList' ].includes(listType)"
         size="mini"
         type="primary"
-      >{{ uploadBtnText }}</el-button>
-      <i v-if="!['fileList'].includes(listType)" slot="default" class="el-icon-plus"></i>
+      >
+        {{ uploadBtnText }}
+      </el-button>
+      <i v-if="![ 'fileList' ].includes(listType)" slot="default" class="el-icon-plus"></i>
       <div
-        v-if="!['fileList'].includes(listType)"
+        v-if="![ 'fileList' ].includes(listType)"
         slot="file"
-        slot-scope="{file}"
+        slot-scope="{ file }"
         class="file-wrap"
       >
         <img class="el-upload-list__item-thumbnail upload-img" :src="file.url" alt />
@@ -40,7 +42,7 @@
           </span>
           <!-- <span v-if="isDownload" class="el-upload-list__item-delete" @click="handleDownload(file)">
             <i class="el-icon-download"></i>
-          </span> -->
+            </span> -->
           <span v-if="!disabled" class="el-upload-list__item-delete" @click="handleRemove(file)">
             <i class="el-icon-delete"></i>
           </span>
@@ -52,7 +54,7 @@
 
     </el-upload>
     <div v-if="showTipsMessage && !disabled" class="tipsMessage">图片最大支持20MB</div>
-    <el-image-viewer v-if="dialogVisible" :zIndex="3000" :on-close="closeViewer" :url-list="[dialogImageUrl]" />
+    <ElImageViewer v-if="dialogVisible" :z-index="3000" :on-close="closeViewer" :url-list="[ dialogImageUrl ]" />
   </div>
 </template>
 
@@ -159,7 +161,7 @@ export default {
     showTipsMessage: {
       type: Boolean,
       default: true
-    },
+    }
   },
   data() {
     return {
@@ -191,27 +193,25 @@ export default {
               }
             ]
           }
-        } else {
-          if (value.length > 0) {
-            this.fileList = value.map((item, i) => {
-              if (typeof item === 'string') {
-                return {
-                  uid: item,
-                  url: item,
-                  name: item,
-                  resData: item
-                }
-              }
+        } else if (value && value.length > 0) {
+          this.fileList = value.map((item, i) => {
+            if (typeof item === 'string') {
               return {
-                uid: item.uid || item.url + i || '',
-                url: item.url || '',
-                name: item.name || item.url || '',
-                resData: item.resData || null
+                uid: item,
+                url: item,
+                name: item,
+                resData: item
               }
-            })
-          } else {
-            this.fileList = []
-          }
+            }
+            return {
+              uid: item.uid || item.url + i || '',
+              url: item.url || '',
+              name: item.name || item.url || '',
+              resData: item.resData || null
+            }
+          })
+        } else {
+          this.fileList = []
         }
 
         this.isUpload = this.fileList.length >= this.limit
@@ -257,11 +257,9 @@ export default {
         this.fileSize > 0 ? file.size / 1024 < this.fileSize : true
 
       if (this.fileType.length > 0 && !this.fileType.includes(file.type)) {
-        this.$message.warning(
-          `只允许使用以下文件扩展名的文件：${this.fileType
-            .join('，')
-            .replace(/image\//g, '')}`
-        )
+        this.$message.warning(`只允许使用以下文件扩展名的文件：${this.fileType
+          .join('，')
+          .replace(/image\//g, '')}`)
         return false
       }
 
@@ -316,9 +314,8 @@ export default {
           if (item.response.errno === 0) {
             item.resData = item.response.data.url
             return item
-          } else {
-            this.$message.error(item.response.errmsg || '上传失败')
           }
+          this.$message.error(item.response.errmsg || '上传失败')
         } else if (!item.response) {
           return item
         }

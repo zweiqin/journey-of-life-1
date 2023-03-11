@@ -680,6 +680,38 @@ export default {
       }
     }
   },
+  watch: {
+    'formData.category_arr': {
+      deep: true,
+      // immediate: true,
+      handler(val) {
+        // console.log(this.categoryList, val)
+        if (this.categoryList.find((item) => item.value === val[0]).label === '材料') {
+          this.formRules.counterPrice = [
+            { required: true, message: '请输入零售价格' },
+            { pattern: regFloat, message: '请输入大于0不超过两位小数的数字' }
+          ]
+          this.formRules.vipPrice = [
+            { pattern: regFloat, message: '请输入大于0不超过两位小数的数字' }
+          ]
+          this.formRules.retailPrice = [
+            { pattern: regFloat, message: '请输入大于0不超过两位小数的数字' }
+          ]
+        } else {
+          this.formRules.counterPrice = [
+            { required: true, message: '请输入零售价格' },
+            { pattern: regZero, message: '请输入正整数' }
+          ]
+          this.formRules.vipPrice = [
+            { pattern: regZero, message: '请输入正整数' }
+          ]
+          this.formRules.retailPrice = [
+            { pattern: regZero, message: '请输入正整数' }
+          ]
+        }
+      }
+    }
+  },
   created() {
     this.init()
   },

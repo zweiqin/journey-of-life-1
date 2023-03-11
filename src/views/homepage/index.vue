@@ -86,7 +86,7 @@ export default {
   },
   methods: {
     screenFull() {
-      return
+      // return
       if (!screenfull.enabled) {
         this.$message({
           message: 'you browser can not work',
