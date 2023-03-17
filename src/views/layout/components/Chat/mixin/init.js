@@ -185,7 +185,8 @@ export default {
           order: 'desc' // 无则从头开始查，有则从最新开始查
         })
         console.log(res)
-        const tempDate = Date.parse(new Date())
+        // const tempDate = Date.parse(new Date())
+        const tempDate = Date.now()
         this.messages = {
           group_history_message: [
             ...res.data.items.map((item) => JSON.parse(item.message).message).reverse(),

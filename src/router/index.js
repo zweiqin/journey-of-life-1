@@ -1070,8 +1070,19 @@ export const asyncRouterMap = [
         component: () => import('@/views/materialManagement/materialCity'),
         name: 'MaterialCity',
         // perms: [],
+        _ROLES: [ 'ADMIN' ],
         meta: {
           title: '材料城管理'
+        }
+      },
+      {
+        path: 'materialBrandStyle',
+        component: () => import('@/views/materialManagement/materialBrandStyle'),
+        name: 'MaterialBrandStyle',
+        // perms: [],
+        _ROLES: [ 'ADMIN' ],
+        meta: {
+          title: '门店材料风格'
         }
       },
       {

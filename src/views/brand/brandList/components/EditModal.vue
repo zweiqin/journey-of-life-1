@@ -69,6 +69,11 @@
           <el-option v-for="item in brandStyleList" :key="item.id" :label="item.name" :value="item.id" />
         </el-select>
       </el-form-item>
+      <el-form-item label="门店材料风格" prop="styleId">
+        <el-select v-model="formData.materialBrandStyleIdArr" placeholder="请选择门店材料风格" multiple filterable clearable style="width: 220px;">
+          <el-option v-for="item in materialBrandStyleList" :key="item.id" :label="item.styleName" :value="item.id" />
+        </el-select>
+      </el-form-item>
       <el-form-item label="门店标签" prop="labelId">
         <el-select v-model="formData.labelId" placeholder="可以为门店选择标签" filterable clearable style="width: 220px;">
           <el-option v-for="item in brandLabelList" :key="item.code" :label="item.value" :value="item.code" />
@@ -106,6 +111,7 @@ import { brandRead, brandCreate, brandUpdate, brandLabelList, storeTypeList } fr
 import { roleList } from '@/api/enterprise/role'
 import { brandStyleList } from '@/api/brand/brandStyle'
 import { getNewMaterialCityList } from '@/api/materialManagement/materialCity'
+import { getMaterialBrandStyleList } from '@/api/materialManagement/materialBrandStyle'
 import XeUtils from 'xe-utils'
 
 export default {
@@ -146,6 +152,8 @@ export default {
         explain: '',
         brandgenre: '',
         styleId: '',
+        materialBrandStyleIdArr: [],
+        materialBrandStyleId: '',
         labelId: '',
         materialCityId: '',
         brandSort: '100',
@@ -190,6 +198,9 @@ export default {
         styleId: [
           { required: false, message: '请选择门店风格' }
         ],
+        materialBrandStyleIdArr: [
+          { required: false, type: 'array', message: '请选择门店材料风格' }
+        ],
         labelId: [
           { required: false, message: '请选择门店标签' }
         ],
@@ -212,6 +223,7 @@ export default {
       brandLabelList: [],
       brandStyleList: [],
       materialCityList: [],
+      materialBrandStyleList: [],
       storeTypeList: []
     }
   },
@@ -228,6 +240,7 @@ export default {
       this.getBrandLabelList()
       this.getBrandStyleList()
       this.getNewMaterialCityList()
+      this.getMaterialBrandStyleList()
       this.getstoreTypeList()
     },
     // 商品标签
@@ -250,6 +263,14 @@ export default {
         limit: 9999
       })
       this.materialCityList = res.data.items
+    },
+    // 门店材料风格
+    async getMaterialBrandStyleList() {
+      const res = await getMaterialBrandStyleList({
+        page: 1,
+        limit: 9999
+      })
+      this.materialBrandStyleList = res.data.items
     },
     // 门店类型
     async getstoreTypeList() {
@@ -282,7 +303,8 @@ export default {
           picUrl: res.data.picUrl || '',
           picUrls: res.data.picUrls || [],
           logoUrl: res.data.logoUrl || '',
-          licenseUrl: res.data.licenseUrl || ''
+          licenseUrl: res.data.licenseUrl || '',
+          materialBrandStyleIdArr: (res.data.materialBrandStyleId && res.data.materialBrandStyleId.split(',')) || []
         })
         res.data.regionCode && this.setRegion_arr(res.data.regionCode)
         this.$nextTick(() => { // 之所以用nextTick，是因为要validate且region_arr是个数组（对象），element内部有处理
@@ -302,11 +324,12 @@ export default {
       await this.$validatorForm('formData')
       const loading = this.$elLoading()
       try {
-        const { region_arr, picUrls, ...opts } = this.formData
+        const { region_arr, picUrls, materialBrandStyleIdArr, ...opts } = this.formData
         const params = {
           ...opts,
           regionCode: region_arr[region_arr.length - 1],
-          picUrls: picUrls.map((pic) => (typeof pic === 'string' ? pic : pic.resData))
+          picUrls: picUrls.map((pic) => (typeof pic === 'string' ? pic : pic.resData)),
+          materialBrandStyleId: materialBrandStyleIdArr.join(',')
         }
         this.formData.id ? await brandUpdate(params) : await brandCreate(params)
         loading.close()

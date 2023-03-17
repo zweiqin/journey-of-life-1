@@ -435,7 +435,7 @@ export default {
           },
           visible: (instance) => instance.message.fromUser.id == this.user.id &&
             instance.message.sendTime >=
-            Date.parse(new Date()) - 2 * 60 * 1000,
+            Date.now() - 2 * 60 * 1000,
           text: "<i class='el-icon-s-flag' style='margin-right:10px'></i><span>撤回消息</span>"
         },
         {
@@ -643,7 +643,7 @@ export default {
               // lastContent: null
               lastContent: '[置顶]',
               lastContentType: 'event',
-              lastSendTime: Date.parse(new Date())
+              lastSendTime: Date.now()
             })
             hide()
           }

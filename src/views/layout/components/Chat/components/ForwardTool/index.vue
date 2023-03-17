@@ -104,7 +104,7 @@ export default {
       //   'POST'
       // )
       if (this.forwardTool.type == 'mergeForward') { } else {
-        let tempDate = Date.parse(new Date())
+        let tempDate = Date.now()
         contact.forEach((contactItem, count) => {
           this.forwardTool.multiMessage.forEach((item, index) => {
             this.$parent.$parent.send({

@@ -575,7 +575,7 @@ export default {
     },
     beforeFileUpload(file, dataObj, type) {
       const { IMUI } = this.$refs
-      const tempDate = Date.parse(new Date())
+      const tempDate = Date.now()
       const message = {
         // id: dataObj.messageId,
         id: tempDate,
@@ -585,13 +585,14 @@ export default {
         content: '',
         fileSize: file.size,
         fileName: file.name,
-        fileExt: '',
+        // fileExt: '',
         toContactId: IMUI.getCurrentContact().id,
         fromUser: {
           id: this.user.id,
           displayName: this.user.displayName,
           avatar: this.user.avatar
-        }
+        },
+        isGroup: !!IMUI.getCurrentContact().is_group
       }
       this.$set(this.messagesToBeSend, message.id, message)
       this.$set(this.fileIdToMessageId, file.uid, message.id)
@@ -760,7 +761,7 @@ export default {
         id: generateUUID(),
         status: 'succeed',
         type: 'link',
-        sendTime: Date.parse(new Date()),
+        sendTime: Date.now(),
         content,
         toContactId: IMUI.getCurrentContact().id,
         fromUser: {

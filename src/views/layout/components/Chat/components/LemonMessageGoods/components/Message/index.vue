@@ -4,10 +4,13 @@
       <div class="title">{{ title }}</div>
       <div class="lists">
         <p>
-          <span>{{ content }}</span>
+          <span>商品编号：{{ content.goodsSn || '--' }}</span>
+        </p>
+        <p>
+          <span>商品名称：{{ content.goodsName || '--' }}</span>
         </p>
       </div>
-      <div class="footer" @click="handleDetail({ id: content })">
+      <div class="footer" @click="handleDetail({ id: content.id })">
         <span>
           点击此处查看商品详情
         </span>
@@ -25,7 +28,8 @@ export default {
   components: { DetailModal },
   props: {
     content: {
-      type: [String, Number]
+      // type: [String, Number]
+      type: [ Object ]
     }
   },
   data() {
@@ -35,7 +39,7 @@ export default {
     }
   },
   created() {
-    this.title = '商品ID：'
+    this.title = '商品信息：'
   },
   methods: {
     handleDetail(row) {

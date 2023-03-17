@@ -4,12 +4,24 @@
       <div class="title">{{ title }}</div>
       <div class="lists">
         <p>
-          <span>{{ content }}</span>
+          <span>订单编号：{{ content.orderSn || '--' }}</span>
+        </p>
+        <p>
+          <span>订单状态：{{ content.orderStatusText || '--' }}</span>
+        </p>
+        <p>
+          <span>商品总费用：{{ content.goodsPrice || '--' }}</span>
+        </p>
+        <p>
+          <span>实付费用：{{ content.actualPrice || '--' }}</span>
+        </p>
+        <p>
+          <span>收货人手机号：{{ content.mobile || '--' }}</span>
         </p>
       </div>
       <div class="footer">
         <span>
-          <a class="linkClass" :href="`/#/orderManagement/orderDetail?id=${content}`" target="_blank">
+          <a class="linkClass" :href="`./#/orderManagement/orderDetail?id=${content.id}`" target="_blank">
             点击此处查看订单详情
           </a>
         </span>
@@ -33,7 +45,7 @@ export default {
     }
   },
   created() {
-    this.title = '订单ID：'
+    this.title = '订单信息：'
   },
   methods: {
   }
