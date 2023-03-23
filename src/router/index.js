@@ -1004,10 +1004,10 @@ export const asyncRouterMap = [
     children: [
       {
         path: 'customerPool',
-        // component: () => import('@/views/businessManagement/customerPool'),
-        component: () => import('@/views/errorPage/developing'),
+        component: () => import('@/views/businessManagement/customerPool'),
         name: 'CustomerPool',
         meta: {
+          perms: ['POST /admin/customerpool/updateByPrimaryKeySelective', 'POST /admin/customerpool/insertSelective', 'GET /admin/customerpool/deleteByPrimaryKey', 'GET /admin/customerpool/selectByPrimaryKey', 'POST /admin/customerpool/queryCustomerPoolList'],
           title: '客户池',
           noCache: true
         }
