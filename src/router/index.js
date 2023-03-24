@@ -1166,5 +1166,28 @@ export const asyncRouterMap = [
       }
     ]
   },
+  {
+    path: '/newMediaManagement',
+    component: Layout,
+    redirect: 'noredirect',
+    alwaysShow: true,
+    name: 'newMediaManagement',
+    meta: {
+      // perms: [],
+      title: '新媒体',
+      icon: 'new-media'
+    },
+    children: [
+      {
+        path: 'customerInformation',
+        component: () => import('@/views/newMediaManagement/customerInformation'),
+        name: 'CustomerInformation',
+        perms: [ 'POST /admin/customerscancode/queryCustomerPoolList' ],
+        meta: {
+          title: '客户信息'
+        }
+      }
+    ]
+  },
   { path: '*', redirect: '/404', hidden: true }
 ]
