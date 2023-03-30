@@ -42,13 +42,13 @@
           v-permission="[ `POST /admin${api.bdUserAdd}` ]" :disabled="bdUserAddBtnDisabled" icon="el-icon-lock"
           type="success" size="mini" @click="handleBind(true)"
         >
-          添加绑定
+          绑定业务员
         </el-button>
         <el-button
           v-permission="[ `POST /admin${api.bdUserDeleted}` ]" :disabled="bdUserDeletedBtnDisabled"
           icon="el-icon-unlock" type="danger" size="mini" @click="handleBind(false)"
         >
-          解除绑定
+          解绑业务员
         </el-button>
       </template>
 

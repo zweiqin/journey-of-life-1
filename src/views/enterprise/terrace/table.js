@@ -1,57 +1,38 @@
 export const columns = [
   {
+    align: 'center',
     fixed: 'left',
     field: 'id',
     title: 'ID',
     width: 100
   },
   {
+    align: 'center',
+    fixed: 'left',
     field: 'name',
-    title: '板块名',
-    minWidth: 150
+    title: '账号类型名称',
+    minWidth: 120
   },
   {
-    field: 'level',
-    title: '类型',
-    slots: {
-      default: 'level'
-    },
-    minWidth: 100
-  },
-  {
-    field: 'cost',
-    title: '业务费用',
-    minWidth: 150
-  },
-  {
-    field: 'content',
-    title: '业务内容',
+    align: 'center',
+    field: 'desc',
+    title: '说明',
     minWidth: 200
   },
   {
-    field: 'remark',
-    title: '备注',
-    minWidth: 200
-  },
-  {
-    field: 'costType',
-    title: '费用类型',
-    slots: {
-      default: 'costType'
-    },
-    minWidth: 100
-  },
-  {
+    align: 'center',
     field: 'addTime',
     title: '创建时间',
     minWidth: 150
   },
   {
+    align: 'center',
     field: 'updateTime',
     title: '更新时间',
     minWidth: 150
   },
   {
+    align: 'left',
     field: 'operate',
     fixed: 'right',
     title: '操作',
@@ -60,6 +41,6 @@ export const columns = [
     slots: {
       default: 'operate'
     },
-    width: 150
+    width: 250
   }
 ]

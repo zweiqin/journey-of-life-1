@@ -26,12 +26,18 @@
         >
         添加
         </el-button> -->
+      <el-button
+        v-permission="[ `POST /admin${api.bdUserAdd}` ]" :disabled="bdUserAddBtnDisabled" icon="el-icon-lock"
+        type="success" size="mini" @click="handleBind(true)"
+      >
+        （单选）绑定/重新绑定业务员
+      </el-button>
     </TableTools>
 
     <!-- 区域代理列表 -->
     <VxeTable
       ref="vxeTable" v-model="listQuery" :local-key="customColumnsConfig.localKey" api-method="POST"
-      :api-path="api.getRegionAgentList" :columns="columns"
+      :api-path="api.getRegionAgentList" :columns="columns" @select-change="handleSelectionChange"
     >
       <template #agentRegion="{ row }">
         <span>{{ setRegion(row.agentCode) || '--' }}</span>
@@ -96,6 +102,8 @@
     <EditModal ref="EditModal" @success="getList" />
     <!-- 查看详情 -->
     <DetailModal ref="DetailModal" @success="getList" />
+    <!-- 绑定用户 -->
+    <BindUserModal ref="BindUserModal" @success="getList" />
   </div>
 </template>
 
@@ -109,6 +117,7 @@ import VxeTable from '@/components/VxeTable'
 import TableTools from '@/components/TableTools'
 import EditModal from './components/EditModal'
 import DetailModal from './components/DetailModal'
+import BindUserModal from './components/BindUserModal'
 import { columns } from './table'
 import XeUtils from 'xe-utils'
 
@@ -118,7 +127,8 @@ export default {
     VxeTable,
     TableTools,
     DetailModal,
-    EditModal
+    EditModal,
+    BindUserModal
   },
   data() {
     return {
@@ -132,21 +142,39 @@ export default {
         page: 1,
         limit: 20,
         search: ''
-      }
+      },
+      multipleSelection: []
     }
   },
   computed: {
     ...mapGetters([
       'common_regionList'
-    ])
+    ]),
+    bdUserAddBtnDisabled() {
+      return this.multipleSelection.length !== 1
+    }
   },
   methods: {
+    handleSelectionChange({ $table }) {
+      const records = $table.getCheckboxRecords()
+      this.multipleSelection = records
+    },
     // 自定义列
     updateFields(columns) {
       this.columns = columns
     },
     getList(meaning) {
       meaning === 'keepPage' ? this.listQuery = { ...this.listQuery } : this.listQuery = { ...this.listQuery, page: 1 }
+    },
+    handleBind(flag) {
+      if (!this.multipleSelection.length) {
+        return this.$elMessage('请勾选', 'warning')
+      }
+      const userIds = this.multipleSelection.map((v) => v.id)
+      if (flag) {
+        this.$refs.BindUserModal && this.$refs.BindUserModal.handleOpen({ userIds })
+      } else {
+      }
     },
     async handleUpdateStatus({ userId }, status) {
       await this.$elConfirm(`确认${status == 2 ? '开始审核' : status == 3 ? '审核通过' : '审核不通过'}?`)

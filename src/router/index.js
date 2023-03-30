@@ -201,25 +201,36 @@ export const asyncRouterMap = [
             }
           },
           {
-            path: 'commissionSetting',
-            component: () => import('@/views/brand/commissionSetting'),
-            name: 'CommissionSetting',
+            path: 'commissionQuery',
+            component: () => import('@/views/brand/commissionQuery'),
+            name: 'CommissionQuery',
+            _ROLES: [ 'ADMIN' ],
             meta: {
-              perms: [ 'GET /admin/comModule/list' ],
-              title: '佣金板块',
-              noCache: true
-            }
-          },
-          {
-            path: 'commissionView',
-            component: () => import('@/views/brand/commissionView'),
-            name: 'CommissionView',
-            meta: {
-              perms: [ 'GET /admin/comModule/moduleList' ],
-              title: '佣金查看',
+              perms: [ 'GET /admin/new/commission/queryCommissionList' ],
+              title: '佣金列表',
               noCache: true
             }
           }
+          // {
+          //   path: 'commissionSetting',
+          //   component: () => import('@/views/brand/commissionSetting'),
+          //   name: 'CommissionSetting',
+          //   meta: {
+          //     perms: [ 'GET /admin/comModule/list' ],
+          //     title: '佣金板块',
+          //     noCache: true
+          //   }
+          // },
+          // {
+          //   path: 'commissionView',
+          //   component: () => import('@/views/brand/commissionView'),
+          //   name: 'CommissionView',
+          //   meta: {
+          //     perms: [ 'GET /admin/comModule/moduleList' ],
+          //     title: '佣金查看',
+          //     noCache: true
+          //   }
+          // }
         ]
       },
       {
@@ -243,17 +254,6 @@ export const asyncRouterMap = [
               title: '门店列表',
               noCache: true
             }
-          },
-          {
-            path: 'brandGoods',
-            component: () => import('@/views/brand/brandGoods'),
-            name: 'BrandGoods',
-            meta: {
-              perms: [ 'GET /admin/goods/list' ],
-              title: '门店商品',
-              noCache: false
-            }
-            // hidden: true
           },
           {
             path: 'brandStyle',
@@ -370,6 +370,17 @@ export const asyncRouterMap = [
       icon: 'goods'
     },
     children: [
+      {
+        path: 'brandGoods',
+        component: () => import('@/views/goods/brandGoods'),
+        name: 'BrandGoods',
+        meta: {
+          perms: [ 'GET /admin/goods/list' ],
+          title: '自营商品',
+          noCache: false
+        }
+        // hidden: true
+      },
       {
         path: 'list',
         component: () => import('@/views/goods/list'),
@@ -783,6 +794,16 @@ export const asyncRouterMap = [
     },
     children: [
       {
+        path: 'terrace',
+        component: () => import('@/views/enterprise/terrace'),
+        name: 'terrace',
+        _ROLES: [ 'ADMIN' ],
+        meta: {
+          title: '平台管理',
+          noCache: true
+        }
+      },
+      {
         path: 'baseInfo',
         component: () => import('@/views/enterprise/baseInfo'),
         name: 'BaseInfo',
@@ -807,7 +828,7 @@ export const asyncRouterMap = [
       {
         path: 'roles',
         component: () => import('@/views/enterprise/roles'),
-        name: 'Roles',
+        name: 'roles',
         meta: {
           title: '部门管理',
           noCache: true

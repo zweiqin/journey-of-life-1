@@ -1,23 +1,26 @@
 export const columns = [
   {
-    align: 'center',
-    fixed: 'left',
-    field: 'id',
-    title: 'ID',
-    width: 100
+    type: 'checkbox'
   },
-  {
-    align: 'center',
-    fixed: 'left',
-    field: 'userId',
-    title: '用户ID',
-    minWidth: 150
-  },
+  // {
+  //   align: 'center',
+  //   fixed: 'left',
+  //   field: 'id',
+  //   title: 'ID',
+  //   width: 100
+  // },
+  // {
+  //   align: 'center',
+  //   fixed: 'left',
+  //   field: 'userId',
+  //   title: '用户ID',
+  //   minWidth: 150
+  // },
   {
     align: 'center',
     field: 'agentName',
     title: '公司名称（代理商名称）',
-    minWidth: 150
+    minWidth: 180
   },
   {
     align: 'center',
@@ -92,6 +95,12 @@ export const columns = [
     align: 'center',
     field: 'remarks',
     title: '备注',
+    minWidth: 150
+  },
+  {
+    align: 'center',
+    field: 'salesmanName',
+    title: '业务员',
     minWidth: 150
   },
   {

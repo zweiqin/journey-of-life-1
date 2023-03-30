@@ -7,8 +7,9 @@
       ref="formData"
       :model="formData"
       size="mini"
+      label-position="left"
       label-suffix=":"
-      label-width="120px"
+      label-width="180px"
     >
       <!-- 代理商信息 -->
       <el-form-item label="ID" prop="id">
@@ -57,6 +58,12 @@
       <el-form-item label="备注" prop="remarks">
         {{ formData.remarks || '--' }}
       </el-form-item>
+      <el-form-item label="业务员" prop="salesmanName">
+        {{ formData.salesmanName || '--' }}
+      </el-form-item>
+      <el-form-item label="业务员ID" prop="salesmanId">
+        {{ formData.salesmanId || '--' }}
+      </el-form-item>
       <el-form-item label="创建时间" prop="createTime">
         {{ formData.createTime || '--' }}
       </el-form-item>
@@ -90,6 +97,8 @@ export default {
         idcardConsUrl: '',
         status: 2,
         remarks: '',
+        salesmanName: '',
+        salesmanId: '',
         isDelete: false,
         createTime: '',
         updateTime: ''
@@ -124,6 +133,8 @@ export default {
           idcardConsUrl: res.data.idcardConsUrl || '',
           status: res.data.status || '',
           remarks: res.data.remarks || '',
+          salesmanName: res.data.salesmanName || '',
+          salesmanId: res.data.salesmanId || '',
           isDelete: res.data.isDelete || '',
           createTime: res.data.createTime || '',
           updateTime: res.data.updateTime || ''

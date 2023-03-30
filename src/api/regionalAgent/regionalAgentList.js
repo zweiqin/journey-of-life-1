@@ -4,7 +4,8 @@ export const api = {
   getRegionAgentList: '/regionagent/getRegionAgentList',
   updaetRegionAgentStatus: '/regionagent/updaetRegionAgentStatus',
   updaetRegionAgent: '/regionagent/updaetRegionAgent',
-  getRegionAgentInfo: '/regionagent/getRegionAgentInfo'
+  getRegionAgentInfo: '/regionagent/getRegionAgentInfo',
+  bindingSalesman: '/regionagent/bindingSalesman'
 }
 
 // // 区域代理列表
@@ -37,6 +38,14 @@ export function getRegionAgentInfo(query) {
     url: '/regionagent/getRegionAgentInfo',
     method: 'GET',
     params: query
+  })
+}
+
+export function bindingSalesman(data) {
+  return request({
+    url: '/regionagent/bindingSalesman',
+    method: 'POST',
+    data
   })
 }
 

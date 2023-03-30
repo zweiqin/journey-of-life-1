@@ -30,7 +30,7 @@
           v-model="formData.region_arr"
           placeholder="请选择区域"
           :options="common_regionList"
-          :props="{ label: 'name', value: 'code', expandTrigger: 'hover' }"
+          :props="{ label: 'name', value: 'code', expandTrigger: 'hover', checkStrictly: true }"
           clearable
         />
       </el-form-item>

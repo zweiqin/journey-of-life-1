@@ -359,8 +359,8 @@ export default {
       this.$nextTick(() => {
         // const tableTop = document.querySelector('.jufeng-vxe-table') && document.querySelector('.jufeng-vxe-table').getBoundingClientRect().top
         // this.tableHeight = window.innerHeight - tableTop - pagerHeight - qiankunHeight - this.diffHeight
-        const navbarHeight = 46
-        const tabsHeight = 62
+        const navbarHeight = 50 * (document.documentElement.clientWidth / 1920) + 10
+        const tabsHeight = 50
         const searchHeight = document.querySelector('.app-container>.filter-container') ? document.querySelector('.app-container>.filter-container').offsetHeight : 0
         const pageHeight = this.isPager ? 75 : 20
         const otherHeight = document.querySelector('.app-container>.other-container') ? document.querySelector('.app-container>.other-container').offsetHeight : 0

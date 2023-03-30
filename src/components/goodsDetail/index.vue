@@ -143,6 +143,7 @@ export default {
 	// flex:1;
 	// width:0;
 	width: 375px;
+	max-height: 1888px;
 	font-size: 14px;
 	padding-bottom: 50px;
 	position: relative;
@@ -150,7 +151,8 @@ export default {
 	border: 2px solid #000;
 	vertical-align: top;
 	box-sizing: content-box;
-	overflow: hidden;
+	overflow-x: hidden;
+	overflow-y: auto;
 
 	.carousel-wrapper {
 		position: relative;
