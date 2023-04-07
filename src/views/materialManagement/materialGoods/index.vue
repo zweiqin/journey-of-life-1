@@ -50,12 +50,12 @@
       :custom-columns-config="customColumnsConfig" download custom-field @update-fields="updateFields"
       @refresh="getList" @download="toolsMixin_exportMethod($refs.vxeTable, '门店商品')"
     >
-      <el-button
+      <!-- <el-button
         v-permission="[ `POST /admin${api.goodsCreate}` ]" size="mini" type="primary"
         icon="el-icon-plus" @click="handleCreate"
-      >
+        >
         添加
-      </el-button>
+        </el-button> -->
     </TableTools>
 
     <!-- 查询结果 -->
@@ -150,7 +150,7 @@ import DetailModal from './components/DetailModal'
 import { columns } from './table'
 
 export default {
-  name: 'BrandGoods',
+  name: 'MaterialGoods',
   components: {
     VxeTable,
     TableTools,
@@ -177,7 +177,7 @@ export default {
       api,
       columns,
       customColumnsConfig: {
-        localKey: 'brandGoods',
+        localKey: 'materialGoods',
         columnsOptions: columns
       },
       listQuery: {
@@ -189,7 +189,8 @@ export default {
         styleId: '',
         category_arr: [],
         sort: 'add_time',
-        order: 'desc'
+        order: 'desc',
+        goodsType: '2'
       },
       // brandList: [], // 门店列表
       goodsStyleList: [], // 商品风格
@@ -240,11 +241,12 @@ export default {
       const res = await categoryTreeList()
       this.categoryList = res.data.items
     },
-    handleCreate() {
-      this.$router.push({ name: 'GoodsCreate', query: { brandId: this.listQuery.brandId } })
-    },
+    // handleCreate() {
+    //   this.$router.push({ name: 'GoodsCreate', query: { brandId: this.listQuery.brandId } })
+    // },
     handleEdit(row) {
-      this.$router.push({ name: 'GoodsEdit', query: { id: row.id, brandId: this.listQuery.brandId } })
+      // this.$router.push({ name: 'GoodsEdit', query: { id: row.id, brandId: this.listQuery.brandId } })
+      this.$router.push({ name: 'GoodsEdit', query: { id: row.id, brandId: row.brandId } })
     },
     async handleDelete({ id }) {
       await this.$elConfirm('确认删除?')

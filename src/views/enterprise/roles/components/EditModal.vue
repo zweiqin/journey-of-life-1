@@ -29,7 +29,7 @@
           placeholder="请输入说明"
         />
       </el-form-item>
-    
+
     </el-form>
     <span slot="footer" class="dialog-footer">
       <el-button size="mini" @click="handleClose">取 消</el-button>
@@ -54,17 +54,17 @@ export default {
       formData: {
         id: '',
         name: '',
-        sortOrder: '100',
+        desc: ''
       },
       formRules: {
         name: [
           { required: true, message: '请输入部门名称' },
-          { max: 30, message: '30字以内' },
+          { max: 30, message: '30字以内' }
         ],
         desc: [
-          { max: 520, message: '520字以内' },
+          { max: 520, message: '520字以内' }
         ]
-      },
+      }
     }
   },
   methods: {
@@ -86,7 +86,7 @@ export default {
         this.$elMessage(`${this.formData.id ? '编辑' : '添加'}成功!`)
         this.$emit('success')
         this.visible = false
-      } catch(e) {
+      } catch (e) {
         loading.close()
       }
     }

@@ -376,10 +376,20 @@ export const asyncRouterMap = [
         name: 'BrandGoods',
         meta: {
           perms: [ 'GET /admin/goods/list' ],
+          title: '门店商品',
+          noCache: false
+        },
+        hidden: true
+      },
+      {
+        path: 'selfSupportGoods',
+        component: () => import('@/views/goods/selfSupportGoods'),
+        name: 'SelfSupportGoods',
+        meta: {
+          perms: [ 'GET /admin/goods/list' ],
           title: '自营商品',
           noCache: false
         }
-        // hidden: true
       },
       {
         path: 'list',
@@ -794,12 +804,13 @@ export const asyncRouterMap = [
     },
     children: [
       {
-        path: 'terrace',
-        component: () => import('@/views/enterprise/terrace'),
-        name: 'terrace',
+        path: 'roles',
+        component: () => import('@/views/enterprise/roles'),
+        name: 'roles',
         _ROLES: [ 'ADMIN' ],
         meta: {
-          title: '平台管理',
+          title: '角色管理',
+          // title: '平台管理',
           noCache: true
         }
       },
@@ -826,9 +837,9 @@ export const asyncRouterMap = [
         }
       },
       {
-        path: 'roles',
-        component: () => import('@/views/enterprise/roles'),
-        name: 'roles',
+        path: 'department',
+        component: () => import('@/views/enterprise/department'),
+        name: 'department',
         meta: {
           title: '部门管理',
           noCache: true
@@ -1086,6 +1097,28 @@ export const asyncRouterMap = [
       icon: 'material'
     },
     children: [
+      {
+        path: 'materialBrand',
+        component: () => import('@/views/materialManagement/materialBrand'),
+        name: 'MaterialBrand',
+        _ROLES: [ 'ADMIN' ],
+        meta: {
+          perms: [ 'GET /admin/brand/list' ],
+          title: '材料门店',
+          noCache: true
+        }
+      },
+      {
+        path: 'materialGoods',
+        component: () => import('@/views/materialManagement/materialGoods'),
+        name: 'MaterialGoods',
+        _ROLES: [ 'ADMIN' ],
+        meta: {
+          perms: [ 'GET /admin/goods/list' ],
+          title: '材料商品',
+          noCache: false
+        }
+      },
       {
         path: 'materialCity',
         component: () => import('@/views/materialManagement/materialCity'),

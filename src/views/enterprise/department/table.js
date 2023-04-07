@@ -9,26 +9,20 @@ export const columns = [
   {
     align: 'center',
     fixed: 'left',
-    field: 'name',
-    title: '账号类型名称',
+    field: 'depName',
+    title: '部门名称',
     minWidth: 120
   },
   {
     align: 'center',
-    field: 'desc',
-    title: '说明',
+    field: 'depContent',
+    title: '部门说明',
     minWidth: 200
   },
   {
     align: 'center',
-    field: 'addTime',
+    field: 'createTime',
     title: '创建时间',
-    minWidth: 150
-  },
-  {
-    align: 'center',
-    field: 'updateTime',
-    title: '更新时间',
     minWidth: 150
   },
   {

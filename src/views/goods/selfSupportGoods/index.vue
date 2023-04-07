@@ -181,7 +181,7 @@ export default {
         columnsOptions: columns
       },
       listQuery: {
-        brandId: '',
+        brandId: '1001199',
         page: 1,
         limit: 20,
         goodsSn: '',

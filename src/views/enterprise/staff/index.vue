@@ -45,6 +45,15 @@
         <span>{{ row.status | typeFilter(statusList) }}</span>
       </template>
       <template #operate="{ row }">
+        <el-button v-permission="[ `GET /admin${api.staffDetail}` ]" size="mini" @click="handleDetail(row)">
+          查看
+        </el-button>
+        <el-button
+          v-permission="[ `POST /admin${api.rolePermissionsUpdate}` ]" type="warning" size="mini"
+          @click="$refs.PermissionModal && $refs.PermissionModal.handleOpen({ id: row.roleId })"
+        >
+          授权
+        </el-button>
         <el-button v-permission="[ `POST /admin${api.staffUpdate}` ]" size="mini" @click="handleUpdate(row)">
           编辑
         </el-button>
@@ -59,6 +68,10 @@
 
     <!-- 新增编辑 -->
     <EditModal ref="EditModal" :list="statusList" @success="getList" />
+    <!-- 查看详情 -->
+    <DetailModal ref="DetailModal" @success="getList" />
+    <!-- 权限配置 -->
+    <PermissionModal ref="PermissionModal" @success="getList" />
   </div>
 </template>
 
@@ -71,6 +84,8 @@ import {
 import VxeTable from '@/components/VxeTable'
 import TableTools from '@/components/TableTools'
 import EditModal from './components/EditModal'
+import DetailModal from './components/DetailModal'
+import PermissionModal from './components/PermissionModal'
 import { columns } from './table'
 
 export default {
@@ -78,7 +93,9 @@ export default {
   components: {
     VxeTable,
     TableTools,
-    EditModal
+    EditModal,
+    DetailModal,
+    PermissionModal
   },
   filters: {
     typeFilter(val, list = []) {
@@ -123,8 +140,11 @@ export default {
     getList(meaning) {
       meaning === 'keepPage' ? this.listQuery = { ...this.listQuery } : this.listQuery = { ...this.listQuery, page: 1 }
     },
-    async handleUpdate({ id, value, sortOrder }) {
-      this.$refs.EditModal && this.$refs.EditModal.handleOpen({ id, value, sortOrder })
+    handleDetail(row) {
+      this.$refs.DetailModal && this.$refs.DetailModal.handleOpen(row)
+    },
+    handleUpdate(row) {
+      this.$refs.EditModal && this.$refs.EditModal.handleOpen(row)
     },
     async handleDelete({ id }) {
       await this.$elConfirm('确认删除?')

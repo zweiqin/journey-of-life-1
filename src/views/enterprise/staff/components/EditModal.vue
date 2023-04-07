@@ -9,7 +9,7 @@
       :rules="formRules"
       size="mini"
       label-suffix=":"
-      label-width="100px"
+      label-width="120px"
     >
       <el-form-item label="员工姓名" prop="name">
         <el-input
@@ -34,12 +34,12 @@
           placeholder="请输入员工地址"
         />
       </el-form-item>
-      <el-form-item label="部门" prop="roleId">
-        <el-select v-model="formData.roleId" placeholder="请选择部门">
+      <el-form-item label="部门" prop="departmentId">
+        <el-select v-model="formData.departmentId" placeholder="请选择部门">
           <el-option
-            v-for="item in roleList"
+            v-for="item in departmentList"
             :key="item.id"
-            :label="item.name"
+            :label="item.depName"
             :value="item.id"
           />
         </el-select>
@@ -53,6 +53,18 @@
             :value="item.value"
           />
         </el-select>
+      </el-form-item>
+      <el-form-item label="登录账号" prop="adminAccount">
+        <el-input
+          v-model="formData.adminAccount"
+          placeholder="请输入登录账号"
+        />
+      </el-form-item>
+      <el-form-item label="登录密码" prop="password">
+        <el-input
+          v-model="formData.password"
+          placeholder="请输入登录密码"
+        />
       </el-form-item>
       <el-form-item label="身份证正面" prop="idcardProsUrl">
         <MyUpload v-model="formData.idcardProsUrl" />
@@ -83,7 +95,8 @@
 <script>
 import MyUpload from '@/components/MyUpload'
 import { staffCreate, staffUpdate, staffDetail } from '@/api/enterprise/staff'
-import { roleList } from '@/api/enterprise/role'
+// import { roleList } from '@/api/enterprise/role'
+import { queryDepartmentList } from '@/api/enterprise/department'
 
 export default {
   name: 'EditModal',
@@ -93,7 +106,7 @@ export default {
   props: {
     list: {
       type: Array,
-      default: () => ([])
+      default: () => []
     }
   },
   data() {
@@ -106,33 +119,45 @@ export default {
       visible: false,
       formData: {
         id: '',
+        superiorAdminId: '',
+        adminId: '',
         name: '',
         phone: '',
         address: '',
-        roleId: '',
+        departmentId: '',
         status: '',
         idcardProsUrl: '',
         idcardConsUrl: '',
         socialSecurityNum: '',
         businessInsuranceNum: '',
+        adminAccount: '',
+        password: ''
       },
       formRules: {
         name: [
           { required: true, message: '请输入员工姓名' },
-          { max: 30, message: '30字以内' },
+          { max: 30, message: '30字以内' }
         ],
         phone: [
           { required: true, message: '请输入员工电话' },
-          { max: 30, message: '30字以内' },
+          { max: 30, message: '30字以内' }
         ],
-        roleId: [
-          { required: true, message: '请选择部门' },
+        departmentId: [
+          { required: true, message: '请选择部门' }
         ],
         status: [
-          { required: true, message: '请选择在职状态' },
+          { required: true, message: '请选择在职状态' }
         ],
+        adminAccount: [
+          { required: true, message: '请输入登录账号' },
+          { max: 20, message: '20字以内' }
+        ],
+        password: [
+          { required: true, message: '请输入登录密码' },
+          { max: 20, message: '20字以内' }
+        ]
       },
-      roleList: [], // 角色列表
+      departmentList: [] // 角色列表
     }
   },
   methods: {
@@ -140,7 +165,7 @@ export default {
       this.visible = false
     },
     handleOpen(params = {}) {
-      this.getRoleList()
+      this.getDepartmentList()
       this.modalOptions.title = params.id ? '编辑员工' : '添加员工'
       this.visible = true
       if (params.id) {
@@ -152,20 +177,29 @@ export default {
     async getInfo(id) {
       const res = await staffDetail({ id })
       this.formData = Object.assign(this.$options.data().formData, res.data, {
+        id: res.data.id || '',
+        superiorAdminId: res.data.superiorAdminId || '',
+        adminId: res.data.adminId || '',
+        name: res.data.name || '',
+        phone: res.data.phone || '',
+        address: res.data.address || '',
+        departmentId: res.data.departmentId || '',
+        status: res.data.status || '',
         idcardProsUrl: res.data.idcardProsUrl || '',
         idcardConsUrl: res.data.idcardConsUrl || '',
-        addTime: undefined,
-        updateTime: undefined,
-        deleted: undefined,
+        socialSecurityNum: res.data.socialSecurityNum || '',
+        businessInsuranceNum: res.data.businessInsuranceNum || '',
+        adminAccount: res.data.adminAccount || '',
+        password: res.data.password || ''
       })
       this.$refs.formData && this.$refs.formData.resetFields()
     },
-    async getRoleList() {
-      const res = await roleList({
+    async getDepartmentList() {
+      const res = await queryDepartmentList({
         page: 1,
-        limit: 999
+        limit: 9999
       })
-      this.roleList = res.data.items;
+      this.departmentList = res.data.items
     },
     async handleSubmit() {
       await this.$validatorForm('formData')
@@ -176,7 +210,7 @@ export default {
         this.$elMessage(`${this.formData.id ? '编辑' : '添加'}成功!`)
         this.$emit('success')
         this.visible = false
-      } catch(e) {
+      } catch (e) {
         loading.close()
       }
     }

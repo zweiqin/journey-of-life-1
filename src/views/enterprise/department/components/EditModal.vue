@@ -11,22 +11,22 @@
       label-suffix=":"
       label-width="120px"
     >
-      <el-form-item label="账号类型名称" prop="name">
+      <el-form-item label="部门名称" prop="depName">
         <el-input
-          v-model="formData.name"
+          v-model="formData.depName"
           maxlength="30"
           show-word-limit
-          placeholder="请输入账号类型名称"
+          placeholder="请输入部门名称"
         />
       </el-form-item>
-      <el-form-item label="说明" prop="desc">
+      <el-form-item label="部门说明" prop="depContent">
         <el-input
-          v-model="formData.desc"
+          v-model="formData.depContent"
           type="textarea"
           :autosize="{ minRows: 3, maxRows: 5 }"
           maxlength="520"
           show-word-limit
-          placeholder="请输入说明"
+          placeholder="请输入部门说明"
         />
       </el-form-item>
 
@@ -39,7 +39,7 @@
 </template>
 
 <script>
-import { roleCreate, roleUpdate } from '@/api/enterprise/role'
+import { departmentInsertSelective, departmentUpdateByPrimaryKeySelective } from '@/api/enterprise/department'
 
 export default {
   name: 'EditModal',
@@ -53,15 +53,15 @@ export default {
       visible: false,
       formData: {
         id: '',
-        name: '',
-        sortOrder: '100'
+        depName: '',
+        depContent: ''
       },
       formRules: {
-        name: [
-          { required: true, message: '请输账号类型名称' },
+        depName: [
+          { required: true, message: '请输部门名称' },
           { max: 30, message: '30字以内' }
         ],
-        desc: [
+        depContent: [
           { max: 520, message: '520字以内' }
         ]
       }
@@ -72,7 +72,7 @@ export default {
       this.visible = false
     },
     handleOpen(params = {}) {
-      this.modalOptions.title = params.id ? '编辑账号类型' : '添加账号类型'
+      this.modalOptions.title = params.id ? '编辑部门' : '添加部门'
       this.formData = Object.assign(this.$options.data().formData, params)
       this.visible = true
       this.$refs.formData && this.$refs.formData.resetFields()
@@ -81,7 +81,7 @@ export default {
       await this.$validatorForm('formData')
       const loading = this.$elLoading()
       try {
-        const res = this.formData.id ? await roleUpdate(this.formData) : await roleCreate(this.formData)
+        const res = this.formData.id ? await departmentUpdateByPrimaryKeySelective(this.formData) : await departmentInsertSelective(this.formData)
         loading.close()
         this.$elMessage(`${this.formData.id ? '编辑' : '添加'}成功!`)
         this.$emit('success')

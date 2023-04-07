@@ -15,8 +15,8 @@ export const columns = [
   // },
   {
     align: 'center',
-    field: 'roleName',
-    title: '部门名称',
+    field: 'departmentName',
+    title: '所属部门名称',
     width: 150
   },
   {
@@ -35,6 +35,12 @@ export const columns = [
     align: 'center',
     field: 'address',
     title: '员工地址',
+    minWidth: 200
+  },
+  {
+    align: 'center',
+    field: 'adminAccount',
+    title: '员工账号',
     minWidth: 200
   },
   {
@@ -69,6 +75,6 @@ export const columns = [
     slots: {
       default: 'operate'
     },
-    width: 150
+    width: 250
   }
 ]

@@ -27,7 +27,7 @@
       <el-form-item label="公司地址" prop="companyAddress">
         {{ formData.companyAddress || '--' }}
       </el-form-item>
-      <el-form-item label="商品图片" prop="businessLicense">
+      <el-form-item label="营业执照" prop="businessLicense">
         <el-image v-if="formData.businessLicense" :src="formData.businessLicense" style="width:80px; height:80px" fit="cover" :preview-src-list="[ formData.businessLicense ]" />
         <span v-else>--</span>
       </el-form-item>
