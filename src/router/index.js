@@ -867,6 +867,17 @@ export const asyncRouterMap = [
     },
     children: [
       {
+        path: 'activityList',
+        component: () => import('@/views/marketingManagement/activityList'),
+        name: 'activityList',
+        meta: {
+          // perms: [],
+          _ROLES: [ 'ADMIN' ],
+          title: '活动列表',
+          noCache: true
+        }
+      },
+      {
         path: 'voucherManagement',
         alwaysShow: true,
         component: () => import('@/views/children'),
@@ -1092,6 +1103,7 @@ export const asyncRouterMap = [
     redirect: 'noredirect',
     alwaysShow: true,
     name: 'materialManagement',
+    _ROLES: [ 'ADMIN' ],
     meta: {
       title: '材料管理',
       icon: 'material'
@@ -1144,6 +1156,7 @@ export const asyncRouterMap = [
         component: () => import('@/views/materialManagement/priceIndices'),
         name: 'PriceIndices',
         // perms: [],
+        _ROLES: [ 'ADMIN' ],
         meta: {
           title: '价格指数图表'
         }
@@ -1153,6 +1166,7 @@ export const asyncRouterMap = [
         component: () => import('@/views/materialManagement/priceIndicesInfo'),
         name: 'PriceIndicesInfo',
         // perms: [],
+        _ROLES: [ 'ADMIN' ],
         meta: {
           title: '价格指数'
         }
@@ -1162,6 +1176,7 @@ export const asyncRouterMap = [
         component: () => import('@/views/materialManagement/tradeLeads'),
         name: 'TradeLeads',
         // perms: [],
+        _ROLES: [ 'ADMIN' ],
         meta: {
           title: '供求信息'
         }
@@ -1174,6 +1189,7 @@ export const asyncRouterMap = [
     redirect: 'noredirect',
     alwaysShow: true,
     name: 'community',
+    _ROLES: [ 'ADMIN' ],
     meta: {
       perms: ['POST /admin/community/richText/update', 'POST /admin/community/richText/delete', 'POST /admin/community/richText/create', 'GET /admin/community/richText/list', 'GET /admin/community/richText/detail'],
       title: '社区管理',
@@ -1194,6 +1210,7 @@ export const asyncRouterMap = [
         component: () => import('@/views/communityManagement/communityArticleCreate'),
         name: 'communityArticleCreate',
         // perms: [],
+        _ROLES: [ 'ADMIN' ],
         meta: {
           title: '发布文章'
         }
@@ -1204,6 +1221,7 @@ export const asyncRouterMap = [
         name: 'communityArticleEdit',
         meta: {
           // perms: [],
+          _ROLES: [ 'ADMIN' ],
           title: '文章编辑',
           noCache: true
         },
@@ -1214,6 +1232,7 @@ export const asyncRouterMap = [
         component: () => import('@/views/errorPage/developing'),
         name: 'serviceType',
         // perms: [],
+        _ROLES: [ 'ADMIN' ],
         meta: {
           title: '服务类型'
         }
@@ -1226,6 +1245,7 @@ export const asyncRouterMap = [
     redirect: 'noredirect',
     alwaysShow: true,
     name: 'newMediaManagement',
+    _ROLES: [ 'ADMIN' ],
     meta: {
       // perms: [],
       title: '新媒体',

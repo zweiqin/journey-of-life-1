@@ -17,7 +17,7 @@
         <el-input v-model="formData.professional" placeholder="请输入职业" maxlength="30" />
       </el-form-item>
       <el-form-item label="爱好" prop="hobby">
-        <el-input v-model="formData.hobby" type="textarea" placeholder="请输入客户备注" maxlength="520" :rows="3" show-word-limit />
+        <el-input v-model="formData.hobby" type="textarea" placeholder="请输入客户爱好" maxlength="520" :rows="3" show-word-limit />
       </el-form-item>
       <el-form-item label="工作地点" prop="workingPlace">
         <el-input v-model="formData.workingPlace" type="textarea" placeholder="请输入工作地点" maxlength="100" :rows="2" show-word-limit />
