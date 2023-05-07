@@ -5,6 +5,7 @@
       class="my-upload"
       :accept="accept"
       :action="uploadPath"
+      :name="name"
       :list-type="listType"
       :limit="limit"
       :multiple="multiple"
@@ -88,6 +89,21 @@ export default {
     accept: {
       type: String,
       default: 'image/*'
+    },
+    // 上传文件的字段名
+    name: {
+      type: String,
+      default: 'file'
+    },
+    // 上传成功后的状态值（是否成功）
+    resErrno: {
+      type: String,
+      default: 'errno'
+    },
+    // 上传成功后的提示信息
+    resMsg: {
+      type: String,
+      default: 'errmsg'
     },
     // 上传数量
     limit: {
@@ -240,29 +256,28 @@ export default {
     },
     // 文件列表移除文件时的钩子
     onRemove(file, fileList) {
+      // console.log(this.fileList, fileList)
       let url
       if (typeof this.fileUrl === 'string') {
         url = ''
       } else {
         url = this.fileList.filter((v) => v.uid !== file.uid)
       }
-
       this.$emit('change', url)
       this.handleIsUpload()
     },
     // 上传图片之前
     beforeUpload(file) {
+      // console.log(file)
       this.isUpload = this.fileList.length + 1 >= this.limit
       const isLt10M =
         this.fileSize > 0 ? file.size / 1024 < this.fileSize : true
-
       if (this.fileType.length > 0 && !this.fileType.includes(file.type)) {
         this.$message.warning(`只允许使用以下文件扩展名的文件：${this.fileType
           .join('，')
           .replace(/image\//g, '')}`)
         return false
       }
-
       if (!isLt10M) {
         const text =
           this.fileSize >= 1024
@@ -308,26 +323,32 @@ export default {
     },
     // 上传成功
     handleSuccess(response, file, fileList) {
-      console.log('fileList', fileList)
+      // console.log('fileList', response, file, fileList)
       const newFileList = fileList.filter((item) => {
         if (item.response) {
-          if (item.response.errno === 0) {
-            item.resData = item.response.data.url
+          if (item.response[this.resErrno] == 0) {
+            typeof item.response.data === 'string' ? item.resData = item.response.data : item.resData = item.response.data.url
             return item
           }
-          this.$message.error(item.response.errmsg || '上传失败')
+          this.$message.error(item.response[this.resMsg] || '上传失败')
+          return false
         } else if (!item.response) {
           return item
         }
       })
-
+      // console.log('newFileList', newFileList)
+      // console.log(this.isUpload)
+      if (newFileList.length === 0) { // 因为上传不成功，所以length为0
+        this.fileList = JSON.parse(JSON.stringify(this.fileList))
+        this.handleIsUpload()
+        return
+      }
       let url
       if (typeof this.fileUrl === 'string') {
         url = newFileList[0].resData
       } else {
         url = newFileList
       }
-      this.handleIsUpload()
       this.$emit('change', url)
       this.$emit('onSuccess', url)
     },
@@ -338,13 +359,13 @@ export default {
     },
     // 移除图片
     handleRemove(file) {
+      // console.log(this.fileList, file)
       if (file.status !== 'success') {
         this.$message.warning('正在上传,请稍等在操作')
         return
       }
       this.fileList = this.fileList.filter((item) => item.uid !== file.uid)
       let url
-
       if (typeof this.fileUrl === 'string') {
         url = ''
       } else {

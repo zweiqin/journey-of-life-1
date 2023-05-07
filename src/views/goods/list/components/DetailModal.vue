@@ -25,7 +25,7 @@
         <span v-else>--</span>
       </el-form-item>
       <el-form-item label="商品宣传图片" prop="gallery">
-        <div v-if="formData.gallery">
+        <div v-if="formData.gallery && formData.gallery.length">
           <el-image v-for="(item, index) in formData.gallery" :key="index" :src="item" style="width:80px; height:80px; margin-right: 10px;" fit="cover" :preview-src-list="[ formData.picUrl ]" />
         </div>
         <span v-else>--</span>

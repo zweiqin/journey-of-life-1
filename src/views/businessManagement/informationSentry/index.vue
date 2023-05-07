@@ -45,6 +45,7 @@
           v-if="row.userAvatar" :src="row.userAvatar" style="width:40px; height:40px" fit="cover"
           :preview-src-list="[ row.userAvatar ]"
         />
+        <span v-else>--</span>
       </template>
       <template #status="{ row }">
         <span>{{ row.status | statusFilter(statusList) }}</span>

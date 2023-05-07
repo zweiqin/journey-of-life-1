@@ -48,6 +48,7 @@
               v-if="row.iconUrl" :src="row.iconUrl" style="width:40px; height:40px" fit="cover"
               :preview-src-list="[ row.iconUrl ]"
             />
+            <span v-else>--</span>
           </template>
         </el-table-column>
         <el-table-column align="center" width="100" label="类目图片" prop="picUrl">
@@ -56,6 +57,7 @@
               v-if="row.picUrl" :src="row.picUrl" style="width:40px; height:40px" fit="cover"
               :preview-src-list="[ row.picUrl ]"
             />
+            <span v-else>--</span>
           </template>
         </el-table-column>
         <el-table-column align="center" min-width="150" label="搜索关键字" prop="keywords" show-overflow-tooltip />

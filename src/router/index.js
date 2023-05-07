@@ -385,6 +385,7 @@ export const asyncRouterMap = [
         path: 'selfSupportGoods',
         component: () => import('@/views/goods/selfSupportGoods'),
         name: 'SelfSupportGoods',
+        _ROLES: [ 'ADMIN' ],
         meta: {
           perms: [ 'GET /admin/goods/list' ],
           title: '自营商品',
@@ -399,7 +400,7 @@ export const asyncRouterMap = [
         meta: {
           perms: [ 'GET /admin/goods/list' ],
           title: '商品列表',
-          noCache: true
+          noCache: false
         }
       },
       {

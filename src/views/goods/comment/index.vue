@@ -45,12 +45,14 @@
           v-if="row.userImg" :src="row.userImg" style="width:40px; height:40px" fit="cover"
           :preview-src-list="[ row.userImg ]"
         />
+        <span v-else>--</span>
       </template>
       <template #picUrls="{ row }">
         <div v-if="row.picUrls && row.picUrls.length">
           <el-image :src="row.picUrls[0]" style="width:40px; height:40px" fit="cover" :preview-src-list="row.picUrls" />
           <span v-if="row.picUrls.length > 1" style="margin-left:8px;">+{{ row.picUrls.length }}</span>
         </div>
+        <span v-else>--</span>
       </template>
       <template #goodsStar="{ row }">
         <el-rate v-model="row.goodsStar" disabled />

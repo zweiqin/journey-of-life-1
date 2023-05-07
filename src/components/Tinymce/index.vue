@@ -105,6 +105,8 @@ export default {
         toolbar: this.toolbar.length > 0 ? this.toolbar : toolbar,
         menubar: this.hasMenubar,
         plugins,
+        // contextmenu: 'align backcolor blockformats bold codeformat copy cut forecolor formats fontformats fontsizes italic language lineheight newdocument paste redo removeformat selectall strikethrough subscript superscript underline undo visualaid | a11ycheck | code | advtablesort advtablerownumbering | anchor | restoredraft | casechange | charmap | checklist | code | codesample | addcomment deleteallconversations showcomments | emoticons | export | fullpage | fullscreen | help | hr | image | insertdatetime | link openlink unlink | media | nonbreaking | pagebreak | pageembed | pastetext | configurepermanentpen permanentpen | preview | print | searchreplace | spellchecker spellcheckerlanguage | inserttable inserttabledialog tableprops deletetable cell tablemergecells tablesplitcells tablecellprops column tableinsertcolumnbefore tableinsertcolumnafter tablecutcolumn tablecopycolumn tablepastecolumnbefore tablepastecolumnafter tabledeletecolumn row tableinsertrowbefore tableinsertrowafter tablecutrow tablecopyrow tablepasterowbefore tablepasterowafter tablerowprops tabledeleterow tableclass tablecellclass tablecellvalign tablecellborderwidth tablecellborderstyle tablecaption tablecellbackgroundcolor tablecellbordercolor tablerowheader tablecolheader | template | insertfile | toc | visualblocks | visualchars | wordcount',
+        contextmenu: 'copy cut paste | link image inserttable | cell row column deletetable',
         end_container_on_empty_block: false, // 如果设为true，在空的元素中按下回车键将拆分该元素
         powerpaste_word_import: 'clean',
         code_dialog_height: 450,

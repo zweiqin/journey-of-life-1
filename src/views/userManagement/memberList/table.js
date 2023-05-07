@@ -115,6 +115,6 @@ export const columns = [
     slots: {
       default: 'operate'
     },
-    width: 340
+    width: 420
   }
 ]

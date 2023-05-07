@@ -55,12 +55,14 @@
           v-if="row.picUrl" :src="row.picUrl" style="width:40px; height:40px" fit="cover"
           :preview-src-list="[ row.picUrl ]"
         />
+        <span v-else>--</span>
       </template>
       <template #gallery="{ row }">
         <div v-if="row.gallery && row.gallery.length">
           <el-image :src="row.gallery[0]" style="width:40px; height:40px" fit="cover" :preview-src-list="row.gallery" />
           <span v-if="row.gallery.length > 1" style="margin-left:8px;">+{{ row.gallery.length }}</span>
         </div>
+        <span v-else>--</span>
       </template>
       <!-- <el-table-column align="center" width="100" label="会员价格" prop="vipPrice" show-overflow-tooltip :formatter="refreshVipPrice" />
         <el-table-column align="center" width="100" label="会员价格" prop="vipPrice" show-overflow-tooltip>

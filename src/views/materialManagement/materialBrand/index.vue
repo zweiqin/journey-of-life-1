@@ -43,7 +43,7 @@
 
     <TableTools
       :custom-columns-config="customColumnsConfig" download custom-field @update-fields="updateFields"
-      @refresh="getList" @download="toolsMixin_exportMethod($refs.vxeTable, '门店列表')"
+      @refresh="getList" @download="toolsMixin_exportMethod($refs.vxeTable, '材料门店')"
     >
       <el-button
         v-permission="[ `POST /admin${api.brandCreate}` ]" size="mini" type="primary" icon="el-icon-plus"
@@ -63,6 +63,7 @@
           v-if="row.picUrl" :src="row.picUrl" style="width:40px; height:40px" fit="cover"
           :preview-src-list="[ row.picUrl ]"
         />
+        <span v-else>--</span>
       </template>
       <template #operate="{ row }">
         <el-button size="mini" @click="handleDetail(row)">
@@ -103,8 +104,8 @@
 import { mapGetters } from 'vuex'
 import VxeTable from '@/components/VxeTable'
 import TableTools from '@/components/TableTools'
-import EditModal from './components/EditModal'
-import DetailModal from './components/DetailModal'
+import EditModal from '../../brand/brandList/components/EditModal'
+import DetailModal from '../../brand/brandList/components/DetailModal'
 import {
   api,
   brandList,

@@ -297,6 +297,7 @@
                 v-if="row.picUrl" :src="row.picUrl" style="width:40px; height:40px" fit="cover"
                 :preview-src-list="[ row.picUrl ]"
               />
+              <span v-else>--</span>
             </template>
           </el-table-column>
           <el-table-column v-if="multipleSpec" label="操作" width="100" class-name="small-padding fixed-width">
@@ -345,6 +346,7 @@
                 v-if="row.url" :src="row.url" style="width:40px; height:40px" fit="cover"
                 :preview-src-list="[ row.url ]"
               />
+              <span v-else>--</span>
             </template>
           </el-table-column>
           <el-table-column align="center" label="操作" width="100" class-name="small-padding fixed-width">

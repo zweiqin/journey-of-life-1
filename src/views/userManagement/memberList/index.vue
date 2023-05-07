@@ -82,6 +82,7 @@
           v-if="row.avatar" :src="row.avatar" style="width:40px; height:40px" fit="cover"
           :preview-src-list="[ row.avatar ]"
         />
+        <span v-else>--</span>
       </template>
       <template #brandLevelDesc="{ row }">
         <span v-if="isAdminRole">{{ row.brandLevelDesc || '--' }}</span>
@@ -97,6 +98,12 @@
         </el-button>
         <!-- 超管专属 -->
         <template v-if="isAdminRole">
+          <el-button
+            v-permission="[ `POST /admin${api.setUserForShareholder}` ]" type="danger"
+            :disabled="row.shareholder === 1" size="mini" @click="handleDelete(row)"
+          >
+            设置股东
+          </el-button>
           <el-button
             v-permission="[ `POST /admin${api.userupSaveAndSignin}` ]" :disabled="row.userLevel !== 7"
             type="primary" size="mini" @click="handleShopApply(row)"
@@ -170,7 +177,8 @@ import {
   userList,
   bdUserDeleted,
   orderSVsDeleted,
-  getRoleCount
+  getRoleCount,
+  setUserForShareholder
 } from '@/api/userManagement/memberList'
 import EditModal from './components/EditModal'
 import BindUserModal from './components/BindUserModal'
@@ -370,6 +378,13 @@ export default {
         this.$elMessage('取消指派成功!')
         this.getList()
       }
+    },
+    // 设置股东
+    async handleDelete({ id }) {
+      await this.$elConfirm('确认设置为股东？')
+      await setUserForShareholder({ userId: id })
+      this.$elMessage('设置成功!')
+      this.handleSearch()
     }
   }
 }

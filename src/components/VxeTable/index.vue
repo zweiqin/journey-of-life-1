@@ -362,7 +362,7 @@ export default {
         const navbarHeight = 50 * (document.documentElement.clientWidth / 1920) + 10
         const tabsHeight = 50
         const searchHeight = document.querySelector('.app-container>.filter-container') ? document.querySelector('.app-container>.filter-container').offsetHeight : 0
-        const pageHeight = this.isPager ? 75 : 20
+        const pageHeight = this.isPager ? 75 : 25
         const otherHeight = document.querySelector('.app-container>.other-container') ? document.querySelector('.app-container>.other-container').offsetHeight : 0
         const toolsHeight = document.querySelector('.app-container>.table-tools') ? document.querySelector('.app-container>.table-tools').offsetHeight : 0
         const height = navbarHeight + tabsHeight + searchHeight + pageHeight + otherHeight + toolsHeight

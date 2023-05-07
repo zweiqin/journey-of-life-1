@@ -48,7 +48,7 @@
 
     <TableTools
       :custom-columns-config="customColumnsConfig" download custom-field @update-fields="updateFields"
-      @refresh="getList" @download="toolsMixin_exportMethod($refs.vxeTable, '门店商品')"
+      @refresh="getList" @download="toolsMixin_exportMethod($refs.vxeTable, '材料商品')"
     >
       <!-- <el-button
         v-permission="[ `POST /admin${api.goodsCreate}` ]" size="mini" type="primary"
@@ -68,6 +68,7 @@
           v-if="row.picUrl" :src="row.picUrl" style="width:40px; height:40px" fit="cover"
           :preview-src-list="[ row.picUrl ]"
         />
+        <span v-else>--</span>
       </template>
       <template #gallery="{ row }">
         <div v-if="row.gallery && row.gallery.length">
@@ -77,6 +78,7 @@
           />
           <span v-if="row.gallery.length > 1" style="margin-left:8px;">+{{ row.gallery.length }}</span>
         </div>
+        <span v-else>--</span>
       </template>
       <template #isOnSale="{ row }">
         <el-tag v-if="row.isOnSale" type="success" effect="plain">是</el-tag>
@@ -146,7 +148,7 @@ import TableTools from '@/components/TableTools'
 // import { brandList } from '@/api/brand/brandList'
 import { goodsStyleList } from '@/api/goods/goodsStyle'
 import { categoryTreeList } from '@/api/goods/goodsCategory'
-import DetailModal from './components/DetailModal'
+import DetailModal from '../../goods/selfSupportGoods/components/DetailModal'
 import { columns } from './table'
 
 export default {

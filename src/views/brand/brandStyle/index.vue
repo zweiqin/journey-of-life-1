@@ -36,6 +36,7 @@
           v-if="row.picUrl" :src="row.picUrl" style="width:40px; height:40px" fit="cover"
           :preview-src-list="[ row.picUrl ]"
         />
+        <span v-else>--</span>
       </template>
       <template #operate="{ row }">
         <el-button v-permission="[ `POST /admin${api.brandStyleUpdate}` ]" size="mini" @click="handleUpdate(row)">

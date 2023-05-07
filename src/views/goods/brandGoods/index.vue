@@ -68,6 +68,7 @@
           v-if="row.picUrl" :src="row.picUrl" style="width:40px; height:40px" fit="cover"
           :preview-src-list="[ row.picUrl ]"
         />
+        <span v-else>--</span>
       </template>
       <template #gallery="{ row }">
         <div v-if="row.gallery && row.gallery.length">
@@ -77,6 +78,7 @@
           />
           <span v-if="row.gallery.length > 1" style="margin-left:8px;">+{{ row.gallery.length }}</span>
         </div>
+        <span v-else>--</span>
       </template>
       <template #isOnSale="{ row }">
         <el-tag v-if="row.isOnSale" type="success" effect="plain">是</el-tag>
