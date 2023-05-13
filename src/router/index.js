@@ -19,11 +19,11 @@ import Layout from '@/views/layout/Layout'
 * redirect: noredirect           if `redirect:noredirect` will no redirect in the breadcrumb
 * name:'router-name'             the name is used by <keep-alive> (must set!!!)
 * meta : {
-    perms: ['GET /aaa','POST /bbb']     will control the page perms (you can set multiple perms)
-    title: 'title'               the name show in submenu and breadcrumb (recommend set)
-    icon: 'svg-name'             the icon show in the sidebar,
-    noCache: true                if true ,the page will no be cached(default is false)
-  }
+		perms: ['GET /aaa','POST /bbb']     will control the page perms (you can set multiple perms)
+		title: 'title'               the name show in submenu and breadcrumb (recommend set)
+		icon: 'svg-name'             the icon show in the sidebar,
+		noCache: true                if true ,the page will no be cached(default is false)
+	}
 **/
 
 export const constantRouterMap = [
@@ -1136,9 +1136,9 @@ export const asyncRouterMap = [
         path: 'materialCity',
         component: () => import('@/views/materialManagement/materialCity'),
         name: 'MaterialCity',
-        // perms: [],
         _ROLES: [ 'ADMIN' ],
         meta: {
+          // perms: [],
           title: '材料城管理'
         }
       },
@@ -1146,9 +1146,9 @@ export const asyncRouterMap = [
         path: 'materialBrandStyle',
         component: () => import('@/views/materialManagement/materialBrandStyle'),
         name: 'MaterialBrandStyle',
-        // perms: [],
         _ROLES: [ 'ADMIN' ],
         meta: {
+          // perms: [],
           title: '门店材料风格'
         }
       },
@@ -1156,9 +1156,9 @@ export const asyncRouterMap = [
         path: 'priceIndices',
         component: () => import('@/views/materialManagement/priceIndices'),
         name: 'PriceIndices',
-        // perms: [],
         _ROLES: [ 'ADMIN' ],
         meta: {
+          // perms: [],
           title: '价格指数图表'
         }
       },
@@ -1166,9 +1166,9 @@ export const asyncRouterMap = [
         path: 'priceIndicesInfo',
         component: () => import('@/views/materialManagement/priceIndicesInfo'),
         name: 'PriceIndicesInfo',
-        // perms: [],
         _ROLES: [ 'ADMIN' ],
         meta: {
+          // perms: [],
           title: '价格指数'
         }
       },
@@ -1176,9 +1176,9 @@ export const asyncRouterMap = [
         path: 'tradeLeads',
         component: () => import('@/views/materialManagement/tradeLeads'),
         name: 'TradeLeads',
-        // perms: [],
         _ROLES: [ 'ADMIN' ],
         meta: {
+          // perms: [],
           title: '供求信息'
         }
       }
@@ -1207,12 +1207,34 @@ export const asyncRouterMap = [
       //   }
       // },
       {
+        path: 'communityPartner',
+        component: () => import('@/views/communityManagement/communityPartner'),
+        name: 'CommunityPartner',
+        _ROLES: [ 'ADMIN' ],
+        meta: {
+          perms: ['POST /admin/api/third/partner/getCustomerList', 'POST /admin/api/third/partner/startAudit', 'GET /admin/api/third/partner/getPartnerInfo'],
+          title: '社区合伙人',
+          noCache: true
+        }
+      },
+      {
+        path: 'communityCommander',
+        component: () => import('@/views/communityManagement/communityCommander'),
+        name: 'CommunityCommander',
+        _ROLES: [ 'ADMIN' ],
+        meta: {
+          perms: ['POST /admin/api/third/partner/getCustomerList', 'POST /admin/api/third/partner/startAudit', 'GET /admin/api/third/partner/getPartnerInfo'],
+          title: '社区团长',
+          noCache: true
+        }
+      },
+      {
         path: 'communityArticleCreate',
         component: () => import('@/views/communityManagement/communityArticleCreate'),
         name: 'communityArticleCreate',
-        // perms: [],
         _ROLES: [ 'ADMIN' ],
         meta: {
+          perms: [],
           title: '发布文章'
         }
       },
@@ -1232,9 +1254,9 @@ export const asyncRouterMap = [
         path: 'serviceType',
         component: () => import('@/views/errorPage/developing'),
         name: 'serviceType',
-        // perms: [],
         _ROLES: [ 'ADMIN' ],
         meta: {
+          // perms: [],
           title: '服务类型'
         }
       }

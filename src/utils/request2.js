@@ -2,10 +2,11 @@ import axios from 'axios'
 import { Message, MessageBox } from 'element-ui'
 import store from '@/store'
 import { getToken } from '@/utils/auth'
+import { elMessage } from '@/config/tipTools'
 
 // create an axios instance
 const service = axios.create({
-  baseURL: process.env.BASE_WIDE_API, // api 的 base_url
+  baseURL: process.env.BASE_COMMUNITY_API, // api 的 base_url
   timeout: 5000 // request timeout
 })
 
@@ -71,8 +72,9 @@ service.interceptors.response.use((response) => {
     })
     return Promise.reject('error')
   } else if (res.errno !== 0) {
+    elMessage(res.errmsg, 'error')
     // 非5xx的错误属于业务错误，留给具体页面处理
-    return Promise.reject(response)
+    return Promise.reject(res)
   }
   return res
 }, (error) => {
