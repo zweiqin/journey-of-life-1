@@ -15,8 +15,8 @@ service.interceptors.request.use(
   (config) => {
     // Do something before request is sent
     if (store.getters.token) {
-      // 让每个请求携带token-- ['X-Dts-Admin-Token']为自定义key 请根据实际情况自行修改
-      config.headers['X-Dts-Admin-Token'] = getToken()
+      // 让每个请求携带token-- ['TK-token']为自定义key 请根据实际情况自行修改
+      config.headers['TK-token'] = getToken()
     }
     return config
   },
@@ -30,8 +30,8 @@ service.interceptors.request.use(
 // response interceptor
 service.interceptors.response.use((response) => {
   const res = response.data
-
-  if (res.errno === 501) {
+  console.log(res)
+  if (res.code === '501') {
     MessageBox.alert('系统未登录，请重新登录', '错误', {
       confirmButtonText: '确定',
       type: 'error'
@@ -41,38 +41,48 @@ service.interceptors.response.use((response) => {
       })
     })
     return Promise.reject('error')
-  } else if (res.errno === 502) {
+  } else if ((res.code === '20001' || res.code === '50002' || res.code === '20001') && res.msg.includes('登录')) {
+    MessageBox.alert('系统未登录，请重新登录', '错误', {
+      confirmButtonText: '确定',
+      type: 'error'
+    }).then(() => {
+      store.dispatch('FedLogOut').then(() => {
+        location.reload()
+      })
+    })
+    return Promise.reject('error')
+  } else if (res.code === '502') {
     MessageBox.alert('系统内部错误，请联系管理员维护', '错误', {
       confirmButtonText: '确定',
       type: 'error'
     })
     return Promise.reject('error')
-  } else if (res.errno === 503) {
+  } else if (res.code === '503') {
     MessageBox.alert('请求业务目前未支持', '警告', {
       confirmButtonText: '确定',
       type: 'error'
     })
     return Promise.reject('error')
-  } else if (res.errno === 504) {
+  } else if (res.code === '504') {
     MessageBox.alert('更新数据已经失效，请刷新页面重新操作', '警告', {
       confirmButtonText: '确定',
       type: 'error'
     })
     return Promise.reject('error')
-  } else if (res.errno === 505) {
+  } else if (res.code === '505') {
     MessageBox.alert('更新失败，请再尝试一次', '警告', {
       confirmButtonText: '确定',
       type: 'error'
     })
     return Promise.reject('error')
-  } else if (res.errno === 506) {
+  } else if (res.code === '506') {
     MessageBox.alert('没有操作权限，请联系管理员授权', '错误', {
       confirmButtonText: '确定',
       type: 'error'
     })
     return Promise.reject('error')
-  } else if (res.errno !== 0) {
-    elMessage(res.errmsg, 'error')
+  } else if (res.code !== '0') {
+    elMessage(res.msg, 'error')
     // 非5xx的错误属于业务错误，留给具体页面处理
     return Promise.reject(res)
   }

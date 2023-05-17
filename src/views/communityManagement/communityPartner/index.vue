@@ -25,7 +25,7 @@
     <VxeTable
       ref="vxeTable" v-model="listQuery" :local-key="customColumnsConfig.localKey" api-method="POST"
       :api-path="api.partnerGetCustomerList" :columns="columns" page-alias="pageNo" size-alias="pageSize"
-      :grid-options="{ rowConfig: { height: 60 } }"
+      :grid-options="{ rowConfig: { height: 60 } }" request-method="request2"
     >
       <template #status="{ row }">
         <el-tag v-if="row.status === 1" type="warning">已申请</el-tag>

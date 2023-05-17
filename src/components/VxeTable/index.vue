@@ -6,6 +6,7 @@ date：2021-7
 <script>
 import empty from './image/no-data.png'
 import request from '@/utils/request'
+import request2 from '@/utils/request2'
 import client from '@/utils/request.js'
 import XEUtils from 'xe-utils'
 import { objDeepMerge } from '@/utils'
@@ -96,6 +97,10 @@ export default {
     isRequest: {
       type: Boolean,
       default: true
+    },
+    requestMethod: {
+      type: String,
+      default: 'request'
     },
     gridOptions: {
       type: Object,
@@ -258,11 +263,20 @@ export default {
         this.isDataLoading = true
 
         const { apiPath, apiMethod } = this
-        const res = await request({
-          url: apiPath,
-          method: apiMethod,
-          [apiMethod.toUpperCase() === 'GET' ? 'params' : 'data']: this.searchParams
-        })
+        let res
+        if (this.requestMethod === 'request') {
+          res = await request({
+            url: apiPath,
+            method: apiMethod,
+            [apiMethod.toUpperCase() === 'GET' ? 'params' : 'data']: this.searchParams
+          })
+        } else if (this.requestMethod === 'request2') {
+          res = await request2({
+            url: apiPath,
+            method: apiMethod,
+            [apiMethod.toUpperCase() === 'GET' ? 'params' : 'data']: this.searchParams
+          })
+        }
 
         // const { apiFn } = this
         // const res = await apiFn(this.searchParams)
@@ -291,6 +305,7 @@ export default {
         this.$emit('post-data', cloneDeep(this.postData))
         this.isDataLoading = false
       } catch (e) {
+        console.log(e)
         this.postData = []
         this.isDataLoading = false
       }
