@@ -60,9 +60,13 @@
     </div>
     <div class="login-container">
       <div class="login-header">
-        <h2 class="login-title">欢迎登录巨蜂管理系统</h2>
+        <h2 class="login-title" style="font-size: 1.25vw">
+          欢迎登录<span style="color: #0000bb">团蜂门店</span>管理系统
+        </h2>
         <hr />
-        <h4>WELCOME TO THE JUFENG management system</h4>
+        <h4 style="font-size: 0.8333vw">
+          WELCOME TO THE JUFENG management system
+        </h4>
       </div>
       <div class="login-card">
         <el-card
@@ -93,7 +97,7 @@
                     "
                   >
                     <img
-                      style="width: 14px; height: 14px"
+                      style="width: 0.7292vw; height: 0.7292vw"
                       src="@/assets/image/humer.png"
                       alt=""
                       srcset=""
@@ -122,7 +126,7 @@
                     "
                   >
                     <img
-                      style="width: 14px; height: 14px"
+                      style="width: 0.7292vw; height: 0.7292vw"
                       src="@/assets/image/password.png"
                       alt=""
                       srcset=""
@@ -150,7 +154,7 @@
                     "
                   >
                     <img
-                      style="width: 14px; height: 14px"
+                      style="width: 0.7292vw; height: 0.7292vw"
                       src="@/assets/image/yanzheng.png"
                       alt=""
                       srcset=""
@@ -177,7 +181,7 @@
                   :loading="loading"
                   size="medium"
                   type="primary"
-                  style="width: 100%; height: 50px"
+                  style="width: 100%; height: 2.6042vw"
                   @click.native.prevent="handleLogin"
                 >
                   <span v-if="!loading">登 录</span>
@@ -374,7 +378,7 @@ export default {
 .login_bg_right {
   overflow: hidden;
   position: relative;
-  width: 720px;
+  width: 37.5vw;
   height: 100%;
   background-color: #0000bb;
   display: flex;
@@ -384,56 +388,56 @@ export default {
     position: absolute;
   }
   .background_image:nth-of-type(1) {
-    left: 386px;
-    top: 30px;
+    left: 20.1042vw;
+    top: 1.5625vw;
   }
   .background_image:nth-of-type(2) {
-    left: 445px;
-    top: -150px;
+    left: 23.1771vw;
+    top: -7.8125vw;
   }
   .background_image:nth-of-type(3) {
-    left: 590px;
-    top: 64px;
+    left: 30.7292vw;
+    top: 3.3333vw;
   }
   .background_image:nth-of-type(4) {
-    left: 40px;
-    top: 636px;
+    left: 2.0833vw;
+    top: 33.125vw;
   }
   .background_image:nth-of-type(5) {
-    left: -150px;
-    top: 701px;
+    left: -7.8125vw;
+    top: 36.5104vw;
   }
   .background_image:nth-of-type(6) {
-    left: 200px;
-    top: 652px;
+    left: 10.4167vw;
+    top: 33.9583vw;
   }
   .background_image:nth-of-type(7) {
-    left: 400px;
-    top: 822px;
+    left: 20.8333vw;
+    top: 42.8125vw;
   }
   .logo {
     position: absolute;
-    left: 55px;
-    top: 62px;
-    width: 182px;
-    height: 51px;
+    left: 2.8646vw;
+    top: 3.2292vw;
+    width: 9.4792vw;
+    height: 2.6563vw;
   }
   .right_box_center {
-    width: 460px;
-    height: 258px;
+    width: 23.9583vw;
+    height: 13.4375vw;
     font-family: 思源黑体;
     > p:nth-of-type(1) {
-      height: 35px;
-      font-size: 24px;
+      height: 1.3021vw;
+      font-size: 1.25vw;
       font-weight: 500;
       text-transform: capitalize;
       letter-spacing: 0.1em;
       color: #ffcb21;
     }
     > p:nth-of-type(2) {
-      line-height: 93px;
-      width: 459px;
-      font-size: 64px;
+      line-height: 4.8438vw;
+      width: 23.9063vw;
+      font-size: 3.3333vw;
       font-weight: bold;
       letter-spacing: 0.1em;
       color: #ffffff;
@@ -442,17 +446,17 @@ export default {
       display: flex;
       > p {
         margin-top: 5px;
-        height: 26px;
-        font-size: 18px;
+        height: 1.3542vw;
+        font-size: 0.9375vw;
         font-weight: 500;
         text-transform: uppercase;
         letter-spacing: 0.1em;
         color: #ffffff;
       }
       > img {
-        margin-left: 20px;
-        width: 15px;
-        height: 27px;
+        margin-left: 1.0417vw;
+        width: 0.7813vw;
+        height: 1.4063vw;
       }
     }
   }
@@ -474,13 +478,15 @@ export default {
   }
 
   .login-container {
+    /* width: 26.0417vw;
+    height: 20.8333vw; */
     position: absolute;
     right: 20%;
     top: 50%;
     transform: translateY(-50%);
-    padding: 30px 60px;
+    padding: 1.5625vw 3.125vw;
     background: #ffffff;
-    border-radius: 15px;
+    border-radius: 0.7813vw;
     box-shadow: 0px 0px 15px 3px #ffffff;
 
     .login-header {
@@ -499,13 +505,13 @@ export default {
       }
 
       hr {
-        margin: 4px 0;
+        margin: 0.2083vw 0;
         border-color: rgba(0, 0, 0, 0.85);
       }
 
       h4 {
         // width: 100%;
-        height: 1.5em;
+        height: 1.875vw;
         text-align: justify;
       }
 
@@ -525,15 +531,15 @@ export default {
 
       .login-box {
         // width: 500px;
-        height: 350px;
-        padding: 25px 25px 5px 25px;
-        border-radius: 6px;
+        height: 18.2292vw;
+        padding: 1.3021vw 1.3021vw 5px 25px;
+        border-radius: 0.3125vw;
 
         .login-content {
           .master-login-title {
-            padding-top: 10px;
+            padding-top: 0.5208vw;
             font-weight: lighter;
-            font-size: 20px;
+            font-size: 1.0417vw;
             text-align: center;
             font-family: PingFangSC-Regular;
             color: #111;
@@ -542,7 +548,7 @@ export default {
           .qrcode-login {
             .qrcode-img {
               width: 100%;
-              height: 260px;
+              height: 13.5417vw;
               display: flex;
               align-items: center;
               justify-content: center;
@@ -555,7 +561,7 @@ export default {
 
               p {
                 text-align: center;
-                font-size: 20px;
+                font-size: 1.0417vw;
                 color: #111;
                 font-family: PingFangSC-Regular;
               }
@@ -565,40 +571,40 @@ export default {
       }
 
       .login-tab-box {
-        height: 312px;
-        padding: 30px 5px 0;
+        height: 16.25vw;
+        padding: 1.5625vw 0.2604vw 0;
 
         .el-input {
-          height: 38px;
-          box-shadow: 0px 0px 10px 0px rgba(153, 153, 153, 0.8);
+          height: 1.9792vw;
+          box-shadow: 0px 0px 0.5208vw 0px rgba(153, 153, 153, 0.8);
 
           input {
-            height: 38px;
-            padding-left: 50px;
+            height: 1.9792vw;
+            padding-left: 2.6042vw;
           }
 
           .el-input__prefix {
             left: 0;
-            width: 38px;
+            width: 1.9792vw;
           }
         }
 
         .input-icon {
           color: white;
-          height: 39px;
-          width: 14px;
-          margin-left: 2px;
+          height: 2.0313vw;
+          width: 0.7292vw;
+          margin-left: 0.1042vw;
         }
 
         .login-tip {
-          font-size: 13px;
+          font-size: 0.6771vw;
           text-align: center;
           color: #bfbfbf;
         }
 
         .login-code {
           width: 33%;
-          height: 38px;
+          height: 1.9792vw;
           float: right;
 
           img {
@@ -611,7 +617,7 @@ export default {
           background-color: #0000bb;
           /* border-color: #073E8E; */
           border: none;
-          box-shadow: 0px 0px 10px 0px rgba(153, 153, 153, 0.8);
+          box-shadow: 0px 0px 0.5208vw 0px rgba(153, 153, 153, 0.8);
         }
 
         .el-button--primary:active {
@@ -622,5 +628,28 @@ export default {
       }
     }
   }
+}
+.el-input__inner {
+  line-height: 1.4583vw;
+}
+.el-form-item {
+  margin-bottom: 0.9375vw !important;
+}
+.el-checkbox__label {
+  display: inline-block;
+  padding-left: 0.5208vw;
+  line-height: 0.9896vw;
+  font-size: 0.7292vw;
+}
+.el-checkbox__inner {
+  font-size: 0.625vw;
+  width: 0.7292vw;
+  height: 0.7292vw;
+}
+.el-button--medium {
+  font-size: 0.7292vw;
+}
+.el-input--mini {
+  font-size: 0.625vw !important;
 }
 </style>
