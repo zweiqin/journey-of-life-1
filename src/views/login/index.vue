@@ -65,7 +65,7 @@
         </h2>
         <hr />
         <h4 style="font-size: 0.8333vw">
-          WELCOME TO THE JUFENG management system
+          Welcome To  The  Bee  Management  System
         </h4>
       </div>
       <div class="login-card">

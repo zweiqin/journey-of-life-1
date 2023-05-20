@@ -15,5 +15,17 @@
 	<div id="app"></div>
 	<!-- built files will be auto injected -->
 </body>
+<script>
+  window.onload = function () {
+  // 计算页面加载完成后的时间
+  var renderEndTime = new Date().getTime()
+
+  // 计算加载和渲染的时间差
+  var renderTime = renderEndTime - performance.timing.navigationStart
+
+  // 输出渲染时间
+  console.log('页面渲染所需时间：' + renderTime + ' 毫秒')
+}
+</script>
 
 </html>

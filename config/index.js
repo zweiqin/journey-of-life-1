@@ -43,7 +43,7 @@ module.exports = {
 				}
 			},
 			'/': {
-				target:'https://www.tuanfengkeji.cn:8098/dts-admin-api/admin', // 接口的域名
+				target:'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin', // 接口的域名
 				// secure: false, // 如果是https，需要开启这个选项
 				changeOrigin: true, // 如果接口跨域，需要进行这个参数配置
 			}
