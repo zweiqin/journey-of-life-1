@@ -6,7 +6,8 @@
 // 导入地图数据
 import dataList from '../MapChinaJson'
 // 中国地图
-import 'echarts/map/js/china'
+// import 'echarts/map/js/china'
+import chainData from '../MapChinaJson/100000.json'
 import * as echarts from 'echarts'
 export default {
   name: 'MapChina',
@@ -29,21 +30,20 @@ export default {
               }
             },
             itemStyle: {
-              normal: {
-                borderColor: '#000',
-                borderWidth: 0
-              }
+              borderColor: '#000',
+              borderWidth: 0
             },
             label: {
-              normal: {
-                show: false
-              }
+              show: false
             },
             selectedMode: 'multiple'
           }
         ]
       }
     }
+  },
+  beforeCreate() {
+    echarts.registerMap('china', { geoJSON: chainData })
   },
   mounted() {
     const chartDom = document.getElementById('map_cn')
