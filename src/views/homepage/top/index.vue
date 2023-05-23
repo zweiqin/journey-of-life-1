@@ -64,20 +64,20 @@
         <div class="item_footer">
           <div>
             <p>总交易额</p>
-            <p>{{ convertToShortForm(statisticsData.turnoverSum) }}</p>
+            <p>{{ statisticsData.turnoverSum }}</p>
           </div>
           <div>
             <p>今日交易</p>
-            <p>{{ convertToShortForm(statisticsData.toDayTurnoverSum) }}</p>
+            <p>{{ statisticsData.toDayTurnoverSum }}</p>
           </div>
-          <div>
+          <!-- <div>
             <p>佣金提现</p>
-            <p>{{ convertToShortForm(statisticsData.withdrawnBalance) }}</p>
-          </div>
+            <p>{{ statisticsData.withdrawnBalance }}</p>
+            </div> -->
           <div>
             <p>总支出</p>
             <p>
-              {{ convertToShortForm(statisticsData.withdrawnBalance) }}
+              {{ statisticsData.withdrawnBalance }}
             </p>
           </div>
         </div>
@@ -174,6 +174,7 @@ export default {
         display: flex;
         height: 3.5417vw;
         > div {
+          text-align: center;
           flex: 1;
           > p:nth-of-type(1) {
             font-size: 0.7292vw;

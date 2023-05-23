@@ -30,6 +30,15 @@ export default {
   methods: {
     switchData(index) {
       this.AnyDataIndex = index
+      if (this.headerData.name === '分析图') {
+        this.$emit('getAnlyDatalist', index)
+      }
+      if (this.headerData.name === '商品排行') {
+        this.$emit('getDataList', index)
+      }
+      if (this.headerData.name === '可视图') {
+
+      }
     }
   }
 }

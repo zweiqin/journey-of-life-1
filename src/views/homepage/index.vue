@@ -7,8 +7,9 @@
     class="main"
   >
     <!-- 统计区   ⬇模拟组件传值 -->
-    <HomeTop :statistics-data="statisticsData"></HomeTop>
+    <HomeTop v-if="statisticsData" :statistics-data="statisticsData"></HomeTop>
     <HomeContainer
+      v-if="statisticsData"
       :statistics-data="statisticsData"
       :new-addres="newAddres"
       @selectNewAddres="getNewAddres"
@@ -30,7 +31,7 @@ export default {
     return {
       // 地址数据
       addres: ['广东省', '佛山市', '顺德区', '龙江镇'],
-      statisticsData: {},
+      statisticsData: null,
       specificTime: '',
       specificTimeTimer: ''
     }
@@ -40,7 +41,7 @@ export default {
     newAddres: {
       get() {
         let text = ' '
-        this.addres.map((item) => {
+        this.addres.forEach((item) => {
           text += item
         })
         return text
@@ -51,18 +52,23 @@ export default {
     }
   },
   created() {
-    // 请求首页数据
-    getHomeData({ address: this.newAddres, date: new Date().getFullYear() })
-      .then((res) => {
-        this.statisticsData = res.data
-      })
-      .catch((err) => {
-        console.log(err)
-      })
+    this.getHomeDatas()
   },
   methods: {
+    // 获取首页数据
+    getHomeDatas() {
+      // 请求首页数据
+      return getHomeData({ address: this.newAddres })
+        .then((res) => {
+          this.statisticsData = res.data
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
     // 切换地址改变地址数据
     getNewAddres(value) {
+      this.getHomeDatas()
       this.addres = value
     }
   }

@@ -46,8 +46,9 @@ export default {
     echarts.registerMap('china', { geoJSON: chainData })
   },
   mounted() {
-    const chartDom = document.getElementById('map_cn')
-    echarts.init(chartDom).setOption(this.option, true)
+    const chartDom = echarts.init(document.getElementById('map_cn'))
+    chartDom.setOption(this.option, true)
+    // window.onresize = chartDom.resize
   }
 }
 </script>

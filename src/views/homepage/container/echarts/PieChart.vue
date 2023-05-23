@@ -5,7 +5,10 @@
 <script>
 import * as echarts from 'echarts'
 export default {
+  // eslint-disable-next-line vue/match-component-file-name
   name: 'PieChat',
+  // eslint-disable-next-line vue/require-prop-types
+  props: [ 'dotStatistics' ],
   data() {
     return {
       option: {
@@ -14,16 +17,14 @@ export default {
           {
             source: [
               ['Product', 'Sales', 'Price', 'Year'],
-              ['师傅数量', 300, 10, 2011],
-              ['网点数量', 900, 32, 2011],
-              ['网点数量', 400, 32, 2012],
-              ['师傅数量', 100, 10, 2012]
+              ['师傅数量', this.dotStatistics.master, 10, 2023],
+              ['网点数量', this.dotStatistics.dot, 32, 2023]
             ]
           },
           {
             transform: {
               type: 'filter',
-              config: { dimension: 'Year', value: 2011 }
+              config: { dimension: 'Year', value: 2023 }
             }
           }
         ],
@@ -48,8 +49,9 @@ export default {
     }
   },
   mounted() {
-    const chartDom = document.getElementById('PieChart')
-    echarts.init(chartDom).setOption(this.option)
+    const chartDom = echarts.init(document.getElementById('PieChart'))
+    chartDom.setOption(this.option, true)
+    // window.onresize = chartDom.resize
   },
   methods: {}
 }

@@ -3,36 +3,49 @@
   <div class="ContainerDataBox">
     <div class="dataBox_left">
       <div class="Analysis">
-        <TableHeader :header-data="AnyList"></TableHeader>
+        <!-- 表头 -->
+        <TableHeader
+          :header-data="AnyList"
+          @getAnlyDatalist="getAnlyDatalist"
+        ></TableHeader>
         <AnalysisEchats></AnalysisEchats>
         <!-- 表未数据展示区 -->
         <div class="Analysis_footer">
-          <div class="Af_item">
-            <p>今日交易额</p>
-            <p><span>76.33</span>万元</p>
+          <div v-for="item in listArray" :key="item.value" class="Af_item">
+            <p>{{ item.name }}</p>
             <p>
-              <img src="@/assets/home/down.png" alt="" /><span>11.2%</span>较昨日
+              <span>{{ item.value }}</span>{{ unit[analysisDataIndex] }}
             </p>
+            <!-- <p>
+              <img src="@/assets/home/down.png" alt="" /><span>11.2%</span>较昨日
+              </p> -->
           </div>
-          <div class="Af_item">
+          <!-- <div class="Af_item">
             <p>本月交易额</p>
             <p><span>76.33</span>万元</p>
             <p>
-              <img src="@/assets/home/down.png" alt="" /><span>11.2%</span>较上月
+            <img src="@/assets/home/down.png" alt="" /><span>11.2%</span>较上月
             </p>
-          </div>
-          <div class="Af_item">
+            </div>
+            <div class="Af_item">
             <p>本年交易额</p>
             <p><span>76.33</span>万元</p>
             <p>
-              <img src="@/assets/home/down.png" alt="" /><span>11.2%</span>较上年
+            <img src="@/assets/home/down.png" alt="" /><span>11.2%</span>较上年
             </p>
-          </div>
+            </div> -->
         </div>
       </div>
       <div class="CommodityRanking">
-        <TableHeader :header-data="Commodity"></TableHeader>
-        <CommodityEachats></CommodityEachats>
+        <TableHeader
+          :header-data="Commodity"
+          @getDataList="getDataLists"
+        ></TableHeader>
+        <CommodityEachats
+          v-if="shopDataName"
+          :shop-data-name="shopDataName"
+          :shop-data-value="shopDataValue"
+        ></CommodityEachats>
       </div>
     </div>
     <div class="dataBox_right">
@@ -42,13 +55,17 @@
       <div class="DotStatistics">
         <div class="DSquantity">
           <p><span></span>网点数量</p>
-          <p><span>1000</span>家</p>
+          <p>
+            <span>{{ statisticsData.regionSum }}</span>家
+          </p>
         </div>
         <div class="DSquantity" style="margin-bottom: 0px">
-          <p><span style="background-color: #165dff"></span>网点数量</p>
-          <p><span>1000</span>家</p>
+          <p><span style="background-color: #165dff"></span>师傅数量</p>
+          <p>
+            <span>{{ statisticsData.masterSum }}</span>人
+          </p>
         </div>
-        <PieChat></PieChat>
+        <PieChat :dot-statistics="dotStatistics"></PieChat>
         <MapChina></MapChina>
       </div>
       <div class="address">
@@ -91,21 +108,31 @@
         <TableHeader :header-data="viewble"></TableHeader>
       </div>
       <div class="tableView">
-        <img src="@/assets/home/sider.png" alt="" srcset="" />
-        <img src="@/assets/home/yibiaopan.png" alt="" srcset="" />
+        <VisualChart></VisualChart>
+        <InstrumentEacharts
+          :quota="statisticsData.regionTurnover"
+        ></InstrumentEacharts>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+// 请求方法
+import { getHomeData } from '@/api/homepage/home'
+// 分析图
+import AnalysisEchats from './echarts/AnalysisEchats'
+// 饼状图
+import PieChat from './echarts/PieChart'
+// 中国地图
 import MapChina from './echarts/MapChina'
 // 地址选择组件
 import AddresSelsect from '../addresSelect/SelectAddress'
-// 饼状图
-import PieChat from './echarts/PieChart'
+// 可视图
+import VisualChart from './echarts/VisualChart.vue'
+// 仪表盘
+import InstrumentEacharts from './echarts/InstrumentEacharts'
 import TableHeader from './tabHead/head.vue'
-import AnalysisEchats from './echarts/AnalysisEchats'
 import CommodityEachats from './echarts/CommodityEachats'
 export default {
   // eslint-disable-next-line vue/match-component-file-name
@@ -113,6 +140,8 @@ export default {
   components: {
     AnalysisEchats,
     TableHeader,
+    InstrumentEacharts,
+    VisualChart,
     CommodityEachats,
     AddresSelsect,
     PieChat,
@@ -122,15 +151,156 @@ export default {
   props: ['newAddres', 'statisticsData'],
   data() {
     return {
+      date: new Date(),
+      transactionVolume: [
+        { name: '今日交易额', value: '123' },
+        // { name: '本月交易额', value: '333' },
+        { name: '本年交易额', value: '222' }
+      ],
+      orderQuantity: [
+        { name: '今日订单量', value: '123' },
+        // { name: '本月订单量', value: '333' },
+        { name: '本年订单量', value: '222' }
+      ],
+      vipData: [
+        // { name: '今日入驻会员', value: '123' },
+        // { name: '本月入驻会员', value: '333' },
+        { name: '会员总量', value: '222' }
+      ],
+      unit: ['元', '单', '人'],
+      dotStatistics: {
+        master: this.statisticsData.masterSum,
+        dot: this.statisticsData.regionSum
+      },
+      analysisDataIndex: 0,
+      LeaderboardDataIndex: 0,
       AnyList: { name: '分析图', list: ['交易额', '订单量', '会员量'] },
-      Commodity: { name: '商品排行', list: ['商城', '社区', '物流'] },
+      Commodity: {
+        name: '商品排行',
+        list: ['物流', '社区', '商城'],
+        listKey: [
+          'logisticsGoodsVoList',
+          'communityGoodsVoList',
+          'mallGoodsVoList'
+        ]
+      },
       viewble: { name: '可视图', list: ['全年', '自定义'] }
     }
   },
-  created() {},
+  computed: {
+    quickSortData: {
+      get() {
+        return this.quickSort(this.statisticsData[this.Commodity.listKey[this.LeaderboardDataIndex]])
+      }
+    },
+    shopDataName: {
+      get() {
+        // 排行榜名字
+        const list = []
+        this.quickSortData.forEach((item) => {
+          list.unshift(item.dictName)
+        })
+        return list
+      }
+    },
+    shopDataValue: {
+      get() {
+        // 排行榜数据
+        const list = []
+        this.quickSortData.forEach((item) => {
+          list.unshift(item.amount)
+        })
+        return list
+      }
+    },
+    listArray: {
+      // eslint-disable-next-line vue/return-in-computed-property
+      get() {
+        if (this.analysisDataIndex === 1) {
+          return this.orderQuantity
+        }
+        if (this.analysisDataIndex === 2) {
+          return this.vipData
+        }
+        return this.transactionVolume
+      }
+    }
+  },
+  created() {
+    this.getHomeYearDatas()
+    this.getHomeDateDatas()
+  },
   methods: {
     addresSelect(value) {
       this.$emit('selectNewAddres', value)
+    },
+    getDataLists(index) {
+      this.LeaderboardDataIndex = index
+    },
+    getAnlyDatalist(index) {
+      // eslint-disable-next-line radix
+      this.analysisDataIndex = parseInt(index)
+    },
+    // 快排，把数据按以小到大排序处理
+    quickSort(arr) {
+      if (arr.length <= 1) {
+        return arr
+      }
+      const pivot = arr[Math.floor(arr.length / 2)].amount
+      const left = []
+      const right = []
+      const equal = []
+      for (let i = 0; i < arr.length; i++) {
+        if (arr[i].amount < pivot) {
+          right.push(arr[i])
+        } else if (arr[i].amount > pivot) {
+          left.push(arr[i])
+        } else {
+          equal.push(arr[i])
+        }
+      }
+      return this.quickSort(left).concat(equal, this.quickSort(right))
+    },
+    // 获取首页数据
+    getHomeYearDatas() {
+      // 请求首页数据 年
+      return getHomeData({
+        address: this.newAddres,
+        date: this.date.getFullYear()
+      })
+        .then((res) => {
+          this.transactionVolume[1].value = res.data.turnoverSum
+          this.orderQuantity[1].value = res.data.orderTotal
+          this.vipData[0].value = res.data.memberTotal
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
+    // getHomeMonthDatas() {
+    //   // 请求首页数据 月
+    //   return getHomeData({ address: this.newAddres, date: this.date + '-' + this.date.getMonth() })
+    //     .then((res) => {
+    //       this.transactionVolume[1].value = res.data.toDayTurnoverSum
+    //     })
+    //     .catch((err) => {
+    //       console.log(err)
+    //     })
+    // },
+    getHomeDateDatas() {
+      // 请求首页数据 日
+      return getHomeData({
+        address: this.newAddres,
+        date:
+          this.date.getFullYear() + '-' + this.date.getMonth() + '-' + this.date.getDate()
+      })
+        .then((res) => {
+          this.transactionVolume[0].value = res.data.toDayTurnoverSum
+          this.orderQuantity[0].value = res.data.toDayorderTotal
+        })
+        .catch((err) => {
+          console.log(err)
+        })
     }
   }
 }
@@ -286,6 +456,7 @@ export default {
       }
     }
     .tableView {
+      position: relative;
       padding: 1.5625vw;
       width: 100%;
       height: 17.1875vw;
