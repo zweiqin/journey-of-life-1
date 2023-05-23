@@ -61,7 +61,7 @@
     <div class="login-container">
       <div class="login-header">
         <h2 class="login-title" style="font-size: 1.25vw">
-          欢迎登录<span style="color: #0000bb">团蜂门店</span>管理系统
+          欢迎登录<span style="color: #0000bb">团蜂</span>管理系统
         </h2>
         <hr />
         <h4 style="font-size: 0.8333vw">
@@ -495,7 +495,7 @@ export default {
       .login-title {
         // width: 100%;
         height: 1.5em;
-        text-align: justify;
+        text-align: center;
       }
 
       .login-title:after {
