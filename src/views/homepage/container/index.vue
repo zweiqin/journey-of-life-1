@@ -149,6 +149,7 @@ export default {
   },
   // eslint-disable-next-line vue/require-prop-types
   props: ['newAddres', 'statisticsData'],
+  emits: [ 'selectNewAddres' ],
   data() {
     return {
       date: new Date(),
@@ -232,6 +233,7 @@ export default {
   },
   methods: {
     addresSelect(value) {
+      // eslint-disable-next-line vue/custom-event-name-casing
       this.$emit('selectNewAddres', value)
     },
     getDataLists(index) {
@@ -274,7 +276,7 @@ export default {
           this.vipData[0].value = res.data.memberTotal
         })
         .catch((err) => {
-          console.log(err)
+          window.console.log(err)
         })
     },
     // getHomeMonthDatas() {
@@ -299,7 +301,7 @@ export default {
           this.orderQuantity[0].value = res.data.toDayorderTotal
         })
         .catch((err) => {
-          console.log(err)
+          window.console.log(err)
         })
     }
   }
