@@ -179,10 +179,14 @@ export default {
     async handleUpdateStatus({ userId }, status) {
       await this.$elConfirm(`确认${status == 2 ? '开始审核' : status == 3 ? '审核通过' : '审核不通过'}?`)
       const loading = this.$elLoading()
-      await updaetRegionAgentStatus({ userId, status })
-      loading.close()
-      this.$elMessage('操作成功')
-      this.getList('keepPage')
+      try {
+        await updaetRegionAgentStatus({ userId, status })
+        loading.close()
+        this.$elMessage('操作成功')
+        this.getList('keepPage')
+      } catch (e) {
+        loading.close()
+      }
     },
     handleDetail(row) {
       this.$refs.DetailModal && this.$refs.DetailModal.handleOpen(row)

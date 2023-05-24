@@ -37,7 +37,7 @@ import { MessageBox } from 'element-ui'
 import { getToken } from '@/utils/auth'
 
 export default {
-  name: 'AnnouncementEdit',
+  name: 'NoticeEdit',
   components: { Tinymce },
   data() {
     return {
@@ -70,7 +70,7 @@ export default {
       })
     },
     handleCancel() {
-      this.$router.push({ path: '/promotion/announcementList' })
+      this.$router.push({ path: '/promotion/noticeList' })
     },
     handleEdit() {
       editArticle(this.article)
@@ -79,7 +79,7 @@ export default {
             title: '成功',
             message: '修改成功'
           })
-          this.$router.push({ path: '/promotion/announcementList' })
+          this.$router.push({ path: '/promotion/noticeList' })
         })
         .catch((response) => {
           MessageBox.alert('业务错误：' + response.errmsg, '警告', {

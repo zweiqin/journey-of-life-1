@@ -46,14 +46,14 @@
 </template>
 
 <script>
-import { detailArticle, editArticle } from '@/api/articleManagement/article'
+import { detailArticle, editArticle } from '@/api/promotionManagement/writingsManagement'
 import { createStorage, uploadPath } from '@/api/business/storage'
 import Tinymce from '@/components/Tinymce'
 import { MessageBox } from 'element-ui'
 import { getToken } from '@/utils/auth'
 
 export default {
-  name: 'ArticleEdit',
+  name: 'WritingsEdit',
   components: { Tinymce },
   data() {
     return {
@@ -129,7 +129,7 @@ export default {
       })
     },
     handleCancel() {
-      this.$router.push({ name: 'teachArticleList' })
+      this.$router.push({ name: 'WritingsList' })
     },
     handleEdit() {
       editArticle(this.article)
@@ -138,7 +138,7 @@ export default {
             title: '成功',
             message: '修改成功'
           })
-          this.$router.push({ name: 'teachArticleList' })
+          this.$router.push({ name: 'WritingsList' })
         })
         .catch((response) => {
           MessageBox.alert('业务错误：' + response.errmsg, '警告', {

@@ -100,7 +100,7 @@ export default {
       meaning === 'keepPage' ? this.listQuery = { ...this.listQuery } : this.listQuery = { ...this.listQuery, page: 1 }
     },
     handleTransfer() {
-      this.$router.push({ name: 'voucherManagementGiveCreate', query: { isAdmin: this.isAdminRole, userId: this.userId } })
+      this.$router.push({ name: 'VoucherManagementGiveCreate', query: { isAdmin: this.isAdminRole, userId: this.userId } })
     }
   }
 }

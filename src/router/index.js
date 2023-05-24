@@ -80,7 +80,7 @@ export const constantRouterMap = [
   {
     path: '/homepageBig',
     component: () => import('@/views/homepage/bigImage'),
-    name: 'homepageBig',
+    name: 'HomepageBig',
     hidden: true
   },
   {
@@ -142,7 +142,7 @@ export const asyncRouterMap = [
         component: () => import('@/views/children'),
         redirect: 'noredirect',
         alwaysShow: true,
-        name: 'userManagement',
+        name: 'UserManagement',
         meta: {
           title: '用户管理'
         },
@@ -150,7 +150,7 @@ export const asyncRouterMap = [
           {
             path: 'memberList',
             component: () => import('@/views/userManagement/memberList'),
-            name: 'user',
+            name: 'MemberList',
             meta: {
               perms: [ 'GET /admin/user/list' ],
               title: '会员管理',
@@ -364,7 +364,7 @@ export const asyncRouterMap = [
     component: Layout,
     redirect: 'noredirect',
     alwaysShow: true,
-    name: 'goodsManage',
+    name: 'GoodsManage',
     meta: {
       title: '商品管理',
       icon: 'goods'
@@ -555,7 +555,7 @@ export const asyncRouterMap = [
   //     {
   //       path: '/marketingToolsDashboard',
   //       component: () => import('@/views/digitalDashboard/marketingToolsDashboard'),
-  //       name: 'marketingToolsDashboard',
+  //       name: 'MarketingToolsDashboard',
   //       meta: {
   //         title: '营销看板'
   //       }
@@ -563,7 +563,7 @@ export const asyncRouterMap = [
   //     {
   //       path: '/userPortraitDashboard',
   //       component: () => import('@/views/digitalDashboard/userPortraitDashboard'),
-  //       name: 'userPortraitDashboard',
+  //       name: 'UserPortraitDashboard',
   //       meta: {
   //         title: '用户看板'
   //       }
@@ -573,7 +573,7 @@ export const asyncRouterMap = [
   //     //   component: () => import('@/views/children'),
   //     //   redirect: 'noredirect',
   //     //   alwaysShow: true,
-  //     //   name: 'statManage',
+  //     //   name: 'StatManage',
   //     //   meta: {
   //     //     title: '统计'
   //     //   },
@@ -581,7 +581,7 @@ export const asyncRouterMap = [
   //     //     {
   //     //       path: 'user',
   //     //       component: () => import('@/views/stat/user'),
-  //     //       name: 'statUser',
+  //     //       name: 'StatUser',
   //     //       meta: {
   //     //         perms: [ 'GET /admin/stat/user' ],
   //     //         title: '用户统计',
@@ -591,7 +591,7 @@ export const asyncRouterMap = [
   //     //     {
   //     //       path: 'order',
   //     //       component: () => import('@/views/stat/order'),
-  //     //       name: 'statOrder',
+  //     //       name: 'StatOrder',
   //     //       meta: {
   //     //         perms: [ 'GET /admin/stat/order' ],
   //     //         title: '订单统计',
@@ -601,7 +601,7 @@ export const asyncRouterMap = [
   //     //     {
   //     //       path: 'goods',
   //     //       component: () => import('@/views/stat/goods'),
-  //     //       name: 'statGoods',
+  //     //       name: 'StatGoods',
   //     //       meta: {
   //     //         perms: [ 'GET /admin/stat/goods' ],
   //     //         title: '商品统计',
@@ -617,48 +617,36 @@ export const asyncRouterMap = [
     component: Layout,
     redirect: 'noredirect',
     alwaysShow: true,
-    name: 'promotionManage',
+    name: 'PromotionManagement',
     meta: {
-      title: '品牌推广',
+      title: '推广中心',
       icon: 'guide'
     },
     children: [
       {
-        path: 'teachArticleList',
-        component: () => import('@/views/promotion/articleManagement/articleList'),
-        name: 'teachArticleList',
+        path: 'announcementManagement',
+        component: () => import('@/views/promotion/announcementManagement'),
+        name: 'AnnouncementManagement',
         meta: {
-          perms: ['POST /admin/richText/update', 'POST /admin/richText/delete', 'POST /admin/richText/create', 'GET /admin/richText/list', 'GET /admin/richText/detail'],
-          title: '文章列表',
+          perms: ['POST /admin/announcement/queryAnnouncementList', 'POST /admin/announcement/saveAnnouncement', 'POST /admin/announcement/updaetByStatus', 'POST /admin/announcement/updateByIdAnnouncement', 'POST /admin/announcement/deleteByIdAnnouncement'],
+          title: '公告管理',
           noCache: true
         }
       },
       {
-        path: 'teachArticleCreate',
-        component: () => import('@/views/promotion/articleManagement/components/articleCreate'),
-        name: 'teachArticleCreate',
+        path: 'articleManagement',
+        component: () => import('@/views/promotion/articleManagement'),
+        name: 'ArticleManagement',
         meta: {
-          perms: ['POST /admin/richText/update', 'POST /admin/richText/delete', 'POST /admin/richText/create', 'GET /admin/richText/list', 'GET /admin/richText/detail'],
-          title: '发布文章',
+          perms: ['GET /admin/newarticle/getArticleList', 'GET /admin/newarticle/getArticleTypeList', 'POST /admin/newarticle/queryArticleTypeList', 'POST /admin/newarticle/saveArticleType', 'POST /admin/newarticle/updateByIdArticleType', 'POST /admin/article/updaetByStatus', 'POST /admin/newarticle/deleteByIdArticleType'],
+          title: '文章管理',
           noCache: true
-        },
-        hidden: true
+        }
       },
       {
-        path: 'teachArticleEdit',
-        component: () => import('@/views/promotion/articleManagement/components/articleEdit'),
-        name: 'teachArticleEdit',
-        meta: {
-          perms: ['POST /admin/richText/update', 'POST /admin/richText/delete', 'POST /admin/richText/create', 'GET /admin/richText/list', 'GET /admin/richText/detail'],
-          title: '文章编辑',
-          noCache: true
-        },
-        hidden: true
-      },
-      {
-        path: 'announcementList',
-        component: () => import('@/views/promotion/announcementManagement'),
-        name: 'announcementList',
+        path: 'noticeList',
+        component: () => import('@/views/promotion/noticeManagement'),
+        name: 'NoticeList',
         meta: {
           perms: ['POST /admin/article/update', 'POST /admin/article/delete', 'POST /admin/article/create', 'GET /admin/article/list', 'GET /admin/article/detail'],
           title: '公告列表',
@@ -666,9 +654,9 @@ export const asyncRouterMap = [
         }
       },
       {
-        path: 'announcementCreate',
-        component: () => import('@/views/promotion/announcementManagement/components/announcementCreate'),
-        name: 'announcementCreate',
+        path: 'noticeCreate',
+        component: () => import('@/views/promotion/noticeManagement/components/noticeCreate'),
+        name: 'NoticeCreate',
         meta: {
           perms: ['POST /admin/article/update', 'POST /admin/article/delete', 'POST /admin/article/create', 'GET /admin/article/list', 'GET /admin/article/detail'],
           title: '发布公告',
@@ -677,9 +665,9 @@ export const asyncRouterMap = [
         hidden: true
       },
       {
-        path: 'announcementEdit',
-        component: () => import('@/views/promotion/announcementManagement/components/announcementEdit'),
-        name: 'announcementEdit',
+        path: 'noticeEdit',
+        component: () => import('@/views/promotion/noticeManagement/components/noticeEdit'),
+        name: 'NoticeEdit',
         meta: {
           perms: ['POST /admin/article/update', 'POST /admin/article/delete', 'POST /admin/article/create', 'GET /admin/article/list', 'GET /admin/article/detail'],
           title: '公告通知编辑',
@@ -688,9 +676,41 @@ export const asyncRouterMap = [
         hidden: true
       },
       {
+        path: 'writingsList',
+        component: () => import('@/views/promotion/writingsManagement/writingsList'),
+        name: 'WritingsList',
+        meta: {
+          perms: ['POST /admin/richText/update', 'POST /admin/richText/delete', 'POST /admin/richText/create', 'GET /admin/richText/list', 'GET /admin/richText/detail'],
+          title: '文章列表',
+          noCache: true
+        }
+      },
+      {
+        path: 'writingsCreate',
+        component: () => import('@/views/promotion/writingsManagement/components/writingsCreate'),
+        name: 'WritingsCreate',
+        meta: {
+          perms: ['POST /admin/richText/update', 'POST /admin/richText/delete', 'POST /admin/richText/create', 'GET /admin/richText/list', 'GET /admin/richText/detail'],
+          title: '发布文章',
+          noCache: true
+        },
+        hidden: true
+      },
+      {
+        path: 'writingsEdit',
+        component: () => import('@/views/promotion/writingsManagement/components/writingsEdit'),
+        name: 'WritingsEdit',
+        meta: {
+          perms: ['POST /admin/richText/update', 'POST /admin/richText/delete', 'POST /admin/richText/create', 'GET /admin/richText/list', 'GET /admin/richText/detail'],
+          title: '文章编辑',
+          noCache: true
+        },
+        hidden: true
+      },
+      {
         path: 'ad',
         component: () => import('@/views/promotion/ad'),
-        name: 'ad',
+        name: 'Ad',
         meta: {
           perms: ['POST /admin/ad/update', 'POST /admin/ad/delete', 'GET /admin/ad/read', 'POST /admin/ad/create', 'GET /admin/ad/list'],
           title: '广告管理',
@@ -700,7 +720,7 @@ export const asyncRouterMap = [
       {
         path: 'video',
         component: () => import('@/views/errorPage/developing'),
-        name: 'video',
+        name: 'Video',
         meta: {
           // perms: [],
           title: '视频列表',
@@ -807,7 +827,7 @@ export const asyncRouterMap = [
       {
         path: 'roles',
         component: () => import('@/views/enterprise/roles'),
-        name: 'roles',
+        name: 'Roles',
         _ROLES: [ 'ADMIN' ],
         meta: {
           title: '角色管理',
@@ -840,7 +860,7 @@ export const asyncRouterMap = [
       {
         path: 'department',
         component: () => import('@/views/enterprise/department'),
-        name: 'department',
+        name: 'Department',
         meta: {
           title: '部门管理',
           noCache: true
@@ -870,7 +890,7 @@ export const asyncRouterMap = [
       {
         path: 'activityList',
         component: () => import('@/views/marketingManagement/activityList'),
-        name: 'activityList',
+        name: 'ActivityList',
         meta: {
           // perms: [],
           _ROLES: [ 'ADMIN' ],
@@ -888,7 +908,7 @@ export const asyncRouterMap = [
           {
             path: 'voucherManagementGive',
             component: () => import('@/views/voucherManagement/give'),
-            name: 'voucherManagementGive',
+            name: 'VoucherManagementGive',
             meta: {
               perms: ['GET /admin/circula/list', 'POST /admin/circula/circula'],
               title: '转赠记录',
@@ -898,7 +918,7 @@ export const asyncRouterMap = [
           {
             path: 'voucherManagementOrder',
             component: () => import('@/views/voucherManagement/order'),
-            name: 'voucherManagementOrder',
+            name: 'VoucherManagementOrder',
             meta: {
               perms: [ 'GET /admin/voucherRecord/list' ],
               title: '订单记录',
@@ -908,7 +928,7 @@ export const asyncRouterMap = [
           {
             path: 'voucherManagementPossess',
             component: () => import('@/views/voucherManagement/possess'),
-            name: 'voucherManagementPossess',
+            name: 'VoucherManagementPossess',
             meta: {
               perms: [ 'GET /admin/hold/list' ],
               title: '持有管理',
@@ -918,7 +938,7 @@ export const asyncRouterMap = [
           {
             path: 'voucherManagementGiveCreate',
             component: () => import('@/views/voucherManagement/giveCreate'),
-            name: 'voucherManagementGiveCreate',
+            name: 'VoucherManagementGiveCreate',
             meta: {
               // perms: [],
               title: '转赠创建',
@@ -932,7 +952,7 @@ export const asyncRouterMap = [
         path: 'groupBooking',
         alwaysShow: true,
         component: () => import('@/views/errorPage/developing'),
-        name: 'groupBooking',
+        name: 'GroupBooking',
         meta: {
           // perms: [],
           title: '拼团',
@@ -942,7 +962,7 @@ export const asyncRouterMap = [
           {
             path: 'normal',
             component: () => import('@/views/errorPage/developing'),
-            name: 'groupBookingNormal',
+            name: 'GroupBookingNormal',
             meta: {
               // perms: [],
               title: '正常拼团',
@@ -952,7 +972,7 @@ export const asyncRouterMap = [
           {
             path: 'draw',
             component: () => import('@/views/errorPage/developing'),
-            name: 'groupBookingDraw',
+            name: 'GroupBookingDraw',
             meta: {
               // perms: [],
               title: '抽奖拼团',
@@ -962,7 +982,7 @@ export const asyncRouterMap = [
           {
             path: 'host',
             component: () => import('@/views/errorPage/developing'),
-            name: 'groupBookingHost',
+            name: 'GroupBookingHost',
             meta: {
               // perms: [],
               title: '团长拼团',
@@ -996,7 +1016,7 @@ export const asyncRouterMap = [
         path: 'flashSale',
         alwaysShow: true,
         component: () => import('@/views/errorPage/developing'),
-        name: 'flashSale',
+        name: 'FlashSale',
         meta: {
           // perms: [],
           title: '限时抢购',
@@ -1006,7 +1026,7 @@ export const asyncRouterMap = [
       {
         path: 'coupon',
         component: () => import('@/views/marketingManagement/coupon/coupon'),
-        name: 'coupon',
+        name: 'Coupon',
         meta: {
           perms: ['POST /admin/coupon/update', 'POST /admin/coupon/delete', 'GET /admin/coupon/read', 'POST /admin/coupon/create', 'GET /admin/coupon/list', 'GET /admin/coupon/listuser'],
           title: '优惠券',
@@ -1016,7 +1036,7 @@ export const asyncRouterMap = [
       {
         path: 'couponDetail',
         component: () => import('@/views/marketingManagement/couponDetail/couponDetail'),
-        name: 'couponDetail',
+        name: 'CouponDetail',
         meta: {
           perms: ['POST /admin/coupon/update', 'POST /admin/coupon/delete', 'GET /admin/coupon/read', 'POST /admin/coupon/create', 'GET /admin/coupon/list', 'GET /admin/coupon/listuser'],
           title: '优惠券详情',
@@ -1027,7 +1047,7 @@ export const asyncRouterMap = [
       {
         path: 'couponCard',
         component: () => import('@/views/errorPage/developing'),
-        name: 'couponCard',
+        name: 'CouponCard',
         meta: {
           perms: ['POST /admin/coupon/update', 'POST /admin/coupon/delete', 'GET /admin/coupon/read', 'POST /admin/coupon/create', 'GET /admin/coupon/list', 'GET /admin/coupon/listuser'],
           title: '核销券',
@@ -1103,7 +1123,7 @@ export const asyncRouterMap = [
     component: Layout,
     redirect: 'noredirect',
     alwaysShow: true,
-    name: 'materialManagement',
+    name: 'MaterialManagement',
     _ROLES: [ 'ADMIN' ],
     meta: {
       title: '材料管理',
@@ -1185,11 +1205,11 @@ export const asyncRouterMap = [
     ]
   },
   {
-    path: '/community',
+    path: '/communityManagement',
     component: Layout,
     redirect: 'noredirect',
     alwaysShow: true,
-    name: 'community',
+    name: 'CommunityManagement',
     _ROLES: [ 'ADMIN' ],
     meta: {
       perms: ['POST /admin/community/richText/update', 'POST /admin/community/richText/delete', 'POST /admin/community/richText/create', 'GET /admin/community/richText/list', 'GET /admin/community/richText/detail'],
@@ -1200,7 +1220,7 @@ export const asyncRouterMap = [
       // {
       //   path: 'communityArticleList',
       //   component: () => import('@/views/communityManagement/communityArticleList'),
-      //   name: 'communityArticleList',
+      //   name: 'CommunityArticleList',
       //   // perms: [],
       //   meta: {
       //     title: '文章列表'
@@ -1231,7 +1251,7 @@ export const asyncRouterMap = [
       {
         path: 'communityArticleCreate',
         component: () => import('@/views/communityManagement/communityArticleCreate'),
-        name: 'communityArticleCreate',
+        name: 'CommunityArticleCreate',
         _ROLES: [ 'ADMIN' ],
         meta: {
           perms: [],
@@ -1241,7 +1261,7 @@ export const asyncRouterMap = [
       {
         path: 'communityArticleEdit',
         component: () => import('@/views/communityManagement/communityArticleEdit'),
-        name: 'communityArticleEdit',
+        name: 'CommunityArticleEdit',
         meta: {
           // perms: [],
           _ROLES: [ 'ADMIN' ],
@@ -1253,7 +1273,7 @@ export const asyncRouterMap = [
       {
         path: 'serviceType',
         component: () => import('@/views/errorPage/developing'),
-        name: 'serviceType',
+        name: 'ServiceType',
         _ROLES: [ 'ADMIN' ],
         meta: {
           // perms: [],
@@ -1267,7 +1287,7 @@ export const asyncRouterMap = [
     component: Layout,
     redirect: 'noredirect',
     alwaysShow: true,
-    name: 'newMediaManagement',
+    name: 'NewMediaManagement',
     _ROLES: [ 'ADMIN' ],
     meta: {
       // perms: [],

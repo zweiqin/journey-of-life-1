@@ -229,13 +229,17 @@ export default {
     async handleUpdate({ id, isOnSale }) {
       await this.$elConfirm(`确认${isOnSale ? '下架' : '上架'}?`)
       const loading = this.$elLoading()
-      await goodsUpOnSale({
-        idList: [ id ],
-        isOnSale: !isOnSale
-      })
-      loading.close()
-      this.$elMessage()
-      this.getList()
+      try {
+        await goodsUpOnSale({
+          idList: [ id ],
+          isOnSale: !isOnSale
+        })
+        loading.close()
+        this.$elMessage()
+        this.getList()
+      } catch (e) {
+        loading.close()
+      }
     },
     typeFilterFn(val, list) {
       const obj = list.find((item) => +item.value === +val)

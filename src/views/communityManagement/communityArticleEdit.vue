@@ -129,7 +129,7 @@ export default {
       })
     },
     handleCancel() {
-      this.$router.push({ name: 'communityArticleList' })
+      this.$router.push({ name: 'CommunityArticleList' })
     },
     handleEdit() {
       editArticle(this.article)
@@ -138,7 +138,7 @@ export default {
             title: '成功',
             message: '修改成功'
           })
-          this.$router.push({ name: 'communityArticleList' })
+          this.$router.push({ name: 'CommunityArticleList' })
         })
         .catch((response) => {
           MessageBox.alert('业务错误：' + response.errmsg, '警告', {

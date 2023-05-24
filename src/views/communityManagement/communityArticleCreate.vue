@@ -123,7 +123,7 @@ export default {
     init() {
     },
     handleCancel() {
-      this.$router.push({ name: 'communityArticleList' })
+      this.$router.push({ name: 'CommunityArticleList' })
     },
     handlePublish() {
       publishArticle(this.article).then((response) => {
@@ -132,7 +132,7 @@ export default {
           title: '成功',
           message: '创建成功'
         })
-        this.$router.push({ name: 'communityArticleList' })
+        this.$router.push({ name: 'CommunityArticleList' })
       })
         .catch((response) => {
           MessageBox.alert('业务错误：' + response.errmsg, '警告', {

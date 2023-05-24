@@ -45,14 +45,14 @@
 </template>
 
 <script>
-import { publishArticle } from '@/api/articleManagement/article'
+import { publishArticle } from '@/api/promotionManagement/writingsManagement'
 import { createStorage, uploadPath } from '@/api/business/storage'
 import Tinymce from '@/components/Tinymce'
 import { MessageBox } from 'element-ui'
 import { getToken } from '@/utils/auth'
 
 export default {
-  name: 'ArticleCreate',
+  name: 'WritingsCreate',
   components: { Tinymce },
 
   data() {
@@ -123,16 +123,15 @@ export default {
     init() {
     },
     handleCancel() {
-      this.$router.push({ name: 'teachArticleList' })
+      this.$router.push({ name: 'WritingsList' })
     },
     handlePublish() {
       publishArticle(this.article).then((response) => {
-        console.log(response)
         this.$notify.success({
           title: '成功',
           message: '创建成功'
         })
-        this.$router.push({ name: 'teachArticleList' })
+        this.$router.push({ name: 'WritingsList' })
       })
         .catch((response) => {
           MessageBox.alert('业务错误：' + response.errmsg, '警告', {

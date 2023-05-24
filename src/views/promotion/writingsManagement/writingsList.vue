@@ -64,14 +64,14 @@
 </template>
 
 <script>
-import { api, deleteArticle } from '@/api/articleManagement/article'
+import { api, deleteArticle } from '@/api/promotionManagement/writingsManagement'
 import VxeTable from '@/components/VxeTable'
 import TableTools from '@/components/TableTools'
 import BackToTop from '@/components/BackToTop'
 import { columns } from './table'
 
 export default {
-  name: 'ArticleList',
+  name: 'WritingsList',
   components: {
     VxeTable,
     TableTools,
@@ -129,7 +129,7 @@ export default {
       api,
       columns,
       customColumnsConfig: {
-        localKey: 'articleList',
+        localKey: 'writingsList',
         columnsOptions: columns
       },
       listQuery: {
@@ -153,10 +153,10 @@ export default {
       meaning === 'keepPage' ? this.listQuery = { ...this.listQuery } : this.listQuery = { ...this.listQuery, page: 1 }
     },
     handleCreate() {
-      this.$router.push({ name: 'teachArticleCreate' })
+      this.$router.push({ name: 'WritingsCreate' })
     },
     handleUpdate(row) {
-      this.$router.push({ name: 'teachArticleEdit', query: { id: row.id } })
+      this.$router.push({ name: 'WritingsEdit', query: { id: row.id } })
     },
     handleDelete(row) {
       deleteArticle(row).then((response) => {
