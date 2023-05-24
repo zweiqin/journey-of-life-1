@@ -10,7 +10,8 @@ export default {
   props: [ 'quota' ],
   data() {
     return {
-      qutoas: ''
+      qutoas: '',
+      chartDom: ''
     }
   },
   computed: {
@@ -58,10 +59,8 @@ export default {
   watch: {
     quota(newValue) {
       this.qutoas = newValue
-      const EDom = document.getElementById('InstrumentEacharts')
-      const chartDom = echarts.init(EDom)
-      chartDom.clear()
-      chartDom.setOption(this.option, true)
+      this.chartDom.clear()
+      this.chartDom.setOption(this.option, true)
     }
   },
   created() {
@@ -69,6 +68,7 @@ export default {
   },
   mounted() {
     const chartDom = echarts.init(document.getElementById('InstrumentEacharts'))
+    this.chartDom = chartDom
     chartDom.setOption(this.option, true)
     // window.onresize = chartDom.resize
   }

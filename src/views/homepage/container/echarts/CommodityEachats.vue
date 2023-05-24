@@ -12,6 +12,7 @@ export default {
   props: ['shopDataName', 'shopDataValue'],
   data() {
     return {
+      chartDom: '',
       shopDataNames: {},
       shopDataValues: {}
     }
@@ -121,10 +122,10 @@ export default {
     shopDataValue(newValue) {
       this.shopDataValues = newValue
       const EDom = document.getElementById('CommodityTab')
-      const chartDom = echarts.init(EDom)
-      chartDom.clear()
-      chartDom.setOption(this.option, true)
-      chartDom.resize({
+      // const chartDom = echarts.init(EDom)
+      this.chartDom.clear()
+      this.chartDom.setOption(this.option, true)
+      this.chartDom.resize({
         height: EDom.style.height = this.shopDataName.length * 29 + 'px'
       })
     }
@@ -136,6 +137,7 @@ export default {
   mounted() {
     const EDom = document.getElementById('CommodityTab')
     const chartDom = echarts.init(EDom)
+    this.chartDom = chartDom
     chartDom.setOption(this.option, true)
     chartDom.resize({
       height: EDom.style.height = this.shopDataName.length * 29 + 'px'

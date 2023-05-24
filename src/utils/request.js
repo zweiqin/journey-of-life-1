@@ -42,10 +42,17 @@ service.interceptors.response.use((response) => {
     })
     return Promise.reject('error')
   } else if (res.errno === 502) {
-    MessageBox.alert('系统内部错误，请联系管理员维护', '错误', {
-      confirmButtonText: '确定',
-      type: 'error'
-    })
+    if (response.config.url === '/home/statistics/getTfHomeStatistics') {
+      MessageBox.alert('该网点暂时无法查询,请选择其他地址查询', '错误', {
+        confirmButtonText: '确定',
+        type: 'error'
+      })
+    } else {
+      MessageBox.alert('系统内部错误，请联系管理员维护', '错误', {
+        confirmButtonText: '确定',
+        type: 'error'
+      })
+    }
     return Promise.reject('error')
   } else if (res.errno === 503) {
     MessageBox.alert('请求业务目前未支持', '警告', {
