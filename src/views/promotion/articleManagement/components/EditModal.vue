@@ -11,7 +11,9 @@
         <MyUpload v-model="formData.cover" />
       </el-form-item>
       <el-form-item label="文章内容" prop="content">
-        <el-input v-model="formData.content" placeholder="请输入文章内容" maxlength="520" />
+        <div v-if="visible">
+          <Tinymce v-model="formData.content" has-menubar :width="580" :height="300"></Tinymce>
+        </div>
       </el-form-item>
       <el-form-item label="发布平台" prop="type">
         <el-select v-model="formData.type" size="mini" placeholder="请选择发布平台" @change="handleTypeChange">
@@ -36,19 +38,21 @@
 </template>
 
 <script>
+import Tinymce from '@/components/Tinymce'
 import MyUpload from '@/components/MyUpload'
 import { getArticleList, getArticleTypeList, saveArticleType, updateByIdArticleType } from '@/api/promotionManagement/articleManagement'
 
 export default {
   name: 'EditModal',
   components: {
+    Tinymce,
     MyUpload
   },
   data() {
     return {
       modalOptions: {
         closeOnClickModal: false,
-        width: '520px',
+        width: '820px',
         title: ''
       },
       visible: false,
@@ -76,7 +80,7 @@ export default {
         ],
         content: [
           { required: true, message: '请输入文章内容' },
-          { max: 520, message: '520字以内' }
+          { max: 5200, message: '5200字以内' }
         ],
         type: [
           { required: true, message: '请选择发布平台' }
@@ -100,8 +104,18 @@ export default {
     handleClose() {
       this.visible = false
     },
-    initList() {
+    async initList() {
       this.getTypeList()
+      if (this.formData.articleType !== '' && this.formData.articleType !== undefined) {
+        this.articleTypeList = []
+        if (this.formData.type === '' || this.formData.type === undefined) return
+        this.isArticleTypeListRequest = true
+        const res = await getArticleTypeList({
+          code: this.formData.type
+        })
+        this.isArticleTypeListRequest = false
+        this.articleTypeList = res.data
+      }
     },
     // 发布平台列表
     async getTypeList() {
@@ -124,11 +138,15 @@ export default {
       this.formData = Object.assign(this.$options.data().formData, params, {
         id: params.id || '',
         title: params.title || '',
+        author: params.author || '',
+        cover: params.cover || '',
         content: params.content || '',
-        type: params.type || '',
+        type: params.type,
+        articleType: params.articleType,
         remarks: params.remarks || ''
       })
       this.visible = true
+      this.articleTypeList = []
       this.initList()
       this.$refs.formData && this.$refs.formData.resetFields()
     },

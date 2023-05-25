@@ -5,7 +5,9 @@
         <el-input v-model="formData.title" placeholder="请输入公告标题" maxlength="30" />
       </el-form-item>
       <el-form-item label="公告内容" prop="content">
-        <el-input v-model="formData.content" placeholder="请输入公告内容" maxlength="520" />
+        <div v-if="visible">
+          <Tinymce v-model="formData.content" has-menubar :width="580" :height="300"></Tinymce>
+        </div>
       </el-form-item>
       <el-form-item label="发布平台" prop="type">
         <el-select v-model="formData.type" size="mini" placeholder="请选择发布平台">
@@ -28,19 +30,21 @@
 </template>
 
 <script>
+import Tinymce from '@/components/Tinymce'
 // import MyUpload from '@/components/MyUpload'
 import { saveAnnouncement, updateByIdAnnouncement } from '@/api/promotionManagement/announcementManagement'
 
 export default {
   name: 'EditModal',
   components: {
+    Tinymce
     // MyUpload
   },
   data() {
     return {
       modalOptions: {
         closeOnClickModal: false,
-        width: '520px',
+        width: '820px',
         title: ''
       },
       visible: false,

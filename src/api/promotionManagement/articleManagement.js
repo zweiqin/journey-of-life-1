@@ -58,7 +58,7 @@ export function updateByIdArticleType(data) {
 // 发布、下架文章
 export function articleUpdaetByStatus(data) {
   return request({
-    url: '/article/updaetByStatus',
+    url: '/newarticle/updaetByStatus',
     method: 'post',
     data
   })
