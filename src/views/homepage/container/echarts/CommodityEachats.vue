@@ -118,6 +118,7 @@ export default {
   watch: {
     shopDataName(newValue) {
       this.shopDataNames = newValue
+      window.console.log(newValue)
     },
     shopDataValue(newValue) {
       this.shopDataValues = newValue

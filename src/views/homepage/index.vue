@@ -68,8 +68,8 @@ export default {
     },
     // 切换地址改变地址数据
     getNewAddres(value) {
-      this.getHomeDatas()
       this.addres = value
+      this.getHomeDatas()
     }
   }
 }
