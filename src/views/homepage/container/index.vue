@@ -279,16 +279,6 @@ export default {
           window.console.log(err)
         })
     },
-    // getHomeMonthDatas() {
-    //   // 请求首页数据 月
-    //   return getHomeData({ address: this.newAddres, date: this.date + '-' + this.date.getMonth() })
-    //     .then((res) => {
-    //       this.transactionVolume[1].value = res.data.toDayTurnoverSum
-    //     })
-    //     .catch((err) => {
-    //       console.log(err)
-    //     })
-    // },
     getHomeDateDatas() {
       // 请求首页数据 日
       return getHomeData({
