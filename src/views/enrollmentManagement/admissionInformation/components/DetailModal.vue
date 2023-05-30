@@ -10,32 +10,26 @@
       label-suffix=":"
       label-width="120px"
     >
-      <!-- 客户信息 -->
-      <el-form-item label="客户ID" prop="id">
+      <!-- 学生信息 -->
+      <el-form-item label="学生ID" prop="id">
         {{ formData.id || '--' }}
       </el-form-item>
-      <el-form-item label="客户名称" prop="customerName">
+      <el-form-item label="学生名称" prop="customerName">
         {{ formData.customerName || '--' }}
       </el-form-item>
-      <el-form-item label="客户性别" prop="customerGender">
+      <el-form-item label="学生性别" prop="customerGender">
         <span v-if="formData.customerGender == 1">男</span>
         <span v-else-if="formData.customerGender == 2">女</span>
         <span v-else>--</span>
       </el-form-item>
-      <el-form-item label="客户手机号" prop="customerPhone">
+      <el-form-item label="学生手机号" prop="customerPhone">
         {{ formData.customerPhone || '--' }}
       </el-form-item>
-      <el-form-item label="公司名称" prop="companyName">
-        {{ formData.companyName || '--' }}
+      <el-form-item label="技能" prop="skill">
+        {{ formData.skill || '--' }}
       </el-form-item>
-      <el-form-item label="职位" prop="customerPosition">
-        {{ formData.customerPosition || '--' }}
-      </el-form-item>
-      <el-form-item label="参会人数" prop="participantsNumber">
-        {{ formData.participantsNumber || '--' }}
-      </el-form-item>
-      <el-form-item label="邀约人" prop="invite">
-        {{ formData.invite || '--' }}
+      <el-form-item label="区域" prop="region">
+        {{ formData.region || '--' }}
       </el-form-item>
       <el-form-item label="备注" prop="remarks">
         {{ formData.remarks || '--' }}
@@ -60,7 +54,7 @@ export default {
       modalOptions: {
         closeOnClickModal: false,
         width: '800px',
-        title: '查看客户详情'
+        title: '查看学生详情'
       },
       visible: false,
       formData: {
@@ -68,10 +62,8 @@ export default {
         customerName: '',
         customerGender: '',
         customerPhone: '',
-        companyName: '',
-        customerPosition: '',
-        participantsNumber: '',
-        invite: '',
+        skill: '',
+        region: '',
         remarks: '',
         createTime: '',
         updateTime: ''
@@ -98,10 +90,8 @@ export default {
           customerName: res.data.customerName || '',
           customerGender: res.data.customerGender,
           customerPhone: res.data.customerPhone || '',
-          companyName: res.data.companyName || '',
-          customerPosition: res.data.customerPosition || '',
-          participantsNumber: res.data.participantsNumber || '',
-          invite: res.data.invite || '',
+          skill: res.data.skill || '',
+          region: res.data.region || '',
           remarks: res.data.remarks || '',
           createTime: res.data.createTime || '',
           updateTime: res.data.updateTime || ''

@@ -29,7 +29,7 @@
 
     <!-- 查询结果 -->
     <VxeTable
-      ref="vxeTable" v-model="listQuery" :local-key="customColumnsConfig.localKey" api-method="GET"
+      ref="vxeTable" v-model="listQuery" :local-key="customColumnsConfig.localKey" api-method="POST"
       :api-path="api.queryAnnouncementList" :columns="columns"
     >
       <template #status="{ row }">

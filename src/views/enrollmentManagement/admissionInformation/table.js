@@ -9,13 +9,13 @@ export const columns = [
   {
     align: 'center',
     field: 'customerName',
-    title: '客户名称',
+    title: '学生名称',
     minWidth: 100
   },
   {
     align: 'center',
     field: 'customerGender',
-    title: '会员性别',
+    title: '性别',
     formatter: ({ cellValue }) => ({
       0: '未知',
       1: '男',
@@ -31,27 +31,15 @@ export const columns = [
   },
   {
     align: 'center',
-    field: 'companyName',
-    title: '公司名称',
-    minWidth: 150
+    field: 'skill',
+    title: '技能',
+    minWidth: 200
   },
   {
     align: 'center',
-    field: 'customerPosition',
-    title: '职位',
-    minWidth: 150
-  },
-  {
-    align: 'center',
-    field: 'participantsNumber',
-    title: '参会人数',
-    minWidth: 150
-  },
-  {
-    align: 'center',
-    field: 'invite',
-    title: '邀约人',
-    minWidth: 150
+    field: 'region',
+    title: '区域',
+    minWidth: 200
   },
   {
     align: 'center',

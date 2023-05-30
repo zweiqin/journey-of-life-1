@@ -1,4 +1,3 @@
-/* eslint-disable max-lines */
 import Vue from 'vue'
 import Router from 'vue-router'
 
@@ -799,7 +798,7 @@ export const asyncRouterMap = [
     name: 'FinancialCenter',
     meta: {
       title: '财务中心',
-      icon: 'guide'
+      icon: 'financial'
     },
     children: [
       {
@@ -1454,6 +1453,30 @@ export const asyncRouterMap = [
         perms: [ 'POST /admin/customerscancode/queryCustomerPoolList' ],
         meta: {
           title: '客户信息'
+        }
+      }
+    ]
+  },
+  {
+    path: '/enrollmentManagement',
+    component: Layout,
+    redirect: 'noredirect',
+    alwaysShow: true,
+    name: 'EnrollmentManagement',
+    _ROLES: [ 'ADMIN' ],
+    meta: {
+      // perms: [],
+      title: '招生管理',
+      icon: 'membership'
+    },
+    children: [
+      {
+        path: 'admissionInformation',
+        component: () => import('@/views/enrollmentManagement/admissionInformation'),
+        name: 'AdmissionInformation',
+        perms: [ 'POST /admin/customerscancode/queryCustomerPoolList' ],
+        meta: {
+          title: '招生信息'
         }
       }
     ]

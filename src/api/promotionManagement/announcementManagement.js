@@ -8,11 +8,11 @@ export const api = {
   deleteByIdAnnouncement: '/announcement/deleteByIdAnnouncement'
 }
 
-export function queryAnnouncementList(query) {
+export function queryAnnouncementList(data) {
   return request({
     url: '/announcement/queryAnnouncementList',
-    method: 'get',
-    params: query
+    method: 'post',
+    data
   })
 }
 

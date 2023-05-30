@@ -17,7 +17,7 @@
 
     <TableTools
       :custom-columns-config="customColumnsConfig" download custom-field @update-fields="updateFields"
-      @refresh="getList" @download="toolsMixin_exportMethod($refs.vxeTable, '客户信息')"
+      @refresh="getList" @download="toolsMixin_exportMethod($refs.vxeTable, '招生管理')"
     >
     </TableTools>
 
@@ -48,7 +48,7 @@ import DetailModal from './components/DetailModal'
 import { columns } from './table'
 
 export default {
-  name: 'CustomerInformation',
+  name: 'AdmissionInformation',
   components: {
     VxeTable,
     TableTools,
@@ -59,14 +59,14 @@ export default {
       api,
       columns,
       customColumnsConfig: {
-        localKey: 'customerInformation',
+        localKey: 'admissionInformation',
         columnsOptions: columns
       },
       listQuery: {
         page: 1,
         limit: 20,
         search: '',
-        type: 1
+        type: 2
       }
     }
   },
