@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 import Vue from 'vue'
 import Router from 'vue-router'
 
@@ -317,7 +318,12 @@ export const asyncRouterMap = [
             component: () => import('@/views/regionalAgent/regionalAgentList'),
             name: 'RegionalAgentList',
             meta: {
-              perms: ['POST /admin/regionagent/getRegionAgentList', 'POST /admin/regionagent/updaetRegionAgentStatus', 'POST /admin/regionagent/updaetRegionAgent', 'GET /admin/regionagent/getRegionAgentInfo'],
+              perms: [
+                'POST /admin/regionagent/getRegionAgentList',
+                'POST /admin/regionagent/updaetRegionAgentStatus',
+                'POST /admin/regionagent/updaetRegionAgent',
+                'GET /admin/regionagent/getRegionAgentInfo'
+              ],
               title: '区域代理列表',
               noCache: true
             }
@@ -628,7 +634,13 @@ export const asyncRouterMap = [
         component: () => import('@/views/promotion/announcementManagement'),
         name: 'AnnouncementManagement',
         meta: {
-          perms: ['POST /admin/announcement/queryAnnouncementList', 'POST /admin/announcement/saveAnnouncement', 'POST /admin/announcement/updaetByStatus', 'POST /admin/announcement/updateByIdAnnouncement', 'POST /admin/announcement/deleteByIdAnnouncement'],
+          perms: [
+            'POST /admin/announcement/queryAnnouncementList',
+            'POST /admin/announcement/saveAnnouncement',
+            'POST /admin/announcement/updaetByStatus',
+            'POST /admin/announcement/updateByIdAnnouncement',
+            'POST /admin/announcement/deleteByIdAnnouncement'
+          ],
           title: '公告管理',
           noCache: true
         }
@@ -638,7 +650,15 @@ export const asyncRouterMap = [
         component: () => import('@/views/promotion/articleManagement'),
         name: 'ArticleManagement',
         meta: {
-          perms: ['GET /admin/newarticle/getArticleList', 'GET /admin/newarticle/getArticleTypeList', 'POST /admin/newarticle/queryArticleTypeList', 'POST /admin/newarticle/saveArticleType', 'POST /admin/newarticle/updateByIdArticleType', 'POST /admin/article/updaetByStatus', 'POST /admin/newarticle/deleteByIdArticleType'],
+          perms: [
+            'GET /admin/newarticle/getArticleList',
+            'GET /admin/newarticle/getArticleTypeList',
+            'POST /admin/newarticle/queryArticleTypeList',
+            'POST /admin/newarticle/saveArticleType',
+            'POST /admin/newarticle/updateByIdArticleType',
+            'POST /admin/article/updaetByStatus',
+            'POST /admin/newarticle/deleteByIdArticleType'
+          ],
           title: '文章管理',
           noCache: true
         }
@@ -648,7 +668,13 @@ export const asyncRouterMap = [
         component: () => import('@/views/promotion/noticeManagement'),
         name: 'NoticeList',
         meta: {
-          perms: ['POST /admin/article/update', 'POST /admin/article/delete', 'POST /admin/article/create', 'GET /admin/article/list', 'GET /admin/article/detail'],
+          perms: [
+            'POST /admin/article/update',
+            'POST /admin/article/delete',
+            'POST /admin/article/create',
+            'GET /admin/article/list',
+            'GET /admin/article/detail'
+          ],
           title: '公告列表',
           noCache: true
         }
@@ -658,7 +684,13 @@ export const asyncRouterMap = [
         component: () => import('@/views/promotion/noticeManagement/components/noticeCreate'),
         name: 'NoticeCreate',
         meta: {
-          perms: ['POST /admin/article/update', 'POST /admin/article/delete', 'POST /admin/article/create', 'GET /admin/article/list', 'GET /admin/article/detail'],
+          perms: [
+            'POST /admin/article/update',
+            'POST /admin/article/delete',
+            'POST /admin/article/create',
+            'GET /admin/article/list',
+            'GET /admin/article/detail'
+          ],
           title: '发布公告',
           noCache: true
         },
@@ -669,7 +701,13 @@ export const asyncRouterMap = [
         component: () => import('@/views/promotion/noticeManagement/components/noticeEdit'),
         name: 'NoticeEdit',
         meta: {
-          perms: ['POST /admin/article/update', 'POST /admin/article/delete', 'POST /admin/article/create', 'GET /admin/article/list', 'GET /admin/article/detail'],
+          perms: [
+            'POST /admin/article/update',
+            'POST /admin/article/delete',
+            'POST /admin/article/create',
+            'GET /admin/article/list',
+            'GET /admin/article/detail'
+          ],
           title: '公告通知编辑',
           noCache: true
         },
@@ -680,7 +718,13 @@ export const asyncRouterMap = [
         component: () => import('@/views/promotion/writingsManagement/writingsList'),
         name: 'WritingsList',
         meta: {
-          perms: ['POST /admin/richText/update', 'POST /admin/richText/delete', 'POST /admin/richText/create', 'GET /admin/richText/list', 'GET /admin/richText/detail'],
+          perms: [
+            'POST /admin/richText/update',
+            'POST /admin/richText/delete',
+            'POST /admin/richText/create',
+            'GET /admin/richText/list',
+            'GET /admin/richText/detail'
+          ],
           title: '文章列表',
           noCache: true
         }
@@ -690,7 +734,13 @@ export const asyncRouterMap = [
         component: () => import('@/views/promotion/writingsManagement/components/writingsCreate'),
         name: 'WritingsCreate',
         meta: {
-          perms: ['POST /admin/richText/update', 'POST /admin/richText/delete', 'POST /admin/richText/create', 'GET /admin/richText/list', 'GET /admin/richText/detail'],
+          perms: [
+            'POST /admin/richText/update',
+            'POST /admin/richText/delete',
+            'POST /admin/richText/create',
+            'GET /admin/richText/list',
+            'GET /admin/richText/detail'
+          ],
           title: '发布文章',
           noCache: true
         },
@@ -701,7 +751,13 @@ export const asyncRouterMap = [
         component: () => import('@/views/promotion/writingsManagement/components/writingsEdit'),
         name: 'WritingsEdit',
         meta: {
-          perms: ['POST /admin/richText/update', 'POST /admin/richText/delete', 'POST /admin/richText/create', 'GET /admin/richText/list', 'GET /admin/richText/detail'],
+          perms: [
+            'POST /admin/richText/update',
+            'POST /admin/richText/delete',
+            'POST /admin/richText/create',
+            'GET /admin/richText/list',
+            'GET /admin/richText/detail'
+          ],
           title: '文章编辑',
           noCache: true
         },
@@ -712,7 +768,13 @@ export const asyncRouterMap = [
         component: () => import('@/views/promotion/ad'),
         name: 'Ad',
         meta: {
-          perms: ['POST /admin/ad/update', 'POST /admin/ad/delete', 'GET /admin/ad/read', 'POST /admin/ad/create', 'GET /admin/ad/list'],
+          perms: [
+            'POST /admin/ad/update',
+            'POST /admin/ad/delete',
+            'GET /admin/ad/read',
+            'POST /admin/ad/create',
+            'GET /admin/ad/list'
+          ],
           title: '广告管理',
           noCache: true
         }
@@ -724,6 +786,55 @@ export const asyncRouterMap = [
         meta: {
           // perms: [],
           title: '视频列表',
+          noCache: true
+        }
+      }
+    ]
+  },
+  {
+    path: '/financialCenter',
+    component: Layout,
+    redirect: 'mallReportForms',
+    alwaysShow: true,
+    name: 'FinancialCenter',
+    meta: {
+      title: '财务中心',
+      icon: 'guide'
+    },
+    children: [
+      {
+        path: 'mallReportForms',
+        component: () => import('@/views/financialCenter/mallReportForms'),
+        name: 'MallReport',
+        meta: {
+          perms: [
+            'POST /admin/finance/queryMallReportForms'
+          ],
+          title: '商城报表',
+          noCache: true
+        }
+      },
+      {
+        path: 'logisticsReportForms',
+        component: () => import('@/views/financialCenter/logisticsReportForms'),
+        name: 'LogisticsStatement',
+        meta: {
+          perms: [
+            'POST /admin/finance/queryLogisticsReportForms'
+          ],
+          title: '物流报表',
+          noCache: true
+        }
+      },
+      {
+        path: 'communityReportForms',
+        component: () => import('@/views/financialCenter/communityReportForms'),
+        name: 'CommunityReport',
+        meta: {
+          perms: [
+            'POST /admin/finance/queryCommunityReportForms'
+          ],
+          title: '社区报表',
           noCache: true
         }
       }
@@ -1028,7 +1139,14 @@ export const asyncRouterMap = [
         component: () => import('@/views/marketingManagement/coupon/coupon'),
         name: 'Coupon',
         meta: {
-          perms: ['POST /admin/coupon/update', 'POST /admin/coupon/delete', 'GET /admin/coupon/read', 'POST /admin/coupon/create', 'GET /admin/coupon/list', 'GET /admin/coupon/listuser'],
+          perms: [
+            'POST /admin/coupon/update',
+            'POST /admin/coupon/delete',
+            'GET /admin/coupon/read',
+            'POST /admin/coupon/create',
+            'GET /admin/coupon/list',
+            'GET /admin/coupon/listuser'
+          ],
           title: '优惠券',
           noCache: true
         }
@@ -1038,7 +1156,14 @@ export const asyncRouterMap = [
         component: () => import('@/views/marketingManagement/couponDetail/couponDetail'),
         name: 'CouponDetail',
         meta: {
-          perms: ['POST /admin/coupon/update', 'POST /admin/coupon/delete', 'GET /admin/coupon/read', 'POST /admin/coupon/create', 'GET /admin/coupon/list', 'GET /admin/coupon/listuser'],
+          perms: [
+            'POST /admin/coupon/update',
+            'POST /admin/coupon/delete',
+            'GET /admin/coupon/read',
+            'POST /admin/coupon/create',
+            'GET /admin/coupon/list',
+            'GET /admin/coupon/listuser'
+          ],
           title: '优惠券详情',
           noCache: true
         },
@@ -1049,7 +1174,14 @@ export const asyncRouterMap = [
         component: () => import('@/views/errorPage/developing'),
         name: 'CouponCard',
         meta: {
-          perms: ['POST /admin/coupon/update', 'POST /admin/coupon/delete', 'GET /admin/coupon/read', 'POST /admin/coupon/create', 'GET /admin/coupon/list', 'GET /admin/coupon/listuser'],
+          perms: [
+            'POST /admin/coupon/update',
+            'POST /admin/coupon/delete',
+            'GET /admin/coupon/read',
+            'POST /admin/coupon/create',
+            'GET /admin/coupon/list',
+            'GET /admin/coupon/listuser'
+          ],
           title: '核销券',
           noCache: true
         }
@@ -1071,7 +1203,13 @@ export const asyncRouterMap = [
         component: () => import('@/views/businessManagement/customerPool'),
         name: 'CustomerPool',
         meta: {
-          perms: ['POST /admin/customerpool/updateByPrimaryKeySelective', 'POST /admin/customerpool/insertSelective', 'GET /admin/customerpool/deleteByPrimaryKey', 'GET /admin/customerpool/selectByPrimaryKey', 'POST /admin/customerpool/queryCustomerPoolList'],
+          perms: [
+            'POST /admin/customerpool/updateByPrimaryKeySelective',
+            'POST /admin/customerpool/insertSelective',
+            'GET /admin/customerpool/deleteByPrimaryKey',
+            'GET /admin/customerpool/selectByPrimaryKey',
+            'POST /admin/customerpool/queryCustomerPoolList'
+          ],
           title: '客户池',
           noCache: true
         }
@@ -1212,7 +1350,13 @@ export const asyncRouterMap = [
     name: 'CommunityManagement',
     _ROLES: [ 'ADMIN' ],
     meta: {
-      perms: ['POST /admin/community/richText/update', 'POST /admin/community/richText/delete', 'POST /admin/community/richText/create', 'GET /admin/community/richText/list', 'GET /admin/community/richText/detail'],
+      perms: [
+        'POST /admin/community/richText/update',
+        'POST /admin/community/richText/delete',
+        'POST /admin/community/richText/create',
+        'GET /admin/community/richText/list',
+        'GET /admin/community/richText/detail'
+      ],
       title: '社区管理',
       icon: 'community'
     },
@@ -1232,7 +1376,11 @@ export const asyncRouterMap = [
         name: 'CommunityPartner',
         _ROLES: [ 'ADMIN' ],
         meta: {
-          perms: ['POST /admin/api/third/partner/getCustomerList', 'POST /admin/api/third/partner/startAudit', 'GET /admin/api/third/partner/getPartnerInfo'],
+          perms: [
+            'POST /admin/api/third/partner/getCustomerList',
+            'POST /admin/api/third/partner/startAudit',
+            'GET /admin/api/third/partner/getPartnerInfo'
+          ],
           title: '社区合伙人',
           noCache: true
         }
@@ -1243,7 +1391,11 @@ export const asyncRouterMap = [
         name: 'CommunityCommander',
         _ROLES: [ 'ADMIN' ],
         meta: {
-          perms: ['POST /admin/api/third/partner/getCustomerList', 'POST /admin/api/third/partner/startAudit', 'GET /admin/api/third/partner/getPartnerInfo'],
+          perms: [
+            'POST /admin/api/third/partner/getCustomerList',
+            'POST /admin/api/third/partner/startAudit',
+            'GET /admin/api/third/partner/getPartnerInfo'
+          ],
           title: '社区团长',
           noCache: true
         }
