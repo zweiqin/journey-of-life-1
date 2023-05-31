@@ -18,7 +18,7 @@ export const columns = [
   },
   {
     // 找不到门店字段 暂时不写 绑定的是收支浮动
-    field: 'profitFloat',
+    field: 'mendian',
     title: '门店',
     minWidth: 150
   },

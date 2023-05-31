@@ -25,13 +25,15 @@
           <p>
             5670<span>12<img src="@/assets/demoImg/add.png" /></span>
           </p>
-          <ExpenditureLineChart :line-chart-data="LineChartData"></ExpenditureLineChart>
+          <ExpenditureLineChart
+            :line-chart-data="LineChartData"
+          ></ExpenditureLineChart>
         </div>
       </div>
     </div>
     <!-- 下班部分的内容区 -->
     <div class="TableContent">
-      <TableHeader :header-data="StoreSalesList"></TableHeader>
+      <TableHeader :header-data="StoreSalesList" @selectDate="selectDate"></TableHeader>
       <div class="TableContent_tables">
         <!-- 地区选择组件 -->
         <div class="tables_left">
@@ -47,6 +49,19 @@
           <RadarMap></RadarMap>
         </div>
         <div class="tables_right">
+          <el-date-picker
+            ref="dateBox"
+            v-model="Datevalue"
+            type="daterange"
+            class="DateSelect"
+            align="right"
+            unlink-panels
+            range-separator="至"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期"
+            :picker-options="pickerOptions"
+          >
+          </el-date-picker>
           <TableView></TableView>
         </div>
       </div>
@@ -76,7 +91,18 @@ import TableView from '../components/UniversalComponent/tableView.vue'
 export default {
   // eslint-disable-next-line vue/match-component-file-name
   name: 'PallReportForms',
-  components: { TableHeader, Addreselection, LineChart, IncomeLineChart, ExpenditureLineChart, DoubleLineChart, BarChart, HorizontalBarChartMap, RadarMap, TableView },
+  components: {
+    TableHeader,
+    Addreselection,
+    LineChart,
+    IncomeLineChart,
+    ExpenditureLineChart,
+    DoubleLineChart,
+    BarChart,
+    HorizontalBarChartMap,
+    RadarMap,
+    TableView
+  },
   data() {
     return {
       // 表头按钮的数据
@@ -87,7 +113,35 @@ export default {
       StoreSalesList: {
         name: '门店销售报表',
         list: ['今年', '本月', '近七天', '自定义']
-      }
+      },
+      pickerOptions: {
+        shortcuts: [{
+          text: '最近一周',
+          onClick(picker) {
+            const end = new Date()
+            const start = new Date()
+            start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
+            picker.$emit('pick', [start, end])
+          }
+        }, {
+          text: '最近一个月',
+          onClick(picker) {
+            const end = new Date()
+            const start = new Date()
+            start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
+            picker.$emit('pick', [start, end])
+          }
+        }, {
+          text: '最近三个月',
+          onClick(picker) {
+            const end = new Date()
+            const start = new Date()
+            start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
+            picker.$emit('pick', [start, end])
+          }
+        }]
+      },
+      Datevalue: ''
     }
   },
   computed: {
@@ -128,6 +182,11 @@ export default {
       .catch((err) => {
         window.console.log(err)
       })
+  },
+  methods: {
+    selectDate() {
+      this.$refs.dateBox.focus()
+    }
   }
 }
 </script>
@@ -206,6 +265,12 @@ export default {
       .tables_right {
         width: 52.9688vw;
         height: auto;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        .DateSelect {
+          overflow: hidden;
+        }
       }
     }
   }

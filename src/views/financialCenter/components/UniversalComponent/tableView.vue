@@ -49,6 +49,7 @@ export default {
 
 <style lang="scss">
 .tableContainer {
+  margin-top: 2.5vw;
   height: 100%;
 }
 </style>

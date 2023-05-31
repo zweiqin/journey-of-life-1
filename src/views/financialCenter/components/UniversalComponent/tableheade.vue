@@ -7,7 +7,7 @@
         :key="item"
         href="javascript:;"
         :class="{ isActice: index === AnyDataIndex }"
-        @click="switchData(index)"
+        @click="switchData(index, item)"
       >
         {{ item }}
       </a>
@@ -29,8 +29,12 @@ export default {
   },
   methods: {
     // 点击切换下标 在此设置传参方法，配合表格改变数据
-    switchData(index) {
+    switchData(index, item) {
       this.AnyDataIndex = index
+      if (item === '自定义') {
+        window.console.log(item)
+        this.$emit('selectDate')
+      }
     }
   }
 }
