@@ -46,14 +46,16 @@
           <!-- 雷达图 -->
           <RadarMap></RadarMap>
         </div>
-        <div class="tables_right"></div>
+        <div class="tables_right">
+          <TableView></TableView>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-// import { queryDepartmentList } from '@/api/financialCenter'
+import { queryDepartmentList } from '@/api/financialCenter'
 // 折线图组件
 import LineChart from '../components/echarts/LineChart/LineChart'
 import IncomeLineChart from '../components/echarts/LineChart/IncomeLineChart'
@@ -69,10 +71,12 @@ import BarChart from '../components/echarts/BarChart'
 import HorizontalBarChartMap from '../components/echarts/HorizontalBarChart'
 // 雷达图组件
 import RadarMap from '../components/echarts/RadarMap'
+// 表格组件
+import TableView from '../components/UniversalComponent/tableView.vue'
 export default {
   // eslint-disable-next-line vue/match-component-file-name
   name: 'PallReportForms',
-  components: { TableHeader, Addreselection, LineChart, IncomeLineChart, ExpenditureLineChart, DoubleLineChart, BarChart, HorizontalBarChartMap, RadarMap },
+  components: { TableHeader, Addreselection, LineChart, IncomeLineChart, ExpenditureLineChart, DoubleLineChart, BarChart, HorizontalBarChartMap, RadarMap, TableView },
   data() {
     return {
       // 表头按钮的数据
@@ -111,19 +115,19 @@ export default {
     }
   },
   created() {
-    // queryDepartmentList({
-    //   date: '2023',
-    //   address: '广东省',
-    //   page: 1,
-    //   limit: 10,
-    //   orderDate: '2023'
-    // })
-    //   .then((res) => {
-    //     window.console.log(res)
-    //   })
-    //   .catch((err) => {
-    //     window.console.log(err)
-    //   })
+    queryDepartmentList({
+      date: '2023',
+      address: '广东省',
+      page: 1,
+      limit: 10,
+      orderDate: '2023'
+    })
+      .then((res) => {
+        window.console.log(res)
+      })
+      .catch((err) => {
+        window.console.log(err)
+      })
   }
 }
 </script>
@@ -192,15 +196,16 @@ export default {
       height: auto;
       display: flex;
       justify-content: space-between;
+      /* 左侧echarts图表区的大小 */
       .tables_left {
         width: 32%;
         height: auto;
         /* height: 51.5625vw; */
       }
+      /* 数据表格的大小 */
       .tables_right {
         width: 52.9688vw;
         height: auto;
-        background-color: aqua;
       }
     }
   }

@@ -28,6 +28,7 @@ export default {
     }
   },
   methods: {
+    // 点击切换下标 在此设置传参方法，配合表格改变数据
     switchData(index) {
       this.AnyDataIndex = index
     }

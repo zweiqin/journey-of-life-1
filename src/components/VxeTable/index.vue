@@ -287,10 +287,10 @@ export default {
         let page
         let pageSize
         if (this.isPager) {
-          postData = this.resAlias ? data[this.resAlias] : data.items
+          postData = this.resAlias ? data[this.resAlias].data ? data[this.resAlias].data : data[this.resAlias] : data.items
           page = this.searchParams[this.pageAlias]
           pageSize = this.searchParams[this.sizeAlias]
-          this.pagination.total = data.total
+          this.pagination.total = data.map ? data.map.total : data.total
         } else {
           postData = data
           page = this.searchParams[this.pageAlias] || 1

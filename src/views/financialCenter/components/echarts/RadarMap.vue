@@ -83,6 +83,7 @@ export default {
             }
           },
           indicator: [
+            // echarts在设置了max值时会给警告，因此暂时注释掉
             {
               name: '坐凳'
               // max: 30

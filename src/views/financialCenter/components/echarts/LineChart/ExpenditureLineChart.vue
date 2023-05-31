@@ -87,6 +87,8 @@ export default {
     }
   },
   created() {
+    // 创建周期拿到数据并赋予给自身的实例，方便后面的响应式变化，
+    // 同时也能避免因为生命周期导致数据没及时获取就渲染视图导致报错的问题
     this.LineChartDatas = this.LineChartData
   },
   mounted() {
