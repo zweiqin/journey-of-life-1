@@ -287,10 +287,10 @@ export default {
         let page
         let pageSize
         if (this.isPager) {
-          postData = this.resAlias ? data[this.resAlias].data ? data[this.resAlias].data : data[this.resAlias] : data.items
+          postData = this.resAlias ? data[this.resAlias] : data.items
           page = this.searchParams[this.pageAlias]
           pageSize = this.searchParams[this.sizeAlias]
-          this.pagination.total = data.map ? data.map.total : data.total
+          this.pagination.total = data.total
         } else {
           postData = data
           page = this.searchParams[this.pageAlias] || 1
@@ -485,8 +485,8 @@ export default {
     // table-empty
     const emptySlots = this.showEmptyImage ? h('div', { class: 'table-empty', slot: 'empty' }, [h('img', { attrs: { src: empty } }), h('div', '暂无数据')]) : undefined
     // vxe-table
-    const el = h('div', { class: [ 'flexColumnPageWrap ' + className ] }, [
-      h('div', { }, [
+    const el = h('div', { style: { 'height': '100%' }, class: [ 'flexColumnPageWrap ' + className ] }, [
+      h('div', { style: { 'height': '100%' } }, [
         h('vxe-grid', {
           style: { 'z-index': 50 },
           ref: 'erpVxeTable',
@@ -546,7 +546,7 @@ export default {
 	.pagination-container {
 		position: relative;
 		// height: 25px;
-		padding: 20px 20px 0 20px !important;
+		padding: 10px 20px 0 0 !important;
 		// margin-bottom: 10px;
 		// margin-top: 15px;
 		background: #fff;

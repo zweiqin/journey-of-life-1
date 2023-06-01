@@ -1,45 +1,52 @@
 export const columns = [
   // fieid对应着请求过来的数据的字段名
   {
+    align: 'center',
     fixed: 'left',
     field: 'orderNo',
     title: '单号',
-    width: 160
+    width: 140
   },
   {
+    align: 'center',
     field: 'productName',
     title: '品名',
-    minWidth: 100
+    width: 120
   },
   {
+    align: 'center',
     field: 'region',
     title: '区域',
-    minWidth: 100
+    width: 150
   },
   {
-    // 找不到门店字段 暂时不写 绑定的是收支浮动
-    field: 'mendian',
+    align: 'center',
+    field: 'brandName',
     title: '门店',
-    minWidth: 150
+    width: 150
   },
   {
+    align: 'center',
     field: 'number',
     title: '数量',
-    minWidth: 110
+    width: 110
   },
   {
+    align: 'center',
     field: 'income',
     title: '收入',
-    minWidth: 110
+    width: 110
   },
   {
+    align: 'center',
     field: 'expenditure',
     title: '支出',
-    minWidth: 110
+    width: 110
   },
   {
+    align: 'center',
     field: 'profitFloat',
     title: '收支浮动',
-    minWidth: 100
+    width: 100
   }
 ]

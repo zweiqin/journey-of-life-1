@@ -1,11 +1,9 @@
 <template>
   <div class="BarChartBox">
     <div class="storesText">
-      <p>门店销售额</p>
-      <p>114,514</p>
-      <p>
-        较昨日<span>405<img src="@/assets/demoImg/down.png" /></span>
-      </p>
+      <p>{{ text }}</p>
+      <p>{{ value }}</p>
+      <!-- <p>较昨日<span>405<img src="@/assets/demoImg/down.png" /></span></p> -->
     </div>
     <div id="BarChart"></div>
   </div>
@@ -14,12 +12,8 @@
 <script>
 import * as echarts from 'echarts'
 export default {
-  // eslint-disable-next-line vue/match-component-file-name
   name: 'BarChart',
-  props: {
-    // eslint-disable-next-line vue/prop-name-casing
-    BarChartData: Object
-  },
+  props: ['text', 'value'],
   data() {
     return {
       chartDom: '',

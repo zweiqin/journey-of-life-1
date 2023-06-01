@@ -1,6 +1,6 @@
 <template>
   <div class="HorizontalBarChartBox">
-    <p>门店销售额前三</p>
+    <p>{{ text }}</p>
     <div id="HorizontalBarMap"></div>
   </div>
 </template>
@@ -8,11 +8,18 @@
 <script>
 import * as echarts from 'echarts'
 export default {
-  // eslint-disable-next-line vue/match-component-file-name
   name: 'HorizontalBarChartMap',
   props: {
-    // eslint-disable-next-line vue/prop-name-casing
-    HorizontalBarData: Object
+    text: {
+      type: String,
+      required: true
+    },
+    value: {
+      type: Array,
+      default() {
+        return []
+      }
+    }
   },
   data() {
     return {
@@ -51,9 +58,7 @@ export default {
           axisLabel: {
             color: '#4B4B4B',
             fontSize: '12',
-            formatter(value) {
-              return ((value * 10) / 10000).toLocaleString() + 'K'
-            }
+            formatter: '{value}K'
           }
         },
         yAxis: [
@@ -75,7 +80,7 @@ export default {
             axisLine: {
               show: false
             },
-            data: ['龙江店', '乐从店', '容桂店']
+            data: [this.value[0].brandName.substring(0, 5), this.value[1].brandName.substring(0, 5), this.value[2] ? this.value[2].brandName.substring(0, 5) : '']
           }
         ],
         series: [
@@ -97,9 +102,18 @@ export default {
               ])
             },
             barWidth: 15,
-            data: [1620, 1520, 1200]
+            data: [this.value[0].brandPrice, this.value[1].brandPrice, this.value[2] ? this.value[2].brandPrice : 0]
           }
         ]
+      }
+    }
+  },
+  watch: {
+    value(val) {
+      if (val.length >= 2) {
+        const chartDom = echarts.init(document.getElementById('HorizontalBarMap'))
+        this.chartDom = chartDom
+        chartDom.setOption(this.option, true)
       }
     }
   },
@@ -107,31 +121,30 @@ export default {
     this.HorizontalBarDatas = this.HorizontalBarData
   },
   mounted() {
-    const chartDom = echarts.init(document.getElementById('HorizontalBarMap'))
-    this.chartDom = chartDom
-    chartDom.setOption(this.option, true)
   }
 }
 </script>
 
 <style lang="scss">
 .HorizontalBarChartBox {
-  margin-top: 2.0313vw;
-  padding: 0.7813vw 1.0417vw;
-  width: 100%;
-  height: 10.4167vw;
-  border-radius: 0.2083vw;
-  background: linear-gradient(180deg, #f6f7ff -3%, #ececff 100%);
-  > p {
-    font-family: 思源黑体;
-    font-size: 0.8333vw;
-    font-weight: 530;
-    line-height: 1.25vw;
-    color: #1d252f;
-  }
-  #HorizontalBarMap {
-    width: 23.75vw;
-    height: 7.2917vw;
-  }
+	margin-top: 2.0313vw;
+	padding: 0.7813vw 1.0417vw;
+	width: 100%;
+	height: 10.4167vw;
+	border-radius: 0.2083vw;
+	background: linear-gradient(180deg, #f6f7ff -3%, #ececff 100%);
+
+	>p {
+		font-family: 思源黑体;
+		font-size: 0.8333vw;
+		font-weight: 530;
+		line-height: 1.25vw;
+		color: #1d252f;
+	}
+
+	#HorizontalBarMap {
+		width: 23.75vw;
+		height: 7.2917vw;
+	}
 }
 </style>

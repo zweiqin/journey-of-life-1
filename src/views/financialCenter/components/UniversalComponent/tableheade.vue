@@ -1,16 +1,21 @@
 <template>
-  <div class="Analysis_head">
-    <span>{{ headerData.name }}</span>
-    <div v-if="headerData.list">
-      <a
-        v-for="(item, index) in headerData.list"
-        :key="item"
-        href="javascript:;"
-        :class="{ isActice: index === AnyDataIndex }"
-        @click="switchData(index, item)"
-      >
-        {{ item }}
-      </a>
+  <div class="radio-date">
+    <div style="padding-left: 10px;font-weight: bold;font-size: 16px;">{{ headerData.name }}</div>
+    <div>
+      <el-radio-group v-model="currentTab" size="mini" @input="handelDateChange">
+        <el-radio-button v-for="item in headerData.list" :key="item.label" :label="item.label">{{ item.text }}</el-radio-button>
+        <el-radio-button v-if="isCustom" :label="0">
+          <span @click="$refs.refCustomDate.focus()">自定义</span>
+          <div style="display: inline-block;width: 0;height: 0;overflow: hidden;">
+            <el-date-picker
+              ref="refCustomDate" v-model="customDate" type="daterange"
+              value-format="yyyy-MM-dd" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期"
+              @change="handelDatePickerChange"
+            >
+            </el-date-picker>
+          </div>
+        </el-radio-button>
+      </el-radio-group>
     </div>
   </div>
 </template>
@@ -20,65 +25,60 @@ export default {
   // eslint-disable-next-line vue/match-component-file-name
   name: 'TableHeader',
   props: {
-    headerData: Object
+    headerData: {
+      type: Object,
+      required: true
+    },
+    isCustom: {
+      type: Boolean,
+      default: false
+    },
+    defaultTab: {
+      type: Number,
+      default: 1
+    }
   },
   data() {
     return {
-      AnyDataIndex: 0
+      currentTab: '',
+      customDate: ''
     }
   },
+  created() {
+    this.currentTab = this.defaultTab
+  },
   methods: {
-    // 点击切换下标 在此设置传参方法，配合表格改变数据
-    switchData(index, item) {
-      this.AnyDataIndex = index
-      if (item === '自定义') {
-        window.console.log(item)
-        this.$emit('selectDate')
-      }
+    handelDateChange(e) {
+      this.$emit('tab-change', e)
+    },
+    handelDatePickerChange(e) {
+      this.$emit('select-date', this.customDate)
     }
   }
 }
 </script>
 
-<style lang="scss">
-/* 分析图的表头 */
-.Analysis_head {
-  width: 100%;
-  height: 1.4063vw;
-  display: flex;
-  justify-content: space-between;
-  font-family: 思源黑体;
-  > span {
-    font-size: 1.0417vw;
-    font-weight: 600;
-    line-height: 1.375vw;
-    color: #141736;
-  }
-  > div {
-    width: 11.4583vw;
-    height: 1.5625vw;
-    display: flex;
-    justify-content: space-between;
-    > a {
-      padding: 0.2604vw;
-      font-family: 思源黑体;
-      border-radius: 0.2083vw;
-      display: block;
-      text-align: center;
-      line-height: 1.1979vw;
-      flex: 1;
-      font-size: 0.7292vw;
-      font-weight: 520;
-      letter-spacing: 0em;
-      color: #424e66;
-    }
-    > a:hover {
-      color: #0519d4;
-    }
-    .isActice {
-      color: #0519d4;
-      background-color: rgba(77, 112, 255, 0.08);
-    }
-  }
+<style lang="scss" scoped>
+.radio-date {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-top: 10px;
+
+	/deep/ .el-radio-group {
+		label {
+			.el-radio-button__inner {
+				border: 0;
+			}
+		}
+
+		label.is-active {
+			.el-radio-button__inner {
+				color: #4D70FF;
+				background-color: #f1f4ff;
+				box-shadow: none;
+			}
+		}
+	}
 }
 </style>

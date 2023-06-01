@@ -674,7 +674,7 @@ export const asyncRouterMap = [
             'GET /admin/article/list',
             'GET /admin/article/detail'
           ],
-          title: '公告列表',
+          title: '（废弃）公告列表',
           noCache: true
         }
       },
@@ -724,7 +724,7 @@ export const asyncRouterMap = [
             'GET /admin/richText/list',
             'GET /admin/richText/detail'
           ],
-          title: '文章列表',
+          title: '（废弃）文章列表',
           noCache: true
         }
       },
@@ -793,7 +793,7 @@ export const asyncRouterMap = [
   {
     path: '/financialCenter',
     component: Layout,
-    redirect: 'mallReportForms',
+    redirect: 'noredirect',
     alwaysShow: true,
     name: 'FinancialCenter',
     meta: {
@@ -804,7 +804,7 @@ export const asyncRouterMap = [
       {
         path: 'mallReportForms',
         component: () => import('@/views/financialCenter/mallReportForms'),
-        name: 'MallReport',
+        name: 'MallReportForms',
         meta: {
           perms: [
             'POST /admin/finance/queryMallReportForms'
@@ -816,7 +816,7 @@ export const asyncRouterMap = [
       {
         path: 'logisticsReportForms',
         component: () => import('@/views/financialCenter/logisticsReportForms'),
-        name: 'LogisticsStatement',
+        name: 'LogisticsReportForms',
         meta: {
           perms: [
             'POST /admin/finance/queryLogisticsReportForms'
@@ -828,7 +828,7 @@ export const asyncRouterMap = [
       {
         path: 'communityReportForms',
         component: () => import('@/views/financialCenter/communityReportForms'),
-        name: 'CommunityReport',
+        name: 'CommunityReportForms',
         meta: {
           perms: [
             'POST /admin/finance/queryCommunityReportForms'

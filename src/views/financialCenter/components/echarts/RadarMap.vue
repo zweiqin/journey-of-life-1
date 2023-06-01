@@ -1,6 +1,6 @@
 <template>
   <div class="RadarMapBox">
-    <p>品类购买率分布图</p>
+    <p>{{ text }}</p>
     <div id="RadarMap"></div>
   </div>
 </template>
@@ -8,11 +8,18 @@
 <script>
 import * as echarts from 'echarts'
 export default {
-  // eslint-disable-next-line vue/match-component-file-name
   name: 'RadarMap',
   props: {
-    // eslint-disable-next-line vue/prop-name-casing
-    RadarMapData: Object
+    text: {
+      type: String,
+      required: true
+    },
+    value: {
+      type: Array,
+      default() {
+        return []
+      }
+    }
   },
   data() {
     return {
@@ -85,27 +92,27 @@ export default {
           indicator: [
             // echarts在设置了max值时会给警告，因此暂时注释掉
             {
-              name: '坐凳'
+              name: this.value[0]
               // max: 30
             },
             {
-              name: '支架'
+              name: this.value[1]
               // max: 10
             },
             {
-              name: '弹簧'
+              name: this.value[2]
               // max: 7
             },
             {
-              name: '沙发'
+              name: this.value[3]
               // max: 2
             },
             {
-              name: '其他'
+              name: this.value[4]
               // max: 2
             },
             {
-              name: '椅子'
+              name: this.value[5]
               // max: 2
             }
           ]
@@ -150,35 +157,42 @@ export default {
       }
     }
   },
+  watch: {
+    value(val) {
+      if (val.length >= 6) {
+        const chartDom = echarts.init(document.getElementById('RadarMap'))
+        this.chartDom = chartDom
+        chartDom.setOption(this.option, true)
+      }
+    }
+  },
   created() {
     this.RadarMapDatas = this.RadarMapData
   },
-  mounted() {
-    const chartDom = echarts.init(document.getElementById('RadarMap'))
-    this.chartDom = chartDom
-    chartDom.setOption(this.option, true)
-  }
+  mounted() { }
 }
 </script>
 
 <style lang="scss">
 .RadarMapBox {
-  margin-top: 4.1667vw;
-  padding: 0.7813vw 1.0417vw;
-  width: 100%;
-  height: 14.5833vw;
-  border-radius: 0.2083vw;
-  /* background: linear-gradient(180deg, #f6f7ff -3%, #ececff 100%); */
-  > p {
-    font-family: 思源黑体;
-    font-size: 0.8333vw;
-    font-weight: normal;
-    line-height: 1.25vw;
-    color: #1d2129;
-  }
-  #RadarMap {
-    width: 23.75vw;
-    height: 12.5vw;
-  }
+	margin-top: 4.1667vw;
+	padding: 0.7813vw 1.0417vw;
+	width: 100%;
+	height: 24.5833vw;
+	border-radius: 0.2083vw;
+
+	/* background: linear-gradient(180deg, #f6f7ff -3%, #ececff 100%); */
+	>p {
+		font-family: 思源黑体;
+		font-size: 0.8333vw;
+		font-weight: normal;
+		line-height: 1.25vw;
+		color: #1d2129;
+	}
+
+	#RadarMap {
+		width: 23.75vw;
+		height: 22.5vw;
+	}
 }
 </style>

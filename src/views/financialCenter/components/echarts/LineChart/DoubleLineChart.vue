@@ -1,8 +1,8 @@
 <template>
   <div class="DoubleLineChartBox">
     <div class="storesText">
-      <p>门店数量</p>
-      <p>114514家</p>
+      <p>{{ text }}</p>
+      <p>{{ value }} {{ unit }}</p>
     </div>
     <div id="DoubleLineChart"></div>
   </div>
@@ -11,10 +11,8 @@
 <script>
 import * as echarts from 'echarts'
 export default {
-  // eslint-disable-next-line vue/match-component-file-name
   name: 'DoubleLineChart',
-  // eslint-disable-next-line vue/require-prop-types, vue/prop-name-casing
-  props: [ 'DoubleLineChartData' ],
+  props: ['text', 'value', 'unit'],
   data() {
     return {
       chartDom: '',
@@ -148,35 +146,39 @@ export default {
 
 <style lang="scss">
 .DoubleLineChartBox {
-  margin-top: 2.3958vw;
-  padding: 0.7813vw 1.0417vw;
-  width: 100%;
-  border-radius: 0.2083vw;
-  background: linear-gradient(180deg, #f2f9fe -3%, #e6f4fe 100%);
-  display: flex;
-  justify-content: space-between;
-  .storesText {
-    height: 100%;
-    > p:nth-of-type(1) {
-      font-family: 思源黑体;
-      font-size: 0.8333vw;
-      font-weight: normal;
-      line-height: 1.25vw;
-      color: #1d252f;
-    }
-    > p:nth-of-type(2) {
-      text-align: left;
-      margin-top: 0.7813vw;
-      font-family: 思源黑体;
-      font-size: 1.25vw;
-      font-weight: 500;
-      line-height: 1.7708vw;
-      color: #1d2129;
-    }
-  }
-  #DoubleLineChart {
-    width: 14.5833vw;
-    height: 4.1667vw;
-  }
+	margin-top: 2.3958vw;
+	padding: 0.7813vw 1.0417vw;
+	width: 100%;
+	border-radius: 0.2083vw;
+	background: linear-gradient(180deg, #f2f9fe -3%, #e6f4fe 100%);
+	display: flex;
+	justify-content: space-between;
+
+	.storesText {
+		height: 100%;
+
+		>p:nth-of-type(1) {
+			font-family: 思源黑体;
+			font-size: 0.8333vw;
+			font-weight: normal;
+			line-height: 1.25vw;
+			color: #1d252f;
+		}
+
+		>p:nth-of-type(2) {
+			text-align: left;
+			margin-top: 0.7813vw;
+			font-family: 思源黑体;
+			font-size: 1.25vw;
+			font-weight: 500;
+			line-height: 1.7708vw;
+			color: #1d2129;
+		}
+	}
+
+	#DoubleLineChart {
+		width: 14.5833vw;
+		height: 4.1667vw;
+	}
 }
 </style>

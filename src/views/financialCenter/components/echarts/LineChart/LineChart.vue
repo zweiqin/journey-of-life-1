@@ -5,9 +5,7 @@
 <script>
 import * as echarts from 'echarts'
 export default {
-  // eslint-disable-next-line vue/match-component-file-name
   name: 'LineChart',
-  // eslint-disable-next-line vue/require-prop-types, vue/prop-name-casing
   props: [ 'LineChartData' ],
   data() {
     return {

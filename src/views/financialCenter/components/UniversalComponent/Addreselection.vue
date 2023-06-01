@@ -5,17 +5,14 @@
       可以选择将哪个属性绑定起来 如这里我选择的是name，也就是选择的地区的名字，也可以选择其他属性，比如对应着第七区码的code等。
       数据由vuex获取，以计算属性转化。 -->
     <el-cascader
-      v-model="listQuery.region_arr"
-      placeholder="选择区域"
-      :options="common_regionList"
-      :props="{
+      v-model="listQuery.region_arr" placeholder="选择区域" :options="common_regionList" :props="{
         checkStrictly: true,
         label: 'name',
         value: 'name',
         expandTrigger: 'hover'
       }"
-      class="filter-item"
-      style="width: 7.8125vw"
+      class="filter-item" style="width: 7.8125vw"
+      @change="handleAddressChange"
     />
   </div>
 </template>
@@ -29,11 +26,6 @@ export default {
     return {
       value: '广东省',
       listQuery: {
-        page: 1,
-        limit: 20,
-        nickname: '',
-        mobile: '',
-        userLevel: '',
         region_arr: [ '广东省' ]
       }
     }
@@ -49,25 +41,26 @@ export default {
   //     return addres
   //   }
   // }
+  },
+  methods: {
+    handleAddressChange(e) {
+      this.$emit('change', this.listQuery.region_arr.join(''))
+    }
   }
 }
 </script>
 
 <style lang="scss">
-/* .addresComponents {
-  margin-top: 2.0313vw;
-} */
 .addresText {
-  height: 1.4583vw;
-  line-height: 1.4583vw;
-  display: inline-block;
-  align-items: center;
-  padding: 0px 0.625vw;
-  background: rgba(77, 112, 255, 0.08);
-  font-family: 思源黑体;
-  font-size: 0.7292vw;
-  font-weight: normal;
-  letter-spacing: 0em;
-  color: #0519d4;
+	height: 1.4583vw;
+	line-height: 1.4583vw;
+	display: inline-block;
+	align-items: center;
+	padding: 0px 0.625vw;
+	background: rgba(77, 112, 255, 0.08);
+	font-size: 0.7292vw;
+	font-weight: normal;
+	letter-spacing: 0em;
+	color: #0519d4;
 }
 </style>

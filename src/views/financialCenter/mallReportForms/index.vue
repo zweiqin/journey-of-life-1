@@ -1,68 +1,71 @@
 <template>
   <div class="TableContainer">
+
     <div class="header">
       <!-- 头部的按钮 -->
-      <TableHeader :header-data="MallSalesList"></TableHeader>
+      <TableHeader is-custom :header-data="mallSalesList" @select-date="handleSelectDateTop" @tab-change="handleTabChangeTop"></TableHeader>
       <!-- 放置折线图的盒子 -->
       <div class="LineChartBox">
         <!-- 折线图 -->
         <div class="LineChartBox_item">
           <p>总订单</p>
           <p>
-            5670<span>12<img src="@/assets/demoImg/add.png" /></span>
+            {{ orderSum || '0' }}<span>
+              {{ typeof orderCompareYesterday === 'number' ? orderCompareYesterday : '--' }}<img
+                src="@/assets/demoImg/add.png"
+              />
+            </span>
           </p>
           <LineChart :line-chart-data="LineChartData"></LineChart>
         </div>
         <div class="LineChartBox_item">
           <p>总收益</p>
           <p>
-            5670<span>12<img src="@/assets/demoImg/add.png" /></span>
+            {{ incomeSum || '0' }}<span>
+              {{ typeof incomeSumCompareYesterday === 'number' ? incomeSumCompareYesterday
+                : '--' }}<img src="@/assets/demoImg/add.png" />
+            </span>
           </p>
           <IncomeLineChart :line-chart-data="LineChartData"></IncomeLineChart>
         </div>
         <div class="LineChartBox_item">
           <p>总支出</p>
           <p>
-            5670<span>12<img src="@/assets/demoImg/add.png" /></span>
+            {{ expenditureSum || '0' }}<span>
+              {{ typeof expenditureCompareYesterday === 'number'
+                ? expenditureCompareYesterday : '--' }}<img src="@/assets/demoImg/add.png" />
+            </span>
           </p>
-          <ExpenditureLineChart
-            :line-chart-data="LineChartData"
-          ></ExpenditureLineChart>
+          <ExpenditureLineChart :line-chart-data="LineChartData"></ExpenditureLineChart>
         </div>
       </div>
     </div>
-    <!-- 下班部分的内容区 -->
+
+    <!-- 下半部分的内容区 -->
     <div class="TableContent">
-      <TableHeader :header-data="StoreSalesList" @selectDate="selectDate"></TableHeader>
+      <TableHeader is-custom :header-data="storeSalesList" @select-date="handleSelectDateBottom" @tab-change="handleTabChangeBottom"></TableHeader>
       <div class="TableContent_tables">
         <!-- 地区选择组件 -->
-        <div class="tables_left">
+        <div id="salesChart" class="tables_left">
           <!-- 地址选择 -->
-          <Addreselection></Addreselection>
+          <Addreselection @change="handleAddressChange"></Addreselection>
           <!-- 双折线图 -->
-          <DoubleLineChart></DoubleLineChart>
+          <DoubleLineChart text="门店数量" :value="brandSum" unit="家"></DoubleLineChart>
           <!-- 柱状图 -->
-          <BarChart></BarChart>
+          <BarChart text="门店销售额" :value="brandTurnover"></BarChart>
           <!-- 横向柱状图 -->
-          <HorizontalBarChartMap></HorizontalBarChartMap>
+          <HorizontalBarChartMap text="门店销售额前三" :value="branList"></HorizontalBarChartMap>
           <!-- 雷达图 -->
-          <RadarMap></RadarMap>
+          <RadarMap text="品类购买率分布图" :value="productTypeList"></RadarMap>
         </div>
         <div class="tables_right">
-          <el-date-picker
-            ref="dateBox"
-            v-model="Datevalue"
-            type="daterange"
-            class="DateSelect"
-            align="right"
-            unlink-panels
-            range-separator="至"
-            start-placeholder="开始日期"
-            end-placeholder="结束日期"
-            :picker-options="pickerOptions"
-          >
-          </el-date-picker>
-          <TableView></TableView>
+          <div v-if="heightTable !== '0px'" :style="{ height: heightTable }">
+            <VxeTable
+              ref="vxeTable" v-model="listQuery" :local-key="customColumnsConfig.localKey" :is-request="false"
+              :loading="listLoading" :table-data="tableData" :page-total="pageTotal" :columns="columns"
+              :grid-options="{ height: '100%' }"
+            ></VxeTable>
+          </div>
         </div>
       </div>
     </div>
@@ -70,16 +73,16 @@
 </template>
 
 <script>
-import { queryDepartmentList } from '@/api/financialCenter'
+import { api, queryMallReportForms } from '@/api/financialCenter'
+// 表头按钮的组件
+import TableHeader from '../components/UniversalComponent/tableheade'
+// 地址选择的组件
+import Addreselection from '../components/UniversalComponent/Addreselection'
 // 折线图组件
 import LineChart from '../components/echarts/LineChart/LineChart'
 import IncomeLineChart from '../components/echarts/LineChart/IncomeLineChart'
 import ExpenditureLineChart from '../components/echarts/LineChart/ExpenditureLineChart'
 import DoubleLineChart from '../components/echarts/LineChart/DoubleLineChart'
-// 表头按钮的组件
-import TableHeader from '../components/UniversalComponent/tableheade'
-// 地址选择的组件
-import Addreselection from '../components/UniversalComponent/Addreselection'
 // 柱状图组件
 import BarChart from '../components/echarts/BarChart'
 // 横向柱状图组件
@@ -87,10 +90,10 @@ import HorizontalBarChartMap from '../components/echarts/HorizontalBarChart'
 // 雷达图组件
 import RadarMap from '../components/echarts/RadarMap'
 // 表格组件
-import TableView from '../components/UniversalComponent/tableView.vue'
+import VxeTable from '@/components/VxeTable'
+import { columns } from './table'
 export default {
-  // eslint-disable-next-line vue/match-component-file-name
-  name: 'PallReportForms',
+  name: 'MallReportForms',
   components: {
     TableHeader,
     Addreselection,
@@ -101,51 +104,52 @@ export default {
     BarChart,
     HorizontalBarChartMap,
     RadarMap,
-    TableView
+    VxeTable
   },
   data() {
     return {
       // 表头按钮的数据
-      MallSalesList: {
+      mallSalesList: {
         name: '商城销售报表',
-        list: ['今年', '本月', '近七天', '自定义']
+        list: [{ text: '今年', label: 1 }, { text: '本月', label: 2 }, { text: '近七天', label: 3 }]
       },
-      StoreSalesList: {
-        name: '门店销售报表',
-        list: ['今年', '本月', '近七天', '自定义']
+      storeSalesList: {
+        name: '各区域门店的销售报表',
+        list: [{ text: '今年', label: 1 }, { text: '本月', label: 2 }, { text: '近七天', label: 3 }]
       },
-      pickerOptions: {
-        shortcuts: [{
-          text: '最近一周',
-          onClick(picker) {
-            const end = new Date()
-            const start = new Date()
-            start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
-            picker.$emit('pick', [start, end])
-          }
-        }, {
-          text: '最近一个月',
-          onClick(picker) {
-            const end = new Date()
-            const start = new Date()
-            start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
-            picker.$emit('pick', [start, end])
-          }
-        }, {
-          text: '最近三个月',
-          onClick(picker) {
-            const end = new Date()
-            const start = new Date()
-            start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
-            picker.$emit('pick', [start, end])
-          }
-        }]
+      // 请求返回数据
+      orderSum: '',
+      incomeSum: '',
+      expenditureSum: '',
+      orderCompareYesterday: '', // 永远为正
+      incomeSumCompareYesterday: '', // 永远为正
+      expenditureCompareYesterday: '', // 永远为正
+      brandSum: '',
+      brandTurnover: '',
+      branList: [],
+      productTypeList: [],
+      // 表格
+      heightTable: '0px',
+      api,
+      columns,
+      tableData: [],
+      pageTotal: 0,
+      listLoading: true,
+      listQuery: {
+        date: new Date().getFullYear(),
+        address: '广东省',
+        page: 1,
+        limit: 20,
+        orderDate: new Date().getFullYear()
       },
-      Datevalue: ''
+      customColumnsConfig: {
+        localKey: 'mallReportForms',
+        columnsOptions: columns
+      }
     }
   },
   computed: {
-    // 折线图的数据 暂时使用死数据，后期联动请求的数目
+    // 折线图的数据
     LineChartData() {
       var data = [1920, 2800, 3940, 1660, 2080, 3090, 1650, 3070, 4080]
       var markLineData = []
@@ -169,23 +173,77 @@ export default {
     }
   },
   created() {
-    queryDepartmentList({
-      date: '2023',
-      address: '广东省',
-      page: 1,
-      limit: 10,
-      orderDate: '2023'
-    })
-      .then((res) => {
-        window.console.log(res)
-      })
-      .catch((err) => {
-        window.console.log(err)
-      })
+    this.getReportForms()
+  },
+  mounted() {
+    this.heightTable = document.getElementById('salesChart').clientHeight - 50 + 'px'
   },
   methods: {
-    selectDate() {
-      this.$refs.dateBox.focus()
+    getReportForms() {
+      this.listLoading = true
+      queryMallReportForms(this.listQuery)
+        .then((res) => {
+          this.orderSum = res.data.orderSum
+          this.incomeSum = res.data.incomeSum
+          this.expenditureSum = res.data.expenditureSum
+          this.orderCompareYesterday = res.data.orderCompareYesterday
+          this.incomeSumCompareYesterday = res.data.incomeSumCompareYesterday
+          this.expenditureCompareYesterday = res.data.expenditureCompareYesterday
+          this.brandSum = res.data.brandSum
+          this.brandTurnover = res.data.brandTurnover
+          this.branList = res.data.branList || []
+          this.productTypeList = res.data.productTypeList || []
+          this.tableData = res.data.map.data.map((item, index) => ({
+            ...item,
+            $index: (this.listQuery.page - 1) * this.listQuery.limit + (index + 1)
+          }))
+          this.pageTotal = res.data.map.total || 0
+          this.listLoading = false
+        })
+        .catch((err) => {
+          console.log(err)
+          this.listLoading = false
+        })
+    },
+    handleAddressChange(e) {
+      this.listQuery.address = e
+      this.getReportForms()
+    },
+    handleSelectDateTop(e) {
+      console.log(e)
+      this.listQuery.date = e
+      this.getReportForms()
+    },
+    handleTabChangeTop(e) {
+      console.log(e)
+      if (e === 1) {
+        this.listQuery.date = new Date().getFullYear()
+      } else if (e === 2) {
+        this.listQuery.date = new Date().toJSON()
+          .substring(0, 7)
+      } else if (e === 3) {
+        this.listQuery.date = new Date(Date.now() - 604800000).toJSON()
+          .substring(0, 10)
+      }
+      this.getReportForms()
+    },
+    handleSelectDateBottom(e) {
+      console.log(e)
+      this.listQuery.date = e
+      this.getReportForms()
+    },
+    handleTabChangeBottom(e) {
+      console.log(e)
+      if (e === 1) {
+        this.listQuery.orderDate = new Date().getFullYear()
+      } else if (e === 2) {
+        this.listQuery.orderDate = new Date().toJSON()
+          .substring(0, 7)
+      } else if (e === 3) {
+        this.listQuery.orderDate = new Date(Date.now() - 604800000).toJSON()
+          .substring(0, 10)
+      }
+      this.getReportForms()
     }
   }
 }
@@ -193,86 +251,82 @@ export default {
 
 <style lang="scss">
 .TableContainer {
-  width: 100%;
-  height: auto;
-  padding: 0vw 1.25vw 0.8333vw 0.8333vw;
-  background-color: #f4f7fc;
-  /* 页面顶部的样式 */
-  .header {
-    padding: 2.0833vw 2.0833vw 3.125vw 1.5625vw;
-    width: 100%;
-    height: 20.7292vw;
-    background-color: white;
-    .LineChartBox {
-      margin-top: 3.6458vw;
-      width: 100%;
-      height: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      .LineChartBox_item {
-        box-sizing: border-box;
-        padding: 0px 1.5625vw;
-        width: 30%;
-        height: 100%;
-        > p:nth-of-type(1) {
-          font-family: 思源黑体;
-          font-size: 0.9375vw;
-          font-weight: normal;
-          line-height: 1.25vw;
-          color: #141736;
-        }
-        > p:nth-of-type(2) {
-          margin-top: 0.625vw;
-          display: flex;
-          align-items: center;
-          font-family: 思源黑体;
-          font-size: 1.5625vw;
-          font-weight: 500;
-          line-height: 1.7708vw;
-          color: #141736;
-          > span {
-            margin-left: 0.4167vw;
-            font-size: 0.7292vw;
-            font-weight: normal;
-            line-height: 1.0417vw;
-            color: #f53f3f;
-          }
-        }
-      }
-    }
-  }
-  /* 下半部分的样式 */
-  .TableContent {
-    margin-top: 1.4063vw;
-    background-color: white;
-    padding: 3.125vw 2.0833vw 1.0417vw 1.5625vw;
-    width: 100%;
-    height: auto;
-    .TableContent_tables {
-      margin-top: 2.0313vw;
-      width: 100%;
-      height: auto;
-      display: flex;
-      justify-content: space-between;
-      /* 左侧echarts图表区的大小 */
-      .tables_left {
-        width: 32%;
-        height: auto;
-        /* height: 51.5625vw; */
-      }
-      /* 数据表格的大小 */
-      .tables_right {
-        width: 52.9688vw;
-        height: auto;
-        display: flex;
-        flex-direction: column;
-        align-items: flex-end;
-        .DateSelect {
-          overflow: hidden;
-        }
-      }
-    }
-  }
+	width: 100%;
+	padding: 0vw 1.25vw 0.8333vw 0.8333vw;
+	background-color: #f4f7fc;
+
+	/* 页面顶部的样式 */
+	.header {
+		padding: 2.0833vw 2.0833vw 3.125vw 1.5625vw;
+		width: 100%;
+		height: 20.7292vw;
+		background-color: white;
+
+		.LineChartBox {
+			margin-top: 3.6458vw;
+			width: 100%;
+			height: 50%;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+
+			.LineChartBox_item {
+				box-sizing: border-box;
+				padding: 0px 1.5625vw;
+				width: 30%;
+				height: 100%;
+
+				>p:nth-of-type(1) {
+					font-size: 0.9375vw;
+					font-weight: normal;
+					line-height: 1.25vw;
+					color: #141736;
+				}
+
+				>p:nth-of-type(2) {
+					margin-top: 0.625vw;
+					display: flex;
+					align-items: center;
+					font-size: 1.5625vw;
+					font-weight: 500;
+					line-height: 1.7708vw;
+					color: #141736;
+
+					>span {
+						margin-left: 0.4167vw;
+						font-size: 0.7292vw;
+						font-weight: normal;
+						line-height: 1.0417vw;
+						color: #f53f3f;
+					}
+				}
+			}
+		}
+	}
+
+	/* 下半部分的样式 */
+	.TableContent {
+		margin-top: 1.4063vw;
+		background-color: white;
+		padding: 3.125vw 2.0833vw 1.0417vw 1.5625vw;
+		width: 100%;
+
+		.TableContent_tables {
+			margin-top: 2.0313vw;
+			width: 100%;
+			display: flex;
+			justify-content: space-between;
+
+			/* 左侧echarts图表区的大小 */
+			.tables_left {
+				min-width: 32%;
+				margin-right: 25px;
+			}
+			.tables_right {
+				flex: 1;
+				width: 0;
+			}
+		}
+	}
 }
 </style>
