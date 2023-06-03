@@ -64,8 +64,11 @@ export default {
           { required: true, message: '请输入公告内容' },
           { max: 520, message: '520字以内' }
         ],
+        type: [
+          { required: true, message: '请选择发布平台' }
+        ],
         remarks: [
-          { required: true, message: '请输入公告备注' },
+          { required: false, message: '请输入公告备注' },
           { max: 520, message: '520字以内' }
         ]
       }

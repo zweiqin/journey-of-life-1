@@ -4,6 +4,9 @@
       <el-form-item label="文章标题" prop="title">
         <el-input v-model="formData.title" placeholder="请输入文章标题" maxlength="30" />
       </el-form-item>
+      <el-form-item label="副标题" prop="assistantTitle">
+        <el-input v-model="formData.assistantTitle" placeholder="请输入文章标题" maxlength="30" />
+      </el-form-item>
       <el-form-item label="文章作者" prop="author">
         <el-input v-model="formData.author" placeholder="请输入文章作者" maxlength="30" />
       </el-form-item>
@@ -59,6 +62,7 @@ export default {
       formData: {
         id: '',
         title: '',
+        assistantTitle: '',
         author: '',
         cover: '',
         content: '',
@@ -69,6 +73,10 @@ export default {
       formRules: {
         title: [
           { required: true, message: '请输入文章标题' },
+          { max: 30, message: '30字以内' }
+        ],
+        assistantTitle: [
+          { required: false, message: '请输入文章副标题' },
           { max: 30, message: '30字以内' }
         ],
         author: [
@@ -89,7 +97,7 @@ export default {
           { required: true, message: '请选择文章类型' }
         ],
         remarks: [
-          { required: true, message: '请输入文章备注' },
+          { required: false, message: '请输入文章备注' },
           { max: 520, message: '520字以内' }
         ]
       },
@@ -138,6 +146,7 @@ export default {
       this.formData = Object.assign(this.$options.data().formData, params, {
         id: params.id || '',
         title: params.title || '',
+        assistantTitle: params.assistantTitle || '',
         author: params.author || '',
         cover: params.cover || '',
         content: params.content || '',

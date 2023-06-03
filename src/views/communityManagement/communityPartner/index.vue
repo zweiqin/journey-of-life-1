@@ -24,7 +24,7 @@
     <!-- 查询结果 -->
     <VxeTable
       ref="vxeTable" v-model="listQuery" :local-key="customColumnsConfig.localKey" api-method="POST"
-      :api-path="api.partnerGetCustomerList" :columns="columns" page-alias="pageNo" size-alias="pageSize"
+      :api-path="api.partnerGetCustomerList" :columns="columns"
       :grid-options="{ rowConfig: { height: 60 } }" request-method="request2"
     >
       <template #status="{ row }">
@@ -102,8 +102,8 @@ export default {
         columnsOptions: columns
       },
       listQuery: {
-        pageNo: 1,
-        pageSize: 20,
+        page: 1,
+        limit: 20,
         type: 1,
         search: ''
       }

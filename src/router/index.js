@@ -1369,6 +1369,28 @@ export const asyncRouterMap = [
       //     title: '文章列表'
       //   }
       // },
+      // {
+      //   path: 'communityArticleCreate',
+      //   component: () => import('@/views/communityManagement/communityArticleCreate'),
+      //   name: 'CommunityArticleCreate',
+      //   _ROLES: [ 'ADMIN' ],
+      //   meta: {
+      //     perms: [],
+      //     title: '发布文章'
+      //   }
+      // },
+      // {
+      //   path: 'communityArticleEdit',
+      //   component: () => import('@/views/communityManagement/communityArticleEdit'),
+      //   name: 'CommunityArticleEdit',
+      //   meta: {
+      //     // perms: [],
+      //     _ROLES: [ 'ADMIN' ],
+      //     title: '文章编辑',
+      //     noCache: true
+      //   },
+      //   hidden: true
+      // },
       {
         path: 'communityPartner',
         component: () => import('@/views/communityManagement/communityPartner'),
@@ -1397,38 +1419,6 @@ export const asyncRouterMap = [
           ],
           title: '社区团长',
           noCache: true
-        }
-      },
-      {
-        path: 'communityArticleCreate',
-        component: () => import('@/views/communityManagement/communityArticleCreate'),
-        name: 'CommunityArticleCreate',
-        _ROLES: [ 'ADMIN' ],
-        meta: {
-          perms: [],
-          title: '发布文章'
-        }
-      },
-      {
-        path: 'communityArticleEdit',
-        component: () => import('@/views/communityManagement/communityArticleEdit'),
-        name: 'CommunityArticleEdit',
-        meta: {
-          // perms: [],
-          _ROLES: [ 'ADMIN' ],
-          title: '文章编辑',
-          noCache: true
-        },
-        hidden: true
-      },
-      {
-        path: 'serviceType',
-        component: () => import('@/views/errorPage/developing'),
-        name: 'ServiceType',
-        _ROLES: [ 'ADMIN' ],
-        meta: {
-          // perms: [],
-          title: '服务类型'
         }
       }
     ]

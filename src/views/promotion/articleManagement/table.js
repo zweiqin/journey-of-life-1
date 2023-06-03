@@ -14,6 +14,12 @@ export const columns = [
   },
   {
     align: 'center',
+    field: 'assistantTitle',
+    title: '副标题',
+    minWidth: 80
+  },
+  {
+    align: 'center',
     field: 'author',
     title: '作者',
     minWidth: 100

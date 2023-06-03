@@ -17,6 +17,9 @@
       <el-form-item label="文章标题" prop="title">
         {{ formData.title || '--' }}
       </el-form-item>
+      <el-form-item label="副标题" prop="assistantTitle">
+        {{ formData.assistantTitle || '--' }}
+      </el-form-item>
       <el-form-item label="文章作者" prop="author">
         {{ formData.author || '--' }}
       </el-form-item>
@@ -72,6 +75,7 @@ export default {
       formData: {
         id: '',
         title: '',
+        assistantTitle: '',
         author: '',
         cover: '',
         content: '',
@@ -102,6 +106,7 @@ export default {
         this.formData = Object.assign(this.$options.data().formData, res.data, {
           id: res.data.id || '',
           title: res.data.title || '',
+          assistantTitle: res.data.assistantTitle || '',
           author: res.data.author || '',
           cover: res.data.cover,
           content: res.data.content || '',

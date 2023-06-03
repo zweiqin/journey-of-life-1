@@ -73,7 +73,7 @@ export const columns = [
     slots: {
       default: 'status'
     },
-    width: 80
+    width: 90
   },
   {
     align: 'center',
@@ -91,6 +91,6 @@ export const columns = [
     slots: {
       default: 'operate'
     },
-    width: 280
+    width: 350
   }
 ]
