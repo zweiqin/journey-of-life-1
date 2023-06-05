@@ -83,9 +83,9 @@ export default {
           { required: true, message: '请输入文章作者' },
           { max: 30, message: '30字以内' }
         ],
-        cover: [
-          { required: true, message: '请上传文章封面' }
-        ],
+        // cover: [
+        //   { required: true, message: '请上传文章封面' }
+        // ],
         content: [
           { required: true, message: '请输入文章内容' },
           { max: 5200, message: '5200字以内' }

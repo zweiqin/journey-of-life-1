@@ -11,6 +11,7 @@
         v-model="listQuery.type" placeholder="选择发布平台" clearable filterable
         class="filter-item" style="width: 200px;" @change="handleTypeChange"
       >
+        <el-option label="全部" value="" />
         <el-option v-for="item in typeList" :key="item.code" :label="item.name" :value="item.code" />
       </el-select>
       <el-select
@@ -52,7 +53,7 @@
         <span v-else>--</span>
       </template>
       <template #status="{ row }">
-        <el-tag v-if="row.status === 1" type="warning">草稿</el-tag>
+        <el-tag v-if="row.status === 1" type="info">草稿</el-tag>
         <el-tag v-else-if="row.status === 2">已发布</el-tag>
         <el-tag v-else-if="row.status === 3" type="success">已下架</el-tag>
         <span v-else>--</span>
@@ -62,6 +63,7 @@
         <el-tag v-else-if="row.type === 2">材料</el-tag>
         <el-tag v-else-if="row.type === 3" type="success">社区</el-tag>
         <el-tag v-else-if="row.type === 4" type="danger">物流</el-tag>
+        <el-tag v-else-if="row.type === 5" type="warning">招生网</el-tag>
         <span v-else>--</span>
       </template>
       <template #operate="{ row }">

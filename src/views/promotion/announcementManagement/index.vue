@@ -33,7 +33,7 @@
       :api-path="api.queryAnnouncementList" :columns="columns"
     >
       <template #status="{ row }">
-        <el-tag v-if="row.status === 1" type="warning">草稿</el-tag>
+        <el-tag v-if="row.status === 1" type="info">草稿</el-tag>
         <el-tag v-else-if="row.status === 2">已发布</el-tag>
         <el-tag v-else-if="row.status === 3" type="success">已下架</el-tag>
         <span v-else>--</span>
