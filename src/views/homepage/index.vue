@@ -30,7 +30,8 @@ export default {
   data() {
     return {
       // 地址数据
-      addres: ['广东省', '佛山市', '顺德区', '龙江镇'],
+      // addres: ['广东省', '佛山市', '顺德区', '龙江镇'],
+      addres: ['广东省', '佛山市', '顺德区'],
       statisticsData: null,
       specificTime: '',
       specificTimeTimer: ''
