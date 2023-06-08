@@ -387,6 +387,17 @@ export const asyncRouterMap = [
         hidden: true
       },
       {
+        path: 'allGoods',
+        component: () => import('@/views/goods/allGoods'),
+        name: 'AllGoods',
+        _ROLES: [ 'ADMIN' ],
+        meta: {
+          perms: [ 'GET /admin/goods/list' ],
+          title: '所有商品',
+          noCache: false
+        }
+      },
+      {
         path: 'selfSupportGoods',
         component: () => import('@/views/goods/selfSupportGoods'),
         name: 'SelfSupportGoods',
