@@ -57,6 +57,7 @@ export default {
           data: ['单次购买', '二次购买', '多次购买']
         },
         tooltip: {
+          show: false,
           // 提示框组件
           trigger: 'item', // 触发类型 可选为：'axis' | 'item' | 'none'
           axisPointer: {
@@ -68,6 +69,7 @@ export default {
           }
         },
         radar: {
+          radius: ['0%', '50%'],
           // shape: 'circle',
           splitArea: {
             show: false

@@ -63,7 +63,7 @@
             <VxeTable
               ref="vxeTable" v-model="listQuery" :local-key="customColumnsConfig.localKey" :is-request="false"
               :loading="listLoading" :table-data="tableData" :page-total="pageTotal" :columns="columns"
-              :grid-options="{ height: '100%' }"
+              :grid-options="{ height: '100%' }" @pageChange="pageChange"
             ></VxeTable>
           </div>
         </div>
@@ -111,11 +111,11 @@ export default {
       // 表头按钮的数据
       mallSalesList: {
         name: '商城销售报表',
-        list: [{ text: '今年', label: 1 }, { text: '本月', label: 2 }, { text: '近七天', label: 3 }]
+        list: [{ text: '今年', label: 1 }, { text: '本月', label: 2 }, { text: '今日', label: 3 }]
       },
       storeSalesList: {
         name: '各区域门店的销售报表',
-        list: [{ text: '今年', label: 1 }, { text: '本月', label: 2 }, { text: '近七天', label: 3 }]
+        list: [{ text: '今年', label: 1 }, { text: '本月', label: 2 }, { text: '今日', label: 3 }]
       },
       // 请求返回数据
       orderSum: '',
@@ -137,7 +137,7 @@ export default {
       listLoading: true,
       listQuery: {
         date: new Date().getFullYear(),
-        address: '广东省',
+        address: '',
         page: 1,
         limit: 20,
         orderDate: new Date().getFullYear()
@@ -179,6 +179,13 @@ export default {
     this.heightTable = document.getElementById('salesChart').clientHeight - 50 + 'px'
   },
   methods: {
+    pageChange(params) {
+      this.listQuery = {
+        ...this.listQuery,
+        ...params
+      }
+      this.getReportForms()
+    },
     getReportForms() {
       this.listLoading = true
       queryMallReportForms(this.listQuery)
@@ -222,7 +229,7 @@ export default {
         this.listQuery.date = new Date().toJSON()
           .substring(0, 7)
       } else if (e === 3) {
-        this.listQuery.date = new Date(Date.now() - 604800000).toJSON()
+        this.listQuery.date = new Date(Date.now()).toJSON()
           .substring(0, 10)
       }
       this.getReportForms()
@@ -240,7 +247,7 @@ export default {
         this.listQuery.orderDate = new Date().toJSON()
           .substring(0, 7)
       } else if (e === 3) {
-        this.listQuery.orderDate = new Date(Date.now() - 604800000).toJSON()
+        this.listQuery.orderDate = new Date(Date.now()).toJSON()
           .substring(0, 10)
       }
       this.getReportForms()

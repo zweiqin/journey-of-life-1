@@ -36,6 +36,7 @@ export default {
           textAlign: 'center'
         },
         tooltip: {
+          show: false,
           trigger: 'axis',
           axisPointer: {
             lineStyle: {

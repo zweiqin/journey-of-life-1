@@ -25,6 +25,7 @@ export default {
           bottom: '5.2083vw'
         },
         tooltip: {
+          show: false,
           trigger: 'axis'
         },
         xAxis: {

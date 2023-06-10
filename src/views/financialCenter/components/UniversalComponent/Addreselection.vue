@@ -5,7 +5,7 @@
       可以选择将哪个属性绑定起来 如这里我选择的是name，也就是选择的地区的名字，也可以选择其他属性，比如对应着第七区码的code等。
       数据由vuex获取，以计算属性转化。 -->
     <el-cascader
-      v-model="listQuery.region_arr" placeholder="选择区域" :options="common_regionList" :props="{
+      v-model="listQuery.region_arr" placeholder="选择区域" :options="[{ id: 0, name: '全国', code: 0 }, ...common_regionList]" :props="{
         checkStrictly: true,
         label: 'name',
         value: 'name',
@@ -24,9 +24,9 @@ export default {
   name: 'Addreselection',
   data() {
     return {
-      value: '广东省',
+      value: '全国',
       listQuery: {
-        region_arr: [ '广东省' ]
+        region_arr: [ '全国' ]
       }
     }
   },

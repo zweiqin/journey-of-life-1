@@ -3,38 +3,48 @@
 
     <div class="header">
       <!-- 头部的按钮 -->
-      <TableHeader is-custom :header-data="mallSalesList" @select-date="handleSelectDateTop" @tab-change="handleTabChangeTop"></TableHeader>
+      <TableHeader :header-data="mallSalesList" @select-date="handleSelectDateTop" @tab-change="handleTabChangeTop">
+      </TableHeader>
       <!-- 放置折线图的盒子 -->
       <div class="LineChartBox">
         <!-- 折线图 -->
         <div class="LineChartBox_item">
           <p>总订单</p>
           <p>
-            {{ orderSum || '0' }}<span>
-              {{ typeof orderCompareYesterday === 'number' ? orderCompareYesterday : '--' }}<img
-                src="@/assets/demoImg/add.png"
-              />
-            </span>
+            {{ orderSum || '0' }}
+            <el-tooltip effect="dark" content="今日新增总订单" placement="top-start">
+              <div class="item">
+                {{ typeof orderCompareYesterday === 'number' ? orderCompareYesterday : '--' }}<img
+                  src="@/assets/demoImg/add.png"
+                />
+              </div>
+            </el-tooltip>
           </p>
           <LineChart :line-chart-data="LineChartData"></LineChart>
         </div>
         <div class="LineChartBox_item">
           <p>总收益</p>
           <p>
-            {{ incomeSum || '0' }}<span>
-              {{ typeof incomeSumCompareYesterday === 'number' ? incomeSumCompareYesterday
-                : '--' }}<img src="@/assets/demoImg/add.png" />
-            </span>
+            {{ incomeSum || '0' }}
+            <el-tooltip effect="dark" content="今日新增总收益" placement="top-start">
+              <div class="item">
+                {{ typeof incomeSumCompareYesterday === 'number' ? incomeSumCompareYesterday
+                  : '--' }}<img src="@/assets/demoImg/add.png" />
+              </div>
+            </el-tooltip>
           </p>
           <IncomeLineChart :line-chart-data="LineChartData"></IncomeLineChart>
         </div>
         <div class="LineChartBox_item">
           <p>总支出</p>
           <p>
-            {{ expenditureSum || '0' }}<span>
-              {{ typeof expenditureCompareYesterday === 'number'
-                ? expenditureCompareYesterday : '--' }}<img src="@/assets/demoImg/add.png" />
-            </span>
+            {{ expenditureSum || '0' }}
+            <el-tooltip effect="dark" content="今日新增总收益" placement="top-start">
+              <div class="item">
+                {{ typeof expenditureCompareYesterday === 'number'
+                  ? expenditureCompareYesterday : '--' }}<img src="@/assets/demoImg/add.png" />
+              </div>
+            </el-tooltip>
           </p>
           <ExpenditureLineChart :line-chart-data="LineChartData"></ExpenditureLineChart>
         </div>
@@ -43,7 +53,10 @@
 
     <!-- 下半部分的内容区 -->
     <div class="TableContent">
-      <TableHeader is-custom :header-data="storeSalesList" @select-date="handleSelectDateBottom" @tab-change="handleTabChangeBottom"></TableHeader>
+      <TableHeader
+        :header-data="storeSalesList" @select-date="handleSelectDateBottom"
+        @tab-change="handleTabChangeBottom"
+      ></TableHeader>
       <div class="TableContent_tables">
         <!-- 地区选择组件 -->
         <div id="salesChart" class="tables_left">
@@ -63,8 +76,13 @@
             <VxeTable
               ref="vxeTable" v-model="listQuery" :local-key="customColumnsConfig.localKey" :is-request="false"
               :loading="listLoading" :table-data="tableData" :page-total="pageTotal" :columns="columns"
-              :grid-options="{ height: '100%' }"
-            ></VxeTable>
+              :grid-options="{ height: '100%' }" @pageChange="pageChange"
+            >
+              <template #income="{ row }">
+                <span v-if="row.income">￥{{ row.income }}</span>
+                <span v-else style="color: red;">待报价</span>
+              </template>
+            </VxeTable>
           </div>
         </div>
       </div>
@@ -111,11 +129,11 @@ export default {
       // 表头按钮的数据
       mallSalesList: {
         name: '社区报表',
-        list: [{ text: '今年', label: 1 }, { text: '本月', label: 2 }, { text: '近七天', label: 3 }]
+        list: [{ text: '今年', label: 1 }, { text: '本月', label: 2 }, { text: '今日', label: 3 }]
       },
       storeSalesList: {
         name: '各区域社区的统计报表',
-        list: [{ text: '今年', label: 1 }, { text: '本月', label: 2 }, { text: '近七天', label: 3 }]
+        list: [{ text: '今年', label: 1 }, { text: '本月', label: 2 }, { text: '今日', label: 3 }]
       },
       // 请求返回数据
       orderSum: '',
@@ -137,7 +155,7 @@ export default {
       listLoading: true,
       listQuery: {
         date: new Date().getFullYear(),
-        address: '广东省',
+        address: '',
         page: 1,
         limit: 20,
         orderDate: new Date().getFullYear()
@@ -179,6 +197,13 @@ export default {
     this.heightTable = document.getElementById('salesChart').clientHeight - 50 + 'px'
   },
   methods: {
+    pageChange(params) {
+      this.listQuery = {
+        ...this.listQuery,
+        ...params
+      }
+      this.getReportForms()
+    },
     getReportForms() {
       this.listLoading = true
       queryCommunityReportForms(this.listQuery)
@@ -222,7 +247,7 @@ export default {
         this.listQuery.date = new Date().toJSON()
           .substring(0, 7)
       } else if (e === 3) {
-        this.listQuery.date = new Date(Date.now() - 604800000).toJSON()
+        this.listQuery.date = new Date(Date.now()).toJSON() // - 604800000
           .substring(0, 10)
       }
       this.getReportForms()
@@ -240,7 +265,7 @@ export default {
         this.listQuery.orderDate = new Date().toJSON()
           .substring(0, 7)
       } else if (e === 3) {
-        this.listQuery.orderDate = new Date(Date.now() - 604800000).toJSON()
+        this.listQuery.orderDate = new Date(Date.now()).toJSON() // - 604800000
           .substring(0, 10)
       }
       this.getReportForms()
@@ -249,7 +274,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .TableContainer {
 	width: 100%;
 	padding: 0vw 1.25vw 0.8333vw 0.8333vw;
@@ -292,7 +317,7 @@ export default {
 					line-height: 1.7708vw;
 					color: #141736;
 
-					>span {
+					.item {
 						margin-left: 0.4167vw;
 						font-size: 0.7292vw;
 						font-weight: normal;
@@ -322,6 +347,7 @@ export default {
 				min-width: 32%;
 				margin-right: 25px;
 			}
+
 			.tables_right {
 				flex: 1;
 				width: 0;

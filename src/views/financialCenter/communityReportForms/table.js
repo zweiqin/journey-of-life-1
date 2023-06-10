@@ -35,6 +35,15 @@ export const columns = [
     align: 'center',
     field: 'income',
     title: '服务费用',
+    slots: {
+      default: 'income'
+    },
     width: 110
+  },
+  {
+    align: 'center',
+    field: 'createTime',
+    title: '创建时间',
+    width: 140
   }
 ]

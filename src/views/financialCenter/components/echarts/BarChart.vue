@@ -31,6 +31,7 @@ export default {
           bottom: '0'
         },
         tooltip: {
+          show: false,
           trigger: 'axis',
           axisPointer: {
             type: 'shadow',
