@@ -39,7 +39,7 @@
           <p>总支出</p>
           <p>
             {{ expenditureSum || '0' }}
-            <el-tooltip effect="dark" content="今日新增总收益" placement="top-start">
+            <el-tooltip effect="dark" content="今日总支出" placement="top-start">
               <div class="item">
                 {{ typeof expenditureCompareYesterday === 'number'
                   ? expenditureCompareYesterday : '--' }}<img src="@/assets/demoImg/add.png" />
