@@ -396,9 +396,9 @@ export default {
 	white-space: nowrap;
 }
 
-.app-container {
-	height: 100%;
-}
+// .app-container {
+// 	height: 100%;
+// }
 
 .table-container {
 	flex: 1;

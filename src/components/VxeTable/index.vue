@@ -503,10 +503,10 @@ export default {
             'checkbox-all': this.checkboxAll
           }
           // directives: [ { name: 'tableHeight' } ]
-        }, [ emptySlots ])
-      ]),
-      h('div', { class: [ 'pagination-container' ] }, [
-        pager
+        }, [ emptySlots ]),
+        h('div', { class: [ 'pagination-container' ] }, [
+          pager
+        ])
       ])
     ])
 

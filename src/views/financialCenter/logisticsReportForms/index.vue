@@ -59,11 +59,11 @@
           <RadarMap text="物流配送区域分布图" :value="productTypeList"></RadarMap>
         </div>
         <div class="tables_right">
-          <div v-if="heightTable !== '0px'" :style="{ height: heightTable }">
+          <div v-if="heightTable !== 0" :style="{ height: heightTable + 'px' }">
             <VxeTable
               ref="vxeTable" v-model="listQuery" :local-key="customColumnsConfig.localKey" :is-request="false"
               :loading="listLoading" :table-data="tableData" :page-total="pageTotal" :columns="columns"
-              :grid-options="{ height: '100%' }" @pageChange="pageChange"
+              :grid-options="{ height: heightTable - 50 + 'px' }" @pageChange="pageChange"
             ></VxeTable>
           </div>
         </div>
@@ -129,7 +129,7 @@ export default {
       branList: [],
       productTypeList: [],
       // 表格
-      heightTable: '0px',
+      heightTable: 0,
       api,
       columns,
       tableData: [],
@@ -176,7 +176,7 @@ export default {
     this.getReportForms()
   },
   mounted() {
-    this.heightTable = document.getElementById('salesChart').clientHeight - 50 + 'px'
+    this.heightTable = document.getElementById('salesChart').clientHeight
   },
   methods: {
     pageChange(params) {
