@@ -807,6 +807,7 @@ export const asyncRouterMap = [
     redirect: 'noredirect',
     alwaysShow: true,
     name: 'FinancialCenter',
+    _ROLES: [ 'ADMIN' ],
     meta: {
       title: '财务中心',
       icon: 'financial'
@@ -847,6 +848,38 @@ export const asyncRouterMap = [
           title: '社区报表',
           noCache: true
         }
+      },
+      {
+        path: 'withdrawalManagement',
+        component: () => import('@/views/children'),
+        redirect: 'noredirect',
+        alwaysShow: true,
+        name: 'WithdrawalManagement',
+        meta: {
+          title: '提现管理'
+        },
+        children: [
+          {
+            path: 'withdrawalList',
+            component: () => import('@/views/withdrawalManagement/withdrawalList'),
+            name: 'WithdrawalList',
+            meta: {
+              perms: ['POST /admin/finance/getWithdrawRecordList', 'POST /admin/finance/withdrawApprove'],
+              title: '提现列表',
+              noCache: true
+            }
+          },
+          {
+            path: 'accumulatedWithdrawal',
+            component: () => import('@/views/withdrawalManagement/accumulatedWithdrawal'),
+            name: 'AccumulatedWithdrawal',
+            meta: {
+              perms: [ 'POST /admin/finance/withdrawalStatistics' ],
+              title: '累计提现',
+              noCache: true
+            }
+          }
+        ]
       }
     ]
   },
