@@ -60,7 +60,7 @@
 </template>
 
 <script>
-import { api, financeWithdrawalStatistics } from '@/api/withdrawalManagement/accumulatedWithdrawal'
+import { api, financeWithdrawalStatistics } from '@/api/financialCenter/accumulatedWithdrawal'
 
 export default {
   name: 'AccumulatedWithdrawal',

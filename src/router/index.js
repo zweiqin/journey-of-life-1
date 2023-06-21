@@ -850,36 +850,44 @@ export const asyncRouterMap = [
         }
       },
       {
-        path: 'withdrawalManagement',
-        component: () => import('@/views/children'),
-        redirect: 'noredirect',
-        alwaysShow: true,
-        name: 'WithdrawalManagement',
+        path: 'withdrawalList',
+        component: () => import('@/views/financialCenter/withdrawalList'),
+        name: 'WithdrawalList',
         meta: {
-          title: '提现管理'
-        },
-        children: [
-          {
-            path: 'withdrawalList',
-            component: () => import('@/views/withdrawalManagement/withdrawalList'),
-            name: 'WithdrawalList',
-            meta: {
-              perms: ['POST /admin/finance/getWithdrawRecordList', 'POST /admin/finance/withdrawApprove'],
-              title: '提现列表',
-              noCache: true
-            }
-          },
-          {
-            path: 'accumulatedWithdrawal',
-            component: () => import('@/views/withdrawalManagement/accumulatedWithdrawal'),
-            name: 'AccumulatedWithdrawal',
-            meta: {
-              perms: [ 'POST /admin/finance/withdrawalStatistics' ],
-              title: '累计提现',
-              noCache: true
-            }
-          }
-        ]
+          perms: ['POST /admin/finance/getWithdrawRecordList', 'POST /admin/finance/withdrawApprove'],
+          title: '提现列表',
+          noCache: true
+        }
+      },
+      {
+        path: 'accumulatedWithdrawal',
+        component: () => import('@/views/financialCenter/accumulatedWithdrawal'),
+        name: 'AccumulatedWithdrawal',
+        meta: {
+          perms: [ 'POST /admin/finance/withdrawalStatistics' ],
+          title: '累计提现',
+          noCache: true
+        }
+      },
+      {
+        path: 'masterWithdrawal',
+        component: () => import('@/views/financialCenter/masterWithdrawal'),
+        name: 'MasterWithdrawal',
+        meta: {
+          perms: ['POST /admin/finance/getWithdrawRecordList', 'POST /admin/finance/withdrawApprove', 'POST /admin/finance/withdrawalStatistics'],
+          title: '师傅提现',
+          noCache: true
+        }
+      },
+      {
+        path: 'storeWithdrawal',
+        component: () => import('@/views/financialCenter/storeWithdrawal'),
+        name: 'StoreWithdrawal',
+        meta: {
+          perms: ['POST /admin/finance/getWithdrawRecordList', 'POST /admin/finance/withdrawApprove', 'POST /admin/finance/withdrawalStatistics'],
+          title: '店长提现',
+          noCache: true
+        }
       }
     ]
   },

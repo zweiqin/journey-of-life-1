@@ -96,7 +96,7 @@
 import {
   api,
   financeWithdrawApprove
-} from '@/api/withdrawalManagement/withdrawalList'
+} from '@/api/financialCenter/withdrawalList'
 import VxeTable from '@/components/VxeTable'
 import TableTools from '@/components/TableTools'
 import ApprovalDialog from './components/ApprovalDialog'

@@ -74,6 +74,24 @@ export const columns = [
   },
   {
     align: 'center',
+    field: 'keyword',
+    title: '关键词',
+    minWidth: 120
+  },
+  {
+    align: 'center',
+    field: 'articleDescribe',
+    title: '描述',
+    minWidth: 150
+  },
+  {
+    align: 'center',
+    field: 'sort',
+    title: '排序',
+    minWidth: 80
+  },
+  {
+    align: 'center',
     field: 'remarks',
     title: '备注',
     minWidth: 150

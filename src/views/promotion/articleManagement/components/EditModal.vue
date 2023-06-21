@@ -1,6 +1,6 @@
 <template>
   <el-dialog :visible.sync="visible" v-bind="modalOptions">
-    <el-form ref="formData" :model="formData" :rules="formRules" size="mini" label-suffix=":" label-width="100px">
+    <el-form ref="formData" :model="formData" :rules="formRules" size="mini" label-suffix=":" label-width="140px">
       <el-form-item label="文章标题" prop="title">
         <el-input v-model="formData.title" placeholder="请输入文章标题" maxlength="30" />
       </el-form-item>
@@ -27,6 +27,15 @@
         <el-select v-model="formData.articleType" placeholder="请选择文章类型" :disabled="isArticleTypeListRequest">
           <el-option v-for="item in articleTypeList" :key="item.code" :label="item.name" :value="item.code" />
         </el-select>
+      </el-form-item>
+      <el-form-item label="关键词" prop="keyword">
+        <el-input v-model="formData.keyword" placeholder="请输入关键词" maxlength="520" />
+      </el-form-item>
+      <el-form-item label="描述" prop="articleDescribe">
+        <el-input v-model="formData.articleDescribe" placeholder="请输入描述" maxlength="520" />
+      </el-form-item>
+      <el-form-item label="排序（值大优先）" prop="sort">
+        <el-input-number v-model="formData.sort" step-strictly :min="0" label="请输入排序"></el-input-number>
       </el-form-item>
       <el-form-item label="备注" prop="remarks">
         <el-input v-model="formData.remarks" placeholder="请输入备注" maxlength="520" />
@@ -68,6 +77,9 @@ export default {
         content: '',
         type: '',
         articleType: '',
+        keyword: '',
+        articleDescribe: '',
+        sort: '',
         remarks: ''
       },
       formRules: {
@@ -152,6 +164,9 @@ export default {
         content: params.content || '',
         type: params.type,
         articleType: params.articleType,
+        keyword: params.keyword || '',
+        articleDescribe: params.articleDescribe || '',
+        sort: params.sort,
         remarks: params.remarks || ''
       })
       this.visible = true

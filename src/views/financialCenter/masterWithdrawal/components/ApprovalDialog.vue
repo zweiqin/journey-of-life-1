@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import { financeWithdrawApprove } from '@/api/withdrawalManagement/withdrawalList'
+import { financeWithdrawApprove } from '@/api/financialCenter/withdrawalList'
 
 export default {
   name: 'ApprovalDialog',
