@@ -39,12 +39,6 @@
         <el-button v-permission="[ `POST /admin${api.userCrmUpdate}` ]" size="mini" @click="handleUpdate(row)">
           编辑
         </el-button>
-        <!-- <el-button
-          v-permission="[ `GET /admin${api.customerpoolDeleteByPrimaryKey}` ]" type="danger" size="mini"
-          @click="handleDelete(row)"
-          >
-          删除
-          </el-button> -->
       </template>
     </VxeTable>
 
@@ -58,7 +52,7 @@
 <script>
 import {
   api
-} from '@/api/businessManagement/customerPool'
+} from '@/api/marketingManagement/activityList'
 import VxeTable from '@/components/VxeTable'
 import TableTools from '@/components/TableTools'
 import EditModal from './components/EditModal'
@@ -103,12 +97,6 @@ export default {
     handleUpdate(row) {
       this.$refs.EditModal && this.$refs.EditModal.handleOpen(row)
     }
-    // async handleDelete({ id }) {
-    //   await this.$elConfirm('确认删除?')
-    //   await customerpoolDeleteByPrimaryKey({ id })
-    //   this.$elMessage('删除成功!')
-    //   this.getList()
-    // }
   }
 }
 </script>

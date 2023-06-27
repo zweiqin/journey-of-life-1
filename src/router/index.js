@@ -87,13 +87,17 @@ export const constantRouterMap = [
     path: '',
     component: Layout,
     redirect: 'homepage',
+    _ROLES: [ 'ADMIN' ],
     children: [
       {
         path: 'homepage',
-        // component: () => import('@/views/homepage/index'),
         component: () => import('@/views/homepage/index'),
         name: 'Homepage',
-        meta: { title: 'homepage', icon: 'home', noCache: true }
+        meta: {
+          title: 'homepage',
+          icon: 'home',
+          noCache: true
+        }
       }
     ]
   }
@@ -161,8 +165,12 @@ export const asyncRouterMap = [
             path: 'partnerApply',
             component: () => import('@/views/userManagement/partnerApply'),
             name: 'PartnerApply',
-            _ROLES: [ 'ADMIN' ],
             meta: {
+              perms: [
+                'GET /admin/partnerApply/list',
+                'POST /admin/partnerApply/manage',
+                'POST /admin/partnerApply/signin'
+              ],
               title: '合伙人申请'
             }
           }
@@ -357,6 +365,13 @@ export const asyncRouterMap = [
         component: () => import('@/views/orderManagement/orderDetail'),
         name: 'OrderDetail',
         meta: {
+          perms: [
+            'GET /admin/order/detail',
+            'POST /admin/order/changePrice',
+            'POST /admin/order/ship',
+            'POST /admin/order/refund',
+            'GET /admin/order/isFreeze'
+          ],
           title: '订单详情',
           noCache: true
         },
@@ -794,7 +809,7 @@ export const asyncRouterMap = [
         component: () => import('@/views/errorPage/developing'),
         name: 'Video',
         meta: {
-          // perms: [],
+          perms: [ '/admin/developing' ],
           title: '视频列表',
           noCache: true
         }
@@ -854,7 +869,10 @@ export const asyncRouterMap = [
         component: () => import('@/views/financialCenter/withdrawalList'),
         name: 'WithdrawalList',
         meta: {
-          perms: ['POST /admin/finance/getWithdrawRecordList', 'POST /admin/finance/withdrawApprove'],
+          perms: [
+            'POST /admin/finance/getWithdrawRecordList',
+            'POST /admin/finance/withdrawApprove'
+          ],
           title: '提现列表',
           noCache: true
         }
@@ -874,7 +892,11 @@ export const asyncRouterMap = [
         component: () => import('@/views/financialCenter/masterWithdrawal'),
         name: 'MasterWithdrawal',
         meta: {
-          perms: ['POST /admin/finance/getWithdrawRecordList', 'POST /admin/finance/withdrawApprove', 'POST /admin/finance/withdrawalStatistics'],
+          perms: [
+            'POST /admin/finance/getWithdrawRecordList',
+            'POST /admin/finance/withdrawApprove',
+            'POST /admin/finance/withdrawalStatistics'
+          ],
           title: '师傅提现',
           noCache: true
         }
@@ -884,7 +906,11 @@ export const asyncRouterMap = [
         component: () => import('@/views/financialCenter/storeWithdrawal'),
         name: 'StoreWithdrawal',
         meta: {
-          perms: ['POST /admin/finance/getWithdrawRecordList', 'POST /admin/finance/withdrawApprove', 'POST /admin/finance/withdrawalStatistics'],
+          perms: [
+            'POST /admin/finance/getWithdrawRecordList',
+            'POST /admin/finance/withdrawApprove',
+            'POST /admin/finance/withdrawalStatistics'
+          ],
           title: '店长提现',
           noCache: true
         }
@@ -992,6 +1018,12 @@ export const asyncRouterMap = [
         name: 'Roles',
         _ROLES: [ 'ADMIN' ],
         meta: {
+          perms: [
+            'GET /admin/role/list',
+            'POST /admin/role/create',
+            'POST /admin/role/update',
+            'POST /admin/role/delete'
+          ],
           title: '角色管理',
           // title: '平台管理',
           noCache: true
@@ -1024,6 +1056,13 @@ export const asyncRouterMap = [
         component: () => import('@/views/enterprise/department'),
         name: 'Department',
         meta: {
+          perms: [
+            'POST /admin/department/queryDepartmentList',
+            'GET /admin/department/selectByPrimaryKey',
+            'GET /admin/department/deleteByPrimaryKey',
+            'POST /admin/department/insertSelective',
+            'POST /admin/department/updateByPrimaryKeySelective'
+          ],
           title: '部门管理',
           noCache: true
         }
@@ -1033,6 +1072,13 @@ export const asyncRouterMap = [
         component: () => import('@/views/enterprise/staff'),
         name: 'Staff',
         meta: {
+          perms: [
+            'POST /admin/staff/update',
+            'POST /admin/staff/delete',
+            'POST /admin/staff/create',
+            'GET /admin/staff/list',
+            'GET /admin/staff/detail'
+          ],
           title: '员工管理',
           noCache: true
         }
@@ -1054,7 +1100,11 @@ export const asyncRouterMap = [
         component: () => import('@/views/marketingManagement/activityList'),
         name: 'ActivityList',
         meta: {
-          // perms: [],
+          perms: [
+            'GET /admin/userCrm/list',
+            'POST /admin/userCrm/create',
+            'POST /admin/userCrm/update'
+          ],
           _ROLES: [ 'ADMIN' ],
           title: '活动列表',
           noCache: true
@@ -1102,7 +1152,7 @@ export const asyncRouterMap = [
             component: () => import('@/views/voucherManagement/giveCreate'),
             name: 'VoucherManagementGiveCreate',
             meta: {
-              // perms: [],
+              perms: [ 'POST /admin/circula/circula' ],
               title: '转赠创建',
               noCache: true
             },
@@ -1126,7 +1176,7 @@ export const asyncRouterMap = [
             component: () => import('@/views/errorPage/developing'),
             name: 'GroupBookingNormal',
             meta: {
-              // perms: [],
+              perms: [ '/admin/developing' ],
               title: '正常拼团',
               noCache: true
             }
@@ -1136,7 +1186,7 @@ export const asyncRouterMap = [
             component: () => import('@/views/errorPage/developing'),
             name: 'GroupBookingDraw',
             meta: {
-              // perms: [],
+              perms: [ '/admin/developing' ],
               title: '抽奖拼团',
               noCache: true
             }
@@ -1146,7 +1196,7 @@ export const asyncRouterMap = [
             component: () => import('@/views/errorPage/developing'),
             name: 'GroupBookingHost',
             meta: {
-              // perms: [],
+              perms: [ '/admin/developing' ],
               title: '团长拼团',
               noCache: true
             }
@@ -1159,7 +1209,7 @@ export const asyncRouterMap = [
         component: () => import('@/views/errorPage/developing'),
         name: 'CrosstownAllianceCard',
         meta: {
-          // perms: [],
+          perms: [ '/admin/developing' ],
           title: '同城联盟卡',
           noCache: true
         }
@@ -1169,7 +1219,7 @@ export const asyncRouterMap = [
         component: () => import('@/views/errorPage/developing'),
         name: 'tkb',
         meta: {
-          // perms: [],
+          perms: [ '/admin/developing' ],
           title: '拓客宝',
           noCache: true
         }
@@ -1180,7 +1230,7 @@ export const asyncRouterMap = [
         component: () => import('@/views/errorPage/developing'),
         name: 'FlashSale',
         meta: {
-          // perms: [],
+          perms: [ '/admin/developing' ],
           title: '限时抢购',
           noCache: true
         }
@@ -1270,7 +1320,14 @@ export const asyncRouterMap = [
         component: () => import('@/views/businessManagement/informationSentry'),
         name: 'InformationSentry',
         meta: {
-          // perms: [ 'POST /admin/messagesentry/queryMsgSentryList' ],
+          perms: [
+            'POST /admin/messagesentry/queryMsgSentryList',
+            'POST /admin/messagesentry/saveMsgSentry',
+            'POST /admin/messagesentry/conversion',
+            'POST /admin/messagesentry/isConversion',
+            'POST /admin/messagesentry/salesmanBinding',
+            'POST /admin/messagesentry/setOverdueTime'
+          ],
           title: '信息哨兵',
           noCache: true
         }
@@ -1290,7 +1347,14 @@ export const asyncRouterMap = [
         component: () => import('@/views/businessManagement/scriptSetting'),
         name: 'ScriptSetting',
         meta: {
-          // perms: [ 'POST /admin/msgsay/msgSayList' ],
+          perms: [
+            'GET /admin/msgsay/msgSayTypeList',
+            'POST /admin/msgsay/msgSayList',
+            'POST /admin/msgsay/saveMsgSay',
+            'GET /admin/msgsay/selectById',
+            'PUT /admin/msgsay/updateSay',
+            'DELETE /admin/msgsay/deleteById'
+          ],
           title: '话术设置',
           noCache: true
         }
@@ -1300,7 +1364,7 @@ export const asyncRouterMap = [
         component: () => import('@/views/businessManagement/marketingPortrait'),
         name: 'MarketingPortrait',
         meta: {
-          // perms: [ 'GET /admin/statistical/home' ],
+          perms: [ 'GET /admin/statistical/home' ],
           title: '营销画像',
           noCache: true
         }
@@ -1505,9 +1569,7 @@ export const asyncRouterMap = [
     redirect: 'noredirect',
     alwaysShow: true,
     name: 'EnrollmentManagement',
-    _ROLES: [ 'ADMIN' ],
     meta: {
-      // perms: [],
       title: '招生管理',
       icon: 'membership'
     },

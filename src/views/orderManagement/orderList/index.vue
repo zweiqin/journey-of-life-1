@@ -97,13 +97,13 @@
           退款
         </el-button>
         <el-button
-          v-permission="[ `POST /admin${api.orderIsFreeze}` ]" :disabled="row.isFreeze" size="mini" type="danger"
+          v-permission="[ `GET /admin${api.orderIsFreeze}` ]" :disabled="row.isFreeze" size="mini" type="danger"
           @click="handleFreeze(row, true)"
         >
           冻结
         </el-button>
         <el-button
-          v-permission="[ `POST /admin${api.orderIsFreeze}` ]" :disabled="!row.isFreeze" size="mini"
+          v-permission="[ `GET /admin${api.orderIsFreeze}` ]" :disabled="!row.isFreeze" size="mini"
           type="success" @click="handleFreeze(row, false)"
         >
           解冻

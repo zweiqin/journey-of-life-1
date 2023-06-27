@@ -12,7 +12,7 @@
         <el-option v-for="item in msgSayTypeList" :key="item.code" :label="item.name" :value="item.code" />
       </el-select>
       <el-button
-        v-permission="[ `GET ${api.msgsayMsgSayList}` ]" size="mini" class="filter-item" type="primary"
+        v-permission="[ `POST ${api.msgsayMsgSayList}` ]" size="mini" class="filter-item" type="primary"
         icon="el-icon-search" @click="getList"
       >
         查找

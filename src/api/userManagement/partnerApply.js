@@ -3,11 +3,11 @@ import request from '@/utils/request'
 export const api = {
   partnerApplyList: '/partnerApply/list',
   partnerApplyManage: '/partnerApply/manage',
-  partnerApplySignin: '/partnerApply/signin',
+  partnerApplySignin: '/partnerApply/signin'
 }
 
 // 合伙人申请列表
-export function partnerApplyList (params) {
+export function partnerApplyList(params) {
   return request({
     url: api.partnerApplyList,
     method: 'GET',
@@ -16,7 +16,7 @@ export function partnerApplyList (params) {
 }
 
 // 合伙人申请状态
-export function partnerApplyManage (data) {
+export function partnerApplyManage(data) {
   return request({
     url: api.partnerApplyManage,
     method: 'POST',
@@ -25,7 +25,7 @@ export function partnerApplyManage (data) {
 }
 
 // 手动完成升级
-export function partnerApplySignin (data) {
+export function partnerApplySignin(data) {
   return request({
     url: api.partnerApplySignin,
     method: 'POST',

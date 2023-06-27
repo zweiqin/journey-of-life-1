@@ -166,13 +166,13 @@
         退款
       </el-button>
       <el-button
-        v-if="!orderInfo.isFreeze" v-permission="[ `POST /admin${api.orderIsFreeze}` ]" size="medium"
+        v-if="!orderInfo.isFreeze" v-permission="[ `GET /admin${api.orderIsFreeze}` ]" size="medium"
         type="danger" @click="handleFreeze(orderInfo, true)"
       >
         冻结
       </el-button>
       <el-button
-        v-if="orderInfo.isFreeze" v-permission="[ `POST /admin${api.orderIsFreeze}` ]" size="medium"
+        v-if="orderInfo.isFreeze" v-permission="[ `GET /admin${api.orderIsFreeze}` ]" size="medium"
         type="success" @click="handleFreeze(orderInfo, false)"
       >
         解冻
@@ -191,7 +191,8 @@
 <script>
 import {
   api,
-  orderDetail
+  orderDetail,
+  orderIsFreeze
 } from '@/api/orderManagement/order'
 import { mapGetters } from 'vuex'
 import DeliverModal from '@/views/orderManagement/orderList/components/DeliverModal'
