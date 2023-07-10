@@ -1609,7 +1609,7 @@ export const asyncRouterMap = [
         component: () => import('@/views/nationalMerchants/storeInformation'),
         perms: ['GET /gaode/poi/queryVicinityShop'],
         meta: {
-          title: '门店信息',
+          title: '商家信息',
         },
       },
     ],

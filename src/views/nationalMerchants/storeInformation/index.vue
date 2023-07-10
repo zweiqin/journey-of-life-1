@@ -27,7 +27,7 @@
         />
       </el-select>
 
-      <el-cascader
+      <!-- <el-cascader
         v-model="listQuery.address"
         placeholder="选择区域"
         :options="common_regionList"
@@ -41,14 +41,13 @@
         size="mini"
         class="filter-item"
         style="width: 200px"
-      />
+      /> -->
 
       <el-input
-        :disabled="!listQuery.address"
         clearable
         class="filter-item"
-        v-model="listQuery.detail"
-        style="width: 200px"
+        v-model="listQuery.address"
+        style="width: 300px"
         placeholder="请输入详细地址"
         @keyup.enter.native="getList"
       ></el-input>
@@ -123,7 +122,10 @@
         <el-popover placement="right" width="400" trigger="click">
           <div class="image-list" v-if="row.photos && row.photos.length">
             <el-carousel indicator-position="outside">
-              <el-carousel-item v-for="(item, index) in row.photos" :key="index">
+              <el-carousel-item
+                v-for="(item, index) in row.photos"
+                :key="index"
+              >
                 <el-image
                   :src="item.url"
                   :preview-src-list="row.photos.map((item) => item.url)"
@@ -136,15 +138,6 @@
           }}</el-button>
         </el-popover>
       </template>
-      <!-- <template #operate="{ row }">
-        <el-button
-          v-permission="[`POST /admin${api.queryCustomerPoolList}`]"
-          size="mini"
-          @click="handleDetail(row)"
-        >
-          查看
-        </el-button>
-      </template> -->
     </VxeTable>
   </div>
 </template>
@@ -154,7 +147,7 @@ import { api } from '@/api/nationalMerchants/storeInformation';
 import VxeTable from '@/components/VxeTable';
 import TableTools from '@/components/TableTools';
 import { columns, radiusList } from './table';
-import { mapGetters } from 'vuex';
+// import { mapGetters } from 'vuex';
 
 export default {
   name: 'storeInformation',
@@ -177,7 +170,6 @@ export default {
         keywords: '',
         radius: '',
         address: '',
-        detail: '',
       },
       exportExcelName: '',
     };
@@ -185,7 +177,7 @@ export default {
   watch: {
     listQuery: {
       handler(value) {
-        const address = value.address ? '-' + value.address + value.detail : '';
+        const address = value.address ? '-' + value.address : '';
         const keywords = value.keywords ? '-' + value.keywords : '';
         this.exportExcelName = '全国商家' + address + keywords;
       },
@@ -199,9 +191,6 @@ export default {
       this.columns = columns;
     },
     getList(meaning) {
-      this.listQuery.address = Array.isArray(this.listQuery.address)
-        ? this.listQuery.address.join()
-        : this.listQuery.address;
       meaning === 'keepPage'
         ? (this.listQuery = {
             ...this.listQuery,
@@ -219,13 +208,12 @@ export default {
     handleReset() {
       this.listQuery.address = '';
       this.listQuery.radius = '';
-      this.listQuery.detail = '';
       this.listQuery.keywords = '';
       this.getList('keepPage');
     },
   },
-  computed: {
-    ...mapGetters(['common_regionList']),
-  },
+  // computed: {
+  //   ...mapGetters(['common_regionList']),
+  // },
 };
 </script>
