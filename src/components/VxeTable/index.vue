@@ -442,7 +442,7 @@ export default {
           column.slots = { default: slotDefault }
         } else if (!column.slots.default) {
           // 针对没有 column slot default 的 数据进行处理
-          // console.log('slotDefault', slotDefault)
+          // console.log('slotDefault', slotDefault)column
           column.slots.default = slotDefault
         }
       } else {

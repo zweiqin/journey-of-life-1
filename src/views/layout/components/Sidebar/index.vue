@@ -9,7 +9,7 @@
       text-color="#bfcbd9"
       active-text-color="#409EFF"
     >
-      <sidebar-item v-for="route in menuList" :key="route.path" :item="route" :base-path="route.path"/>
+      <SidebarItem v-for="route in menuList" :key="route.path" :item="route" :base-path="route.path" />
     </el-menu>
   </el-scrollbar>
 </template>
@@ -25,24 +25,50 @@ export default {
     ...mapGetters([
       'permission_routers',
       'sidebar',
-      'roles',
+      'roles'
     ]),
     isCollapse() {
       return !this.sidebar.opened
     },
     menuList() {
-      const isAdmin = this.roles.includes('超级管理员')
-      const routers = XeUtils.mapTree(this.permission_routers, item => {
-        if (item._ROLES) {
-          if (item._ROLES.includes('USER')) {
-            item.hidden = isAdmin
+      let routers
+      if (this.roles.includes('超级管理员')) {
+        const isAdmin = this.roles.includes('超级管理员')
+        routers = XeUtils.mapTree(this.permission_routers, (item) => {
+          if (item._ROLES) {
+            if (item._ROLES.includes('ADMIN')) {
+              item.hidden = !isAdmin
+            } else {
+              item.hidden = isAdmin
+            }
           }
-          if (item._ROLES.includes('ADMIN')) {
-            item.hidden = !isAdmin
+          return item
+        })
+      } else if (this.roles.includes('超级角色')) {
+        const isAdmin = this.roles.includes('超级角色')
+        routers = XeUtils.mapTree(this.permission_routers, (item) => {
+          if (item._ROLES) {
+            if (item._ROLES.includes('TENANTRY')) {
+              item.hidden = !isAdmin
+            } else {
+              item.hidden = isAdmin
+            }
           }
-        }
-        return item
-      })
+          return item
+        })
+      } else if (this.roles.includes('门店')) {
+        const isAdmin = this.roles.includes('门店')
+        routers = XeUtils.mapTree(this.permission_routers, (item) => {
+          if (item._ROLES) {
+            if (item._ROLES.includes('USER')) {
+              item.hidden = !isAdmin
+            } else {
+              item.hidden = isAdmin
+            }
+          }
+          return item
+        })
+      }
       return routers
     }
   }

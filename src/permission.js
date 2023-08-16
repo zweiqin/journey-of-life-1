@@ -44,7 +44,7 @@ router.beforeEach((to, from, next) => {
       if (hasPermission(store.getters.perms, to.meta.perms)) {
         // console.log(store.getters.addRouters, to)
         // 登录后的不同角色，跳转到首页的问题
-        if (to.path === '/homepage' && (store.getters.roles.includes('团蜂招生') || store.getters.roles.includes('门店'))) {
+        if (to.path === '/homepage' && (store.getters.roles.includes('团蜂招生') || store.getters.roles.includes('门店') || store.getters.roles.includes('超级角色'))) {
           if (store.getters.addRouters && store.getters.addRouters.length) {
             if (store.getters.addRouters[0].children && store.getters.addRouters[0].children.length) {
               if (store.getters.addRouters[0].children[0].children && store.getters.addRouters[0].children[0].children.length) {

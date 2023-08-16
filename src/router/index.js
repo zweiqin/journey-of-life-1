@@ -1,11 +1,11 @@
-import Vue from 'vue';
-import Router from 'vue-router';
+import Vue from 'vue'
+import Router from 'vue-router'
 
-Vue.use(Router);
+Vue.use(Router)
 
 /* Layout */
 
-import Layout from '@/views/layout/Layout';
+import Layout from '@/views/layout/Layout'
 
 /** note: Submenu only appear when children.length>=1
  *  detail see  https://panjiachen.github.io/vue-element-admin-site/guide/essentials/router-and-nav.html
@@ -34,14 +34,14 @@ export const constantRouterMap = [
     children: [
       {
         path: '/redirect/:path*',
-        component: () => import('@/views/redirect/index'),
-      },
-    ],
+        component: () => import('@/views/redirect/index')
+      }
+    ]
   },
   {
     path: '/login',
     component: () => import('@/views/login/index'),
-    hidden: true,
+    hidden: true
   },
   // {
   //   path: '/dashboardBig',
@@ -65,29 +65,29 @@ export const constantRouterMap = [
   {
     path: '/auth-redirect',
     component: () => import('@/views/login/authredirect'),
-    hidden: true,
+    hidden: true
   },
   {
     path: '/404',
     component: () => import('@/views/errorPage/404'),
-    hidden: true,
+    hidden: true
   },
   {
     path: '/401',
     component: () => import('@/views/errorPage/401'),
-    hidden: true,
+    hidden: true
   },
   {
     path: '/homepageBig',
     component: () => import('@/views/homepage/bigImage'),
     name: 'HomepageBig',
-    hidden: true,
+    hidden: true
   },
   {
     path: '',
     component: Layout,
     redirect: 'homepage',
-    _ROLES: ['ADMIN'],
+    _ROLES: [ 'ADMIN' ],
     children: [
       {
         path: 'homepage',
@@ -96,11 +96,11 @@ export const constantRouterMap = [
         meta: {
           title: 'homepage',
           icon: 'home',
-          noCache: true,
-        },
-      },
-    ],
-  },
+          noCache: true
+        }
+      }
+    ]
+  }
   // {
   //   path: '/dashboard_out',
   //   alwaysShow: true,
@@ -121,13 +121,13 @@ export const constantRouterMap = [
   //     }
   //   ]
   // }
-];
+]
 
 export default new Router({
   // mode: 'history', // require service support
   scrollBehavior: () => ({ y: 0 }),
-  routes: constantRouterMap,
-});
+  routes: constantRouterMap
+})
 
 export const asyncRouterMap = [
   {
@@ -138,7 +138,7 @@ export const asyncRouterMap = [
     meta: {
       title: '会员系统',
       icon: 'member',
-      noCache: true,
+      noCache: true
     },
     children: [
       {
@@ -148,7 +148,7 @@ export const asyncRouterMap = [
         alwaysShow: true,
         name: 'UserManagement',
         meta: {
-          title: '用户管理',
+          title: '用户管理'
         },
         children: [
           {
@@ -156,10 +156,10 @@ export const asyncRouterMap = [
             component: () => import('@/views/userManagement/memberList'),
             name: 'MemberList',
             meta: {
-              perms: ['GET /admin/user/list'],
+              perms: [ 'GET /admin/user/list' ],
               title: '会员管理',
-              noCache: true,
-            },
+              noCache: true
+            }
           },
           {
             path: 'partnerApply',
@@ -169,12 +169,12 @@ export const asyncRouterMap = [
               perms: [
                 'GET /admin/partnerApply/list',
                 'POST /admin/partnerApply/manage',
-                'POST /admin/partnerApply/signin',
+                'POST /admin/partnerApply/signin'
               ],
-              title: '合伙人申请',
-            },
-          },
-        ],
+              title: '合伙人申请'
+            }
+          }
+        ]
       },
       {
         path: 'commission',
@@ -183,42 +183,42 @@ export const asyncRouterMap = [
         alwaysShow: true,
         meta: {
           title: '佣金管理',
-          noCache: true,
+          noCache: true
         },
         children: [
           {
             path: 'commissionRecordList',
             component: () => import('@/views/brand/commissionRecordList'),
             name: 'CommissionRecordList',
-            _ROLES: ['ADMIN'],
+            _ROLES: [ 'ADMIN' ],
             meta: {
-              perms: ['GET /admin/commission/recordList'],
+              perms: [ 'GET /admin/commission/recordList' ],
               title: '佣金报表',
-              noCache: true,
-            },
+              noCache: true
+            }
           },
           {
             path: 'commissionList',
             component: () => import('@/views/brand/commissionList'),
             name: 'CommissionList',
-            _ROLES: ['ADMIN'],
+            _ROLES: [ 'ADMIN' ],
             meta: {
-              perms: ['GET /admin/commission/list'],
+              perms: [ 'GET /admin/commission/list' ],
               title: '佣金提现',
-              noCache: true,
-            },
+              noCache: true
+            }
           },
           {
             path: 'commissionQuery',
             component: () => import('@/views/brand/commissionQuery'),
             name: 'CommissionQuery',
-            _ROLES: ['ADMIN'],
+            _ROLES: [ 'ADMIN' ],
             meta: {
-              perms: ['GET /admin/new/commission/queryCommissionList'],
+              perms: [ 'GET /admin/new/commission/queryCommissionList' ],
               title: '佣金列表',
-              noCache: true,
-            },
-          },
+              noCache: true
+            }
+          }
           // {
           //   path: 'commissionSetting',
           //   component: () => import('@/views/brand/commissionSetting'),
@@ -239,7 +239,7 @@ export const asyncRouterMap = [
           //     noCache: true
           //   }
           // }
-        ],
+        ]
       },
       {
         path: 'brand',
@@ -247,45 +247,45 @@ export const asyncRouterMap = [
         name: 'Children',
         redirect: 'noredirect',
         alwaysShow: true,
-        _ROLES: ['ADMIN'],
+        _ROLES: [ 'ADMIN' ],
         meta: {
-          title: '门店管理',
+          title: '门店管理'
         },
         children: [
           {
             path: 'brandList',
             component: () => import('@/views/brand/brandList'),
             name: 'BrandList',
-            _ROLES: ['ADMIN'],
+            _ROLES: [ 'ADMIN' ],
             meta: {
-              perms: ['GET /admin/brand/list'],
+              perms: [ 'GET /admin/brand/list' ],
               title: '门店列表',
-              noCache: true,
-            },
+              noCache: true
+            }
           },
           {
             path: 'brandStyle',
             component: () => import('@/views/brand/brandStyle'),
             name: 'BrandStyle',
-            _ROLES: ['ADMIN'],
+            _ROLES: [ 'ADMIN' ],
             meta: {
-              perms: ['GET /admin/brandStyle/list'],
+              perms: [ 'GET /admin/brandStyle/list' ],
               title: '门店风格',
-              noCache: true,
-            },
+              noCache: true
+            }
           },
           {
             path: 'brandApply',
             component: () => import('@/views/brand/brandApply'),
             name: 'BrandApply',
-            _ROLES: ['ADMIN'],
+            _ROLES: [ 'ADMIN' ],
             meta: {
-              perms: ['GET /admin/brand/list'],
+              perms: [ 'GET /admin/brand/list' ],
               title: '门店申请',
-              noCache: true,
-            },
-          },
-        ],
+              noCache: true
+            }
+          }
+        ]
       },
       {
         path: 'memberConfig',
@@ -294,7 +294,7 @@ export const asyncRouterMap = [
         alwaysShow: true,
         meta: {
           title: '会员配置',
-          noCache: true,
+          noCache: true
         },
         children: [
           {
@@ -302,22 +302,22 @@ export const asyncRouterMap = [
             component: () => import('@/views/brand/brandLevel'),
             name: 'BrandLevel',
             meta: {
-              perms: ['GET /admin/brandLevel/list'],
+              perms: [ 'GET /admin/brandLevel/list' ],
               title: '等级列表',
-              noCache: true,
-            },
-          },
-        ],
+              noCache: true
+            }
+          }
+        ]
       },
       {
         path: 'regionalAgent',
         component: () => import('@/views/children'),
         redirect: 'noredirect',
         alwaysShow: true,
-        _ROLES: ['ADMIN'],
+        _ROLES: [ 'ADMIN' ],
         meta: {
           title: '区域代理',
-          noCache: true,
+          noCache: true
         },
         children: [
           {
@@ -329,15 +329,15 @@ export const asyncRouterMap = [
                 'POST /admin/regionagent/getRegionAgentList',
                 'POST /admin/regionagent/updaetRegionAgentStatus',
                 'POST /admin/regionagent/updaetRegionAgent',
-                'GET /admin/regionagent/getRegionAgentInfo',
+                'GET /admin/regionagent/getRegionAgentInfo'
               ],
               title: '区域代理列表',
-              noCache: true,
-            },
-          },
-        ],
-      },
-    ],
+              noCache: true
+            }
+          }
+        ]
+      }
+    ]
   },
   {
     path: '/orderManagement',
@@ -347,7 +347,7 @@ export const asyncRouterMap = [
     meta: {
       title: '订单管理',
       icon: 'order',
-      noCache: true,
+      noCache: true
     },
     children: [
       {
@@ -355,10 +355,10 @@ export const asyncRouterMap = [
         component: () => import('@/views/orderManagement/orderList'),
         name: 'OrderList',
         meta: {
-          perms: ['GET /admin/order/list'],
+          perms: [ 'GET /admin/order/list' ],
           title: '订单列表',
-          noCache: true,
-        },
+          noCache: true
+        }
       },
       {
         path: 'orderDetail',
@@ -370,14 +370,14 @@ export const asyncRouterMap = [
             'POST /admin/order/changePrice',
             'POST /admin/order/ship',
             'POST /admin/order/refund',
-            'GET /admin/order/isFreeze',
+            'GET /admin/order/isFreeze'
           ],
           title: '订单详情',
-          noCache: true,
+          noCache: true
         },
-        hidden: true,
-      },
-    ],
+        hidden: true
+      }
+    ]
   },
   {
     path: '/goods',
@@ -387,7 +387,7 @@ export const asyncRouterMap = [
     name: 'GoodsManage',
     meta: {
       title: '商品管理',
-      icon: 'goods',
+      icon: 'goods'
     },
     children: [
       {
@@ -395,66 +395,66 @@ export const asyncRouterMap = [
         component: () => import('@/views/goods/brandGoods'),
         name: 'BrandGoods',
         meta: {
-          perms: ['GET /admin/goods/list'],
+          perms: [ 'GET /admin/goods/list' ],
           title: '门店商品',
-          noCache: false,
+          noCache: false
         },
-        hidden: true,
+        hidden: true
       },
       {
         path: 'allGoods',
         component: () => import('@/views/goods/allGoods'),
         name: 'AllGoods',
-        _ROLES: ['ADMIN'],
+        _ROLES: ['ADMIN', 'TENANTRY'],
         meta: {
-          perms: ['GET /admin/goods/list'],
+          perms: [ 'GET /admin/goods/list' ],
           title: '所有商品',
-          noCache: false,
-        },
+          noCache: false
+        }
       },
       {
         path: 'selfSupportGoods',
         component: () => import('@/views/goods/selfSupportGoods'),
         name: 'SelfSupportGoods',
-        _ROLES: ['ADMIN'],
+        _ROLES: [ 'ADMIN' ],
         meta: {
-          perms: ['GET /admin/goods/list'],
+          perms: [ 'GET /admin/goods/list' ],
           title: '自营商品',
-          noCache: false,
-        },
+          noCache: false
+        }
       },
       {
         path: 'list',
         component: () => import('@/views/goods/list'),
         name: 'GoodsList',
-        _ROLES: ['USER'],
+        _ROLES: [ 'USER' ],
         meta: {
-          perms: ['GET /admin/goods/list'],
+          perms: [ 'GET /admin/goods/list' ],
           title: '商品列表',
-          noCache: false,
-        },
+          noCache: false
+        }
       },
       {
         path: 'create',
         component: () => import('@/views/goods/create/index'),
         name: 'GoodsCreate',
         meta: {
-          perms: ['POST /admin/goods/create'],
+          perms: [ 'POST /admin/goods/create' ],
           title: '商品上架',
-          noCache: true,
+          noCache: true
         },
-        hidden: true,
+        hidden: true
       },
       {
         path: 'edit',
         component: () => import('@/views/goods/edit/index'),
         name: 'GoodsEdit',
         meta: {
-          perms: ['POST /admin/goods/update'],
+          perms: [ 'POST /admin/goods/update' ],
           title: '商品编辑',
-          noCache: true,
+          noCache: true
         },
-        hidden: true,
+        hidden: true
       },
       // {
       //   path: 'brandListShow',
@@ -471,32 +471,32 @@ export const asyncRouterMap = [
         path: 'category',
         component: () => import('@/views/goods/category'),
         name: 'Category',
-        _ROLES: ['ADMIN'],
+        _ROLES: ['ADMIN', 'TENANTRY'],
         meta: {
-          perms: ['GET /admin/category/list'],
+          perms: [ 'GET /admin/category/list' ],
           title: '商品类目',
-          noCache: true,
-        },
+          noCache: true
+        }
       },
       {
         path: 'issue',
         component: () => import('@/views/goods/issue'),
         name: 'Issue',
         meta: {
-          perms: ['GET /admin/issue/list'],
+          perms: [ 'GET /admin/issue/list' ],
           title: '通用问题',
-          noCache: true,
-        },
+          noCache: true
+        }
       },
       {
         path: 'keyword',
         component: () => import('@/views/goods/keyword'),
         name: 'Keyword',
         meta: {
-          perms: ['GET /admin/keyword/list'],
+          perms: [ 'GET /admin/keyword/list' ],
           title: '搜索关键字',
-          noCache: true,
-        },
+          noCache: true
+        }
       },
       // {
       //   path: 'painting',
@@ -512,46 +512,46 @@ export const asyncRouterMap = [
         path: 'goodsTag',
         component: () => import('@/views/goods/goodsTag/index'),
         name: 'GoodsTag',
-        _ROLES: ['ADMIN'],
+        _ROLES: ['ADMIN', 'TENANTRY'],
         meta: {
-          perms: ['GET /admin/goodsTag/list'],
+          perms: [ 'GET /admin/goodsTag/list' ],
           title: '大类标签',
-          noCache: true,
-        },
+          noCache: true
+        }
       },
       {
         path: 'goodsMaterial',
         component: () => import('@/views/goods/goodsMaterial/index'),
         name: 'GoodsMaterial',
-        _ROLES: ['ADMIN'],
+        _ROLES: [ 'ADMIN' ],
         meta: {
-          perms: ['GET /newmaterial/getNewMaterialList'],
+          perms: [ 'GET /newmaterial/getNewMaterialList' ],
           title: '商品材质',
-          noCache: true,
-        },
+          noCache: true
+        }
       },
       {
         path: 'goodsStyle',
         component: () => import('@/views/goods/goodsStyle/index'),
         name: 'GoodsStyle',
-        _ROLES: ['ADMIN'],
+        _ROLES: ['ADMIN', 'TENANTRY'],
         meta: {
-          perms: ['GET /admin/goodsStyle/list'],
+          perms: [ 'GET /admin/goodsStyle/list' ],
           title: '商品风格',
-          noCache: true,
-        },
+          noCache: true
+        }
       },
       {
         path: 'comment',
         component: () => import('@/views/goods/comment/index'),
         name: 'CommentList',
         meta: {
-          perms: ['GET /admin/comment/list'],
+          perms: [ 'GET /admin/comment/list' ],
           title: '商品评论',
-          noCache: true,
-        },
-      },
-    ],
+          noCache: true
+        }
+      }
+    ]
   },
   // {
   //   path: '/dataStatisticsDashboard',
@@ -651,7 +651,7 @@ export const asyncRouterMap = [
     name: 'PromotionManagement',
     meta: {
       title: '推广中心',
-      icon: 'guide',
+      icon: 'guide'
     },
     children: [
       {
@@ -664,11 +664,11 @@ export const asyncRouterMap = [
             'POST /admin/announcement/saveAnnouncement',
             'POST /admin/announcement/updaetByStatus',
             'POST /admin/announcement/updateByIdAnnouncement',
-            'POST /admin/announcement/deleteByIdAnnouncement',
+            'POST /admin/announcement/deleteByIdAnnouncement'
           ],
           title: '公告管理',
-          noCache: true,
-        },
+          noCache: true
+        }
       },
       {
         path: 'articleManagement',
@@ -682,11 +682,11 @@ export const asyncRouterMap = [
             'POST /admin/newarticle/saveArticleType',
             'POST /admin/newarticle/updateByIdArticleType',
             'POST /admin/article/updaetByStatus',
-            'POST /admin/newarticle/deleteByIdArticleType',
+            'POST /admin/newarticle/deleteByIdArticleType'
           ],
           title: '文章管理',
-          noCache: true,
-        },
+          noCache: true
+        }
       },
       {
         path: 'noticeList',
@@ -698,16 +698,15 @@ export const asyncRouterMap = [
             'POST /admin/article/delete',
             'POST /admin/article/create',
             'GET /admin/article/list',
-            'GET /admin/article/detail',
+            'GET /admin/article/detail'
           ],
           title: '（废弃）公告列表',
-          noCache: true,
-        },
+          noCache: true
+        }
       },
       {
         path: 'noticeCreate',
-        component: () =>
-          import('@/views/promotion/noticeManagement/components/noticeCreate'),
+        component: () => import('@/views/promotion/noticeManagement/components/noticeCreate'),
         name: 'NoticeCreate',
         meta: {
           perms: [
@@ -715,17 +714,16 @@ export const asyncRouterMap = [
             'POST /admin/article/delete',
             'POST /admin/article/create',
             'GET /admin/article/list',
-            'GET /admin/article/detail',
+            'GET /admin/article/detail'
           ],
           title: '发布公告',
-          noCache: true,
+          noCache: true
         },
-        hidden: true,
+        hidden: true
       },
       {
         path: 'noticeEdit',
-        component: () =>
-          import('@/views/promotion/noticeManagement/components/noticeEdit'),
+        component: () => import('@/views/promotion/noticeManagement/components/noticeEdit'),
         name: 'NoticeEdit',
         meta: {
           perms: [
@@ -733,17 +731,16 @@ export const asyncRouterMap = [
             'POST /admin/article/delete',
             'POST /admin/article/create',
             'GET /admin/article/list',
-            'GET /admin/article/detail',
+            'GET /admin/article/detail'
           ],
           title: '公告通知编辑',
-          noCache: true,
+          noCache: true
         },
-        hidden: true,
+        hidden: true
       },
       {
         path: 'writingsList',
-        component: () =>
-          import('@/views/promotion/writingsManagement/writingsList'),
+        component: () => import('@/views/promotion/writingsManagement/writingsList'),
         name: 'WritingsList',
         meta: {
           perms: [
@@ -751,18 +748,15 @@ export const asyncRouterMap = [
             'POST /admin/richText/delete',
             'POST /admin/richText/create',
             'GET /admin/richText/list',
-            'GET /admin/richText/detail',
+            'GET /admin/richText/detail'
           ],
           title: '（废弃）文章列表',
-          noCache: true,
-        },
+          noCache: true
+        }
       },
       {
         path: 'writingsCreate',
-        component: () =>
-          import(
-            '@/views/promotion/writingsManagement/components/writingsCreate'
-          ),
+        component: () => import('@/views/promotion/writingsManagement/components/writingsCreate'),
         name: 'WritingsCreate',
         meta: {
           perms: [
@@ -770,19 +764,16 @@ export const asyncRouterMap = [
             'POST /admin/richText/delete',
             'POST /admin/richText/create',
             'GET /admin/richText/list',
-            'GET /admin/richText/detail',
+            'GET /admin/richText/detail'
           ],
           title: '发布文章',
-          noCache: true,
+          noCache: true
         },
-        hidden: true,
+        hidden: true
       },
       {
         path: 'writingsEdit',
-        component: () =>
-          import(
-            '@/views/promotion/writingsManagement/components/writingsEdit'
-          ),
+        component: () => import('@/views/promotion/writingsManagement/components/writingsEdit'),
         name: 'WritingsEdit',
         meta: {
           perms: [
@@ -790,12 +781,12 @@ export const asyncRouterMap = [
             'POST /admin/richText/delete',
             'POST /admin/richText/create',
             'GET /admin/richText/list',
-            'GET /admin/richText/detail',
+            'GET /admin/richText/detail'
           ],
           title: '文章编辑',
-          noCache: true,
+          noCache: true
         },
-        hidden: true,
+        hidden: true
       },
       {
         path: 'ad',
@@ -807,23 +798,23 @@ export const asyncRouterMap = [
             'POST /admin/ad/delete',
             'GET /admin/ad/read',
             'POST /admin/ad/create',
-            'GET /admin/ad/list',
+            'GET /admin/ad/list'
           ],
           title: '广告管理',
-          noCache: true,
-        },
+          noCache: true
+        }
       },
       {
         path: 'video',
         component: () => import('@/views/errorPage/developing'),
         name: 'Video',
         meta: {
-          perms: ['/admin/developing'],
+          perms: [ '/admin/developing' ],
           title: '视频列表',
-          noCache: true,
-        },
-      },
-    ],
+          noCache: true
+        }
+      }
+    ]
   },
   {
     path: '/financialCenter',
@@ -831,10 +822,10 @@ export const asyncRouterMap = [
     redirect: 'noredirect',
     alwaysShow: true,
     name: 'FinancialCenter',
-    _ROLES: ['ADMIN'],
+    _ROLES: [ 'ADMIN' ],
     meta: {
       title: '财务中心',
-      icon: 'financial',
+      icon: 'financial'
     },
     children: [
       {
@@ -842,30 +833,30 @@ export const asyncRouterMap = [
         component: () => import('@/views/financialCenter/mallReportForms'),
         name: 'MallReportForms',
         meta: {
-          perms: ['POST /admin/finance/queryMallReportForms'],
+          perms: [ 'POST /admin/finance/queryMallReportForms' ],
           title: '商城报表',
-          noCache: true,
-        },
+          noCache: true
+        }
       },
       {
         path: 'logisticsReportForms',
         component: () => import('@/views/financialCenter/logisticsReportForms'),
         name: 'LogisticsReportForms',
         meta: {
-          perms: ['POST /admin/finance/queryLogisticsReportForms'],
+          perms: [ 'POST /admin/finance/queryLogisticsReportForms' ],
           title: '物流报表',
-          noCache: true,
-        },
+          noCache: true
+        }
       },
       {
         path: 'communityReportForms',
         component: () => import('@/views/financialCenter/communityReportForms'),
         name: 'CommunityReportForms',
         meta: {
-          perms: ['POST /admin/finance/queryCommunityReportForms'],
+          perms: [ 'POST /admin/finance/queryCommunityReportForms' ],
           title: '社区报表',
-          noCache: true,
-        },
+          noCache: true
+        }
       },
       {
         path: 'withdrawalList',
@@ -874,22 +865,21 @@ export const asyncRouterMap = [
         meta: {
           perms: [
             'POST /admin/finance/getWithdrawRecordList',
-            'POST /admin/finance/withdrawApprove',
+            'POST /admin/finance/withdrawApprove'
           ],
           title: '提现列表',
-          noCache: true,
-        },
+          noCache: true
+        }
       },
       {
         path: 'accumulatedWithdrawal',
-        component: () =>
-          import('@/views/financialCenter/accumulatedWithdrawal'),
+        component: () => import('@/views/financialCenter/accumulatedWithdrawal'),
         name: 'AccumulatedWithdrawal',
         meta: {
-          perms: ['POST /admin/finance/withdrawalStatistics'],
+          perms: [ 'POST /admin/finance/withdrawalStatistics' ],
           title: '累计提现',
-          noCache: true,
-        },
+          noCache: true
+        }
       },
       {
         path: 'masterWithdrawal',
@@ -899,11 +889,11 @@ export const asyncRouterMap = [
           perms: [
             'POST /admin/finance/getWithdrawRecordList',
             'POST /admin/finance/withdrawApprove',
-            'POST /admin/finance/withdrawalStatistics',
+            'POST /admin/finance/withdrawalStatistics'
           ],
           title: '师傅提现',
-          noCache: true,
-        },
+          noCache: true
+        }
       },
       {
         path: 'storeWithdrawal',
@@ -913,13 +903,13 @@ export const asyncRouterMap = [
           perms: [
             'POST /admin/finance/getWithdrawRecordList',
             'POST /admin/finance/withdrawApprove',
-            'POST /admin/finance/withdrawalStatistics',
+            'POST /admin/finance/withdrawalStatistics'
           ],
           title: '店长提现',
-          noCache: true,
-        },
-      },
-    ],
+          noCache: true
+        }
+      }
+    ]
   },
   // {
   //   path: 'external-link',
@@ -994,16 +984,16 @@ export const asyncRouterMap = [
         path: 'password',
         component: () => import('@/views/profile/password'),
         name: 'password',
-        meta: { title: '修改密码', noCache: true },
+        meta: { title: '修改密码', noCache: true }
       },
       {
         name: 'userInfo',
         path: 'userInfo',
         component: () => import('@/views/errorPage/developing'),
-        meta: { title: '个人中心', noCache: true },
-      },
+        meta: { title: '个人中心', noCache: true }
+      }
     ],
-    hidden: true,
+    hidden: true
   },
   {
     path: '/enterprise',
@@ -1013,47 +1003,47 @@ export const asyncRouterMap = [
     meta: {
       title: '企业管理',
       icon: 'enterprise',
-      noCache: true,
+      noCache: true
     },
     children: [
       {
         path: 'roles',
         component: () => import('@/views/enterprise/roles'),
         name: 'Roles',
-        _ROLES: ['ADMIN'],
+        _ROLES: ['ADMIN', 'TENANTRY'],
         meta: {
           perms: [
             'GET /admin/role/list',
             'POST /admin/role/create',
             'POST /admin/role/update',
-            'POST /admin/role/delete',
+            'POST /admin/role/delete'
           ],
           title: '角色管理',
           // title: '平台管理',
-          noCache: true,
-        },
+          noCache: true
+        }
       },
       {
         path: 'baseInfo',
         component: () => import('@/views/enterprise/baseInfo'),
         name: 'BaseInfo',
-        _ROLES: ['USER'],
+        _ROLES: [ 'USER' ],
         meta: {
-          perms: ['GET /admin/brand/read'],
+          perms: [ 'GET /admin/brand/read' ],
           title: '基本信息',
-          noCache: true,
-        },
+          noCache: true
+        }
       },
       {
         path: 'supplier',
         component: () => import('@/views/enterprise/supplier'),
         name: 'Supplier',
-        _ROLES: ['ADMIN'],
+        _ROLES: ['ADMIN', 'TENANTRY'],
         meta: {
-          perms: ['GET /admin/newsupplier/getNewSupplierList'],
+          perms: [ 'GET /admin/newsupplier/getNewSupplierList' ],
           title: '供应商管理',
-          noCache: true,
-        },
+          noCache: true
+        }
       },
       {
         path: 'department',
@@ -1065,11 +1055,11 @@ export const asyncRouterMap = [
             'GET /admin/department/selectByPrimaryKey',
             'GET /admin/department/deleteByPrimaryKey',
             'POST /admin/department/insertSelective',
-            'POST /admin/department/updateByPrimaryKeySelective',
+            'POST /admin/department/updateByPrimaryKeySelective'
           ],
           title: '部门管理',
-          noCache: true,
-        },
+          noCache: true
+        }
       },
       {
         path: 'staff',
@@ -1081,13 +1071,13 @@ export const asyncRouterMap = [
             'POST /admin/staff/delete',
             'POST /admin/staff/create',
             'GET /admin/staff/list',
-            'GET /admin/staff/detail',
+            'GET /admin/staff/detail'
           ],
           title: '员工管理',
-          noCache: true,
-        },
-      },
-    ],
+          noCache: true
+        }
+      }
+    ]
   },
   {
     path: '/marketingManagement',
@@ -1096,7 +1086,7 @@ export const asyncRouterMap = [
     meta: {
       title: '营销管理',
       icon: 'marketing',
-      noCache: true,
+      noCache: true
     },
     children: [
       {
@@ -1107,12 +1097,12 @@ export const asyncRouterMap = [
           perms: [
             'GET /admin/userCrm/list',
             'POST /admin/userCrm/create',
-            'POST /admin/userCrm/update',
+            'POST /admin/userCrm/update'
           ],
-          _ROLES: ['ADMIN'],
+          _ROLES: [ 'ADMIN' ],
           title: '活动列表',
-          noCache: true,
-        },
+          noCache: true
+        }
       },
       {
         path: 'voucherManagement',
@@ -1128,41 +1118,41 @@ export const asyncRouterMap = [
             meta: {
               perms: ['GET /admin/circula/list', 'POST /admin/circula/circula'],
               title: '转赠记录',
-              noCache: true,
-            },
+              noCache: true
+            }
           },
           {
             path: 'voucherManagementOrder',
             component: () => import('@/views/voucherManagement/order'),
             name: 'VoucherManagementOrder',
             meta: {
-              perms: ['GET /admin/voucherRecord/list'],
+              perms: [ 'GET /admin/voucherRecord/list' ],
               title: '订单记录',
-              noCache: true,
-            },
+              noCache: true
+            }
           },
           {
             path: 'voucherManagementPossess',
             component: () => import('@/views/voucherManagement/possess'),
             name: 'VoucherManagementPossess',
             meta: {
-              perms: ['GET /admin/hold/list'],
+              perms: [ 'GET /admin/hold/list' ],
               title: '持有管理',
-              noCache: true,
-            },
+              noCache: true
+            }
           },
           {
             path: 'voucherManagementGiveCreate',
             component: () => import('@/views/voucherManagement/giveCreate'),
             name: 'VoucherManagementGiveCreate',
             meta: {
-              perms: ['POST /admin/circula/circula'],
+              perms: [ 'POST /admin/circula/circula' ],
               title: '转赠创建',
-              noCache: true,
+              noCache: true
             },
-            hidden: true,
-          },
-        ],
+            hidden: true
+          }
+        ]
       },
       {
         path: 'groupBooking',
@@ -1172,7 +1162,7 @@ export const asyncRouterMap = [
         meta: {
           // perms: [],
           title: '拼团',
-          noCache: true,
+          noCache: true
         },
         children: [
           {
@@ -1180,32 +1170,32 @@ export const asyncRouterMap = [
             component: () => import('@/views/errorPage/developing'),
             name: 'GroupBookingNormal',
             meta: {
-              perms: ['/admin/developing'],
+              perms: [ '/admin/developing' ],
               title: '正常拼团',
-              noCache: true,
-            },
+              noCache: true
+            }
           },
           {
             path: 'draw',
             component: () => import('@/views/errorPage/developing'),
             name: 'GroupBookingDraw',
             meta: {
-              perms: ['/admin/developing'],
+              perms: [ '/admin/developing' ],
               title: '抽奖拼团',
-              noCache: true,
-            },
+              noCache: true
+            }
           },
           {
             path: 'host',
             component: () => import('@/views/errorPage/developing'),
             name: 'GroupBookingHost',
             meta: {
-              perms: ['/admin/developing'],
+              perms: [ '/admin/developing' ],
               title: '团长拼团',
-              noCache: true,
-            },
-          },
-        ],
+              noCache: true
+            }
+          }
+        ]
       },
       {
         path: 'CrosstownAllianceCard',
@@ -1213,20 +1203,20 @@ export const asyncRouterMap = [
         component: () => import('@/views/errorPage/developing'),
         name: 'CrosstownAllianceCard',
         meta: {
-          perms: ['/admin/developing'],
+          perms: [ '/admin/developing' ],
           title: '同城联盟卡',
-          noCache: true,
-        },
+          noCache: true
+        }
       },
       {
         path: 'tkb',
         component: () => import('@/views/errorPage/developing'),
         name: 'tkb',
         meta: {
-          perms: ['/admin/developing'],
+          perms: [ '/admin/developing' ],
           title: '拓客宝',
-          noCache: true,
-        },
+          noCache: true
+        }
       },
       {
         path: 'flashSale',
@@ -1234,10 +1224,10 @@ export const asyncRouterMap = [
         component: () => import('@/views/errorPage/developing'),
         name: 'FlashSale',
         meta: {
-          perms: ['/admin/developing'],
+          perms: [ '/admin/developing' ],
           title: '限时抢购',
-          noCache: true,
-        },
+          noCache: true
+        }
       },
       {
         path: 'coupon',
@@ -1250,16 +1240,15 @@ export const asyncRouterMap = [
             'GET /admin/coupon/read',
             'POST /admin/coupon/create',
             'GET /admin/coupon/list',
-            'GET /admin/coupon/listuser',
+            'GET /admin/coupon/listuser'
           ],
           title: '优惠券',
-          noCache: true,
-        },
+          noCache: true
+        }
       },
       {
         path: 'couponDetail',
-        component: () =>
-          import('@/views/marketingManagement/couponDetail/couponDetail'),
+        component: () => import('@/views/marketingManagement/couponDetail/couponDetail'),
         name: 'CouponDetail',
         meta: {
           perms: [
@@ -1268,12 +1257,12 @@ export const asyncRouterMap = [
             'GET /admin/coupon/read',
             'POST /admin/coupon/create',
             'GET /admin/coupon/list',
-            'GET /admin/coupon/listuser',
+            'GET /admin/coupon/listuser'
           ],
           title: '优惠券详情',
-          noCache: true,
+          noCache: true
         },
-        hidden: true,
+        hidden: true
       },
       {
         path: 'couponCard',
@@ -1286,13 +1275,13 @@ export const asyncRouterMap = [
             'GET /admin/coupon/read',
             'POST /admin/coupon/create',
             'GET /admin/coupon/list',
-            'GET /admin/coupon/listuser',
+            'GET /admin/coupon/listuser'
           ],
           title: '核销券',
-          noCache: true,
-        },
-      },
-    ],
+          noCache: true
+        }
+      }
+    ]
   },
   {
     path: '/businessManagement',
@@ -1301,7 +1290,7 @@ export const asyncRouterMap = [
     meta: {
       title: '业务管理',
       icon: 'business',
-      noCache: true,
+      noCache: true
     },
     children: [
       {
@@ -1314,11 +1303,11 @@ export const asyncRouterMap = [
             'POST /admin/customerpool/insertSelective',
             'GET /admin/customerpool/deleteByPrimaryKey',
             'GET /admin/customerpool/selectByPrimaryKey',
-            'POST /admin/customerpool/queryCustomerPoolList',
+            'POST /admin/customerpool/queryCustomerPoolList'
           ],
           title: '客户池',
-          noCache: true,
-        },
+          noCache: true
+        }
       },
       {
         path: 'informationSentry',
@@ -1331,11 +1320,11 @@ export const asyncRouterMap = [
             'POST /admin/messagesentry/conversion',
             'POST /admin/messagesentry/isConversion',
             'POST /admin/messagesentry/salesmanBinding',
-            'POST /admin/messagesentry/setOverdueTime',
+            'POST /admin/messagesentry/setOverdueTime'
           ],
           title: '信息哨兵',
-          noCache: true,
-        },
+          noCache: true
+        }
       },
       // {
       //   path: 'resultsSentry',
@@ -1358,23 +1347,23 @@ export const asyncRouterMap = [
             'POST /admin/msgsay/saveMsgSay',
             'GET /admin/msgsay/selectById',
             'PUT /admin/msgsay/updateSay',
-            'DELETE /admin/msgsay/deleteById',
+            'DELETE /admin/msgsay/deleteById'
           ],
           title: '话术设置',
-          noCache: true,
-        },
+          noCache: true
+        }
       },
       {
         path: 'marketingPortrait',
         component: () => import('@/views/businessManagement/marketingPortrait'),
         name: 'MarketingPortrait',
         meta: {
-          perms: ['GET /admin/statistical/home'],
+          perms: [ 'GET /admin/statistical/home' ],
           title: '营销画像',
-          noCache: true,
-        },
-      },
-    ],
+          noCache: true
+        }
+      }
+    ]
   },
   {
     path: '/materialManagement',
@@ -1382,86 +1371,85 @@ export const asyncRouterMap = [
     redirect: 'noredirect',
     alwaysShow: true,
     name: 'MaterialManagement',
-    _ROLES: ['ADMIN'],
+    _ROLES: [ 'ADMIN' ],
     meta: {
       title: '材料管理',
-      icon: 'material',
+      icon: 'material'
     },
     children: [
       {
         path: 'materialBrand',
         component: () => import('@/views/materialManagement/materialBrand'),
         name: 'MaterialBrand',
-        _ROLES: ['ADMIN'],
+        _ROLES: [ 'ADMIN' ],
         meta: {
-          perms: ['GET /admin/brand/list'],
+          perms: [ 'GET /admin/brand/list' ],
           title: '材料门店',
-          noCache: true,
-        },
+          noCache: true
+        }
       },
       {
         path: 'materialGoods',
         component: () => import('@/views/materialManagement/materialGoods'),
         name: 'MaterialGoods',
-        _ROLES: ['ADMIN'],
+        _ROLES: [ 'ADMIN' ],
         meta: {
-          perms: ['GET /admin/goods/list'],
+          perms: [ 'GET /admin/goods/list' ],
           title: '材料商品',
-          noCache: false,
-        },
+          noCache: false
+        }
       },
       {
         path: 'materialCity',
         component: () => import('@/views/materialManagement/materialCity'),
         name: 'MaterialCity',
-        _ROLES: ['ADMIN'],
+        _ROLES: [ 'ADMIN' ],
         meta: {
           // perms: [],
-          title: '材料城管理',
-        },
+          title: '材料城管理'
+        }
       },
       {
         path: 'materialBrandStyle',
-        component: () =>
-          import('@/views/materialManagement/materialBrandStyle'),
+        component: () => import('@/views/materialManagement/materialBrandStyle'),
         name: 'MaterialBrandStyle',
-        _ROLES: ['ADMIN'],
+        _ROLES: [ 'ADMIN' ],
         meta: {
           // perms: [],
-          title: '门店材料风格',
-        },
+          title: '门店材料风格'
+        }
       },
       {
         path: 'priceIndices',
         component: () => import('@/views/materialManagement/priceIndices'),
         name: 'PriceIndices',
-        _ROLES: ['ADMIN'],
+        _ROLES: [ 'ADMIN' ],
         meta: {
           // perms: [],
-          title: '价格指数图表',
-        },
+          title: '价格指数图表'
+        }
       },
       {
         path: 'priceIndicesInfo',
         component: () => import('@/views/materialManagement/priceIndicesInfo'),
         name: 'PriceIndicesInfo',
-        _ROLES: ['ADMIN'],
+        _ROLES: [ 'ADMIN' ],
         meta: {
           // perms: [],
-          title: '价格指数',
-        },
+          title: '价格指数'
+        }
       },
       {
         path: 'tradeLeads',
         component: () => import('@/views/materialManagement/tradeLeads'),
         name: 'TradeLeads',
-        _ROLES: ['ADMIN'],
+        _ROLES: [ 'ADMIN' ],
         meta: {
           // perms: [],
-          title: '供求信息',
-        },
-      },
-    ],
+          title: '供求信息'
+        }
+      }
+    ]
   },
   {
     path: '/communityManagement',
@@ -1469,17 +1457,17 @@ export const asyncRouterMap = [
     redirect: 'noredirect',
     alwaysShow: true,
     name: 'CommunityManagement',
-    _ROLES: ['ADMIN'],
+    _ROLES: [ 'ADMIN' ],
     meta: {
       perms: [
         'POST /admin/community/richText/update',
         'POST /admin/community/richText/delete',
         'POST /admin/community/richText/create',
         'GET /admin/community/richText/list',
-        'GET /admin/community/richText/detail',
+        'GET /admin/community/richText/detail'
       ],
       title: '社区管理',
-      icon: 'community',
+      icon: 'community'
     },
     children: [
       // {
@@ -1517,34 +1505,33 @@ export const asyncRouterMap = [
         path: 'communityPartner',
         component: () => import('@/views/communityManagement/communityPartner'),
         name: 'CommunityPartner',
-        _ROLES: ['ADMIN'],
+        _ROLES: [ 'ADMIN' ],
         meta: {
           perms: [
             'POST /admin/api/third/partner/getCustomerList',
             'POST /admin/api/third/partner/startAudit',
-            'GET /admin/api/third/partner/getPartnerInfo',
+            'GET /admin/api/third/partner/getPartnerInfo'
           ],
           title: '社区合伙人',
-          noCache: true,
-        },
+          noCache: true
+        }
       },
       {
         path: 'communityCommander',
-        component: () =>
-          import('@/views/communityManagement/communityCommander'),
+        component: () => import('@/views/communityManagement/communityCommander'),
         name: 'CommunityCommander',
-        _ROLES: ['ADMIN'],
+        _ROLES: [ 'ADMIN' ],
         meta: {
           perms: [
             'POST /admin/api/third/partner/getCustomerList',
             'POST /admin/api/third/partner/startAudit',
-            'GET /admin/api/third/partner/getPartnerInfo',
+            'GET /admin/api/third/partner/getPartnerInfo'
           ],
           title: '社区团长',
-          noCache: true,
-        },
-      },
-    ],
+          noCache: true
+        }
+      }
+    ]
   },
   {
     path: '/newMediaManagement',
@@ -1552,24 +1539,23 @@ export const asyncRouterMap = [
     redirect: 'noredirect',
     alwaysShow: true,
     name: 'NewMediaManagement',
-    _ROLES: ['ADMIN'],
+    _ROLES: [ 'ADMIN' ],
     meta: {
       // perms: [],
       title: '新媒体',
-      icon: 'new-media',
+      icon: 'new-media'
     },
     children: [
       {
         path: 'customerInformation',
-        component: () =>
-          import('@/views/newMediaManagement/customerInformation'),
+        component: () => import('@/views/newMediaManagement/customerInformation'),
         name: 'CustomerInformation',
-        perms: ['POST /admin/customerscancode/queryCustomerPoolList'],
+        perms: [ 'POST /admin/customerscancode/queryCustomerPoolList' ],
         meta: {
-          title: '客户信息',
-        },
-      },
-    ],
+          title: '客户信息'
+        }
+      }
+    ]
   },
   {
     path: '/enrollmentManagement',
@@ -1579,20 +1565,19 @@ export const asyncRouterMap = [
     name: 'EnrollmentManagement',
     meta: {
       title: '招生管理',
-      icon: 'membership',
+      icon: 'membership'
     },
     children: [
       {
         path: 'admissionInformation',
-        component: () =>
-          import('@/views/enrollmentManagement/admissionInformation'),
+        component: () => import('@/views/enrollmentManagement/admissionInformation'),
         name: 'AdmissionInformation',
-        perms: ['POST /admin/customerscancode/queryCustomerPoolList'],
         meta: {
           title: '招生信息',
-        },
-      },
-    ],
+          perms: [ 'POST /admin/customerscancode/queryCustomerPoolList' ]
+        }
+      }
+    ]
   },
   {
     path: '/nationalMerchants',
@@ -1601,18 +1586,100 @@ export const asyncRouterMap = [
     redirect: 'storeInformation',
     meta: {
       title: '全国商家',
-      icon: 'nearbyShop',
+      icon: 'nearbyShop'
     },
     children: [
       {
         path: 'storeInformation',
+        name: 'storeInformation',
         component: () => import('@/views/nationalMerchants/storeInformation'),
-        perms: ['GET /gaode/poi/queryVicinityShop'],
         meta: {
           title: '门店信息',
-        },
-      },
-    ],
+          perms: [ 'GET /gaode/poi/queryVicinityShop' ]
+        }
+      }
+    ]
   },
-  { path: '*', redirect: '/404', hidden: true },
-];
+  {
+    path: '/custom',
+    component: Layout,
+    alwaysShow: true,
+    redirect: 'designCompany',
+    meta: {
+      title: '全屋定制',
+      icon: 'quanwudingzhi'
+    },
+    children: [
+      {
+        path: 'designCompany',
+        name: 'designCompany',
+        component: () => import('@/views/custom/designCompany'),
+        meta: {
+          title: '设计公司',
+          perms: ['POST /admin/dtsDesignCom', 'DELETE /admin/dtsDesignCom', 'GET /admin/dtsDesignCom{id}', 'GET /admin/dtsDesignCom', 'PUT /admin/dtsDesignCom']
+        }
+      },
+      {
+        path: 'designCase',
+        name: 'designCase',
+        component: () => import('@/views/custom/designCase'),
+        meta: {
+          title: '设计案例',
+          perms: ['POST /admin/dtsDesignCase', 'DELETE /admin/dtsDesignCase', 'GET /admin/dtsDesignCase{id}', 'GET /admin/dtsDesignCase']
+        }
+      }
+    ]
+  },
+  {
+    path: '/tenantOccupancy',
+    component: Layout,
+    alwaysShow: true,
+    redirect: 'tenantManagement',
+    meta: { title: '系统管理',
+      icon: 'zuhuguanli' },
+    children: [
+      {
+        path: 'tenantManagement',
+        name: 'tenantManagement',
+        component: () => import('@/views/tenantOccupancy/tenantManagement'),
+        _ROLES: [ 'ADMIN' ],
+        meta: {
+          title: '租户管理',
+          perms: ['DELETE /admin/tenant', 'GET /admin/tenant', 'GET /admin/tenant{id}']
+        }
+      },
+      {
+        path: 'tenantEdit',
+        component: () => import('@/views/tenantOccupancy/tenantManagement/edit'),
+        name: 'tenantEdit',
+        meta: {
+          perms: [ 'PUT /admin/tenant' ],
+          title: '租户编辑',
+          noCache: true
+        },
+        hidden: true
+      },
+      {
+        path: 'tenantCreate',
+        component: () => import('@/views/tenantOccupancy/tenantManagement/create'),
+        name: 'tenantCreate',
+        meta: {
+          perms: [ 'POST /admin/tenant' ],
+          title: '创建租户',
+          noCache: true
+        },
+        hidden: true
+      },
+      {
+        path: 'tenantConfig',
+        name: 'tenantConfig',
+        component: () => import('@/views/tenantOccupancy/tenantConfig'),
+        meta: {
+          title: '配置管理',
+          perms: ['POST /admin/dtsTenantConfig', 'DELETE /admin/dtsTenantConfig', 'GET /admin/dtsTenantConfig', 'PUT /admin/dtsTenantConfig']
+        }
+      }
+    ]
+  },
+  { path: '*', redirect: '/404', hidden: true }
+]
