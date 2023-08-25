@@ -315,30 +315,29 @@ export default {
       })
     },
     oneByoneSend(data, IMUI) {
+      if (data.message.fromUser.id == this.user.id) return
       IMUI.appendMessage(data.message, true)
-      if (data.message.fromUser.id != this.$store.getters.personId) {
       // 判断是否显示消息通知
-        if (this.settingDialogData.messagePagePrompt) {
-          this.$notify.warning({
-            title: '你有一条新的消息',
-            duration: 2000,
-            position: 'bottom-right',
-            offset: 100,
-            message: '来自："' + data.message.fromUser.displayName + '"'
-          })
-        }
-        // 播放收到信息音频
-        if (this.settingDialogData.messageTone) {
-          const messageToneType = this.settingDialogData.messageToneType
-          const buttonAudio = document.getElementById('eventAudio')
-          buttonAudio.setAttribute('src', '../../../../../../static/audio/' + messageToneType)
-          buttonAudio.play()
-        }
+      if (this.settingDialogData.messagePagePrompt) {
+        this.$notify.warning({
+          title: '你有一条新的消息',
+          duration: 2000,
+          position: 'bottom-right',
+          offset: 100,
+          message: '来自："' + data.message.fromUser.displayName + '"'
+        })
+      }
+      // 播放收到信息音频
+      if (this.settingDialogData.messageTone) {
+        const messageToneType = this.settingDialogData.messageToneType
+        const buttonAudio = document.getElementById('eventAudio')
+        buttonAudio.setAttribute('src', '../../../../../../static/audio/' + messageToneType)
+        buttonAudio.play()
       }
       IMUI.messageViewToBottom()
     },
     getSendMessage(data, IMUI) {
-      if (data.message.fromUser.id == this.$store.getters.personId) return
+      if (data.message.fromUser.id == this.user.id) return
       IMUI.appendMessage(data.message, true)
       // 判断是否显示消息通知
       if (this.settingDialogData.messagePagePrompt) {
@@ -360,17 +359,6 @@ export default {
       IMUI.messageViewToBottom()
     },
     handlePullMessages(contact, next) {
-      // const that = this
-      // const uri =
-      //   contact.is_group == 0 ? '/friend/pull_message' : '/group/pull_message'
-      // const data = {
-      //   message: {
-      //     contact_id: contact.id,
-      //     user_id: this.user.id
-      //   },
-      //   uri
-      // }
-      // this.socket.send(JSON.stringify(data))
       this.next = next
       this.initSocket(contact)
     },
@@ -425,7 +413,6 @@ export default {
         //     ? '/friend/send_message'
         //     : '/group/send_message'
         IMUI.setEditorValue('')
-        // this.send(message, uri)
         this.send({
           id: message.sendTime,
           status: 'succeed',
@@ -440,7 +427,7 @@ export default {
             displayName: message.fromUser.displayName,
             avatar: message.fromUser.avatar
           },
-          isGroup: true
+          isGroup: !!IMUI.getCurrentContact().is_group
         }, '')
         next()
       }

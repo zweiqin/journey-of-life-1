@@ -33,37 +33,34 @@ export default {
     menuList() {
       let routers
       if (this.roles.includes('超级管理员')) {
-        const isAdmin = this.roles.includes('超级管理员')
         routers = XeUtils.mapTree(this.permission_routers, (item) => {
           if (item._ROLES) {
             if (item._ROLES.includes('ADMIN')) {
-              item.hidden = !isAdmin
+              item.hidden = false
             } else {
-              item.hidden = isAdmin
-            }
-          }
-          return item
-        })
-      } else if (this.roles.includes('超级角色')) {
-        const isAdmin = this.roles.includes('超级角色')
-        routers = XeUtils.mapTree(this.permission_routers, (item) => {
-          if (item._ROLES) {
-            if (item._ROLES.includes('TENANTRY')) {
-              item.hidden = !isAdmin
-            } else {
-              item.hidden = isAdmin
+              item.hidden = true
             }
           }
           return item
         })
       } else if (this.roles.includes('门店')) {
-        const isAdmin = this.roles.includes('门店')
         routers = XeUtils.mapTree(this.permission_routers, (item) => {
           if (item._ROLES) {
             if (item._ROLES.includes('USER')) {
-              item.hidden = !isAdmin
+              item.hidden = false
             } else {
-              item.hidden = isAdmin
+              item.hidden = true
+            }
+          }
+          return item
+        })
+      } else if (this.roles.includes('超级角色')) {
+        routers = XeUtils.mapTree(this.permission_routers, (item) => {
+          if (item._ROLES) {
+            if (item._ROLES.includes('TENANTRY')) {
+              item.hidden = false
+            } else {
+              item.hidden = true
             }
           }
           return item

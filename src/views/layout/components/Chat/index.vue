@@ -1,62 +1,39 @@
 <template>
   <div class="chatMain">
     <el-dialog
-      style="display:none"
-      class="text"
-      :visible.sync="chatDialogData.dialogVisible"
-      width="1000px"
-      :center="true"
-      :show-close="false"
-      :close-on-press-escape="false"
-      :close-on-click-modal="true"
+      style="display:none" class="text" :visible.sync="chatDialogData.dialogVisible" width="1000px"
+      :center="true" :show-close="false" :close-on-press-escape="false" :close-on-click-modal="true"
       :modal-append-to-body="true"
     >
       <lemon-imui
-        ref="IMUI"
-        class="lemon"
-        width="1050px"
-        height="700px"
-        loadend-text="只显示最近30条信息"
-        :avatar-cricle="settingDialogData.avatarCricle"
-        :hide-message-name="settingDialogData.hideMessageName"
-        :hide-message-time="settingDialogData.hideMessageTime"
-        :theme="settingDialogData.theme"
+        ref="IMUI" class="lemon" width="1050px" height="700px"
+        loadend-text="暂无更多消息！"
+        :avatar-cricle="settingDialogData.avatarCricle" :hide-message-name="settingDialogData.hideMessageName"
+        :hide-message-time="settingDialogData.hideMessageTime" :theme="settingDialogData.theme"
         :send-key="settingDialogData.sendText == 'Enter' ? (e) => !e.ctrlKey && e.keyCode == 13 : (e) => e.keyCode == 13 && e.ctrlKey"
-        :user="user"
-        :contextmenu="contextmenu"
-        :contact-contextmenu="contactContextmenu"
-        @pull-messages="handlePullMessages"
-        @send="handleSend"
-        @change-contact="handleChangeContact"
-        @message-click="handleMessageClick"
-        @change-menu="handleChangeMenu"
+        :user="user" :contextmenu="contextmenu" :contact-contextmenu="contactContextmenu"
+        @pull-messages="handlePullMessages" @send="handleSend" @change-contact="handleChangeContact"
+        @message-click="handleMessageClick" @change-menu="handleChangeMenu"
       >
         <template #message-title="contact">
           <div>
             <div style="line-height:32px">
               <span style="font-size:19px">{{ contact.displayName }}</span>
-              <span>
+              <!-- <span>
                 <el-badge
-                  v-if="contact.is_group != 1 && contact.status == 1"
-                  is-dot
-                  class="item"
-                  type="success"
+                v-if="contact.is_group != 1 && contact.status == 1"
+                is-dot class="item" type="success"
                 >
-                  (在线)
+                (在线)
                 </el-badge>
                 <el-badge
-                  v-if="contact.is_group != 1 && contact.status == 0"
-                  is-dot
-                  class="item"
+                v-if="contact.is_group != 1 && contact.status == 0"
+                is-dot class="item"
                 >
-                  (离线)
+                (离线)
                 </el-badge>
-              </span>
-              <span
-                v-if="contact.is_group == 1"
-                class="slot-group-menu"
-                style="display:block;float:right"
-              >
+                </span> -->
+              <span v-if="contact.is_group == 1" class="slot-group-menu" style="display:block;float:right">
                 <span @click="handleOpenGroupTool('group_file', contact)">
                   <el-tooltip class="item" effect="dark" content="聊天室文件" placement="top">
                     <svg-icon icon-class="group_file" style="width:1.8em;height:1.8em"></svg-icon>
@@ -72,10 +49,7 @@
                     <svg-icon icon-class="group_album" style="width:1.8em;height:1.8em"></svg-icon>
                   </el-tooltip>
                 </span>
-                <span
-                  v-if="contact.level != 2"
-                  @click="handleOpenGroupTool('group_invite', contact)"
-                >
+                <span v-if="contact.level != 2" @click="handleOpenGroupTool('group_invite', contact)">
                   <el-tooltip class="item" effect="dark" content="聊天室邀请" placement="top">
                     <svg-icon icon-class="group_invite" style="width:1.8em;height:1.8em"></svg-icon>
                   </el-tooltip>
@@ -89,29 +63,25 @@
                       </span>
                       <el-dropdown-menu slot="dropdown">
                         <el-dropdown-item
-                          v-if="contact.level == 0"
-                          icon="el-icon-notebook-1"
+                          v-if="contact.level == 0" icon="el-icon-notebook-1"
                           :command="composeValue('group_member_manage', contact)"
                         >
                           聊天室成员管理
                         </el-dropdown-item>
                         <el-dropdown-item
-                          v-if="contact.level != 2"
-                          icon="el-icon-edit"
+                          v-if="contact.level != 2" icon="el-icon-edit"
                           :command="composeValue('group_edit', contact)"
                         >
                           修改聊天室配置
                         </el-dropdown-item>
                         <el-dropdown-item
-                          v-if="contact.level != 0"
-                          icon="el-icon-circle-close"
+                          v-if="contact.level != 0" icon="el-icon-circle-close"
                           :command="composeValue('group_exit', contact)"
                         >
                           退出该聊天室
                         </el-dropdown-item>
                         <el-dropdown-item
-                          v-if="contact.level == 0"
-                          icon="el-icon-delete"
+                          v-if="contact.level == 0" icon="el-icon-delete"
                           :command="composeValue('group_delete', contact)"
                         >
                           解散该聊天室
@@ -129,7 +99,8 @@
             </div>
             <div
               style="display: block;height: 1px;width: 100%;background-color: #DCDFE6;position: relative;margin-top:5px"
-            ></div>
+            >
+            </div>
           </div>
         </template>
         <template #editor-footer>
@@ -140,27 +111,19 @@
         <template #message-after="Message">
           <div v-if="multi" class="multiContact">
             <el-checkbox
-              v-if="Message.fromUser.id != user.id"
-              v-model="multiMessage"
-              :label="Message"
+              v-if="Message.fromUser.id != user.id" v-model="multiMessage" :label="Message"
               style="position: absolute; left:-70px"
             ></el-checkbox>
             <el-checkbox
-              v-else
-              v-model="multiMessage"
-              :label="Message"
+              v-else v-model="multiMessage" :label="Message"
               style="position: absolute; right:636px"
             ></el-checkbox>
           </div>
         </template>
         <template #cover>
-          <div
-            class="cover"
-            style="width:690px;height:790px;text-align: center;position: relative;"
-          >
+          <div class="cover" style="width:690px;height:790px;text-align: center;position: relative;">
             <img
-              src="https://hyperf-cms.oss-cn-guangzhou.aliyuncs.com/chat_cover.png"
-              alt
+              src="https://hyperf-cms.oss-cn-guangzhou.aliyuncs.com/chat_cover.png" alt
               style="width: auto;height: auto;max-width: 100%;max-height: 100%;position: absolute;left: 50%;top: 50%;transform: translate(-50%,-50%);opacity: 0.3;"
             />
           </div>
@@ -169,22 +132,15 @@
           <div style="margin-bottom:10px">
             <p style="margin-top:10px;margin-left:10px;">
               <el-autocomplete
-                v-model="filterContact"
-                size="small"
-                popper-class="my-autocomplete"
-                :fetch-suggestions="querySearch"
-                placeholder="请输入搜索联系人"
-                :popper-append-to-body="false"
+                v-model="filterContact" size="small" popper-class="my-autocomplete"
+                :fetch-suggestions="querySearch" placeholder="请输入搜索联系人" :popper-append-to-body="false"
                 @select="handleSelect"
               >
                 <i slot="prefix" class="el-input__icon el-icon-search"></i>
                 <template slot-scope="{ item }">
                   <div :title="item.displayName" class="lemon-contact">
                     <span class="lemon-contact__avatar">
-                      <span
-                        class="lemon-avatar"
-                        style="width: 40px; height: 40px; line-height: 40px; font-size: 20px;"
-                      >
+                      <span class="lemon-avatar" style="width: 40px; height: 40px; line-height: 40px; font-size: 20px;">
                         <img :src="item.avatar" />
                       </span>
                     </span>
@@ -198,10 +154,7 @@
               </el-autocomplete>
               <el-dropdown trigger="click" size="small" style="margin-left:10px">
                 <span class="el-dropdown-link" style="cursor: pointer;">
-                  <i
-                    class="el-icon-plus"
-                    style="font-size:20px;vertical-align: middle; font-weight:bold"
-                  ></i>
+                  <i class="el-icon-plus" style="font-size:20px;vertical-align: middle; font-weight:bold"></i>
                 </span>
                 <el-dropdown-menu slot="dropdown">
                   <el-dropdown-item divided>
@@ -216,22 +169,15 @@
           <div style="margin-bottom:10px">
             <p style="margin-top:10px;margin-left:10px;">
               <el-autocomplete
-                v-model="filterContact"
-                size="small"
-                popper-class="my-autocomplete"
-                :fetch-suggestions="querySearch"
-                placeholder="请输入搜索联系人"
-                :popper-append-to-body="false"
+                v-model="filterContact" size="small" popper-class="my-autocomplete"
+                :fetch-suggestions="querySearch" placeholder="请输入搜索联系人" :popper-append-to-body="false"
                 @select="handleSelect"
               >
                 <i slot="prefix" class="el-input__icon el-icon-search"></i>
                 <template slot-scope="{ item }">
                   <div :title="item.displayName" class="lemon-contact">
                     <span class="lemon-contact__avatar">
-                      <span
-                        class="lemon-avatar"
-                        style="width: 40px; height: 40px; line-height: 40px; font-size: 20px;"
-                      >
+                      <span class="lemon-avatar" style="width: 40px; height: 40px; line-height: 40px; font-size: 20px;">
                         <img :src="item.avatar" />
                       </span>
                     </span>
@@ -245,10 +191,7 @@
               </el-autocomplete>
               <el-dropdown trigger="click" size="small" style="margin-left:10px">
                 <span class="el-dropdown-link" style="cursor: pointer;">
-                  <i
-                    class="el-icon-plus"
-                    style="font-size:20px;vertical-align: middle; font-weight:bold"
-                  ></i>
+                  <i class="el-icon-plus" style="font-size:20px;vertical-align: middle; font-weight:bold"></i>
                 </span>
                 <el-dropdown-menu slot="dropdown">
                   <el-dropdown-item divided>
@@ -269,13 +212,7 @@
       <PicUpload ref="picUploadCom" save-path="chat/pic"></PicUpload>
       <GroupTool ref="groupToolRef" :group-tool="groupTool"></GroupTool>
       <ForwardTool ref="forwardToolRef" :forward-tool="forwardTool"></ForwardTool>
-      <el-image
-        ref="preview"
-        :src="imageSrc"
-        fit="fill"
-        :preview-src-list="srcList"
-        :z-index="2050"
-      ></el-image>
+      <el-image ref="preview" :src="imageSrc" fit="fill" :preview-src-list="srcList" :z-index="2050"></el-image>
     </el-dialog>
   </div>
 </template>
@@ -572,13 +509,13 @@ export default {
               message: h({
                 data() { return { value: '' } },
                 render(h) {
-                  return h('div', { }, [
-                    h('div', { }, `ID：${contact.id}`),
-                    h('div', { }, `是否聊天室：${contact.is_group == 1 ? '是' : '否'}`),
-                    h('div', { }, `聊天对象展示名字：${contact.displayName}`),
-                    h('div', { }, `聊天对象头像链接：${contact.avatar ? contact.avatar : '无'}`),
-                    h('div', { }, `聊天对象索引：${contact.index}`),
-                    h('div', { }, `未读条数：${contact.unread}`)
+                  return h('div', {}, [
+                    h('div', {}, `ID：${contact.id}`),
+                    h('div', {}, `是否聊天室：${contact.is_group == 1 ? '是' : '否'}`),
+                    h('div', {}, `聊天对象展示名字：${contact.displayName}`),
+                    h('div', {}, `聊天对象头像链接：${contact.avatar ? contact.avatar : '无'}`),
+                    h('div', {}, `聊天对象索引：${contact.index}`),
+                    h('div', {}, `未读条数：${contact.unread}`)
                   ])
                 }
               }),
@@ -710,183 +647,195 @@ export default {
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
-.chatMain
-  ::v-deep
-  .el-autocomplete-suggestion
-  .el-autocomplete-suggestion__list
-  li {
-  padding: 0px;
+.lemon {
+	/deep/ .lemon-container {
+		white-space: normal;
+	}
 }
-.chatMain
-  ::v-deep
-  .el-autocomplete-suggestion
-  .el-autocomplete-suggestion__wrap {
-  margin-right: 0px;
+
+.chatMain ::v-deep .el-autocomplete-suggestion .el-autocomplete-suggestion__list li {
+	padding: 0px;
 }
+
+.chatMain ::v-deep .el-autocomplete-suggestion .el-autocomplete-suggestion__wrap {
+	margin-right: 0px;
+}
+
 .chatMain ::v-deep .lemon-editor__emoji-item {
-  cursor: pointer;
-  width: 30px;
-  padding: 4px;
-  border-radius: 4px;
+	cursor: pointer;
+	width: 30px;
+	padding: 4px;
+	border-radius: 4px;
 }
+
 .chatMain ::v-deep .lemon-message-text .lemon-message__content img {
-  width: 22px;
-  height: 18px;
-  display: inline-block;
-  background: transparent;
-  position: relative;
-  top: -1px;
-  padding: 0 2px;
-  vertical-align: middle;
+	width: 22px;
+	height: 18px;
+	display: inline-block;
+	background: transparent;
+	position: relative;
+	top: -1px;
+	padding: 0 2px;
+	vertical-align: middle;
 }
+
 .chatMain ::v-deep .lemon-wrapper--theme-blue .lemon-menu {
-  background-color: #409eff;
+	background-color: #409eff;
 }
+
 .chatMain ::v-deep .search-icon {
-  cursor: pointer;
-  font-size: 17px;
-  vertical-align: middle;
+	cursor: pointer;
+	font-size: 17px;
+	vertical-align: middle;
 }
+
 .text ::v-deep .el-dialog__header {
-  display: none;
+	display: none;
 }
+
 .text ::v-deep .el-dialog__body {
-  padding: 0;
-  height: 0;
-  overflow-y: visible;
+	padding: 0;
+	height: 0;
+	overflow-y: visible;
 }
+
 .chatMain ::v-deep .multi-select {
-  width: 100%;
-  height: 100%;
-  box-sizing: border-box;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  justify-content: center;
-  border-top: 1px solid #f5f5f5;
+	width: 100%;
+	height: 100%;
+	box-sizing: border-box;
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+	justify-content: center;
+	border-top: 1px solid #f5f5f5;
 }
+
 .chatMain ::v-deep .multi-select .multi-main {
-  margin-top: 10px;
+	margin-top: 10px;
 }
+
 .chatMain ::v-deep .multi-select .multi-title {
-  width: 100%;
-  height: 50px;
-  line-height: 50px;
-  text-align: center;
-  color: #878484;
-  font-weight: 300;
-  font-size: 14px;
-  margin-bottom: 10px;
+	width: 100%;
+	height: 50px;
+	line-height: 50px;
+	text-align: center;
+	color: #878484;
+	font-weight: 300;
+	font-size: 14px;
+	margin-bottom: 10px;
 }
+
 .chatMain ::v-deep .multi-select .multi-main .btn-group {
-  display: inline-block;
-  width: 70px;
-  height: 70px;
-  margin-right: 15px;
+	display: inline-block;
+	width: 70px;
+	height: 70px;
+	margin-right: 15px;
 }
 
 .chatMain ::v-deep .multi-select .multi-main .btn-group .multi-icon {
-  width: 60px;
-  height: 60px;
-  font-size: 19px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #f5f5f5;
-  border-radius: 50%;
-  margin: 0 auto;
-  border: 1px solid transparent;
-  cursor: pointer;
+	width: 60px;
+	height: 60px;
+	font-size: 19px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background-color: #f5f5f5;
+	border-radius: 50%;
+	margin: 0 auto;
+	border: 1px solid transparent;
+	cursor: pointer;
 }
+
 .chatMain ::v-deep .multi-select .multi-main .btn-group .multi-icon:hover {
-  color: red;
-  border: 1px solid red;
-  font-size: 20px;
+	color: red;
+	border: 1px solid red;
+	font-size: 20px;
 }
+
 .chatMain ::v-deep .multi-select .multi-main .btn-group p {
-  font-size: 12px;
-  margin-top: 8px;
-  text-align: center;
+	font-size: 12px;
+	margin-top: 8px;
+	text-align: center;
 }
 
 .chatMain .multiContact ::v-deep .el-checkbox__label {
-  display: none;
+	display: none;
 }
 
 .chatMain .multiContact ::v-deep .el-checkbox__label {
-  display: none;
+	display: none;
 }
 
 .chatMain ::v-deep .el-image__preview {
-  display: none;
+	display: none;
 }
 
 .chatMain ::v-deep .el-image__error {
-  display: none;
+	display: none;
 }
 </style>
 
 <style lang="scss">
 .content a {
-  pointer-events: none;
-  cursor: pointer;
+	pointer-events: none;
+	cursor: pointer;
 }
 
 .slot-group {
-  width: 200px;
-  border-left: 1px solid #ddd;
-  height: 100%;
-  box-sizing: border-box;
-  padding: 10px;
+	width: 200px;
+	border-left: 1px solid #ddd;
+	height: 100%;
+	box-sizing: border-box;
+	padding: 10px;
 
-  .slot-search {
-    margin: 5px 0;
-  }
+	.slot-search {
+		margin: 5px 0;
+	}
 }
 
 .slot-group-notice {
-  color: #999;
-  height: 100px;
-  overflow: hidden;
-  padding: 6px 0;
-  font-size: 12px;
-  line-height: 15px;
+	color: #999;
+	height: 100px;
+	overflow: hidden;
+	padding: 6px 0;
+	font-size: 12px;
+	line-height: 15px;
 }
 
 .slot-group-title {
-  font-size: 14px;
-  color: #000;
+	font-size: 14px;
+	color: #000;
 }
 
 .slot-group-member {
-  font-size: 12px;
-  line-height: 18px;
-  margin-bottom: 10px;
+	font-size: 12px;
+	line-height: 18px;
+	margin-bottom: 10px;
 }
 
 .slot-group-menu span {
-  display: inline-block;
-  cursor: pointer;
-  color: #888;
-  margin: 4px 30px 0 0;
-  border-bottom: 2px solid transparent;
+	display: inline-block;
+	cursor: pointer;
+	color: #888;
+	margin: 4px 30px 0 0;
+	border-bottom: 2px solid transparent;
 
-  &:hover {
-    color: #000;
-    border-color: #333;
-  }
+	&:hover {
+		color: #000;
+		border-color: #333;
+	}
 }
 
 .slot-contact-fixedtop {
-  padding: 10px;
-  border-bottom: 1px solid #ddd;
+	padding: 10px;
+	border-bottom: 1px solid #ddd;
 }
 
 .slot-search {
-  width: 100%;
-  box-sizing: border-box;
-  font-size: 14px;
-  border: 1px solid #bbb;
-  padding: 5px 10px;
+	width: 100%;
+	box-sizing: border-box;
+	font-size: 14px;
+	border: 1px solid #bbb;
+	padding: 5px 10px;
 }
 </style>

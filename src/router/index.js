@@ -911,69 +911,6 @@ export const asyncRouterMap = [
       }
     ]
   },
-  // {
-  //   path: 'external-link',
-  //   // component: Layout,
-  //   redirect: 'noredirect',
-  //   alwaysShow: true,
-  //   name: 'externalLink',
-  //   hidden: true,
-  //   meta: {
-  //     title: '外链',
-  //     icon: 'link'
-  //   },
-  //   children: [
-  //     {
-  //       path: 'https://cloud.tencent.com/product/cos',
-  //       meta: {
-  //         title: '腾讯云存储',
-  //         // perms: []
-  //       }
-  //     },
-  //     {
-  //       path: 'https://cloud.tencent.com/product/sms',
-  //       meta: {
-  //         title: '腾讯云短信',
-  //         // perms: []
-  //       }
-  //     },
-  //     {
-  //       path: 'https://pay.weixin.qq.com/index.php/core/home/login',
-  //       meta: {
-  //         title: '微信支付',
-  //         // perms: []
-  //       }
-  //     },
-  //     {
-  //       path: 'https://mpkf.weixin.qq.com/',
-  //       meta: {
-  //         title: '小程序客服',
-  //         // perms: []
-  //       }
-  //     },
-  //     {
-  //       path: 'https://www.alibabacloud.com/zh/product/oss',
-  //       meta: {
-  //         title: '阿里云存储',
-  //         // perms: []
-  //       }
-  //     },
-  //     {
-  //       path: 'https://www.qiniu.com/products/kodo',
-  //       meta: {
-  //         title: '七牛云存储',
-  //         // perms: []
-  //       }
-  //     },
-  //     {
-  //       path: 'http://www.kdniao.com/api-track',
-  //       meta: {
-  //         title: '快递鸟',
-  //         // perms: []
-  //       }
-  //     }
-  //   ]
-  // },
   {
     path: '/profile',
     component: Layout,
@@ -1294,6 +1231,41 @@ export const asyncRouterMap = [
     },
     children: [
       {
+        path: 'customerServiceSystem',
+        component: () => import('@/views/children'),
+        redirect: 'noredirect',
+        alwaysShow: true,
+        meta: {
+          title: '客服系统',
+          icon: '',
+          noCache: true
+        },
+        children: [
+          {
+            path: 'problemClassificationList',
+            component: () => import('@/views/customerServiceSystem/problemClassificationList'),
+            name: 'ProblemClassificationList',
+            meta: {
+              title: '问题分类',
+              icon: '',
+              noCache: true,
+              perms: ['GET /admin/dtsCustomerCategory/singleStage', 'GET /admin/dtsCustomerCategory/categoryTree', 'POST /admin/dtsCustomerCategory/addCategory', 'POST /admin/dtsCustomerCategory/updateCategory']
+            }
+          },
+          {
+            path: 'suggestionsList',
+            component: () => import('@/views/customerServiceSystem/suggestionsList'),
+            name: 'SuggestionsList',
+            meta: {
+              title: '建议列表',
+              icon: '',
+              noCache: true,
+              perms: ['GET /admin/dtsCustomerFeedback/customerList', 'GET /admin/dtsCustomerFeedback/updateStatus']
+            }
+          }
+        ]
+      },
+      {
         path: 'customerPool',
         component: () => import('@/views/businessManagement/customerPool'),
         name: 'CustomerPool',
@@ -1326,16 +1298,6 @@ export const asyncRouterMap = [
           noCache: true
         }
       },
-      // {
-      //   path: 'resultsSentry',
-      //   component: () => import('@/views/errorPage/developing'),
-      //   name: 'resultsSentry',
-      //   meta: {
-      //     // perms: [],
-      //     title: '业绩哨兵',
-      //     noCache: true
-      //   }
-      // },
       {
         path: 'scriptSetting',
         component: () => import('@/views/businessManagement/scriptSetting'),
@@ -1681,5 +1643,68 @@ export const asyncRouterMap = [
       }
     ]
   },
+  // {
+  //   path: 'external-link',
+  //   // component: Layout,
+  //   redirect: 'noredirect',
+  //   alwaysShow: true,
+  //   name: 'externalLink',
+  //   hidden: true,
+  //   meta: {
+  //     title: '外链',
+  //     icon: 'link'
+  //   },
+  //   children: [
+  //     {
+  //       path: 'https://cloud.tencent.com/product/cos',
+  //       meta: {
+  //         title: '腾讯云存储',
+  //         // perms: []
+  //       }
+  //     },
+  //     {
+  //       path: 'https://cloud.tencent.com/product/sms',
+  //       meta: {
+  //         title: '腾讯云短信',
+  //         // perms: []
+  //       }
+  //     },
+  //     {
+  //       path: 'https://pay.weixin.qq.com/index.php/core/home/login',
+  //       meta: {
+  //         title: '微信支付',
+  //         // perms: []
+  //       }
+  //     },
+  //     {
+  //       path: 'https://mpkf.weixin.qq.com/',
+  //       meta: {
+  //         title: '小程序客服',
+  //         // perms: []
+  //       }
+  //     },
+  //     {
+  //       path: 'https://www.alibabacloud.com/zh/product/oss',
+  //       meta: {
+  //         title: '阿里云存储',
+  //         // perms: []
+  //       }
+  //     },
+  //     {
+  //       path: 'https://www.qiniu.com/products/kodo',
+  //       meta: {
+  //         title: '七牛云存储',
+  //         // perms: []
+  //       }
+  //     },
+  //     {
+  //       path: 'http://www.kdniao.com/api-track',
+  //       meta: {
+  //         title: '快递鸟',
+  //         // perms: []
+  //       }
+  //     }
+  //   ]
+  // },
   { path: '*', redirect: '/404', hidden: true }
 ]

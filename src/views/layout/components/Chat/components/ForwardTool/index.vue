@@ -106,8 +106,8 @@ export default {
       if (this.forwardTool.type == 'mergeForward') { } else {
         let tempDate = Date.now()
         contact.forEach((contactItem, count) => {
-          this.forwardTool.multiMessage.forEach((item, index) => {
-            this.$parent.$parent.send({
+          this.forwardTool.multiMessage.forEach(async (item, index) => {
+            const message = {
               id: tempDate,
               status: 'succeed',
               type: item.type,
@@ -117,13 +117,15 @@ export default {
               fileSize: item.fileSize,
               fileName: item.fileName,
               fromUser: {
-                id: this.$store.getters.personId,
-                displayName: this.$store.getters.name,
-                avatar: this.$store.getters.avatar
+                id: this.$parent.$parent.user.id,
+                displayName: this.$parent.$parent.user.displayName,
+                avatar: this.$parent.$parent.user.avatar
               },
-              isGroup: true
-            }, 'oneByoneSend', contactItem)
+              isGroup: !!contactItem.is_group
+            }
             tempDate = tempDate + 1
+            await this.$parent.$parent.send(message, 'oneByoneSend', contactItem)
+            this.$parent.$parent.$refs.IMUI.appendMessage(message, true)
           })
         })
       }

@@ -35,7 +35,8 @@ export default {
   name: 'Message',
   props: {
     content: {
-      type: [String, Number]
+      // type: [String, Number]
+      type: [ Object ]
     }
   },
   data() {

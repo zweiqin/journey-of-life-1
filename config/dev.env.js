@@ -9,7 +9,7 @@ module.exports = {
   BASE_COMMUNITY_API: '""', // 调试
   // BASE_COMMUNITY_API: '"http://192.168.0.63:8790/samrtWorker"', // 本地
   // BASE_COMMUNITY_API: '"https://www.zhult.com/samrtWorker"', // 生产
-  // BASE_WIDE_API: '"https://www.tuanfengkeji.cn:8098/dts-admin-api"',
-  BASE_WS_API: '"wss://www.tuanfengkeji.cn:8098/dts-admin-api/webSocket"',
+  BASE_WS_API: '"wss://www.tuanfengkeji.cn:8098/dts-app-api/ws"',
+  // BASE_WS_API: '"wss://www.tuanfengkeji.cn:8098/dts-admin-api/webSocket"', // 旧的
   BASE_SHOWAPI: '"https://bus.deyisoft.cn:8890/tfshop"'
 }
