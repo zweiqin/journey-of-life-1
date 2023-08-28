@@ -2,7 +2,7 @@ import { queryChatList, queryChatMessage, addChatMessage } from '@/api/laborator
 export default {
   methods: {
     async init(socket) {
-      const personId = this.$store.getters.personId
+      const personId = this.$store.getters.userId // personId
       const avatar = this.$store.getters.avatar
       const name = this.$store.getters.name
       const res = await queryChatList({
@@ -54,7 +54,7 @@ export default {
       this.initSocketInfo()
     },
     initSocketInfo() {
-      this.socketInfo = new WebSocket(`${this.path}/${this.$store.getters.personId}`)
+      this.socketInfo = new WebSocket(`${this.path}/${this.user.id}`)
       // 监听socket连接
       this.socketInfo.onopen = this.openInfo
       // 监听socket错误信息
@@ -175,16 +175,16 @@ export default {
       // if (this.socket) {
       //   if (Object.keys(this.socket).length) {
       //     if (Object.keys(this.socket).includes(String(contact.id))) {
-      //       this.socket[contact.id] = new WebSocket(`${this.path}/ADMIN/${this.$store.getters.personId}?chat=${contact.id}`)
+      //       this.socket[contact.id] = new WebSocket(`${this.path}/ADMIN/${this.user.id}?chat=${contact.id}`)
       //     } else {
-      //       this.socket[contact.id] = new WebSocket(`${this.path}/ADMIN/${this.$store.getters.personId}?chat=${contact.id}`)
+      //       this.socket[contact.id] = new WebSocket(`${this.path}/ADMIN/${this.user.id}?chat=${contact.id}`)
       //     }
       //   } else {
-      //     this.socket[contact.id] = new WebSocket(`${this.path}/ADMIN/${this.$store.getters.personId}?chat=${contact.id}`)
+      //     this.socket[contact.id] = new WebSocket(`${this.path}/ADMIN/${this.user.id}?chat=${contact.id}`)
       //   }
       // } else {
       //   this.socket = {}
-      //   this.socket[contact.id] = new WebSocket(`${this.path}/ADMIN/${this.$store.getters.personId}?chat=${contact.id}`)
+      //   this.socket[contact.id] = new WebSocket(`${this.path}/ADMIN/${this.user.id}?chat=${contact.id}`)
       // }
       // // 监听socket连接
       // this.socket[contact.id].onopen = this.open(contact)
@@ -198,7 +198,7 @@ export default {
     open(contact) {
       return async () => {
         const res = await queryChatMessage({
-          foUserId: this.$store.getters.personId,
+          foUserId: this.user.id,
           toUserId: contact.id
           // chatId: contact.id,
           // limit: 30,
