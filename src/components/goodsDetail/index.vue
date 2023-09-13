@@ -70,7 +70,8 @@
     <div class="goods-detail">
       <span>宝贝详情</span>
     </div>
-    <div v-if="formData.detail" style="width:100%" v-html="formData.detail"></div>
+    <!-- formData.detail -->
+    <div v-if="goodsInfoDetail" id="goods-info-detail" class="goods-info-detail" style="width:100%" v-html="goodsInfoDetail"></div>
     <div v-else class="goods-parse"></div>
     <div class="goods-footer">
       <div class="icon-wrapper">
@@ -96,6 +97,8 @@
 </template>
 
 <script>
+import { marked } from 'marked'
+
 export default {
   name: 'GoodsDetail',
   props: {
@@ -120,7 +123,8 @@ export default {
     return {
       img: require('@/assets/logo/logo.png'),
       goodsTexture: '未知',
-      goodsStyle: '未知'
+      goodsStyle: '未知',
+      goodsInfoDetail: ''
     }
   },
   watch: {
@@ -130,6 +134,27 @@ export default {
         texture ? this.goodsTexture = texture.materialName : this.goodsTexture = '未知'
         const style = this.goodsStyleList.find((element) => element.id === newV.styleId)
         style ? this.goodsStyle = style.value : this.goodsStyle = '未知'
+        if (!oldV || newV) {
+          this.goodsInfoDetail = ''
+          this.$nextTick(() => {
+            this.goodsInfoDetail = newV.detail ? marked(newV.detail) : ''
+            this.$nextTick(() => {
+              const detailNode = document.getElementById('goods-info-detail')
+              if (detailNode) {
+                const tempArr = detailNode.querySelectorAll('*')
+                if (tempArr) {
+                  for (let i = 0; i < tempArr.length; i++) {
+                    if (tempArr[i].tagName === 'IMG') {
+                      // console.dir(tempArr[i])
+                      // console.log(tempArr[i].width, tempArr[i].height, tempArr[i].attributes.width.nodeValue)
+                      tempArr[i].height = tempArr[i].width * (tempArr[i].height / Number(tempArr[i].attributes.width.nodeValue))
+                    }
+                  }
+                }
+              }
+            })
+          })
+        }
       },
       deep: true,
       immediate: true
@@ -145,7 +170,7 @@ export default {
 	width: 375px;
 	max-height: 1888px;
 	font-size: 14px;
-	padding-bottom: 50px;
+	// padding-bottom: 50px;
 	position: relative;
 	display: inline-block;
 	border: 2px solid #000;
@@ -153,6 +178,11 @@ export default {
 	box-sizing: content-box;
 	overflow-x: hidden;
 	overflow-y: auto;
+
+&::-webkit-scrollbar {
+  width: 0!important;
+  height: 0!important;
+}
 
 	.carousel-wrapper {
 		position: relative;
@@ -337,6 +367,12 @@ export default {
 		}
 	}
 
+	.goods-info-detail {
+		/deep/ img {
+			width: 100%;
+		}
+	}
+
 	.goods-parse {
 		height: 390px;
 		border-radius: 0px;
@@ -349,7 +385,7 @@ export default {
 	.goods-footer {
 		left: 0;
 		bottom: 0;
-		position: absolute;
+		position: sticky;
 		width: 100%;
 		height: 50px;
 		background-color: #fff;
