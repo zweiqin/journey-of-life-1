@@ -1587,9 +1587,9 @@ export const asyncRouterMap = [
         component: () =>
           import('@/views/enrollmentManagement/admissionInformation'),
         name: 'AdmissionInformation',
-        perms: ['POST /admin/customerscancode/queryCustomerPoolList'],
         meta: {
           title: '招生信息',
+          perms: ['POST /admin/customerscancode/queryCustomerPoolList'],
         },
       },
     ],
@@ -1607,9 +1607,9 @@ export const asyncRouterMap = [
       {
         path: 'storeInformation',
         component: () => import('@/views/nationalMerchants/storeInformation'),
-        perms: ['GET /gaode/poi/queryVicinityShop'],
         meta: {
           title: '商家信息',
+          perms: ['GET /admin/gaode/poi/queryVicinityShop'],
         },
       },
     ],

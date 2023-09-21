@@ -23,3 +23,4 @@ yarn-error.log*
 /dist
 coverage
 jsconfig.json
+*.zip
