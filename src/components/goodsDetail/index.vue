@@ -88,7 +88,12 @@
         v-html="goodsDetail"
       ></div>
     </div>
-    <!-- <div v-else class="goods-parse"></div> -->
+    <div class="goods-detail">
+      <span>宝贝详情</span>
+    </div>
+    <!-- formData.detail -->
+    <div v-if="goodsInfoDetail" id="goods-info-detail" class="goods-info-detail" style="width:100%" v-html="goodsInfoDetail"></div>
+    <div v-else class="goods-parse"></div>
     <div class="goods-footer">
       <div class="icon-wrapper">
         <div class="item">
@@ -113,6 +118,8 @@
 </template>
 
 <script>
+import { marked } from 'marked'
+
 export default {
   name: 'GoodsDetail',
   props: {
@@ -138,28 +145,37 @@ export default {
       img: require('@/assets/logo/logo.png'),
       goodsTexture: '未知',
       goodsStyle: '未知',
-      goodsDetail: '',
-    };
+      goodsInfoDetail: ''
+    }
   },
   watch: {
     formData: {
       handler(newV, oldV) {
-        console.log(newV.detail);
-        this.goodsDetail = newV.detail
-          ? newV.detail
-              .replaceAll('width=', '     width="379"     ')
-              .replaceAll('height=', '     height="auto"      ')
-          : '';
-        const texture = this.goodsTextureList.find(
-          (element) => element.id === newV.textureId
-        );
-        texture
-          ? (this.goodsTexture = texture.materialName)
-          : (this.goodsTexture = '未知');
-        const style = this.goodsStyleList.find(
-          (element) => element.id === newV.styleId
-        );
-        style ? (this.goodsStyle = style.value) : (this.goodsStyle = '未知');
+        const texture = this.goodsTextureList.find((element) => element.id === newV.textureId)
+        texture ? this.goodsTexture = texture.materialName : this.goodsTexture = '未知'
+        const style = this.goodsStyleList.find((element) => element.id === newV.styleId)
+        style ? this.goodsStyle = style.value : this.goodsStyle = '未知'
+        if (!oldV || newV) {
+          this.goodsInfoDetail = ''
+          this.$nextTick(() => {
+            this.goodsInfoDetail = newV.detail ? marked(newV.detail) : ''
+            this.$nextTick(() => {
+              const detailNode = document.getElementById('goods-info-detail')
+              if (detailNode) {
+                const tempArr = detailNode.querySelectorAll('*')
+                if (tempArr) {
+                  for (let i = 0; i < tempArr.length; i++) {
+                    if (tempArr[i].tagName === 'IMG') {
+                      // console.dir(tempArr[i])
+                      // console.log(tempArr[i].width, tempArr[i].height, tempArr[i].attributes.width.nodeValue)
+                      tempArr[i].height = tempArr[i].width * (tempArr[i].height / Number(tempArr[i].attributes.width.nodeValue))
+                    }
+                  }
+                }
+              }
+            })
+          })
+        }
       },
       deep: true,
       immediate: true,
@@ -170,25 +186,29 @@ export default {
 
 <style lang="scss" scoped>
 .goods-detail-container {
-  // flex:1;
-  // width:0;
-  width: 375px;
-  // max-height: 1888px;
-  height: 680px;
-  font-size: 14px;
-  padding-bottom: 50px;
-  position: relative;
-  display: inline-block;
-  border: 2px solid #000;
-  vertical-align: top;
-  box-sizing: content-box;
-  overflow-x: hidden;
-  overflow-y: auto;
+	// flex:1;
+	// width:0;
+	width: 375px;
+	max-height: 1888px;
+	font-size: 14px;
+	// padding-bottom: 50px;
+	position: relative;
+	display: inline-block;
+	border: 2px solid #000;
+	vertical-align: top;
+	box-sizing: content-box;
+	overflow-x: hidden;
+	overflow-y: auto;
 
-  .carousel-wrapper {
-    position: relative;
-    width: 100%;
-    height: 390px;
+&::-webkit-scrollbar {
+  width: 0!important;
+  height: 0!important;
+}
+
+	.carousel-wrapper {
+		position: relative;
+		width: 100%;
+		height: 390px;
 
     .carousel-wrapper-images {
       height: 100%;
@@ -368,27 +388,33 @@ export default {
     }
   }
 
-  .goods-parse {
-    height: 390px;
-    border-radius: 0px;
-    margin-top: 0px;
-    width: 100%;
-    background-image: url('~@/assets/logo/logo.png');
-    background-size: cover;
-  }
+	.goods-info-detail {
+		/deep/ img {
+			width: 100%;
+		}
+	}
 
-  .goods-footer {
-    left: 0;
-    bottom: 0;
-    position: absolute;
-    width: 100%;
-    height: 50px;
-    background-color: #fff;
-    padding: 0 10px;
-    box-sizing: border-box;
-    display: flex;
-    align-items: center;
-    z-index: 19;
+	.goods-parse {
+		height: 390px;
+		border-radius: 0px;
+		margin-top: 0px;
+		width: 100%;
+		background-image: url('~@/assets/logo/logo.png');
+		background-size: cover;
+	}
+
+	.goods-footer {
+		left: 0;
+		bottom: 0;
+		position: sticky;
+		width: 100%;
+		height: 50px;
+		background-color: #fff;
+		padding: 0 10px;
+		box-sizing: border-box;
+		display: flex;
+		align-items: center;
+		z-index: 1;
 
     .icon-wrapper {
       display: flex;

@@ -174,35 +174,55 @@ export default {
     init() {
       this.listQuery.contact_id = this.historyMessageDialogData.contact_id
       const tempListQuery = {
-        chatId: this.listQuery.contact_id,
-        limit: this.listQuery.page_size,
-        endTime: this.listQuery.date + ' 00:00:00',
-        order: 'desc',
+        foUserId: this.$parent.$parent.user.id,
+        toUserId: this.listQuery.contact_id,
+        // chatId: this.listQuery.contact_id,
+        // limit: this.listQuery.page_size,
+        // endTime: this.listQuery.date + ' 00:00:00',
+        // order: 'desc',
         content: this.listQuery.content
       }
       queryChatMessage(tempListQuery).then((response) => {
-        this.historyMessageList = response.data.items.map((item) => {
-          const tempObj = JSON.parse(item.message)
-          // console.log(tempObj, tempObj.fromUser)
-          return {
-            id: tempObj.message.id,
-            status: tempObj.message.status,
-            type: tempObj.message.type,
-            fileSize: tempObj.message.fileSize,
-            fileName: tempObj.message.fileName,
-            fileExt: tempObj.message.fileExt || '',
-            sendTime: new Date(Number(tempObj.message.sendTime)).toLocaleString(),
-            content: tempObj.message.content,
-            avatar: tempObj.message.fromUser.avatar,
-            displayName: tempObj.message.fromUser.displayName,
-            fromUser: {
-              id: tempObj.message.fromUser.id,
-              avatar: tempObj.message.fromUser.avatar,
-              displayName: tempObj.message.fromUser.displayName
-            }
+        this.historyMessageList = response.data.map((item) => ({
+          id: item.sendTime,
+          status: 'success',
+          type: item.msgType,
+          fileSize: item.fileSize,
+          fileName: item.fileName,
+          fileExt: item.exp || '',
+          sendTime: new Date(item.sendTime).toLocaleString(),
+          content: item.contentText,
+          avatar: item.fromAvatarImage,
+          displayName: item.fromUserName,
+          fromUser: {
+            id: item.fromUserId,
+            avatar: item.fromAvatarImage,
+            displayName: item.fromUserName
           }
-        })
-        this.total = response.data.items.length
+        }))
+        this.total = response.data.length
+        // this.historyMessageList = response.data.items.map((item) => {
+        // 	const tempObj = JSON.parse(item.message)
+        // 	// console.log(tempObj, tempObj.fromUser)
+        // 	return {
+        // 		id: tempObj.message.id,
+        // 		status: tempObj.message.status,
+        // 		type: tempObj.message.type,
+        // 		fileSize: tempObj.message.fileSize,
+        // 		fileName: tempObj.message.fileName,
+        // 		fileExt: tempObj.message.fileExt || '',
+        // 		sendTime: new Date(Number(tempObj.message.sendTime)).toLocaleString(),
+        // 		content: tempObj.message.content,
+        // 		avatar: tempObj.message.fromUser.avatar,
+        // 		displayName: tempObj.message.fromUser.displayName,
+        // 		fromUser: {
+        // 			id: tempObj.message.fromUser.id,
+        // 			avatar: tempObj.message.fromUser.avatar,
+        // 			displayName: tempObj.message.fromUser.displayName
+        // 		}
+        // 	}
+        // })
+        // this.total = response.data.items.length
       })
       // if (typeof this.listQuery.contact_id === 'number') {
       //   historyMessage(this.listQuery).then((response) => {

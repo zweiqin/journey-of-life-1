@@ -201,6 +201,7 @@ export default {
         this.quickSortData.forEach((item) => {
           list.unshift(item.dictName)
         })
+        window.console.log(list)
         return list
       }
     },
@@ -211,6 +212,7 @@ export default {
         this.quickSortData.forEach((item) => {
           list.unshift(item.amount)
         })
+        window.console.log(list)
         return list
       }
     },

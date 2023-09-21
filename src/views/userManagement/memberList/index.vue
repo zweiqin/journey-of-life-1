@@ -274,6 +274,7 @@ export default {
     },
     handleSelectionChange({ $table }) {
       const records = $table.getCheckboxRecords()
+      console.log(records)
       this.multipleSelection = records
     },
     // 自定义列

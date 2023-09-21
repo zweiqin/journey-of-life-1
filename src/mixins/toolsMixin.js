@@ -71,6 +71,7 @@ export default {
             ref && ref.handleVxeTableMethod('exportData', {
               type: 'csv',
               filename,
+              message: false, // 可能z-index1005。下面自己搞一个。因为在el-dialog上，该消息会被遮住。另外，导出提示dialog和modal可能2008和2009
               columnFilterMethod({ column }) {
                 // console.log(column.property)
                 return ![undefined, '$index', 'operate'].includes(column.property)
@@ -87,6 +88,7 @@ export default {
                 ref.handleVxeTableMethod('reloadColumn', cloneDeep(ref.columns))
                 done()
                 instance.confirmButtonLoading = false
+                Message({ type: 'success', message: '导出成功' }) // 可能z-index2009
               }
             })
           } else {

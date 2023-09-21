@@ -3,13 +3,13 @@ export const columns = [
     type: 'checkbox'
   },
   {
-    fixed: 'left',
+    // fixed: 'left',
     field: 'id',
     title: 'ID',
     width: 100
   },
   {
-    fixed: 'left',
+    // fixed: 'left',
     field: 'username',
     title: '用户名',
     minWidth: 150

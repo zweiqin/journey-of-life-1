@@ -180,6 +180,7 @@ export default {
   },
   methods: {
     pageChange(params) {
+      console.log(params)
       this.listQuery = {
         ...this.listQuery,
         ...params
@@ -204,6 +205,7 @@ export default {
             ...item,
             $index: (this.listQuery.page - 1) * this.listQuery.limit + (index + 1)
           }))
+          console.log(this.tableData)
           this.pageTotal = res.data.map.total || 0
           this.listLoading = false
         })

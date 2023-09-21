@@ -26,7 +26,7 @@
       @refresh="getList" @download="toolsMixin_exportMethod($refs.vxeTable, '广告管理')"
     >
       <el-button
-        v-permission="[ `POST ${api.createAd}` ]" size="mini" class="filter-item" type="primary"
+        v-permission="[ `POST ${'/admin' + api.createAd}` ]" size="mini" class="filter-item" type="primary"
         icon="el-icon-plus" @click="handleCreate"
       >
         添加
@@ -45,10 +45,10 @@
         <el-tag :type="row.enabled ? 'success' : 'error'">{{ row.enabled ? '启用' : '不启用' }}</el-tag>
       </template>
       <template #operate="{ row }">
-        <el-button v-permission="[ `POST ${api.updateAd}` ]" size="mini" @click="handleUpdate(row)">
+        <el-button v-permission="[ `POST ${'/admin' + api.updateAd}` ]" size="mini" @click="handleUpdate(row)">
           编辑
         </el-button>
-        <el-button v-permission="[ `POST /${api.deleteAd}` ]" type="danger" size="mini" @click="handleDelete(row)">
+        <el-button v-permission="[ `POST ${'/admin' + api.deleteAd}` ]" type="danger" size="mini" @click="handleDelete(row)">
           删除
         </el-button>
       </template>
