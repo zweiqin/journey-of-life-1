@@ -86,6 +86,15 @@ export const columns = [
   },
   {
     align: 'left',
+    field: 'user',
+    title: '用户昵称',
+    minWidth: 100,
+    slots: {
+      default: 'user'
+    },
+  },
+  {
+    align: 'left',
     field: 'addTime',
     title: '创建时间',
     minWidth: 150

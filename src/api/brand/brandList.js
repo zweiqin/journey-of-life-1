@@ -9,7 +9,8 @@ export const api = {
   brandCatAndAdmin: '/brand/catAndAdmin',
   brandLabelList: '/brand/labelList',
   freezeBrand: '/userup/freezeBrand',
-  storeTypeList: '/storeType/list'
+  storeTypeList: '/storeType/list',
+  setUser: '/brand/setUser'
 }
 
 // 门店列表
@@ -90,5 +91,14 @@ export function freezeBrand(params) {
     url: api.freezeBrand,
     method: 'GET',
     params
+  })
+}
+
+// 门店设置用户
+export function setUserForBrand(data){
+  return request({
+    url: api.setUser,
+    data,
+    method: 'POST'
   })
 }
