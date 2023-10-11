@@ -50,11 +50,11 @@
       <el-form-item label="租户号" prop="keywords">
         {{ formData.tenantId || '--' }}
       </el-form-item>
-      <el-form-item label="是否为租户号" prop="isOnSale">
+      <el-form-item label="是否为租户号" prop="isTenantAccount">
         <span v-if="formData.isTenantAccount == 1">是</span>
         <span v-else>否</span>
       </el-form-item>
-      <el-form-item label="账号状态" prop="supportVoucher">
+      <el-form-item label="账号状态" prop="status">
         <span v-if="formData.status == 0">审核中</span>
         <span v-else>正常</span>
       </el-form-item>

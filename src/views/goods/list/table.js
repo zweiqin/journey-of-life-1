@@ -98,6 +98,12 @@ export const columns = [
   },
   {
     align: 'center',
+    field: 'voucherAmount',
+    title: '支持代金券数量',
+    width: 120
+  },
+  {
+    align: 'center',
     field: 'saleType',
     title: '在售状态',
     showOverflow: 'tooltip',

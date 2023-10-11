@@ -61,6 +61,9 @@
         <span v-if="formData.supportVoucher">是</span>
         <span v-else>否</span>
       </el-form-item>
+      <el-form-item label="支持代金券数量" prop="voucherAmount">
+        {{ typeof formData.voucherAmount === 'number' ? formData.voucherAmount : '--' }}
+      </el-form-item>
       <el-form-item label="在售状态" prop="saleType">
         <span v-if="formData.saleType === 0">在售</span>
         <span v-else-if="formData.saleType === 1">预售</span>
@@ -158,7 +161,8 @@ export default {
           brief: res.data.goods.brief || '',
           keywords: res.data.goods.keywords || '',
           isOnSale: res.data.goods.isOnSale || '',
-          supportVoucher: res.data.goods.supportVoucher || '',
+          supportVoucher: res.data.goods.supportVoucher,
+          voucherAmount: res.data.goods.voucherAmount,
           saleType: res.data.goods.saleType || '',
           deliveryDay: res.data.goods.deliveryDay || '',
           styleName: res.data.goods.styleName || '',

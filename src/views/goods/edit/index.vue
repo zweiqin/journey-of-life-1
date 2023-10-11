@@ -126,6 +126,12 @@
                   <i class="el-icon-question  body-form-icon"></i>
                 </el-tooltip>
               </el-form-item>
+              <el-form-item v-if="formData.supportVoucher" label="支持代金券数量" prop="voucherAmount">
+                <el-input v-model="formData.voucherAmount" clearable placeholder="请输入支持代金券数量" />
+                <el-tooltip content="可支持的代金券数量" placement="top-start">
+                  <i class="el-icon-question  body-form-icon"></i>
+                </el-tooltip>
+              </el-form-item>
               <el-form-item label="在售状态" prop="saleType">
                 <el-radio-group v-model="formData.saleType">
                   <el-radio :label="0">在售</el-radio>
@@ -500,6 +506,7 @@ export default {
         retailPrice: '',
         isOnSale: true,
         supportVoucher: false,
+        voucherAmount: '',
         saleType: '',
         productTag: '',
         is_deliveryDay: true,
@@ -552,6 +559,9 @@ export default {
         ],
         retailPrice: [
           { pattern: regZero, message: '请输入正整数' }
+        ],
+        voucherAmount: [
+          { required: false, message: '请输入支持代金券数量' }
         ],
         saleType: [
           { required: true, message: '请选择在售状态' }
@@ -692,6 +702,21 @@ export default {
           ]
         }
       }
+    },
+    'formData.supportVoucher': {
+      deep: true,
+      handler(val) {
+        if (val) {
+          this.formRules.voucherAmount = [
+            { required: true, message: '请输入支持代金券数量' },
+            { pattern: regFloat, message: '请输入大于0不超过两位小数的数字' }
+          ]
+        } else {
+          this.formRules.voucherAmount = [
+            { required: false, message: '请输入支持代金券数量' }
+          ]
+        }
+      }
     }
   },
   created() {
@@ -753,9 +778,10 @@ export default {
     },
     async getInfo() {
       const res = await goodsDetail({ id: this.formData.id })
-      const { goods, categoryIds, specifications, products, attributes } = res.data
+      const { goods, categoryIds, specifications, products, attributes, voucherAmount } = res.data
       this.formData = {
         ...goods,
+        voucherAmount,
         keywords: goods.keywords.split(','),
         gallery: goods.gallery,
         is_deliveryDay: +goods.deliveryDay === 0,

@@ -38,12 +38,6 @@
       >
         查找
       </el-button>
-      <!-- <el-button
-        v-permission="[ `GET /admin${api.goodsList}` ]" :loading="downloadLoading" size="mini"
-        class="filter-item" type="warning" icon="el-icon-download" @click="handleDownload"
-        >
-        导出
-        </el-button> -->
     </div>
 
     <TableTools
@@ -273,41 +267,6 @@ export default {
       const obj = list.find((item) => +item.value === +val)
       return obj ? obj.label : '--'
     },
-    // handleDownload() {
-    //   if (!this.list.length) return
-    //   this.downloadLoading = true
-    //   import('@/vendor/Export2Excel').then((excel) => {
-    //     const tableKeys = {
-    //       goodsSn: '商品编号',
-    //       categoryName: '品类名称',
-    //       name: '商品名称',
-    //       goodsType: '商品类型',
-    //       brief: '商品简介',
-    //       keywords: '搜索关键字',
-    //       unit: '商品单位',
-    //       counterPrice: '零售价格',
-    //       vipPrice: '会员价格',
-    //       retailPrice: '优惠价格',
-    //       isOnSale: '上架状态',
-    //       supportVoucher: '支持代金券',
-    //       saleType: '在售状态',
-    //       productTag: '产品标签',
-    //       deliveryDay: '在售状态',
-    //       styleName: '商品风格',
-    //       tagName: '大类标签',
-    //       placeName: '产地名称',
-    //       browse: '浏览量',
-    //       sales: '已销售总量',
-    //       sortOrder: '排序',
-    //       addTime: '创建时间',
-    //       updateTime: '更新时间'
-    //     }
-    //     const tHeader = Object.keys(tableKeys).map((key) => tableKeys[key])
-    //     const filterVal = Object.keys(tableKeys).map((key) => key)
-    //     excel.export_json_to_excel2(tHeader, this.list, filterVal, '商品信息')
-    //     this.downloadLoading = false
-    //   })
-    // },
     handleDetail(row) {
       this.$refs.DetailModal && this.$refs.DetailModal.handleOpen(row)
     }
