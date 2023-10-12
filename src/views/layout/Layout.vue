@@ -68,7 +68,7 @@ export default {
       alert('您的浏览器不支持socket')
     } else {
       this.$nextTick(() => {
-        this.$refs.chat.init(this.path)
+        // this.$refs.chat.init(this.path)
       })
     }
   },
