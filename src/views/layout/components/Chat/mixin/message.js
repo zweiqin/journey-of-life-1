@@ -370,7 +370,7 @@ export default {
       // 	"sendTime": 1677142011288,
       // 	"toContactId": 15, // 聊天室的id
       // 	"fromUser": {
-      // 		"avatar": "https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/zp7zbhidobolzr8z4b90.png",
+      // 		"avatar": "https://www.tuanfengkeji.cn/dts-admin-api/admin/storage/fetch/zp7zbhidobolzr8z4b90.png",
       // 		"id": 8,
       // 		"displayName": "Tuanfeng"
       // 	},

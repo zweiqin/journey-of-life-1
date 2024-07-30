@@ -151,10 +151,10 @@ export default {
           'keeperName': '兰小姐',
           'desc': '圣益办公配件有限公司专注于五金配件的主营产品为中高档多用途五金转盘，自创立以来，秉承“以人为本、学习、创新、共赢”的经营理念，不断优化管理体系，追求质量至上，精益求精。欢迎各界朋友洽谈合作。',
           'phone': '',
-          'picUrl': 'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/wjeuosv48edcoanyuksn.png',
-          'logoUrl': 'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/wdwtgte8ar460haen0p6.jpg',
+          'picUrl': '',
+          'logoUrl': '',
           'picUrls': [
-            'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/0cqy02hm0q4zoedwtei1.jpg'
+            ''
           ],
           'sortOrder': 50,
           'floorPrice': 0,
